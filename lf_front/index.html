@@ -53,8 +53,9 @@
 	padding: 12px;
 }
 
+print2pdf
 /* unvisited link */
-#print a:link, #print a:visited, #print a:hover, #print a:active  {
+#print a:link, #print a:visited, #print a:hover, #print a:active, #print2pdf a:link, #print2pdf a:visited, #print2pdf a:hover, #print2pdf a:active {
     color: #005500;
 }
 
@@ -169,20 +170,32 @@
 								<h2>Ploegopstelling</h2>
 							</div>
 							<div class="col-md-4" style="padding-top:10px">
+							<div class="row">								
 							<!-- ko if: $root.chosenTeam() -->
 								<!-- ko if: $root.chosenTeam().isFull() -->
-							<div id="print" class='label label-default center-block' style='font-size:30px'>
-								<a href="#" onclick="javascript:window.print()">
-									<span class="glyphicon glyphicon-print">	
-								</a> 							
-							</div>
+								<div id="print" class='label label-default' style='font-size:30px;margin-right:10px;'>
+									<a href="#" onclick="javascript:window.print()">
+										<span class="glyphicon glyphicon-print">	
+									</a> 							
+								</div>
+								<div id="print2pdf" class='label label-default' style='font-size:30px'>
+									<a href="#" data-bind="click: print2pdf">
+										<span class="glyphicon glyphicon-floppy-save">	
+									</a> 							
+								</div>
 								<!-- /ko -->
 								<!-- ko ifnot: $root.chosenTeam().isFull() -->
-							<div id="print print-disabled" class='label label-default center-block' style='font-size:30px'>
-								<span class="glyphicon glyphicon-print"></span>	
-							</div>
+								<div id="print" class='label label-default' style='font-size:30px;margin-right:10px;'>
+									<span class="glyphicon glyphicon-print"></span>	
+								</div>
+								<div id="print2pdf" class='label label-default' style='font-size:30px'>
+									<a href="#" data-bind="click: print2pdf">
+										<span class="glyphicon glyphicon-floppy-save"></span>	
+									</a>
+								</div>
 								<!-- /ko -->
 							<!-- /ko -->
+							</div>
 							</div>
 							
 							<div class="col-md-4" style="padding-top: 10px">

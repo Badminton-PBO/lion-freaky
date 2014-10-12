@@ -89,7 +89,6 @@
 		return hh+":"+mm;
 	}	
 	
-
 	var Meeting = function(hTeam,oTeam,dateTime) {
 		this.hTeam = hTeam;
 		this.oTeam = oTeam;
@@ -529,7 +528,12 @@
 		});
 		
 
-
+		self.print2pdf = function() {
+			var vmjs = $.parseJSON(ko.toJSON(self));
+			var resultObject = {"games":vmjs.games, "chosenMeeting": vmjs.chosenMeeting, "chosenTeam": vmjs.chosenTeamName};
+			var result = JSON.stringify(resultObject);
+			console.log(result);			
+		};
 						
 		self.chosenTeamName.subscribe(function(newTeam) {
 			if (newTeam !== undefined) {
