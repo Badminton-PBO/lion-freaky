@@ -69,7 +69,7 @@ EOD;
 
 	$players = getDatabase()->all($query, array(':team' =>$teamName));
 	$result = array('clubName' => $players[0]['clubName'], 'teamName' => $teamName, 'meetings'=>array(),'players'=>array());
-	array_push($result["meetings"],array('hTeam' => 'Danlie 1G', 'oTeam' => 'Gentse 3G', 'dateTime' => '20141016015'));
+	array_push($result["meetings"],array('hTeam' => 'Danlie 1G', 'oTeam' => 'Gentse 3G', 'dateTime' => '201410162015'));
 	foreach($players as $key => $player) {	
 		array_push($result["players"],array('firstName' => $player['firstName'] ,'lastName' => $player['lastName'], 'vblId' => $player['playerId'], 'gender' => $player['gender'], 'fixedRanking' => array($player['fSingles'], $player['fDoubles'],$player['fMixed']), 'ranking' => array($player['vSingles'], $player['vDoubles'],$player['vMixed'])));
 	}
