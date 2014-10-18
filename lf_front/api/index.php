@@ -44,32 +44,46 @@ function usage() {
 
 function  teamAndClubPlayers($teamName) {
 $query = <<<EOD
-select c.clubName,p.playerId,p.firstName,p.lastName,p.gender,rF.singles fSingles,rF.doubles fDoubles,rF.mixed fMixed, rV.Singles vSingles,rV.doubles vDoubles,rV.mixed vMixed from club c
-join player p on p.club_clubId = c.clubId
-join ranking rF on rF.player_playerId = p.playerId
-join ranking rV on rV.player_playerId = p.playerId
+select c.clubName,p.playerId,p.firstName,p.lastName,p.gender,rF.singles fSingles,rF.doubles fDoubles,rF.mixed fMixed, rV.Singles vSingles,rV.doubles vDoubles,rV.mixed vMixed from lf_club c
+join lf_player p on p.club_clubId = c.clubId
+join lf_ranking rF on rF.player_playerId = p.playerId
+join lf_ranking rV on rV.player_playerId = p.playerId
 where c.clubName = (
-    select c.clubName from club c
-    join team t on c.clubId = t.club_clubId
+    select c.clubName from lf_club c
+    join lf_team t on c.clubId = t.club_clubId
     where t.teamName=:team
 )
 and rV.date = (
-select max(rr.date) from player pp
-join ranking rr on rr.player_playerId = pp.playerId
+select max(rr.date) from lf_player pp
+join lf_ranking rr on rr.player_playerId = pp.playerId
 where pp.playerId = p.playerId
 group by p.playerId
 )
 and rF.date = (
-select min(rr.date) from player pp
-join ranking rr on rr.player_playerId = pp.playerId
+select min(rr.date) from lf_player pp
+join lf_ranking rr on rr.player_playerId = pp.playerId
 where pp.playerId = p.playerId
 group by p.playerId)
+EOD;
+
+$queryEvent = <<<EOD
+select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date from lf_match m
+where (m.homeTeamName = :team or m.outTeamName = :team)
+and m.date > now()-1
+order by m.date asc;
 EOD;
 
 
 	$players = getDatabase()->all($query, array(':team' =>$teamName));
 	$result = array('clubName' => $players[0]['clubName'], 'teamName' => $teamName, 'meetings'=>array(),'players'=>array());
-	array_push($result["meetings"],array('hTeam' => 'Danlie 1G', 'oTeam' => 'Gentse 3G', 'dateTime' => '201410162015'));
+	
+	//Add match data		
+	$matches = getDatabase()->all($queryEvent, array(':team' =>$teamName));
+	foreach($matches as $key => $match) {
+		array_push($result["meetings"],array('hTeam' => $match['homeTeamName'], 'oTeam' => $match['outTeamName'], 'dateTime' => $match['date']));		
+	}	
+	
+	//Add clubplayer data
 	foreach($players as $key => $player) {	
 		array_push($result["players"],array('firstName' => $player['firstName'] ,'lastName' => $player['lastName'], 'vblId' => $player['playerId'], 'gender' => $player['gender'], 'fixedRanking' => array($player['fSingles'], $player['fDoubles'],$player['fMixed']), 'ranking' => array($player['vSingles'], $player['vDoubles'],$player['vMixed'])));
 	}
@@ -87,11 +101,11 @@ EOD;
  
 function  clubsAndTeams() {
 $query = <<<EOD
-select c.clubName,t.teamName,g.event,g.devision,g.series,p.playerId from club c 
-join team t on c.clubId = t.club_clubId 
-join `group` g on g.groupId = t.group_groupId 
-join player_has_team pt on pt.team_teamName = t.teamName 
-join player p on p.playerId = pt.player_playerId order by c.clubName,t.teamName
+select c.clubName,t.teamName,g.event,g.devision,g.series,p.playerId from lf_club c 
+join lf_team t on c.clubId = t.club_clubId 
+join lf_group g on g.groupId = t.group_groupId 
+join lf_player_has_team pt on pt.team_teamName = t.teamName 
+join lf_player p on p.playerId = pt.player_playerId order by c.clubName,t.teamName
 EOD;
 	
 	$players = getDatabase()->all($query);
