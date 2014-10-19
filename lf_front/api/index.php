@@ -67,7 +67,7 @@ group by p.playerId)
 EOD;
 
 $queryEvent = <<<EOD
-select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date from lf_match m
+select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName from lf_match m
 where (m.homeTeamName = :team or m.outTeamName = :team)
 and m.date >= now()
 order by m.date asc;
@@ -80,7 +80,7 @@ EOD;
 	//Add match data		
 	$matches = getDatabase()->all($queryEvent, array(':team' =>$teamName));
 	foreach($matches as $key => $match) {
-		array_push($result["meetings"],array('hTeam' => $match['homeTeamName'], 'oTeam' => $match['outTeamName'], 'dateTime' => $match['date']));		
+		array_push($result["meetings"],array('hTeam' => $match['homeTeamName'], 'oTeam' => $match['outTeamName'], 'dateTime' => $match['date'], 'locationName' => $match['locationName']));		
 	}	
 	
 	//Add clubplayer data

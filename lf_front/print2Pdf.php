@@ -6,7 +6,7 @@ $html = '<h1> Ploeguitwisselingsformulier </h1>';
 $html .= '<h3> Wedstrijd: ' . $output->chosenMeeting->hTeam . '-' . $output->chosenMeeting->oTeam .'</h3>';
 $html .= '<p> Type/Afdeling/Reeks: ' . $output->chosenTeam->event . ' ' . $output->chosenTeam->devision .$output->chosenTeam->series. '</p>';
 $html .= '<p> Tijdstip: ' . $output->chosenMeeting->dateLayout . ' ' . $output->chosenMeeting->hourLayout . '</p>';
-$html .= '<p> Plaats: '.'TODO'.'</p>';
+$html .= '<p> Plaats: '. $output->chosenMeeting->locationName.'</p>';
 
 $html .= '<style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;border-color:#bbb;}

@@ -89,10 +89,11 @@
 		return hh+":"+mm;
 	}	
 	
-	var Meeting = function(hTeam,oTeam,dateTime) {
+	var Meeting = function(hTeam,oTeam,dateTime,locationName) {
 		this.hTeam = hTeam;
 		this.oTeam = oTeam;
 		this.dateTime = dateTime;
+		this.locationName = locationName;
 		this.date = new Date(dateTime.substring(0,4), dateTime.substring(4,6)-1,dateTime.substring(6,8), dateTime.substring(8,10), dateTime.substring(10,12));
 		
 		this.fullMeetingLayout = formatDate(this.date) + " : " + this.hTeam + "-" + this.oTeam;
@@ -597,7 +598,7 @@
 					//LOAD EVENTS LINKED TO THIS TEAM
 					$.each(data.meetings, function(index,m) {
 						//console.log("Adding new meeting "+m.dateTime);
-						self.chosenTeam().meetings.push(new Meeting(m.hTeam,m.oTeam,m.dateTime));						
+						self.chosenTeam().meetings.push(new Meeting(m.hTeam,m.oTeam,m.dateTime,m.locationName));						
 					});						
 										
 					//Sort the arrays of players thtat are shown in UI
