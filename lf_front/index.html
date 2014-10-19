@@ -1,4 +1,4 @@
-<html>
+<html id="printfull">
 	<head>
 		<!-- JQuery -->
 		<script type="text/javascript" src="libs/js/jquery-2.1.1.min.js"></script>	
@@ -276,7 +276,7 @@ print2pdf
 					</div>
 				</div>
 			</div>
-			<div class="row visible-print-inline">
+			<div id="printhtml" class="row visible-print-inline">
 				<h1 class="text-center">Ploeguitwisselingsformulier interclub competitie</h1>
 				<div class="row">
 					<div class="col-md-3" data-bind="with:$root.chosenTeam"><span data-bind="text: teamTypeLayout()"></span>, Provenciaal</div>
@@ -341,6 +341,10 @@ print2pdf
 					</table>					
 				</div>
 			</div>			
+		</div>
+		<div id="printframe"style="display:none">
+			<iframe src="print2PdfForm.html" id="iPrint" style="display:none" frameborder="0">
+			</iframe>
 		</div>
 		<script type="text/javascript" src="builder.js"></script>	
 	</body>	

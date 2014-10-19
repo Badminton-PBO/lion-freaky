@@ -1,5 +1,5 @@
 (function(ko, $, undefined) {
-	
+
 	ko.bindingHandlers.flash = {
 		init: function(element) {
 			$(element).hide();
@@ -532,8 +532,15 @@
 			var vmjs = $.parseJSON(ko.toJSON(self));
 			var resultObject = {"games":vmjs.games, "chosenMeeting": vmjs.chosenMeeting, "chosenTeam": vmjs.chosenTeamName};
 			var result = JSON.stringify(resultObject);
-			console.log(result);			
+			$("#iPrint").contents().find("#print2PdfFormData").val(result);
+			$("#iPrint").contents().find("#print2PdfForm").submit();
 		};
+
+		self.print2pdfX = function() {			
+			console.log($("#printhtml").html());			
+			console.log($("#printfull").html());
+		};
+
 						
 		self.chosenTeamName.subscribe(function(newTeam) {
 			if (newTeam !== undefined) {
