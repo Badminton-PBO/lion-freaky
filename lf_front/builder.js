@@ -696,30 +696,39 @@
 			console.log("Validating drop of "+player.fullName+" in game:"+gameId);
 			
 			//VALIDATE GENDER
-			if ((gameType=="HD" || gameType=="HE") && player.gender !== "M") {
-				logError(gameType+" should only contain man",arg);				
+			if (gameType=="HE" && player.gender !== "M") {
+				logError(gameType+" kan enkel gespeeld worden door een man.",arg);				
 				return;
 			} 
-			if ((gameType=="DD" || gameType=="DE") && player.gender !== "F") {
-				logError(gameType+" should only contain women",arg);
-				
+
+			if (gameType=="HD" && player.gender !== "M") {
+				logError(gameType+" kan enkel gespeeld worden door twee mannen",arg);				
 				return;
 			} 
+			if (gameType=="DE" && player.gender !== "F") {
+				logError(gameType+" kan enkel gespeeld worden door een vrouw",arg);				
+				return;
+			} 
+			if (gameType=="DD" && player.gender !== "F") {
+				logError(gameType+" kan enkel gespeeld worden door twee vrouwen",arg);				
+				return;
+			} 
+			
 			if (gameType=="GD" && targetGame().length == 1 && player.gender == targetGame()[0].gender) {
-				logError(gameType+" should contain one man and one woman",arg);
+				logError(gameType+" kan enkel gespeeld worden door combinatie man/vrouw",arg);
 				return;
 			} 
 			
 			//PLAYERS WITHIN A GAME MUST BE UNIQUE
 			if (targetGame().length == 1 && player.vblId == targetGame()[0].vblId) {
-				logError("Can not add the same player twice to the same game",arg);
+				logError("1 titularis kan maar 1 maal in dezelfde wedstrijd ingevoerd worden",arg);
 				return;				
 			}
 			
 			//SAME PLAYER CAN ONLY PLAY TWO DOUBLE GAMES
 			if ((gameType=="HD" || gameType == "DD") && (gameType != sourceGameType))  {				
 				if (self.numberOfGamesPerPlayerPerGameType(player,gameType) == 2) {
-					logError("The same player can only play two double games",arg);
+					logError("Eénzelfde titularis kan slechts 2 dubbelwedstrijden spelen (c320 art.52.7)",arg);
 					return;									
 				}
 			}
@@ -727,7 +736,7 @@
 			//SAME PLAYER CAN ONLY PLAY ONE SINGLE OR ONE MIX GAME
 			if ((gameType=="HE" || gameType == "DE" || gameType == "GD") && (gameType != sourceGameType))  {				
 				if (self.numberOfGamesPerPlayerPerGameType(player,gameType) == 1) {
-					logError("The same player can only play one "+gameType+" game",arg);
+					logError("Eénzelfde speler/titularis kan slechts 1 "+gameType+" spelen (c320 art.52.7)",arg);
 					return;									
 				}
 			}
@@ -735,7 +744,13 @@
 			//GAMES MUST BE ORDERED FROM HIGHEST TO LOWEST INDEX
 			var newOrder = self.giveOrderedIndexOfDefinedGamesPerGameTypeAndAddPlayerOnPositionXAndIgnoreGameY(gameType,player,gameTypeIndex,sourceGameTypeIndex);			
 			if(!(self.isOrderedIndexArray(newOrder))) {
-				logError("Players in game "+gameType+" must be ordered from highest to lowest index.",arg);
+				if ((gameType=="HE" || gameType == "DE")) {
+					logError("De titularissen voor de enkelwedstrijden "+gameType+" moeten gerangschikt staan van hoogste naar laagste enkel-index (C320 art. 52.8)",arg);
+				} else if ((gameType=="HD" || gameType == "DD")) { 
+					logError("De titularissen voor de dubbelwedstrijden "+gameType+" moeten gerangschikt staan van hoogste naar laagste samengestelde dubbel-index (C320 art. 52.11)",arg);
+				} else {
+					logError("De titularissen voor de gemengde wedstrijden "+gameType+" moeten gerangschikt staan van hoogste naar laagste samengestelde mix-index (C320 art. 52.11)",arg);
+				}
 				return;														
 			}
 		}
@@ -755,7 +770,7 @@
 
 			// BASE-TEAM-INDEX >= EFFECTIVE-TEAM-INDEX  (exception: ART51.4 everybody can play in first team)
 			if (self.chosenTeam().teamNumber != 1 && self.chosenTeam().effectiveTeamIndex() > self.chosenTeam().baseTeamIndex()) {
-				logError("Teamindex van de effectieve ploeg mag de teamindex van papieren ploeg niet overschrijden.",arg);
+				logError("Teamindex van de effectieve ploeg mag de teamindex van papieren ploeg niet overschrijden (C320 art. 53.2)",arg);
 				arg.targetParent.remove(arg.item);
 				return;
 			}
