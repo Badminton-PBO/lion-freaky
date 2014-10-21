@@ -351,7 +351,7 @@
 			//console.log("Checking if player "+myPlayer.fullName+" is allowed to play in "+this.teamName+" (devision:"+this.devision +",series:"+this.series+",teamnumber:"+this.teamNumber+")");
 			
 			//ART51.4 : If the club has only 1 team in competition for this event, all players of this club can play in this team
-			if ((this.teamNumber == 1) && chosenClub.teams.filter(teamEventFilter(this.event)).length ==1)// all players from the club can play in the first team
+			if (this.teamNumber == 1)// all players from the club can play in the first team
 				return true;
 			
 			//TODO ART51.5
@@ -753,8 +753,8 @@
 				self.lastError(msg);
 			};
 
-			// BASE-TEAM-INDEX >= EFFECTIVE-TEAM-INDEX
-			if (self.chosenTeam().effectiveTeamIndex() > self.chosenTeam().baseTeamIndex()) {
+			// BASE-TEAM-INDEX >= EFFECTIVE-TEAM-INDEX  (exception: ART51.4 everybody can play in first team)
+			if (self.chosenTeam().teamNumber != 1 && self.chosenTeam().effectiveTeamIndex() > self.chosenTeam().baseTeamIndex()) {
 				logError("Teamindex van de effectieve ploeg mag de teamindex van papieren ploeg niet overschrijden.",arg);
 				arg.targetParent.remove(arg.item);
 				return;
