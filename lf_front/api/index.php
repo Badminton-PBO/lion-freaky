@@ -105,7 +105,9 @@ select c.clubName,t.teamName,g.event,g.devision,g.series,p.playerId from lf_club
 join lf_team t on c.clubId = t.club_clubId 
 join lf_group g on g.groupId = t.group_groupId 
 join lf_player_has_team pt on pt.team_teamName = t.teamName 
-join lf_player p on p.playerId = pt.player_playerId order by c.clubName,t.teamName
+join lf_player p on p.playerId = pt.player_playerId 
+where g.event != 'LI'
+order by c.clubName,t.teamName
 EOD;
 	
 	$players = getDatabase()->all($query);

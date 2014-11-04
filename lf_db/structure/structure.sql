@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `lf_player` (
   `lastName` varchar(45) DEFAULT NULL,
   `gender` varchar(1) DEFAULT NULL,
   `club_clubId` int(11) NOT NULL,
+  `type` varchar(1) NOT NULL,
   PRIMARY KEY (`playerId`),
   KEY `fk_player_club1_idx` (`club_clubId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
