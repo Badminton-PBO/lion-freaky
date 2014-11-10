@@ -128,6 +128,103 @@ CREATE TABLE IF NOT EXISTS `lf_team` (
   KEY `fk_team_group1_idx` (`group_groupId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+-- TMP Table to faciliate load from CSV into the DB
+CREATE TABLE IF NOT EXISTS `lf_tmpdbload_15mei` (
+  `playerId` int(11) NOT NULL,
+  `playerLevelSingle` varchar(2) NOT NULL,
+  `playerLevelDouble` varchar(2) NOT NULL,
+  `playerLevelMixed` varchar(2) NOT NULL
+)  ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `lf_tmpdbload_basisopstellingliga` (
+  `clubName` varchar(45) NOT NULL,
+  `teamName` varchar(45) NOT NULL,
+  `playerId` int(11) NOT NULL
+)  ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `lf_tmpdbload_playerscsv` (
+  `memberId` int(11) NOT NULL,
+  `firstName` varchar(45) NOT NULL,
+  `lastName` varchar(45) NOT NULL,
+  `gender` varchar(1) NOT NULL,
+  `groupName` varchar(45) NOT NULL,
+  `playerLevelSingle` varchar(2) NOT NULL,
+  `playerLevelDouble` varchar(2) NOT NULL,
+  `playerLevelMixed` varchar(2) NOT NULL,
+  `typeName` varchar(45) NOT NULL,
+  `role` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE IF NOT EXISTS `lf_tmpdbload_teamscsv` (
+  `name` varchar(45) NOT NULL,
+  `clubCode` int(11) NOT NULL,
+  `year` year(4) NOT NULL,
+  `eventName` varchar(80) NOT NULL,
+  `drawName` varchar(80) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Functions to faciliate load from CSV into the DB
+
+DROP FUNCTION IF EXISTS lf_dbload_eventcode;
+DELIMITER $$
+CREATE FUNCTION lf_dbload_eventcode(eventname TEXT)
+  RETURNS TEXT
+BEGIN
+  CASE eventname
+	when 'Gemengde Competitie' then return 'MX';
+	when 'Heren Competitie' then return 'M';
+	when 'Dames Competitie' then return 'L';
+	else
+		BEGIN
+			return '??';
+		END;
+   END CASE;
+END;
+$$
+DELIMITER ;
+
+
+DROP FUNCTION IF EXISTS lf_dbload_devision;
+DELIMITER $$
+CREATE FUNCTION lf_dbload_devision(drawname TEXT)
+  RETURNS TEXT
+BEGIN
+	return substring(drawname,1,1);
+END;
+$$
+DELIMITER ;
+
+
+DROP FUNCTION IF EXISTS lf_dbload_serie;
+DELIMITER $$
+CREATE FUNCTION lf_dbload_serie(drawname TEXT)
+  RETURNS TEXT
+BEGIN
+	CASE
+	when instr(drawname,'provinciale ') > 0 then return substring(drawname, instr(drawname,'provinciale ')+length('provinciale '));
+	else 
+		begin
+			return '';
+		end;
+	END CASE;
+END;
+$$
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS lf_dbload_teamSequenceNumber;
+DELIMITER $$
+CREATE FUNCTION lf_dbload_teamSequenceNumber(teamName TEXT)
+  RETURNS TEXT
+BEGIN
+	return reverse(trim(substring(REVERSE(teamName),2,2)));
+END;
+$$
+DELIMITER ;
+
+
+
 --
 -- Constraints for dumped tables
 --

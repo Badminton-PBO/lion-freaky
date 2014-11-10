@@ -7,8 +7,7 @@ Epi::init('route','database');
 EpiDatabase::employ('mysql',constant('DB_NAME'),constant('DB_HOST'),constant('DB_USER'),constant('DB_PASSWORD')); // type = mysql, database = mysql, host = localhost, user = root, password = [empty]
 Epi::setSetting('exceptions', false);
 
-
-
+//phpinfo();
 //Epi::init('base','cache','session');
 // Epi::init('base','cache-apc','session-apc');
 // Epi::init('base','cache-memcached','session-apc');
@@ -45,7 +44,7 @@ function usage() {
 
 function  teamAndClubPlayers($teamName) {
 $query = <<<EOD
-select c.clubName,p.playerId,p.firstName,p.lastName,p.gender,rF.singles fSingles,rF.doubles fDoubles,rF.mixed fMixed, rV.Singles vSingles,rV.doubles vDoubles,rV.mixed vMixed from lf_club c
+select c.clubName,p.playerId,p.firstName,p.lastName,p.gender,p.type, rF.singles fSingles,rF.doubles fDoubles,rF.mixed fMixed, rV.Singles vSingles,rV.doubles vDoubles,rV.mixed vMixed from lf_club c
 join lf_player p on p.club_clubId = c.clubId
 join lf_ranking rF on rF.player_playerId = p.playerId
 join lf_ranking rV on rV.player_playerId = p.playerId
@@ -65,6 +64,11 @@ select min(rr.date) from lf_player pp
 join lf_ranking rr on rr.player_playerId = pp.playerId
 where pp.playerId = p.playerId
 group by p.playerId)
+and (
+	p.type='C'
+	OR
+	p.playerId in (select player_playerId from lf_player_has_team)
+)
 EOD;
 
 $queryEvent = <<<EOD
@@ -157,6 +161,10 @@ function dbload() {
 		$PLAYERS_CSV_URL='http://toernooi.nl/organization/export/export_memberperroletypepergroup.aspx?id='.$PBO_OVL_ID.'&gid='.$PBO_OVL_GID.'&ft=1&glid=1';		
 		$MATCHES_CSV_URL='http://toernooi.nl/sport/admin/exportteammatches.aspx?id='.$PBO_COMPETITIE_ID.'&ft=1&sd='.$PBO_COMPETITIE_START_DAY.'000000&ed='.$PBO_COMPETITIE_END_DAY.'000000';
 		
+		$BASETEAM_CSV_URL=SITE_ROOT.'/data/fixed/basisopstellingen.csv';
+		$FIXED_RANKING_CSV_URL=SITE_ROOT.'/data/fixed/indexen_spelers_01052014_OVL.csv';
+		$LIGA_BASETEAM_CSV_URL=SITE_ROOT.'/data/fixed/liga_basisopstelling_gemengd_20142015.csv';
+		
         // create curl resource
         $ch = curl_init();        
 
@@ -207,21 +215,36 @@ function dbload() {
         curl_setopt($ch, CURLOPT_URL, $MATCHES_CSV_URL);
         $matchesCSV = curl_exec($ch);
 
+		//Download BASISOPSTELLING CSV
+        curl_setopt($ch, CURLOPT_URL, $BASETEAM_CSV_URL);
+        $baseTeamCSV = curl_exec($ch);
+
+		//Download Fixed Rankings (15 may) CSV
+        curl_setopt($ch, CURLOPT_URL, $FIXED_RANKING_CSV_URL);
+        $fixedRankingCSV = curl_exec($ch);
+
+		//Download Liga BASISOPSTELLING CSV
+        curl_setopt($ch, CURLOPT_URL, $LIGA_BASETEAM_CSV_URL);
+        $ligaBaseTeamCSV = curl_exec($ch);
+
         // close curl resource to free up system resources
         curl_close($ch);   
         
-        cleanDB();
         
+        cleanDB();        
         loadCSV($clubCSV,'clubs');        
         loadCSV($teamsCSV,'teams');
         loadCSV($matchesCSV,'matches');
         loadCSV($playersCSV,'players');
-        
+        loadCSV($baseTeamCSV,'baseTeam');
+        loadCSV($fixedRankingCSV,'fixedRanking');
+        loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
         
         print("OK");
 }
 
 function cleanDB() {
+	//print("Start cleaning");
 	getDatabase()->execute('DELETE from lf_match');
 	getDatabase()->execute('DELETE from lf_ranking');
 	getDatabase()->execute('DELETE from lf_player_has_team');
@@ -236,8 +259,13 @@ function cleanDB() {
 }
 
 function loadCSV($CSV,$type) {
-
-	$parsedCsv = parse_csv($CSV,';',true,false);	
+	
+	$delimiter=';';
+	if ($type == 'baseTeam' or $type == 'ligaBaseTeam') {
+		$delimiter=',';
+	}		
+	$parsedCsv = parse_csv($CSV,$delimiter,true,false);		
+	//print("Handling CSV".$type);
 	$headers = array_flip($parsedCsv[0]);
 	
 	for($i = 1, $size = count($parsedCsv)-1; $i < $size; ++$i) {
@@ -276,7 +304,25 @@ function loadCSV($CSV,$type) {
 					':typeName' => $parsedCsv[$i][$headers['TypeName']],
 					':role' => $parsedCsv[$i][$headers['role']])
 					);
-					break;					
+					break;
+				case "baseTeam": getDatabase()->execute('INSERT INTO lf_player_has_team(player_playerId, team_teamName) VALUES(:playerId, :teamName)',
+					array(':playerId' => $parsedCsv[$i][$headers['player_playerId']],
+					':teamName' => $parsedCsv[$i][$headers['team_teamName']])
+					);
+					break;
+				case "fixedRanking": getDatabase()->execute('INSERT INTO lf_tmpdbload_15mei(playerId, playerLevelSingle, playerLevelDouble, playerLevelMixed) VALUES(:playerId, :playerLevelSingle, :playerLevelDouble, :playerLevelMixed)', 
+					array(':playerId' => $parsedCsv[$i][$headers['Lidnummer']],
+					 ':playerLevelSingle' => $parsedCsv[$i][$headers['Klassement enkel']], 
+					 ':playerLevelDouble' => $parsedCsv[$i][$headers['Klassement dubbel']], 
+					 ':playerLevelMixed' => $parsedCsv[$i][$headers['Klassement gemengd']])
+					 );
+					break;										
+				case "ligaBaseTeam": getDatabase()->execute('INSERT INTO lf_tmpdbload_basisopstellingliga(playerId, teamName, clubName) VALUES(:playerId, :teamName, :clubName)', 
+					array(':playerId' => $parsedCsv[$i][$headers['Lidnummer']],
+					 ':teamName' => $parsedCsv[$i][$headers['Teamnaam']], 
+					 ':clubName' => $parsedCsv[$i][$headers['Club']])
+					 );
+					break;												
 		}			
 	}	
 
@@ -309,9 +355,27 @@ INSERT INTO lf_player (playerId,firstName,lastName,gender,club_clubId,type)
 select t.memberId,t.firstName,t.lastName, CASE when t.gender='V' then 'F' else t.gender END,c.clubId, case when t.typeName like 'Recreant%' then 'R' when t.typeName like 'Competitie%' then 'C' when t.typeName like 'Jeugd%' then 'J' END from lf_tmpdbload_playerscsv t
 join lf_club c on c.clubName=t.groupName;			
 EOD;
+$insertLfRankingFixed = <<<'EOD'
+insert into lf_ranking(date,singles,doubles,mixed,player_playerId)
+select '2014-05-15',t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.playerId from lf_tmpdbload_15mei t
+join lf_player p on t.playerId = p.playerId;
+EOD;
 
+$insertFakeLigaGroup = <<<'EOD'
+INSERT INTO lf_group (tournament,event) values ('2014','LI');
+EOD;
+$insertLfTeamLiga = <<<'EOD'
+INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId)
+select t.teamName,lf_dbload_teamSequenceNumber(t.teamName),c.clubId,(select groupId from lf_group where event='LI') from lf_tmpdbload_basisopstellingliga t
+join lf_club c on c.clubName = t.clubName
+group by t.teamName,c.clubId;
+EOD;
+$insertLfPlayerHasTeamLiga = <<<'EOD'
+INSERT INTO lf_player_has_team(player_playerId,team_teamName)
+select t.playerId, t.teamName from lf_tmpdbload_basisopstellingliga t
+join lf_team lft on lft.teamName = t.teamName;
+EOD;
 
-	
 	switch($type) {
 		case "teams": 
 			 getDatabase()->execute($insertLfGroup);
@@ -327,6 +391,14 @@ EOD;
 			getDatabase()->execute($insertLfPlayer);						
 			
 			getDatabase()->execute($insertLfRanking);			
+			break;
+		case "fixedRanking": 
+			 getDatabase()->execute($insertLfRankingFixed);
+			break;
+		case "ligaBaseTeam": 
+			 getDatabase()->execute($insertFakeLigaGroup);
+			 getDatabase()->execute($insertLfTeamLiga);
+			 getDatabase()->execute($insertLfPlayerHasTeamLiga);			 
 			break;
 	}	
 	

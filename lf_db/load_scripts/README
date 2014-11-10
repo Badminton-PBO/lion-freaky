@@ -1,0 +1,2 @@
+These loadscript are NOT up2date is the loading is currently done in lf_front/api/index.php -> dbload
+But remaining them in GIT because we could use them again if we change hosting provider (with cron functionality & mysql: LOAD DATA INFILE)
