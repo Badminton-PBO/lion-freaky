@@ -371,6 +371,8 @@
 		}
 		
 		this.isAllowedToPlayBasedOnBaseMaxPlayerIndex = function(myPlayer) {
+			if (this.teamNumber == 1)// all players from the club can play in the first team
+				return true;			
 			var sortedBasePlayerWithSameGender = this.playersInBaseTeam().filter(playerGenderFilter(myPlayer.gender)).sort(playerComparatorFixedIndexInsideTeam(this.teamType));
 			//console.log("Checking isAllowedToPlayBasedOnBaseMaxPlayerIndex for "+myPlayer.fullName);
 			//return true;
