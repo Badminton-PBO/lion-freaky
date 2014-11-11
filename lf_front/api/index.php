@@ -24,6 +24,7 @@ Epi::setSetting('exceptions', false);
 getRoute()->get('/clubsAndTeams','clubsAndTeams');
 getRoute()->get('/teamAndClubPlayers/([\w\s]+)','teamAndClubPlayers');
 getRoute()->get('/dbload','dbload');
+getRoute()->get('/dbload/(\w+)/(\w+)','dbload');
 getRoute()->get('/', 'usage');
 getRoute()->run(); 
 
@@ -32,6 +33,7 @@ getRoute()->run();
  * Define functions and classes which are executed by EpiCode based on the $_['routes'] array
  * ******************************************************************************************
  */
+  
   
 function usage() {
 	echo "API method";
@@ -93,6 +95,12 @@ EOD;
 		array_push($result["players"],array('firstName' => $player['firstName'] ,'lastName' => $player['lastName'], 'vblId' => $player['playerId'], 'gender' => $player['gender'], 'fixedRanking' => array($player['fSingles'], $player['fDoubles'],$player['fMixed']), 'ranking' => array($player['vSingles'], $player['vDoubles'],$player['vMixed'])));
 	}
 	
+	//Create event for this request
+	getDatabase()->execute('INSERT INTO lf_event(eventType, `when`, who) VALUES(:eventType, now(), :who)',
+					array(':eventType' => 'teamselect',
+					':who' => $teamName)
+					);	
+	
 	header("Content-type: application/json");
 	//header("Content-type: text/html");
 	header("Content-Disposition: attachment; filename=json.data");
@@ -145,7 +153,7 @@ EOD;
 } 
 
 
-function dbload() {
+function dbload($doLoad = 'true',$addTestClub = 'false') {
 		$PBO_COMPETITIE_ID='EF6D253B-4410-4B4F-883D-48A61DDA350D';
 		$PBO_COMPETITIE_START_DAY='20140801';
 		$PBO_COMPETITIE_END_DAY='20150731';
@@ -229,17 +237,167 @@ function dbload() {
 
         // close curl resource to free up system resources
         curl_close($ch);   
-        
-        
-        cleanDB();        
-        loadCSV($clubCSV,'clubs');        
-        loadCSV($teamsCSV,'teams');
-        loadCSV($matchesCSV,'matches');
-        loadCSV($playersCSV,'players');
-        loadCSV($baseTeamCSV,'baseTeam');
-        loadCSV($fixedRankingCSV,'fixedRanking');
-        loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
-        
+
+		if($addTestClub == 'true' ){		
+			$clubCSV .= '40001;TESTCLUB BC;;;;;;;;;;;;;;;;'."\n";
+			
+			
+$testTeams = <<<'EOD'
+113198;16;;;TESTCLUB 1H;;;;;;;;;;;;;;;;;40001;;Heren Competitie;;1e provinciale;
+113198;16;;;TESTCLUB 2H;;;;;;;;;;;;;;;;;40001;;Heren Competitie;;2e provinciale A;
+113198;16;;;TESTCLUB 3H;;;;;;;;;;;;;;;;;40001;;Heren Competitie;;2e provinciale B;
+113198;16;;;TESTCLUB 2G;;;;;;;;;;;;;;;;;40001;;Gemengde Competitie;;1e provinciale;
+113198;16;;;TESTCLUB 2D;;;;;;;;;;;;;;;;;40001;;Dames Competitie;;1e provinciale;
+113198;16;;;TESTCLUB 3D;;;;;;;;;;;;;;;;;40001;;Dames Competitie;;2e provinciale;
+EOD;
+			$teamsCSV .=$testTeams."\n";
+
+$testMatches = <<<'EOD'
+113198;7000001;;;;;;;;TESTCLUB 1H;;TESTCLUB 1H;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;;;;;;;false;false;false;false;false;false;false
+113198;7000002;;;;;;;;TESTCLUB 2H;;TESTCLUB 2H;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;;;;;;;false;false;false;false;false;false;false
+113198;7000003;;;;;;;;TESTCLUB 3H;;TESTCLUB 3H;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;;;;;;;false;false;false;false;false;false;false
+113198;7000004;;;;;;;;TESTCLUB 2G;;TESTCLUB 2G;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;;;;;;;false;false;false;false;false;false;false
+113198;7000005;;;;;;;;TESTCLUB 2D;;TESTCLUB 2D;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;;;;;;;false;false;false;false;false;false;false
+113198;7000006;;;;;;;;TESTCLUB 3D;;TESTCLUB 3D;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;;;;;;;false;false;false;false;false;false;false
+EOD;
+			$matchesCSV .=$testMatches."\n";
+			
+$testPlayers = <<<'EOD'
+x;TESTCLUB BC;;70000001;man1;;;man1;;;;;;;;M;;;;;;;;;;;;;A;A;A;Competitiespeler
+x;TESTCLUB BC;;70000002;man2;;;man2;;;;;;;;M;;;;;;;;;;;;;B1;B2;B1;Competitiespeler
+x;TESTCLUB BC;;70000003;man3;;;man3;;;;;;;;M;;;;;;;;;;;;;B2;B2;B2;Competitiespeler
+x;TESTCLUB BC;;70000004;man4;;;man4;;;;;;;;M;;;;;;;;;;;;;B1;B1;B1;Competitiespeler
+x;TESTCLUB BC;;70000005;man5;;;man5;;;;;;;;M;;;;;;;;;;;;;B2;B2;B2;Competitiespeler
+x;TESTCLUB BC;;70000006;man6;;;man6;;;;;;;;M;;;;;;;;;;;;;C1;C1;B1;Competitiespeler
+x;TESTCLUB BC;;70000007;man7;;;man7;;;;;;;;M;;;;;;;;;;;;;C2;C1;C2;Competitiespeler
+x;TESTCLUB BC;;70000008;man8;;;man8;;;;;;;;M;;;;;;;;;;;;;C2;C2;C2;Competitiespeler
+x;TESTCLUB BC;;70000009;man9;;;man9;;;;;;;;M;;;;;;;;;;;;;D;C2;C2;Competitiespeler
+x;TESTCLUB BC;;70000010;man10;;;man10;;;;;;;;M;;;;;;;;;;;;;C1;C1;D;Competitiespeler
+x;TESTCLUB BC;;70000011;man11;;;man11;;;;;;;;M;;;;;;;;;;;;;C2;D;C2;Competitiespeler
+x;TESTCLUB BC;;70000012;man12;;;man12;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000013;man13;;;man13;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000014;man14;;;man14;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000015;man15;;;man15;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000016;man16;;;man16;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000017;man17;;;man17;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000018;man18;;;man18;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000019;vrouw1;;;vrouw1;;;;;;;;V;;;;;;;;;;;;;B1;B1;B1;Competitiespeler
+x;TESTCLUB BC;;70000020;vrouw2;;;vrouw2;;;;;;;;V;;;;;;;;;;;;;B1;B1;B1;Competitiespeler
+x;TESTCLUB BC;;70000021;vrouw3;;;vrouw3;;;;;;;;V;;;;;;;;;;;;;B1;B1;B1;Competitiespeler
+x;TESTCLUB BC;;70000022;vrouw4;;;vrouw4;;;;;;;;V;;;;;;;;;;;;;B2;B2;B2;Competitiespeler
+x;TESTCLUB BC;;70000023;vrouw5;;;vrouw5;;;;;;;;V;;;;;;;;;;;;;C1;C1;C1;Competitiespeler
+x;TESTCLUB BC;;70000024;vrouw6;;;vrouw6;;;;;;;;V;;;;;;;;;;;;;C1;C1;C1;Competitiespeler
+x;TESTCLUB BC;;70000025;vrouw7;;;vrouw7;;;;;;;;V;;;;;;;;;;;;;C2;B2;C1;Competitiespeler
+x;TESTCLUB BC;;70000026;vrouw8;;;vrouw8;;;;;;;;V;;;;;;;;;;;;;C2;C2;C2;Competitiespeler
+x;TESTCLUB BC;;70000027;vrouw9;;;vrouw9;;;;;;;;V;;;;;;;;;;;;;C2;D;C2;Competitiespeler
+x;TESTCLUB BC;;70000028;vrouw10;;;vrouw10;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000029;vrouw11;;;vrouw11;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000030;vrouw12;;;vrouw12;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000031;vrouw13;;;vrouw13;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000032;vrouw14;;;vrouw14;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000033;vrouw15;;;vrouw15;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000034;vrouw16;;;vrouw16;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
+x;TESTCLUB BC;;70000035;vrouw 17;;;vrouw 17;;;;;;;;V;;;;;;;;;;;;;D;D;D;Recreant
+EOD;
+			$playersCSV .=$testPlayers."\n";
+
+
+$testBaseTeams = <<<'EOD'
+70000002,"TESTCLUB 1H"
+70000003,"TESTCLUB 1H"
+70000007,"TESTCLUB 1H"
+70000009,"TESTCLUB 1H"
+70000001,"TESTCLUB 2H"
+70000012,"TESTCLUB 2H"
+70000013,"TESTCLUB 2H"
+70000014,"TESTCLUB 2H"
+70000005,"TESTCLUB 3H"
+70000006,"TESTCLUB 3H"
+70000015,"TESTCLUB 3H"
+70000016,"TESTCLUB 3H"
+70000004,"TESTCLUB 2G"
+70000005,"TESTCLUB 2G"
+70000021,"TESTCLUB 2G"
+70000022,"TESTCLUB 2G"
+70000019,"TESTCLUB 2D"
+70000022,"TESTCLUB 2D"
+70000023,"TESTCLUB 2D"
+70000028,"TESTCLUB 2D"
+70000034,"TESTCLUB 3D"
+70000029,"TESTCLUB 3D"
+70000030,"TESTCLUB 3D"
+70000031,"TESTCLUB 3D"
+EOD;
+			$baseTeamCSV .=$testBaseTeams."\n";
+
+
+$testFixedRankings = <<<'EOD'
+70000001;A;A;A
+70000002;B1;B1;B1
+70000003;B1;B1;B1
+70000004;B1;B1;B1
+70000005;B2;B2;B2
+70000006;C1;C1;B1
+70000007;C2;C2;C1
+70000008;C1;C2;D
+70000009;D;D;C1
+70000010;C2;C2;C2
+70000011;C2;D;C2
+70000012;D;D;D
+70000013;D;D;D
+70000014;D;D;D
+70000015;D;D;D
+70000016;D;D;D
+70000017;D;D;D
+70000018;D;D;D
+70000019;B1;B1;B1
+70000020;B1;B1;B1
+70000021;B1;B1;B1
+70000022;B2;B2;B2
+70000023;C1;C1;C1
+70000024;C1;C1;C1
+70000025;C2;B2;C1
+70000026;C2;C2;C2
+70000027;C2;D;C2
+70000028;D;D;D
+70000029;D;D;D
+70000030;D;D;D
+70000031;D;D;D
+70000032;D;D;D
+70000033;D;D;D
+70000034;D;D;D
+70000035;D;D;D
+EOD;
+			$fixedRankingCSV .=$testFixedRankings."\n";
+
+			
+$testLigaBaseTeam = <<<'EOD'
+TESTCLUB BC,,TESTCLUB 1G,70000002,,,,,,,,
+TESTCLUB BC,,TESTCLUB 1G,70000003,,,,,,,,
+TESTCLUB BC,,TESTCLUB 1G,70000019,,,,,,,,
+TESTCLUB BC,,TESTCLUB 1G,70000023,,,,,,,,
+TESTCLUB BC,,TESTCLUB 1D,70000020,,,,,,,,
+TESTCLUB BC,,TESTCLUB 1D,70000021,,,,,,,,
+TESTCLUB BC,,TESTCLUB 1D,70000032,,,,,,,,
+TESTCLUB BC,,TESTCLUB 1D,70000033,,,,,,,,
+EOD;
+			$ligaBaseTeamCSV .=$testLigaBaseTeam."\n";
+
+			//print($ligaBaseTeamCSV);
+			
+		}
+		
+        if($doLoad == 'true') {        
+			cleanDB();        
+			loadCSV($clubCSV,'clubs');        
+			loadCSV($teamsCSV,'teams');
+			loadCSV($matchesCSV,'matches');
+			loadCSV($playersCSV,'players');
+			loadCSV($baseTeamCSV,'baseTeam');
+			loadCSV($fixedRankingCSV,'fixedRanking');
+			loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+		}
+		
         print("OK");
 }
 

@@ -129,6 +129,18 @@ CREATE TABLE IF NOT EXISTS `lf_team` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+--
+-- Table structure for table `lf_event`
+--
+
+CREATE TABLE IF NOT EXISTS `lf_event` (
+  `eventId` int(11) NOT NULL AUTO_INCREMENT,
+  `eventType` varchar(10) DEFAULT NULL,
+  `when` datetime DEFAULT NULL,
+  `who` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`eventId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
+
 -- TMP Table to faciliate load from CSV into the DB
 CREATE TABLE IF NOT EXISTS `lf_tmpdbload_15mei` (
   `playerId` int(11) NOT NULL,
