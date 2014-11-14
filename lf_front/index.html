@@ -114,7 +114,7 @@
 					</p>
 					<p data-bind="with: chosenClub">
 						Kies je team:
-						<select data-bind="options: teams,
+						<select data-bind="options: teams.filter(function(team) { return team.type != 'LIGA'}),
 										   optionsText: 'teamName',
 										   value: $parent.chosenTeamName,
 										   optionsCaption: 'Selecteer...'"></select>

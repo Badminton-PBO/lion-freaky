@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `lf_club` (
 CREATE TABLE IF NOT EXISTS `lf_group` (
   `groupId` int(11) NOT NULL AUTO_INCREMENT,
   `tournament` year(4) DEFAULT NULL,
+  `type` varchar(4) DEFAULT NULL,  
   `event` varchar(2) DEFAULT NULL,
   `devision` int(11) DEFAULT NULL,
   `series` varchar(1) DEFAULT NULL,
@@ -152,6 +153,7 @@ CREATE TABLE IF NOT EXISTS `lf_tmpdbload_15mei` (
 CREATE TABLE IF NOT EXISTS `lf_tmpdbload_basisopstellingliga` (
   `clubName` varchar(45) NOT NULL,
   `teamName` varchar(45) NOT NULL,
+  `discipline` varchar(45) NOT NULL,
   `playerId` int(11) NOT NULL
 )  ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -188,6 +190,9 @@ BEGIN
 	when 'Gemengde Competitie' then return 'MX';
 	when 'Heren Competitie' then return 'M';
 	when 'Dames Competitie' then return 'L';
+	when 'Gemengd' then return 'MX';
+	when 'Heren' then return 'M';
+	when 'Dames' then return 'L';
 	else
 		BEGIN
 			return '??';

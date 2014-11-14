@@ -60,6 +60,13 @@
 		}
 	}
 
+	function teamEventFilterIncludingLiga(myEvent) {
+		return function(a) {
+			return a.event == 'LI' || a.event == myEvent;
+		}
+	}
+
+
 	function teamDevisionEqualOrHigherFilter(myDevision) {
 		return function(a) {
 			return a.devision <= myDevision;
@@ -362,7 +369,7 @@
 			// If such a team is found that is NOT equal to this team, myPlayer is NOT allowed to play	
 			
 			var foundTeams = chosenClub.teams
-							.filter(teamEventFilter(this.event))
+							.filter(teamEventFilterIncludingLiga(this.event))
 							.filter(teamDevisionEqualOrHigherFilter(this.devision))
 							.filter(teamContainingPlayerInBaseTeam(myPlayer.vblId));
 				
@@ -543,8 +550,7 @@
 			console.log($("#printhtml").html());			
 			console.log($("#printfull").html());
 		};
-
-						
+								
 		self.chosenTeamName.subscribe(function(newTeam) {
 			if (newTeam !== undefined) {
 				//Init new team

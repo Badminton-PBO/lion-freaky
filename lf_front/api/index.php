@@ -114,12 +114,11 @@ EOD;
  
 function  clubsAndTeams() {
 $query = <<<EOD
-select c.clubName,t.teamName,g.event,g.devision,g.series,p.playerId from lf_club c 
+select c.clubName,t.teamName,g.event,g.`type`,g.devision,g.series,p.playerId from lf_club c 
 join lf_team t on c.clubId = t.club_clubId 
 join lf_group g on g.groupId = t.group_groupId 
 join lf_player_has_team pt on pt.team_teamName = t.teamName 
 join lf_player p on p.playerId = pt.player_playerId 
-where g.event != 'LI'
 order by c.clubName,t.teamName
 EOD;
 	
@@ -139,7 +138,7 @@ EOD;
 		}
 		if ($currentTeamName != $player['teamName']) {
 			$teamCounter++;
-			$result[$clubCounter]["teams"][$teamCounter] = array('teamName' => $player['teamName'], 'event' => $player['event'], 'devision' => $player['devision'],'series'=> $player['series'], 'baseTeam' => array());
+			$result[$clubCounter]["teams"][$teamCounter] = array('teamName' => $player['teamName'],'type' =>$player['type'], 'event' => $player['event'], 'devision' => $player['devision'],'series'=> $player['series'], 'baseTeam' => array());
 			$currentTeamName = $player['teamName'];
 		}
 		array_push($result[$clubCounter]["teams"][$teamCounter]["baseTeam"],$player['playerId']);		
@@ -372,14 +371,14 @@ EOD;
 
 			
 $testLigaBaseTeam = <<<'EOD'
-TESTCLUB BC,,TESTCLUB 1G,70000002,,,,,,,,
-TESTCLUB BC,,TESTCLUB 1G,70000003,,,,,,,,
-TESTCLUB BC,,TESTCLUB 1G,70000019,,,,,,,,
-TESTCLUB BC,,TESTCLUB 1G,70000023,,,,,,,,
-TESTCLUB BC,,TESTCLUB 1D,70000020,,,,,,,,
-TESTCLUB BC,,TESTCLUB 1D,70000021,,,,,,,,
-TESTCLUB BC,,TESTCLUB 1D,70000032,,,,,,,,
-TESTCLUB BC,,TESTCLUB 1D,70000033,,,,,,,,
+TESTCLUB BC,Gemengd,TESTCLUB 1G,70000002,,,,,,,,
+TESTCLUB BC,Gemengd,TESTCLUB 1G,70000003,,,,,,,,
+TESTCLUB BC,Gemengd,TESTCLUB 1G,70000019,,,,,,,,
+TESTCLUB BC,Gemengd,TESTCLUB 1G,70000023,,,,,,,,
+TESTCLUB BC,Dames,TESTCLUB 1D,70000020,,,,,,,,
+TESTCLUB BC,Dames,TESTCLUB 1D,70000021,,,,,,,,
+TESTCLUB BC,Dames,TESTCLUB 1D,70000032,,,,,,,,
+TESTCLUB BC,Dames,TESTCLUB 1D,70000033,,,,,,,,
 EOD;
 			$ligaBaseTeamCSV .=$testLigaBaseTeam."\n";
 
@@ -475,9 +474,10 @@ function loadCSV($CSV,$type) {
 					 ':playerLevelMixed' => $parsedCsv[$i][$headers['Klassement gemengd']])
 					 );
 					break;										
-				case "ligaBaseTeam": getDatabase()->execute('INSERT INTO lf_tmpdbload_basisopstellingliga(playerId, teamName, clubName) VALUES(:playerId, :teamName, :clubName)', 
+				case "ligaBaseTeam": getDatabase()->execute('INSERT INTO lf_tmpdbload_basisopstellingliga(playerId, teamName, discipline, clubName) VALUES(:playerId, :teamName,:discipline, :clubName)', 
 					array(':playerId' => $parsedCsv[$i][$headers['Lidnummer']],
 					 ':teamName' => $parsedCsv[$i][$headers['Teamnaam']], 
+					 ':discipline' => $parsedCsv[$i][$headers['Discipline']], 
 					 ':clubName' => $parsedCsv[$i][$headers['Club']])
 					 );
 					break;												
@@ -485,8 +485,8 @@ function loadCSV($CSV,$type) {
 	}	
 
 $insertLfGroup = <<<'EOD'
-INSERT INTO lf_group (tournament,event,devision,series)
-select `year`,lf_dbload_eventcode(eventName),lf_dbload_devision(drawName),lf_dbload_serie(drawName) from lf_tmpdbload_teamscsv
+INSERT INTO lf_group (tournament,`type`,event,devision,series)
+select `year`,'PROV',lf_dbload_eventcode(eventName),lf_dbload_devision(drawName),lf_dbload_serie(drawName) from lf_tmpdbload_teamscsv
 group by `year`,lf_dbload_eventcode(eventName),lf_dbload_devision(drawName),lf_dbload_serie(drawName);
 EOD;
 $insertLfTeam = <<<'EOD'
@@ -520,11 +520,11 @@ join lf_player p on t.playerId = p.playerId;
 EOD;
 
 $insertFakeLigaGroup = <<<'EOD'
-INSERT INTO lf_group (tournament,event) values ('2014','LI');
+INSERT INTO lf_group (tournament,`type`,event,devision) values ('2014','LIGA','MX',0),('2014','LIGA','M',0),('2014','LIGA','L',0);
 EOD;
 $insertLfTeamLiga = <<<'EOD'
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId)
-select t.teamName,lf_dbload_teamSequenceNumber(t.teamName),c.clubId,(select groupId from lf_group where event='LI') from lf_tmpdbload_basisopstellingliga t
+select t.teamName,lf_dbload_teamSequenceNumber(t.teamName),c.clubId,(select groupId from lf_group where `type`='LIGA' and event=lf_dbload_eventcode(t.Discipline)) from lf_tmpdbload_basisopstellingliga t
 join lf_club c on c.clubName = t.clubName
 group by t.teamName,c.clubId;
 EOD;
