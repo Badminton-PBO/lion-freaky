@@ -224,11 +224,11 @@
 		this.rankingLayout = function(teamType) {
 			switch (teamType) {
 				case "H": 
-					return this.rankingSingle + ", " + this.rankingDouble +" = "+this.indexInsideTeam(teamType);
+					return this.rankingSingle + ", " + this.rankingDouble;
 				case "D":
-					return this.rankingSingle + ", " + this.rankingDouble +" = "+this.indexInsideTeam(teamType);					
+					return this.rankingSingle + ", " + this.rankingDouble;					
 				case "G": 
-					return this.rankingSingle + ", " + this.rankingDouble + ", " +this.rankingMix +" = "+this.indexInsideTeam(teamType);					
+					return this.rankingSingle + ", " + this.rankingDouble + ", " +this.rankingMix;					
 			}
 		}
 		
