@@ -22,7 +22,7 @@ Epi::setSetting('exceptions', false);
  * 
   */
 getRoute()->get('/clubsAndTeams','clubsAndTeams');
-getRoute()->get('/teamAndClubPlayers/([\w\s]+)','teamAndClubPlayers');
+getRoute()->get('/teamAndClubPlayers/([\w\s-]+)','teamAndClubPlayers');
 getRoute()->get('/dbload','dbload');
 getRoute()->get('/dbload/(\w+)/(\w+)','dbload');
 getRoute()->get('/', 'usage');
