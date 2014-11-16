@@ -389,6 +389,7 @@ EOD;
 		
         if($doLoad == 'true') {        
 			cleanDB();        
+			getDatabase()->execute("set names latin1");//set to windows encoding
 			loadCSV($clubCSV,'clubs');        
 			loadCSV($teamsCSV,'teams');
 			loadCSV($matchesCSV,'matches');

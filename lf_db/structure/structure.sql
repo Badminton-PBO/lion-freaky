@@ -148,14 +148,14 @@ CREATE TABLE IF NOT EXISTS `lf_tmpdbload_15mei` (
   `playerLevelSingle` varchar(2) NOT NULL,
   `playerLevelDouble` varchar(2) NOT NULL,
   `playerLevelMixed` varchar(2) NOT NULL
-)  ENGINE=InnoDB DEFAULT CHARSET=latin1;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `lf_tmpdbload_basisopstellingliga` (
   `clubName` varchar(45) NOT NULL,
   `teamName` varchar(45) NOT NULL,
   `discipline` varchar(45) NOT NULL,
   `playerId` int(11) NOT NULL
-)  ENGINE=InnoDB DEFAULT CHARSET=latin1;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `lf_tmpdbload_playerscsv` (
   `memberId` int(11) NOT NULL,
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `lf_tmpdbload_playerscsv` (
   `playerLevelMixed` varchar(2) NOT NULL,
   `typeName` varchar(45) NOT NULL,
   `role` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE IF NOT EXISTS `lf_tmpdbload_teamscsv` (
@@ -177,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `lf_tmpdbload_teamscsv` (
   `year` year(4) NOT NULL,
   `eventName` varchar(80) NOT NULL,
   `drawName` varchar(80) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Functions to faciliate load from CSV into the DB
 
