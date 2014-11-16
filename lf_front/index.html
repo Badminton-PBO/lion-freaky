@@ -16,9 +16,9 @@
 		
 		<script>
 			function togglePlayers(x) {
-				$(x).next().collapse('toggle');
-				if ($(x).next().is(':visible')) {
-				 $("html, body").animate({scrollTop: $(x).next().offset().top});
+				$("#nonplayerstable").toggle('fold');
+				if ($("#nonplayerstable").is(':visible')) {
+				 $("html, body").animate({scrollTop: $("#nonplayerstable").offset().top});
 				}	
 			}
 		</script>
@@ -136,20 +136,22 @@
 										   optionsCaption: 'Selecteer...'"></select>
 					</p>						
 					<div data-bind="if: $root.chosenMeeting()">
-
-						<div>Filter spelers:  <span data-bind="text: $root.filteredAvailablePlayers().length"/></span>/<span data-bind="text: $root.availablePlayers().length"/></div>
+						
+						<div class="well well-sm">
+						<div>Filter opstelbare spelers:  <span data-bind="text: $root.filteredAvailablePlayers().length"/></span>/<span data-bind="text: $root.availablePlayers().length"/></div>
 						<!-- ko if: $root.chosenTeam().isMultiSexTeam() -->
 						<div>
-							<input type="radio" name="playerGender" value="ALL" data-bind="checked: playerGenderFilter">Man/Vrouw</input>
-							<input type="radio" name="playerGender" value="M" data-bind="checked: playerGenderFilter">Man</input>
-							<input type="radio" name="playerGender" value="F" data-bind="checked: playerGenderFilter">Vrouw</input>
+							<input type="radio" name="playerGender" value="ALL" data-bind="checked: playerGenderFilter"> Man/Vrouw</input>
+							<input type="radio" name="playerGender" value="M" data-bind="checked: playerGenderFilter"> Man</input>
+							<input type="radio" name="playerGender" value="F" data-bind="checked: playerGenderFilter"> Vrouw</input>
 						</div>
 						<!-- /ko -->
 						<div>
-							<input type="radio" name="playerType" value="ALL" data-bind="checked: playerTypeFilter">Allen</input>
-							<input type="radio" name="playerType" value="C" data-bind="checked: playerTypeFilter">Competitie</input>
-							<input type="radio" name="playerType" value="R" data-bind="checked: playerTypeFilter">Recreant</input>
-							<input type="radio" name="playerType" value="J" data-bind="checked: playerTypeFilter">Jeugd</input>
+							<input type="radio" name="playerType" value="ALL" data-bind="checked: playerTypeFilter"> Allen</input>
+							<input type="radio" name="playerType" value="C" data-bind="checked: playerTypeFilter"> Competitie</input>
+							<input type="radio" name="playerType" value="R" data-bind="checked: playerTypeFilter"> Recreant</input>
+							<input type="radio" name="playerType" value="J" data-bind="checked: playerTypeFilter"> Jeugd</input>
+						</div>
 						</div>
 						<table class="table table-bordered table-condensed">
 							<thead>
@@ -169,8 +171,8 @@
 						</table>
 					</div>
 					<p data-bind="if: ($root.chosenMeeting()  && ($root.notAllowedPlayersOtherBaseTeam().length > 0 || $root.notAllowedPlayersOnBaseMaxPlayerIndex().length > 0))">
-						<button id="nonplayersbutton" type="button" class="btn btn-primary" onclick="togglePlayers(this);">Niet opstelbare spelers &raquo;</button>						
-						<table class="table table-bordered table-condensed collapse">
+						<button id="nonplayersbutton" type="button" class="btn btn-primary" onclick="togglePlayers();">Niet opstelbare spelers &raquo;</button>						
+						<table id="nonplayerstable" class="table table-bordered table-condensed" style="display:none">
 							<tbody>
 								<!-- ko foreach: notAllowedPlayersOtherBaseTeam -->
 								<tr data-toggle="tooltip" data-placement="right" title="De titularis mag niet in de basisopstelling van een ploeg uit dezelfde of hogere afdeling staan ">
@@ -363,7 +365,7 @@
 				</div>
 			</div>			
 		</div>
-		<div id="printframe"style="display:none">
+		<div id="printframe" style="display:none">
 			<iframe src="print2PdfForm.html" id="iPrint" style="display:none" frameborder="0">
 			</iframe>
 		</div>
