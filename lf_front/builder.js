@@ -538,6 +538,22 @@
 		});
 		
 
+
+		self.resetForm = function() {
+			console.log("Resetting form...");
+			//Load the games this teamType
+			switch(self.chosenTeam().teamType) {
+				case "G": 
+					self.games(initialGameMix());break;
+				case "H":
+					self.games(initialGamesMen());break;
+				case "D":
+					self.games(initialGamesWomen());break;
+			}			
+			//Attach loaded games to this team
+			self.chosenTeam().setGames(self.games());			
+		};
+
 		self.print2pdf = function() {
 			var vmjs = $.parseJSON(ko.toJSON(self));
 			var resultObject = {"games":vmjs.games, "chosenMeeting": vmjs.chosenMeeting, "chosenTeam": vmjs.chosenTeamName};
@@ -794,5 +810,5 @@
 	var vm = new myViewModel(initialGamesEmpty());	
 	ko.applyBindings(vm);		
 	
-	$("#trashCan").append("<div class='label label-default center-block' style='font-size:30px;padding-top:10px'><span class='glyphicon glyphicon-trash'></span></div>");
+	$("#trashCan").append("<div class='btn btn-primary center-block' style='font-size:30px;padding-top:10px'><span class='glyphicon glyphicon-trash'></span></div>");
 })(ko, jQuery);
