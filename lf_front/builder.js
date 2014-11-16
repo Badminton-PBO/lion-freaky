@@ -1,3 +1,7 @@
+//Window.console.log not available in IE9 when developper tools are not activated
+if (!window.console) window.console = {};
+if (!window.console.log) window.console.log = function () { };
+
 (function(ko, $, undefined) {
 
 	ko.bindingHandlers.flash = {
@@ -332,7 +336,6 @@
 		this.effectivePlayersInTeam = ko.computed(function() {
 			var sortedM = this.uniquePlayersInTeam().filter(playerGenderFilter('M')).sort(playerComparatorIndexInsideTeam(this.teamType));
 			var sortedF = this.uniquePlayersInTeam().filter(playerGenderFilter('F')).sort(playerComparatorIndexInsideTeam(this.teamType));
-			
 			var result = [];
 			
 			switch(this.teamType) {
@@ -595,9 +598,10 @@
 					//First set the base team because it has an influence if players are allowed or not
 					$.each(data.players, function(index,p) {
 						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking);						
+						//alert("Handling base player "+p.firstName);
 						//Set baseteam players
 						if (self.chosenTeam().baseTeamVblIds.indexOf(p.vblId) >=0) {
-							console.log("Adding "+p.fullName+" as a baseTeamPlayer of team "+self.chosenTeam().teamName);
+							console.log("Adding "+myPlayer.fullName+" as a baseTeamPlayer of team "+self.chosenTeam().teamName);
 							self.chosenTeam().playersInBaseTeam.push(myPlayer);							
 						}						
 					});

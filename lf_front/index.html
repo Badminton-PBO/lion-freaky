@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html id="printfull">
 	<head>
 		<!-- JQuery -->
-		<script type="text/javascript" src="libs/js/jquery-2.1.1.min.js"></script>	
+		<script type="text/javascript" src="libs/js/jquery-1.11.1.min.js"></script>	
 		<script type="text/javascript" src="libs/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>	
 
 		<!-- Knockoutjs -->
@@ -134,7 +135,7 @@
 										   value: $root.chosenMeeting,
 										   optionsCaption: 'Selecteer...'"></select>
 					</p>						
-					<p data-bind="if : $root.chosenMeeting()">
+					<div data-bind="if: $root.chosenMeeting()">
 						<table class="table table-bordered table-condensed">
 							<thead>
 									<tr>
@@ -151,7 +152,7 @@
 								</tr>
 							</tbody>							
 						</table>
-					</p>
+					</div>
 					<p data-bind="if: ($root.chosenMeeting()  && ($root.notAllowedPlayersOtherBaseTeam().length > 0 || $root.notAllowedPlayersOnBaseMaxPlayerIndex().length > 0))">
 						<button id="nonplayersbutton" type="button" class="btn btn-primary" onclick="togglePlayers(this);">Niet opstelbare spelers &raquo;</button>						
 						<table class="table table-bordered table-condensed collapse">
