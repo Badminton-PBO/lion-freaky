@@ -114,7 +114,7 @@ if (!window.console.log) window.console.log = function () { };
 	}	
 
 	
-	var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking) {
+	var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking,type) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.fullName = this.lastName + ' ' + this.firstName ;
@@ -122,6 +122,7 @@ if (!window.console.log) window.console.log = function () { };
 		this.gender = gender;
 		this.fixedRanking  = fixedRanking;
 		this.ranking = ranking;
+		this.type = type;
 		this.sortingValue = ((this.gender == 'M') ? "A" : "B")+this.fullName;
 		
 		this.rankingToIndex = function(ranking) {
@@ -316,6 +317,13 @@ if (!window.console.log) window.console.log = function () { };
 			this.games(games);
 		}
 	
+		this.isMultiSexTeam = function() {
+			if (this.teamType=="G") {
+				return true;
+			} else {
+				return false;
+			}
+		}
 		
 		this.uniquePlayersInTeam = ko.computed(function() {
 			var result=[];
@@ -515,7 +523,6 @@ if (!window.console.log) window.console.log = function () { };
 	function myViewModel(games) {
 		var self = this;
 		self.games = ko.observableArray(games);			
-		//self.chosenClub = ko.observable(sampleClubs[0]);
 		self.chosenClub = ko.observable();
 		self.chosenTeamName = ko.observable();							
 		self.chosenTeam = ko.observable();
@@ -526,6 +533,8 @@ if (!window.console.log) window.console.log = function () { };
 		self.notAllowedPlayersOtherBaseTeam = ko.observableArray();
 		self.notAllowedPlayersOnBaseMaxPlayerIndex = ko.observableArray();
 		self.lastError = ko.observable();
+		self.playerGenderFilter = ko.observable("ALL");
+		self.playerTypeFilter = ko.observable("C");
 		
 		self.trash = ko.observableArray([]);
 		self.trash.id = "trash";
@@ -540,7 +549,15 @@ if (!window.console.log) window.console.log = function () { };
 			self.sampleClubs(data);
 		});
 		
-
+		self.filteredAvailablePlayers = ko.computed(function() {
+			//return this.availablePlayers();
+			return ko.utils.arrayFilter(self.availablePlayers(), function(player) {
+				return (self.playerGenderFilter() == 'ALL' || player.gender == self.playerGenderFilter()) &&
+					   (self.playerTypeFilter() == 'ALL' || player.type == self.playerTypeFilter());
+			});
+			
+		},self);
+		
 
 		self.resetForm = function() {
 			console.log("Resetting form...");
@@ -597,7 +614,7 @@ if (!window.console.log) window.console.log = function () { };
 					
 					//First set the base team because it has an influence if players are allowed or not
 					$.each(data.players, function(index,p) {
-						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking);						
+						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type);						
 						//alert("Handling base player "+p.firstName);
 						//Set baseteam players
 						if (self.chosenTeam().baseTeamVblIds.indexOf(p.vblId) >=0) {
@@ -608,7 +625,7 @@ if (!window.console.log) window.console.log = function () { };
 
 					//Load players and check if they can play in this team
 					$.each(data.players, function(index,p) {
-						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking);						
+						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type);						
 						if (myPlayer.isAllowedToPlayInTeamGameTypeBasedOnGender(self.chosenTeam().teamType)) {
 							
 							if (self.chosenTeam().isAllowedToPlayBasedOnBaseTeamSubscribtion(self.chosenClub(),myPlayer)) {								

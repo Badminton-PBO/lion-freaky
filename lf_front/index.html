@@ -88,7 +88,7 @@
             height: 50px;
             background-color: #AAA;
         }
-
+        
 #ploegopstelling.affix {
     position: fixed;
     top: 0;
@@ -136,6 +136,21 @@
 										   optionsCaption: 'Selecteer...'"></select>
 					</p>						
 					<div data-bind="if: $root.chosenMeeting()">
+
+						<div>Filter spelers:  <span data-bind="text: $root.filteredAvailablePlayers().length"/></span>/<span data-bind="text: $root.availablePlayers().length"/></div>
+						<!-- ko if: $root.chosenTeam().isMultiSexTeam() -->
+						<div>
+							<input type="radio" name="playerGender" value="ALL" data-bind="checked: playerGenderFilter">Man/Vrouw</input>
+							<input type="radio" name="playerGender" value="M" data-bind="checked: playerGenderFilter">Man</input>
+							<input type="radio" name="playerGender" value="F" data-bind="checked: playerGenderFilter">Vrouw</input>
+						</div>
+						<!-- /ko -->
+						<div>
+							<input type="radio" name="playerType" value="ALL" data-bind="checked: playerTypeFilter">Allen</input>
+							<input type="radio" name="playerType" value="C" data-bind="checked: playerTypeFilter">Competitie</input>
+							<input type="radio" name="playerType" value="R" data-bind="checked: playerTypeFilter">Recreant</input>
+							<input type="radio" name="playerType" value="J" data-bind="checked: playerTypeFilter">Jeugd</input>
+						</div>
 						<table class="table table-bordered table-condensed">
 							<thead>
 									<tr>
@@ -144,7 +159,7 @@
 										<td class="playerDetail">var. index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></td>
 									</tr>
 							</thead>
-							<tbody data-bind="foreach: availablePlayers">
+							<tbody data-bind="foreach: filteredAvailablePlayers">
 								<tr data-bind="draggable: $data">
 									<td><span class="glyphicon glyphicon-user"></span> <span data-bind="text: fullName"></span></td>
 									<td data-bind="text: fixedRankingLayout($root.chosenTeam().teamType)" class="playerDetail"></td>
