@@ -66,11 +66,6 @@ select min(rr.date) from lf_player pp
 join lf_ranking rr on rr.player_playerId = pp.playerId
 where pp.playerId = p.playerId
 group by p.playerId)
-and (
-	p.type='C'
-	OR
-	p.playerId in (select player_playerId from lf_player_has_team)
-)
 EOD;
 
 $queryEvent = <<<EOD
