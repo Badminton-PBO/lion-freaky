@@ -539,10 +539,6 @@ if (!window.console.log) window.console.log = function () { };
 		self.trash = ko.observableArray([]);
 		self.trash.id = "trash";
 
-		self.chosenMeeting.subscribe(function(newMeeting) {
-			console.log("Setting new meeting");
-		});
-
 
 		//LOAD CLUBS/TEAMS
 		$.get("api/clubsAndTeams", function(data) {
@@ -586,6 +582,12 @@ if (!window.console.log) window.console.log = function () { };
 			console.log($("#printhtml").html());			
 			console.log($("#printfull").html());
 		};
+		
+		self.chosenClub.subscribe(function(newClub) {
+			self.chosenMeeting(null);
+			self.chosenTeam(null);
+			self.games(null);
+		});
 								
 		self.chosenTeamName.subscribe(function(newTeam) {
 			if (newTeam !== undefined) {
@@ -773,7 +775,7 @@ if (!window.console.log) window.console.log = function () { };
 			//SAME PLAYER CAN ONLY PLAY TWO DOUBLE GAMES
 			if ((gameType=="HD" || gameType == "DD") && (gameType != sourceGameType))  {				
 				if (self.numberOfGamesPerPlayerPerGameType(player,gameType) == 2) {
-					logError("Eénzelfde titularis kan slechts 2 dubbelwedstrijden spelen (c320 art.52.7)",arg);
+					logError("Eénzelfde titularis kan slechts 2 dubbelwedstrijden spelen (C320 art.52.7)",arg);
 					return;									
 				}
 			}
@@ -781,7 +783,7 @@ if (!window.console.log) window.console.log = function () { };
 			//SAME PLAYER CAN ONLY PLAY ONE SINGLE OR ONE MIX GAME
 			if ((gameType=="HE" || gameType == "DE" || gameType == "GD") && (gameType != sourceGameType))  {				
 				if (self.numberOfGamesPerPlayerPerGameType(player,gameType) == 1) {
-					logError("Eénzelfde speler/titularis kan slechts 1 "+gameType+" spelen (c320 art.52.7)",arg);
+					logError("Eénzelfde speler/titularis kan slechts 1 "+gameType+" spelen (C320 art.52.7)",arg);
 					return;									
 				}
 			}
