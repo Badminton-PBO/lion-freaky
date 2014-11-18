@@ -23,6 +23,7 @@ Epi::setSetting('exceptions', false);
   */
 getRoute()->get('/clubsAndTeams','clubsAndTeams');
 getRoute()->get('/teamAndClubPlayers/([\w\s-]+)','teamAndClubPlayers');
+getRoute()->get('/logEvent/([\w]+)/([\w\s-]+)','logEvent');
 getRoute()->get('/dbload','dbload');
 getRoute()->get('/dbload/(\w+)/(\w+)','dbload');
 getRoute()->get('/', 'usage');
@@ -91,10 +92,7 @@ EOD;
 	}
 	
 	//Create event for this request
-	getDatabase()->execute('INSERT INTO lf_event(eventType, `when`, who) VALUES(:eventType, now(), :who)',
-					array(':eventType' => 'teamselect',
-					':who' => $teamName)
-					);	
+	logEvent('teamselect',$teamName);
 	
 	header("Content-type: application/json");
 	//header("Content-type: text/html");
@@ -145,6 +143,13 @@ EOD;
 	header("Expires: 0");
 	echo json_encode($result);	
 } 
+
+function logEvent($eventType,$who) {
+	getDatabase()->execute('INSERT INTO lf_event(eventType, `when`, who) VALUES(:eventType, now(), :who)',
+					array(':eventType' => $eventType,
+					':who' => $who)
+					);		
+}
 
 function dbload($doLoad = 'true',$addTestClub = 'false') {
 		$PBO_COMPETITIE_ID='EF6D253B-4410-4B4F-883D-48A61DDA350D';

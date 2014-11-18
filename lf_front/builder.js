@@ -569,11 +569,15 @@ if (!window.console.log) window.console.log = function () { };
 			//Attach loaded games to this team
 			self.chosenTeam().setGames(self.games());			
 		};
+	
 
 		self.print2pdf = function() {
 			var vmjs = $.parseJSON(ko.toJSON(self));
 			var resultObject = {"games":vmjs.games, "chosenMeeting": vmjs.chosenMeeting, "chosenTeam": vmjs.chosenTeamName};
 			var result = JSON.stringify(resultObject);
+			$.get("api/logEvent/print2pdf/"+encodeURIComponent(self.chosenTeam().teamName), function(data) {
+				console.log("print2pdf logged");
+			});
 			$("#iPrint").contents().find("#print2PdfFormData").val(result);
 			$("#iPrint").contents().find("#print2PdfForm").submit();
 		};
@@ -588,6 +592,26 @@ if (!window.console.log) window.console.log = function () { };
 			self.chosenTeam(null);
 			self.games(null);
 		});
+			
+		//START PRINT LOGGING
+		var beforePrint = function() {
+			$.get("api/logEvent/print/"+encodeURIComponent(self.chosenTeam().teamName), function(data) {
+				console.log("print logged");
+			});
+		};
+
+		if (window.matchMedia) {
+			var mediaQueryList = window.matchMedia('print');
+			mediaQueryList.addListener(function(mql) {
+				if (mql.matches) {
+					beforePrint();
+				}
+			});
+		}
+		window.onbeforeprint = beforePrint;
+		//END PRINT LOGGING
+			
+			
 								
 		self.chosenTeamName.subscribe(function(newTeam) {
 			if (newTeam !== undefined) {
