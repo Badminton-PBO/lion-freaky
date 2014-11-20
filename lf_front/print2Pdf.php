@@ -2,26 +2,32 @@
 
 $output = json_decode($_POST["data"]);
 
-$html = '<h1> Ploeguitwisselingsformulier </h1>';
-$html .= '<h3> Wedstrijd: ' . $output->chosenMeeting->hTeam . '-' . $output->chosenMeeting->oTeam .'</h3>';
-$html .= '<p> Type/Afdeling/Reeks: ' . $output->chosenTeam->event . ' ' . $output->chosenTeam->devision .$output->chosenTeam->series. '</p>';
-$html .= '<p> Tijdstip: ' . $output->chosenMeeting->dateLayout . ' ' . $output->chosenMeeting->hourLayout . '</p>';
-$html .= '<p> Plaats: '. $output->chosenMeeting->locationName.'</p>';
-
-$html .= '<style type="text/css">
+$html = '<style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;border-color:#bbb;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#bbb;color:#594F4F;background-color:#E0FFEB;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#bbb;color:#493F3F;background-color:#9DE0AD;}
-.tg .tg-s6z2{text-align:center}
-</style>
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:bold;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#bbb}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#bbb}
+</style>';
+$html .= '<h1> Ploeguitwisselingsformulier:  ' . $output->chosenMeeting->hTeam . '-' . $output->chosenMeeting->oTeam .' </h1>';
+$html .= '<table>
+			<tr>
+				<td>Type/Afdeling/Reeks:' . $output->chosenTeam->event . ' ' . $output->chosenTeam->devision .$output->chosenTeam->series. '</td>
+				<td>Tijdstip: ' . $output->chosenMeeting->dateLayout . ' ' . $output->chosenMeeting->hourLayout . '</td>
+				<td>Plaats: '. $output->chosenMeeting->locationName.'</td>
+			</tr>
+		</table>';
+$html .= '
+	<br/><br/>
 <table class="tg">
-  <tr>
-    <th class="tg-031e">discipline</th>
-    <th class="tg-031e">Voornaam</th>
-    <th class="tg-031e">Achternaam</th>
-    <th class="tg-s6z2">VBL Lidnummer</th>
-    <th class="tg-031e">Klassement</th>
-  </tr>';
+  <thead>
+	  <tr>
+		<th width="16%">Discipline</th>
+		<th width="26%">Achternaam</th>
+		<th width="26%">Voornaam</th>
+		<th width="16%">Lidnummer</th>
+		<th width="16%">Klassement</th>
+	  </tr>
+  </thead>
+  <tbody>';
 
 foreach($output->games as $key => $game) {	
 	$playerCount=0;	
@@ -38,23 +44,27 @@ foreach($output->games as $key => $game) {
 		
 		$html .= '<tr>';
 		if ($playerCount==1) {
-			$html .='<td rowspan="'.$game->involvedNumberOfPlayers.'">'.$game->id.'</td>';
+			$html .='<td width="16%" rowspan="'.$game->involvedNumberOfPlayers.'">'.$game->id.'</td>';
 		}
-		$html .='<td>'.$player->lastName.'</td>
-				<td>'.$player->firstName.'</td>
-				<td>'.$player->vblId.'</td>							
-				<td>'.$klassement.'</td>
+		$html .='<td width="26%">'.$player->firstName.'</td>
+				<td width="26%">'.$player->lastName.'</td>
+				<td width="16%">'.$player->vblId.'</td>							
+				<td width="16%" style="text-align: center">'.$klassement.'</td>
 				</tr>';
 	}
 }  
-$html .='</table>';
-$html .= 'Handtekening Ploegkapitein,';
+$html .='</tbody></table><br/><br/>';
+$html .= 'Handtekening ploegkapitein,';
 
 
 // Include the main TCPDF library (search for installation path).
 require_once('tcpdf_include.php');
 // create new PDF document
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT,true, 'UTF-8', false);
+
+// remove default header/footer
+$pdf->setPrintHeader(false);
+$pdf->setPrintFooter(false);
 
 // set document information
 //$pdf->SetCreator(PDF_CREATOR);
