@@ -99,7 +99,11 @@
     width: 650px;
   }
 
-
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
 		</style>
 		
 			
@@ -107,7 +111,16 @@
 	<body>
 		<div class="container">
 			<div class="row hidden-print">
+				<div class="col-md-10 vcenter">
 					<a href="http://www.badminton-pbo.be/" target="_new"><img src="http://pbo.kwal.org/pbo/wp/wp-content/themes/classico-catalyst/css/images/logo.png"></a>
+				</div>
+				<!--
+				<div class="col-md-2 pull-right vcenter">
+					<button id="nonplayersbutton" type="button" class="btn btn-primary">
+						<span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>
+					</button>
+				</div>
+				-->
 			</div>
 			<!-- ko if: !$root.chosenClub() -->
 			<div class="well">
@@ -338,8 +351,8 @@
 										<!-- ko if: ($index() === 0) -->
 										<td style="padding:0px" data-bind="attr:{rowspan: $parent.playersInGame().length}"><span data-bind="text: $parent.id"></td>
 										<!-- /ko -->
-										<td style="padding:0px"><span data-bind="text: firstName"></span></td>
 										<td style="padding:0px"><span data-bind="text: lastName"></span></td>
+										<td style="padding:0px"><span data-bind="text: firstName"></span></td>
 										<td style="padding:0px"><span data-bind="text: vblId"></span></td>
 										<td style="padding:0px"><span data-bind="text: ranking($parent.gameType)"></span></td>
 									</tr>

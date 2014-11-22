@@ -21,7 +21,7 @@ $html .= '
   <thead>
 	  <tr>
 		<th width="16%">Discipline</th>
-		<th width="26%">Achternaam</th>
+		<th width="26%">Naam</th>
 		<th width="26%">Voornaam</th>
 		<th width="16%">Lidnummer</th>
 		<th width="16%">Klassement</th>
@@ -46,8 +46,8 @@ foreach($output->games as $key => $game) {
 		if ($playerCount==1) {
 			$html .='<td width="16%" rowspan="'.$game->involvedNumberOfPlayers.'">'.$game->id.'</td>';
 		}
-		$html .='<td width="26%">'.$player->firstName.'</td>
-				<td width="26%">'.$player->lastName.'</td>
+		$html .='<td width="26%">'.$player->lastName.'</td>
+				<td width="26%">'.$player->firstName.'</td>
 				<td width="16%">'.$player->vblId.'</td>							
 				<td width="16%" style="text-align: center">'.$klassement.'</td>
 				</tr>';
