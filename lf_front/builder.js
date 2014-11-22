@@ -582,16 +582,16 @@ if (!window.console.log) window.console.log = function () { };
 			$("#iPrint").contents().find("#print2PdfForm").submit();
 		};
 
-		self.print2pdfX = function() {			
-			console.log($("#printhtml").html());			
-			console.log($("#printfull").html());
-		};
-		
 		self.chosenClub.subscribe(function(newClub) {
 			self.chosenMeeting(null);
-			self.chosenTeam(null);
 			self.games(null);
+			self.chosenTeamName(null);
+			self.availablePlayers.removeAll();
+			self.notAllowedPlayersOtherBaseTeam.removeAll();
+			self.notAllowedPlayersOnBaseMaxPlayerIndex.removeAll();
+			self.chosenTeam(null);										
 		});
+		
 			
 		//START PRINT LOGGING
 		var beforePrint = function() {
@@ -613,11 +613,16 @@ if (!window.console.log) window.console.log = function () { };
 			
 			
 								
-		self.chosenTeamName.subscribe(function(newTeam) {
-			if (newTeam !== undefined) {
+		self.chosenTeamName.subscribe(function(newTeam) {			
+			if (newTeam !== undefined && newTeam !== null) {
+				console.log("Team initing...");
 				//Init new team
 				self.chosenTeam(new Team(newTeam.teamName,newTeam.event,newTeam.devision,newTeam.series,newTeam.baseTeam));
 				
+				//Make not allowedPlayers invisible when chosing new team
+				$("#nonplayerstable").hide();
+				
+								
 				//Load the games this teamType
 				switch(self.chosenTeam().teamType) {
 					case "G": 
@@ -631,17 +636,17 @@ if (!window.console.log) window.console.log = function () { };
 				//Attach loaded games to this team
 				self.chosenTeam().setGames(self.games());
 				
+				
 				self.availablePlayers.removeAll();				
 				self.notAllowedPlayersOtherBaseTeam.removeAll();
 				self.notAllowedPlayersOnBaseMaxPlayerIndex.removeAll();
 				
+				
 				//LOAD PLAYERS FOR THIS CLUB/TEAM
 				$.get("api/teamAndClubPlayers/"+encodeURIComponent(newTeam.teamName), function(data) {
-					
 					//First set the base team because it has an influence if players are allowed or not
 					$.each(data.players, function(index,p) {
 						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type);						
-						//alert("Handling base player "+p.firstName);
 						//Set baseteam players
 						if (self.chosenTeam().baseTeamVblIds.indexOf(p.vblId) >=0) {
 							console.log("Adding "+myPlayer.fullName+" as a baseTeamPlayer of team "+self.chosenTeam().teamName);

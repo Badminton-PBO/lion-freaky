@@ -5,6 +5,7 @@
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 		<link rel="icon" href="favicon.ico" type="image/x-icon">
 		
+		
 		<!-- JQuery -->
 		<script type="text/javascript" src="libs/js/jquery-1.11.1.min.js"></script>	
 		<script type="text/javascript" src="libs/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>	
@@ -17,14 +18,31 @@
 		<!-- Bootstrap -->
 		<script type="text/javascript" src="libs/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
 		<link href="libs/bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">		
-		
+				
 		<script>
 			function togglePlayers(x) {
 				$("#nonplayerstable").toggle('fold');
 				if ($("#nonplayerstable").is(':visible')) {
 				 $("html, body").animate({scrollTop: $("#nonplayerstable").offset().top});
 				}	
-			}
+			}			
+
+			//FUNCTION TO GET AND AUTO PLAY YOUTUBE VIDEO FROM DATATAG
+			function autoPlayYouTubeModal(){
+			  var trigger = $("body").find('[data-toggle="modal"]');
+			  trigger.click(function() {
+				var theModal = $(this).data( "target" );
+				videoSRC = $(this).attr( "data-theVideo" );
+				videoSRCauto = videoSRC+"?autoplay=1" ;
+				$(theModal+' iframe').attr('src', videoSRCauto);
+				$(theModal+' button.close').click(function () {
+					$(theModal+' iframe').attr('src', videoSRC);
+				});   
+			  });
+			}			
+			$(document).ready(function(){
+			  autoPlayYouTubeModal();
+			});			
 		</script>
 		
 		<style type="text/css">
@@ -99,11 +117,6 @@
     width: 650px;
   }
 
-.vcenter {
-    display: inline-block;
-    vertical-align: middle;
-    float: none;
-}
 		</style>
 		
 			
@@ -111,22 +124,54 @@
 	<body>
 		<div class="container">
 			<div class="row hidden-print">
-				<div class="col-md-10 vcenter">
+				<div class="col-md-11">
 					<a href="http://www.badminton-pbo.be/" target="_new"><img src="http://pbo.kwal.org/pbo/wp/wp-content/themes/classico-catalyst/css/images/logo.png"></a>
 				</div>
-				<!--
-				<div class="col-md-2 pull-right vcenter">
-					<button id="nonplayersbutton" type="button" class="btn btn-primary">
+
+				<div class="col-md-1 pull-right">
+					<br>
+					<button id="nonplayersbutton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myHelpModal" data-theVideo="https://www.youtube.com/embed/Ka_RfATnW0E">
 						<span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>
 					</button>
+					<!-- Help Modal -->
+					<div class="modal fade" id="myHelpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Sluiten</span></button>
+							<h4 class="modal-title" id="myModalLabel">Help</h4>
+						  </div>
+						  <div class="modal-body">
+							  <p>In onderstaande video wordt het gebruik van deze tool getoond.</p>
+   							  <!-- iframe-scr will be set upon modal load to avoid unnecessary loadings when help button is not used-->
+							  <iframe width="420" height="315" src="" frameborder="0"></iframe>									
+
+							  <blockquote>
+								  <p>Deze tool is volledig functioneel, maar wordt momenteel nog verder afgewerkt. De uitrol gebeurt geleidelijk naar alle clubs.</p>
+								  <footer>PBO, 2014/11/22</footer>
+							  </blockquote>
+							<p>Gelieve problemen met deze tool te melden via <a href="mailto:competitie@badminton-pbo.be?SUBJECT=Online%20Competitieformulier">competitie[at]badminton-pbo.be</a></p>
+						  </div>
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Sluiten</button>
+						  </div>
+						</div>
+					  </div>
+					</div>					
 				</div>
-				-->
 			</div>
 			<!-- ko if: !$root.chosenClub() -->
 			<div class="well">
 				<h1>Doelstelling</h1>
-				<a href="http://www.badmintonvlaanderen.be" target="_new">Badminton Vlaanderen</a> veranderde voor het seizoen 2014-2015 een pak artikelnummers van de C320. De <a href="http://www.badmintonvlaanderen.be/page/27552/Reglementen#C%20320" target="_new">C320</a> is het competitiereglement dat gebruikt wordt om oa. de PBO-competitie in goede banen te leiden. Deze verandering werd vooral gedaan omdat elke competitiespeler sinds het seizoen 2013-2014 drie klassementen heeft: enkel, dubbel en gemengd). De reglementen zijn dus bepaald door Badminton Vlaanderen. Omdat PBO echter veel vragen krijgt omtrent deze materie is er besloten om een tool te ontwikkelen om te controleren of een opstelling kan/mag gebruikt worden. Zowel de spelers die je kan selecteren als de opstellingsvolgorde worden gescreend in deze tool. Dmv. deze tool kan je dus rustig puzzelen aan een opstelling en deze ook afprinten of doormailen. 
+				<a href="http://www.badmintonvlaanderen.be" target="_new">Badminton Vlaanderen</a> veranderde voor het seizoen 2014-2015 een pak artikelnummers van de C320. De <a href="http://www.badmintonvlaanderen.be/page/27552/Reglementen#C%20320" target="_new">C320</a> is het competitiereglement dat gebruikt wordt om oa. de PBO-competitie in goede banen te leiden. Deze verandering werd vooral gedaan omdat elke competitiespeler sinds het seizoen 2013-2014 drie klassementen heeft: enkel, dubbel en gemengd). De reglementen zijn dus bepaald door Badminton Vlaanderen. Omdat PBO echter veel vragen krijgt omtrent deze materie is er besloten om een tool te ontwikkelen om te controleren of een opstelling kan/mag gebruikt worden. Zowel de spelers die je kan selecteren als de opstellingsvolgorde worden gescreend in deze tool. Dmv. deze tool kan je dus rustig puzzelen aan een opstelling en deze ook afprinten of doormailen in PDF. 
 			</div>
+			<div class="alert alert-warning" role="alert">
+				  <blockquote>
+					  <p>Deze tool is volledig functioneel, maar wordt momenteel nog verder afgewerkt. De uitrol gebeurt geleidelijk naar alle clubs.</p>
+					  <footer>PBO, 22 nov 2014</footer>
+				  </blockquote>
+				
+			</div>			
 			<!-- /ko -->
 			<div class="row hidden-print">
 				<div class="col-md-5">
