@@ -578,6 +578,8 @@ if (!window.console.log) window.console.log = function () { };
 			$.get("api/logEvent/print2pdf/"+encodeURIComponent(self.chosenTeam().teamName), function(data) {
 				console.log("print2pdf logged");
 			});
+			$("#iPrint").empty();
+			$("#iPrint").contents().find('html').html("<form id='print2PdfForm' method='post' action='print2Pdf.php'><input id='print2PdfFormData' type='hidden' name='data'/></form>");
 			$("#iPrint").contents().find("#print2PdfFormData").val(result);
 			$("#iPrint").contents().find("#print2PdfForm").submit();
 		};
