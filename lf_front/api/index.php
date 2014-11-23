@@ -26,6 +26,7 @@ getRoute()->get('/teamAndClubPlayers/([\w\s-]+)','teamAndClubPlayers');
 getRoute()->get('/logEvent/([\w]+)/([\w\s-]+)','logEvent');
 getRoute()->get('/dbload','dbload');
 getRoute()->get('/dbload/(\w+)/(\w+)','dbload');
+getRoute()->get('/statistic/([\w]+)','statistic');
 getRoute()->get('/', 'usage');
 getRoute()->run(); 
 
@@ -590,4 +591,48 @@ function parse_csv ($csv_string, $delimiter = ",", $skip_empty_lines = true, $tr
             )
         )
     );
+}
+
+function statistic($statType) {
+
+$queryTotalSelectAndPrintCmdPerTeam = <<<'EOD'
+select c.clubName,
+t.teamName,
+(select count(*) from lf_event e where e.who = t.teamName and e.eventType='teamselect') as 'select',
+(select count(*) from lf_event e where e.who = t.teamName and e.eventType in ('print','print2pdf')) as 'print'
+from lf_club c
+join lf_team t on t.club_clubId = c.clubId
+join lf_group g on g.groupId = t.group_groupId
+where g.type='PROV'
+order by c.clubName,t.teamName
+EOD;
+
+
+$queryTotalSelectAndPrintCmdPerWeek = <<<'EOD'
+select week(e.when,5) as 'week', 
+(select count(*) from lf_event e1 where week(e1.when,5) = week(e.when,5) and e1.eventType='teamselect') as 'select',
+(select count(*) from lf_event e1 where week(e1.when,5) = week(e.when,5) and e1.eventType in ('print','print2pdf')) as 'print'
+from lf_event e
+group by week(e.when,5)
+order by week(e.when,5) asc
+EOD;
+	$query='';
+	switch($statType) {
+		case "totalSelectAndPrintCmdPerTeam": 
+			 $query = $queryTotalSelectAndPrintCmdPerTeam;
+			break;
+		case "totalSelectAndPrintCmdPerWeek": 
+			 $query = $queryTotalSelectAndPrintCmdPerWeek;
+			break;
+	}
+
+	$result = getDatabase()->all($query);	
+	header("Content-type: application/json");
+	//header("Content-type: text/html");
+	header("Content-Disposition: attachment; filename=json.data");
+	header("Pragma: no-cache");
+	header("Expires: 0");
+	//echo $query;
+	echo json_encode($result);	 
+	
 }

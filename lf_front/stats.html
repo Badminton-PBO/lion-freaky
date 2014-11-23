@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html id="printfull">
+	<head>
+		<title>PBO Ploegopstelling</title>
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		
+		<!-- JQuery -->
+		<script type="text/javascript" src="libs/js/jquery-1.11.1.min.js"></script>	
+		
+		<!-- d3 -->
+		<script type="text/javascript" src="libs/js/d3.v3.min.js"></script>	
+		
+		<!-- Knockoutjs -->
+		<script type="text/javascript" src="libs/js/knockout-3.2.0.js"></script>
+
+		<!-- Bootstrap -->
+		<script type="text/javascript" src="libs/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+		<link href="libs/bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">		
+	
+		<style>
+
+		.bar {
+		  fill: steelblue;
+		}
+
+		.bar:hover {
+		  fill: brown;
+		}
+
+		.axis {
+		  font: 10px sans-serif;
+		}
+
+		.axis path,
+		.axis line {
+		  fill: none;
+		  stroke: #000;
+		  shape-rendering: crispEdges;
+		}
+
+		.x.axis path {
+		  display: none;
+		}
+
+		</style>	
+	</head>	
+	<body>
+		
+		<div class="container" id="graphX">
+			<h2>Number of teamselects & print commands per week</h2>
+		</div>
+		<div class="container">
+			<h2>Total number of teamselects & print commands per team</h2>
+			<table class="table table-bordered table-condensed">
+				<thead>
+						<tr>
+							<th>Club</th>
+							<th>Team</th>
+							<th>#select</th>
+							<th>#print</th>
+						</tr>
+				</thead>
+				<tbody data-bind="foreach: totalSelectAndPrintCmdPerWeekData">
+					<tr>
+						<td><span data-bind="text: clubName"></span></td>
+						<td><span data-bind="text: teamName"></span></td>
+						<td><span data-bind="text: select"></span></td>
+						<td><span data-bind="text: print"></span></td>
+					</tr>
+				</tbody>							
+			</table>		
+		</div>
+		
+		
+		<script type="text/javascript" src="stats.js"></script>	
+		
+	</body>
+</html>	
