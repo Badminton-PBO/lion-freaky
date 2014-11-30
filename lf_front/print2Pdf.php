@@ -14,6 +14,10 @@ $html .= '<table>
 				<td>Tijdstip: ' . $output->chosenMeeting->dateLayout . ' ' . $output->chosenMeeting->hourLayout . '</td>
 				<td>Plaats: '. $output->chosenMeeting->locationName.'</td>
 			</tr>
+			<tr>
+				<td colspan="3">Ploegkapitein '. $output->chosenTeam->teamName.': '. $output->chosenTeam->captainName.'</td>
+			</tr>
+
 		</table>';
 $html .= '
 	<br/><br/>

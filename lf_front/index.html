@@ -302,6 +302,9 @@
 							<div class="col-md-4" data-bind="with:$root.chosenMeeting">Datum/Uur: <span data-bind="text: dateLayout"></span>  <span data-bind="text: hourLayout"></span></div>
 						</div>						
 						<div class="row">
+							<div class="col-md-8" data-bind="with:$root.chosenTeam">Ploegkapitein <span data-bind="text: teamName"></span>: <input data-bind="textInput: captainName" /></div>
+						</div>						
+						<div class="row">
 							<div id="error" data-bind="flash: lastError"></div>
 						</div>
 						<div class="row">
@@ -368,6 +371,7 @@
 					<div class="col-md-3" data-bind="with:$root.chosenTeam">Afdeling: <span data-bind="text: devision"></span> / Reeks: <span data-bind="text: series"></span></div>
 					<div class="col-md-3" data-bind="with:$root.chosenMeeting">Locatie: <span data-bind="text: locationName"></span></div>
 					<div class="col-md-3" data-bind="with:$root.chosenMeeting">Datum/Uur: <span data-bind="text: dateLayout"></span>  <span data-bind="text: hourLayout"></span></div>
+					<div class="col-md-3" data-bind="with:$root.chosenTeam">Ploegkapitein <span data-bind="text: teamName"></span>: <span data-bind="text: captainName"></span></div>
 				</div>						
 				<div class="row">					
 					<table class="table table-bordered">

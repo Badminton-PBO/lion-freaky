@@ -298,7 +298,7 @@ if (!window.console.log) window.console.log = function () { };
 				
 	};			
 	
-	var Team = function(teamName,event,devision,series,baseTeamVblIds) {
+	var Team = function(teamName,event,devision,series,baseTeamVblIds,captainName) {
 		this.teamName = teamName;
 		this.event = event;
 		this.devision = devision;
@@ -312,6 +312,7 @@ if (!window.console.log) window.console.log = function () { };
 		this.effectivePlayers = ko.observableArray();
 		this.games = ko.observableArray();
 		this.meetings = ko.observableArray();
+		this.captainName = ko.observable(captainName);
 			
 		this.setGames = function(games) {
 			this.games(games);
@@ -573,7 +574,7 @@ if (!window.console.log) window.console.log = function () { };
 
 		self.print2pdf = function() {
 			var vmjs = $.parseJSON(ko.toJSON(self));
-			var resultObject = {"games":vmjs.games, "chosenMeeting": vmjs.chosenMeeting, "chosenTeam": vmjs.chosenTeamName};
+			var resultObject = {"games":vmjs.games, "chosenMeeting": vmjs.chosenMeeting, "chosenTeam": vmjs.chosenTeam};
 			var result = JSON.stringify(resultObject);
 			$.get("api/logEvent/print2pdf/"+encodeURIComponent(self.chosenTeam().teamName), function(data) {
 				console.log("print2pdf logged");
@@ -619,7 +620,7 @@ if (!window.console.log) window.console.log = function () { };
 			if (newTeam !== undefined && newTeam !== null) {
 				console.log("Team initing...");
 				//Init new team
-				self.chosenTeam(new Team(newTeam.teamName,newTeam.event,newTeam.devision,newTeam.series,newTeam.baseTeam));
+				self.chosenTeam(new Team(newTeam.teamName,newTeam.event,newTeam.devision,newTeam.series,newTeam.baseTeam,newTeam.captainName));
 				
 				//Make not allowedPlayers invisible when chosing new team
 				$("#nonplayerstable").hide();

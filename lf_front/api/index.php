@@ -108,7 +108,7 @@ EOD;
  
 function  clubsAndTeams() {
 $query = <<<EOD
-select c.clubName,t.teamName,g.event,g.`type`,g.devision,g.series,p.playerId from lf_club c 
+select c.clubName,t.teamName,t.captainName,g.event,g.`type`,g.devision,g.series,p.playerId from lf_club c 
 join lf_team t on c.clubId = t.club_clubId 
 join lf_group g on g.groupId = t.group_groupId 
 join lf_player_has_team pt on pt.team_teamName = t.teamName 
@@ -132,7 +132,7 @@ EOD;
 		}
 		if ($currentTeamName != $player['teamName']) {
 			$teamCounter++;
-			$result[$clubCounter]["teams"][$teamCounter] = array('teamName' => $player['teamName'],'type' =>$player['type'], 'event' => $player['event'], 'devision' => $player['devision'],'series'=> $player['series'], 'baseTeam' => array());
+			$result[$clubCounter]["teams"][$teamCounter] = array('teamName' => $player['teamName'],'type' =>$player['type'], 'event' => $player['event'], 'devision' => $player['devision'],'series'=> $player['series'],'captainName'=> $player['captainName'], 'baseTeam' => array());
 			$currentTeamName = $player['teamName'];
 		}
 		array_push($result[$clubCounter]["teams"][$teamCounter]["baseTeam"],$player['playerId']);		
@@ -244,12 +244,12 @@ function dbload($doLoad = 'true',$addTestClub = 'false') {
 			
 			
 $testTeams = <<<'EOD'
-113198;16;;;TESTCLUB 1H;;;;;;;;;;;;;;;;;40001;;Heren Competitie;;1e provinciale;
-113198;16;;;TESTCLUB 2H;;;;;;;;;;;;;;;;;40001;;Heren Competitie;;2e provinciale A;
-113198;16;;;TESTCLUB 3H;;;;;;;;;;;;;;;;;40001;;Heren Competitie;;2e provinciale B;
-113198;16;;;TESTCLUB 2G;;;;;;;;;;;;;;;;;40001;;Gemengde Competitie;;1e provinciale;
-113198;16;;;TESTCLUB 2D;;;;;;;;;;;;;;;;;40001;;Dames Competitie;;1e provinciale;
-113198;16;;;TESTCLUB 3D;;;;;;;;;;;;;;;;;40001;;Dames Competitie;;2e provinciale;
+113198;16;;;TESTCLUB 1H;Kap 1H;;;;;;;;;;;;;;;;40001;;Heren Competitie;;1e provinciale;
+113198;16;;;TESTCLUB 2H;Kap 2H;;;;;;;;;;;;;;;;40001;;Heren Competitie;;2e provinciale A;
+113198;16;;;TESTCLUB 3H;Kap 3H;;;;;;;;;;;;;;;;40001;;Heren Competitie;;2e provinciale B;
+113198;16;;;TESTCLUB 2G;Kap 2G;;;;;;;;;;;;;;;;40001;;Gemengde Competitie;;1e provinciale;
+113198;16;;;TESTCLUB 2D;Kap 2D;;;;;;;;;;;;;;;;40001;;Dames Competitie;;1e provinciale;
+113198;16;;;TESTCLUB 3D;Kap 3D;;;;;;;;;;;;;;;;40001;;Dames Competitie;;2e provinciale;
 EOD;
 			$teamsCSV .=$testTeams."\n";
 
@@ -435,12 +435,13 @@ function loadCSV($CSV,$type) {
 					':clubName' => $parsedCsv[$i][$headers['name']])
 					);
 					break;
-				case "teams": getDatabase()->execute('INSERT INTO lf_tmpdbload_teamscsv(name, clubCode, year, eventName, drawName ) VALUES(:name, :clubCode, :year, :eventName, :drawName)', 
+				case "teams": getDatabase()->execute('INSERT INTO lf_tmpdbload_teamscsv(name, clubCode, year, eventName, drawName, captainName ) VALUES(:name, :clubCode, :year, :eventName, :drawName, :captainName)', 
 					array(':name' => $parsedCsv[$i][$headers['name']],
 					 ':clubCode' => $parsedCsv[$i][$headers['clubcode']], 
 					 ':year' => 2014, 
 					 ':eventName' => $parsedCsv[$i][$headers['eventname']], 
-					 ':drawName' => $parsedCsv[$i][$headers['DrawName']])
+					 ':drawName' => $parsedCsv[$i][$headers['DrawName']],
+					 ':captainName' => $parsedCsv[$i][$headers['contact']])
 					 );
 					break;
 				case "matches": getDatabase()->execute('INSERT INTO lf_match(homeTeamName, outTeamName, locationId, locationName, matchId, date) VALUES(:homeTeamName, :outTeamName, :locationId, :locationName, :matchId, str_to_date(:date, \'%e-%c-%Y %H:%i:%S\'))',
@@ -493,8 +494,8 @@ select `year`,'PROV',lf_dbload_eventcode(eventName),lf_dbload_devision(drawName)
 group by `year`,lf_dbload_eventcode(eventName),lf_dbload_devision(drawName),lf_dbload_serie(drawName);
 EOD;
 $insertLfTeam = <<<'EOD'
-INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId)
-select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.eventName) = lfg.event and  lf_dbload_devision(t.drawName) = lfg.devision and lf_dbload_serie(t.drawName) = lfg.series)  from lf_tmpdbload_teamscsv t;
+INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId, captainName)
+select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.eventName) = lfg.event and  lf_dbload_devision(t.drawName) = lfg.devision and lf_dbload_serie(t.drawName) = lfg.series),t.captainName  from lf_tmpdbload_teamscsv t;
 EOD;
 $deleteLfTmpdbloadPlayers = <<<'EOD'
 delete from lf_tmpdbload_playerscsv
