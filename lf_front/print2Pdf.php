@@ -14,21 +14,18 @@ $html .= '<table>
 				<td>Tijdstip: ' . $output->chosenMeeting->dateLayout . ' ' . $output->chosenMeeting->hourLayout . '</td>
 				<td>Plaats: '. $output->chosenMeeting->locationName.'</td>
 			</tr>
-			<tr>
-				<td colspan="3">Ploegkapitein '. $output->chosenTeam->teamName.': '. $output->chosenTeam->captainName.'</td>
-			</tr>
-
 		</table>';
 $html .= '
 	<br/><br/>
 <table class="tg">
   <thead>
 	  <tr>
-		<th width="16%">Discipline</th>
-		<th width="26%">Naam</th>
-		<th width="26%">Voornaam</th>
-		<th width="16%">Lidnummer</th>
-		<th width="16%">Klassement</th>
+		<th width="10%" style="font-size:9px">Discipline</th>
+		<th width="20%" style="font-size:9px;">Naam</th>
+		<th width="20%" style="font-size:9px">Voornaam</th>
+		<th width="14%" style="font-size:9px">Lidnummer</th>
+		<th width="14%" style="font-size:9px; ">Klassement</th>
+		<th width="22%" style="font-size:9px; text-align: center">Uitslagen</th>
 	  </tr>
   </thead>
   <tbody>';
@@ -48,17 +45,23 @@ foreach($output->games as $key => $game) {
 		
 		$html .= '<tr>';
 		if ($playerCount==1) {
-			$html .='<td width="16%" rowspan="'.$game->involvedNumberOfPlayers.'">'.$game->id.'</td>';
+			$html .='<td width="10%" rowspan="'.$game->involvedNumberOfPlayers.'">'.$game->id.'</td>';
 		}
-		$html .='<td width="26%">'.$player->lastName.'</td>
-				<td width="26%">'.$player->firstName.'</td>
-				<td width="16%">'.$player->vblId.'</td>							
-				<td width="16%" style="text-align: center">'.$klassement.'</td>
-				</tr>';
+		$html .='<td width="20%">'.$player->lastName.'</td>
+				<td width="20%">'.$player->firstName.'</td>
+				<td width="14%">'.$player->vblId.'</td>							
+				<td width="14%" style="text-align: center">'.$klassement.'</td>';
+		if ($playerCount==1) {
+			$html .='<td width="22%" rowspan="'.$game->involvedNumberOfPlayers.'">&nbsp;</td>';
+		}
+		$html .= '</tr>';
 	}
 }  
 $html .='</tbody></table><br/><br/>';
-$html .= 'Handtekening ploegkapitein,';
+$html .='Ploegkapitein '. $output->chosenTeam->teamName.': '. $output->chosenTeam->captainName.'<br/>';
+$html .='Handtekening, <br>';
+$html .='<table border="1px" width="200px"><tr><td height="50px">&nbsp;</td></tr></table>';
+
 
 
 // Include the main TCPDF library (search for installation path).

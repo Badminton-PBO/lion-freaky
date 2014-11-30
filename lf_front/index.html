@@ -365,13 +365,13 @@
 				</div>
 			</div>
 			<div id="printhtml" class="row visible-print-inline">
+			<!--<div id="printhtml" class="row">-->
 				<h1 class="text-center">Ploeguitwisselingsformulier interclub competitie</h1>
 				<div class="row">
 					<div class="col-md-3" data-bind="with:$root.chosenTeam"><span data-bind="text: teamTypeLayout()"></span>, Provenciaal</div>
 					<div class="col-md-3" data-bind="with:$root.chosenTeam">Afdeling: <span data-bind="text: devision"></span> / Reeks: <span data-bind="text: series"></span></div>
 					<div class="col-md-3" data-bind="with:$root.chosenMeeting">Locatie: <span data-bind="text: locationName"></span></div>
 					<div class="col-md-3" data-bind="with:$root.chosenMeeting">Datum/Uur: <span data-bind="text: dateLayout"></span>  <span data-bind="text: hourLayout"></span></div>
-					<div class="col-md-3" data-bind="with:$root.chosenTeam">Ploegkapitein <span data-bind="text: teamName"></span>: <span data-bind="text: captainName"></span></div>
 				</div>						
 				<div class="row">					
 					<table class="table table-bordered">
@@ -386,11 +386,12 @@
 					<table class="table table-condensed table-bordered">
 						<thead>
 							<tr>
-								<th class="col-md-2">Discipline</th>
-								<th class="col-md-3">Naam</th>
-								<th class="col-md-3">Voornaam</th>
-								<th class="col-md-2">Lidnummer</th>
-								<th class="col-md-1">Klassement</th>
+								<th width="10%">Discipline</th>
+								<th width="25%">Naam</th>
+								<th width="25%">Voornaam</th>
+								<th width="10%">Lidnummer</th>
+								<th width="10%">Klassement</th>
+								<th width="20%" style="text-align: center">Uitslagen</th>
 							</tr>
 						</thead>
 						<tbody>								
@@ -404,6 +405,9 @@
 										<td style="padding:0px"><span data-bind="text: firstName"></span></td>
 										<td style="padding:0px"><span data-bind="text: vblId"></span></td>
 										<td style="padding:0px"><span data-bind="text: ranking($parent.gameType)"></span></td>
+										<!-- ko if: ($index() === 0) -->
+										<td style="padding:0px" data-bind="attr:{rowspan: $parent.playersInGame().length}">&nbsp;</td>
+										<!-- /ko -->
 									</tr>
 								<!-- /ko -->
 							<!-- /ko -->																	
@@ -427,7 +431,10 @@
 								<td>&nbsp;</td>
 							</tr>								
 						</tbody>
-					</table>					
+					</table>
+					<div data-bind="with:$root.chosenTeam">Ploegkapitein <span data-bind="text: teamName"></span>: <span data-bind="text: captainName"></span></div>					
+					<div>Handtekening,</div>
+					<div><table border="1px" width="200px"><tr><td height="50px">&nbsp;</td></tr></table></div>
 				</div>
 			</div>			
 		</div>
