@@ -6,6 +6,7 @@ Epi::setPath('base', './libs/epiphany-20130912');
 Epi::init('route','database');
 EpiDatabase::employ('mysql',constant('DB_NAME'),constant('DB_HOST'),constant('DB_USER'),constant('DB_PASSWORD')); // type = mysql, database = mysql, host = localhost, user = root, password = [empty]
 Epi::setSetting('exceptions', false);
+ini_set('memory_limit', '256M');// Extra memory needed to load big CSV like fixedRankingMei15
 
 //phpinfo();
 //Epi::init('base','cache','session');
@@ -158,8 +159,8 @@ function dbload($doLoad = 'true',$addTestClub = 'false') {
 		$PBO_COMPETITIE_END_DAY='20150731';
 		$PBO_OVL_ID='638D0B55-C39B-43AB-8A9D-D50D62017FBE';
 		$PBO_OVL_GID='3825E3C5-1371-4FF6-94AF-C4A3B152802A';		
-		$PBO_USERNAME='g0ldh0rn';
-		$PBO_PWD='Hgkxj8DgwE';	
+		$PBO_USERNAME=PBO_USERNAME;
+		$PBO_PWD=PBO_PWD;	
 
 		$USER_AGENT='Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.11) Gecko/20101012 Firefox/3.6.11';
 		//Following was valid until 20141113
@@ -171,7 +172,7 @@ function dbload($doLoad = 'true',$addTestClub = 'false') {
 		$MATCHES_CSV_URL='http://toernooi.nl/sport/admin/exportteammatches.aspx?id='.$PBO_COMPETITIE_ID.'&ft=1&sd='.$PBO_COMPETITIE_START_DAY.'000000&ed='.$PBO_COMPETITIE_END_DAY.'000000';
 		
 		$BASETEAM_CSV_URL=SITE_ROOT.'/data/fixed/basisopstellingen.csv';
-		$FIXED_RANKING_CSV_URL=SITE_ROOT.'/data/fixed/indexen_spelers_01052014_OVL.csv';
+		$FIXED_RANKING_CSV_URL=SITE_ROOT.'/data/fixed/indexen_spelers_01052014.csv';
 		$LIGA_BASETEAM_CSV_URL=SITE_ROOT.'/data/fixed/liga_basisopstelling_gemengd_20142015.csv';
 		
         // create curl resource
@@ -181,7 +182,9 @@ function dbload($doLoad = 'true',$addTestClub = 'false') {
         curl_setopt($ch, CURLOPT_URL, "http://toernooi.nl/member/login.aspx");
         curl_setopt($ch, CURLOPT_USERAGENT, $USER_AGENT);
         //curl_setopt($ch, CURLOPT_POST, TRUE);        
-        curl_setopt($ch, CURLOPT_SAFE_UPLOAD, TRUE);                       
+        if (PHP_VERSION_ID > 50500) {
+			curl_setopt($ch, CURLOPT_SAFE_UPLOAD, TRUE);//PHP5.5 only option                    
+		}	
         curl_setopt($ch, CURLOPT_POSTFIELDS, $LOGIN_STRING);
 		
 		
@@ -428,66 +431,55 @@ function loadCSV($CSV,$type) {
 	//print("Handling CSV".$type);
 	$headers = array_flip($parsedCsv[0]);
 	
-	for($i = 1, $size = count($parsedCsv)-1; $i < $size; ++$i) {
-		switch($type) {
-				case "clubs": getDatabase()->execute('INSERT INTO lf_club(clubId, clubName) VALUES(:clubId, :clubName)',
-					array(':clubId' => $parsedCsv[$i][$headers['?code']],
-					':clubName' => $parsedCsv[$i][$headers['name']])
-					);
-					break;
-				case "teams": getDatabase()->execute('INSERT INTO lf_tmpdbload_teamscsv(name, clubCode, year, eventName, drawName, captainName ) VALUES(:name, :clubCode, :year, :eventName, :drawName, :captainName)', 
-					array(':name' => $parsedCsv[$i][$headers['name']],
-					 ':clubCode' => $parsedCsv[$i][$headers['clubcode']], 
-					 ':year' => 2014, 
-					 ':eventName' => $parsedCsv[$i][$headers['eventname']], 
-					 ':drawName' => $parsedCsv[$i][$headers['DrawName']],
-					 ':captainName' => $parsedCsv[$i][$headers['contact']])
-					 );
-					break;
-				case "matches": getDatabase()->execute('INSERT INTO lf_match(homeTeamName, outTeamName, locationId, locationName, matchId, date) VALUES(:homeTeamName, :outTeamName, :locationId, :locationName, :matchId, str_to_date(:date, \'%e-%c-%Y %H:%i:%S\'))',
-					array(':homeTeamName' => $parsedCsv[$i][$headers['team1name']],
-					':outTeamName' => $parsedCsv[$i][$headers['team2name']],
-					':locationId' => $parsedCsv[$i][$headers['locationid']],
-					':locationName' => $parsedCsv[$i][$headers['locationname']],
-					':matchId' => $parsedCsv[$i][$headers['matchid']],
-					':date' => $parsedCsv[$i][$headers['plannedtime']])
-					);
-					break;	
-				case "players": getDatabase()->execute('INSERT INTO lf_tmpdbload_playerscsv(memberId,firstName,lastName,gender,groupName,playerLevelSingle,playerLevelDouble,playerLevelMixed,typeName,role) VALUES(:memberId,:firstName,:lastName,:gender,:groupName,:playerLevelSingle,:playerLevelDouble,:playerLevelMixed,:typeName,:role)',
-					array(':memberId' => $parsedCsv[$i][$headers['memberid']],
-					':firstName' => $parsedCsv[$i][$headers['firstname']],
-					':lastName' => $parsedCsv[$i][$headers['lastname']],
-					':gender' => $parsedCsv[$i][$headers['gender']],
-					':groupName' => $parsedCsv[$i][$headers['groupname']],
-					':playerLevelSingle' => $parsedCsv[$i][$headers['PlayerLevelSingle']],
-					':playerLevelDouble' => $parsedCsv[$i][$headers['PlayerLevelDouble']],
-					':playerLevelMixed' => $parsedCsv[$i][$headers['PlayerLevelMixed']],
-					':typeName' => $parsedCsv[$i][$headers['TypeName']],
-					':role' => $parsedCsv[$i][$headers['role']])
-					);
-					break;
-				case "baseTeam": getDatabase()->execute('INSERT INTO lf_player_has_team(player_playerId, team_teamName) VALUES(:playerId, :teamName)',
-					array(':playerId' => $parsedCsv[$i][$headers['player_playerId']],
-					':teamName' => $parsedCsv[$i][$headers['team_teamName']])
-					);
-					break;
-				case "fixedRanking": getDatabase()->execute('INSERT INTO lf_tmpdbload_15mei(playerId, playerLevelSingle, playerLevelDouble, playerLevelMixed) VALUES(:playerId, :playerLevelSingle, :playerLevelDouble, :playerLevelMixed)', 
-					array(':playerId' => $parsedCsv[$i][$headers['Lidnummer']],
-					 ':playerLevelSingle' => $parsedCsv[$i][$headers['Klassement enkel']], 
-					 ':playerLevelDouble' => $parsedCsv[$i][$headers['Klassement dubbel']], 
-					 ':playerLevelMixed' => $parsedCsv[$i][$headers['Klassement gemengd']])
-					 );
-					break;										
-				case "ligaBaseTeam": getDatabase()->execute('INSERT INTO lf_tmpdbload_basisopstellingliga(playerId, teamName, discipline, clubName) VALUES(:playerId, :teamName,:discipline, :clubName)', 
-					array(':playerId' => $parsedCsv[$i][$headers['Lidnummer']],
-					 ':teamName' => $parsedCsv[$i][$headers['Teamnaam']], 
-					 ':discipline' => $parsedCsv[$i][$headers['Discipline']], 
-					 ':clubName' => $parsedCsv[$i][$headers['Club']])
-					 );
-					break;												
-		}			
-	}	
+	switch($type) {
+			case "clubs": 
+				buildAndExecQuery($parsedCsv,
+					'INSERT INTO lf_club(clubId, clubName) VALUES',
+					 array('?code','name')
+				);
+				break;
+			case "teams": 
+				buildAndExecQuery($parsedCsv,
+					'INSERT INTO lf_tmpdbload_teamscsv(name, clubCode, eventName, drawName, captainName ) VALUES ',
+					 array('name','clubcode','eventname','DrawName','contact')
+				);
+				break;
+			case "matches": 
+				buildAndExecQuery($parsedCsv,
+					'INSERT INTO lf_match(homeTeamName, outTeamName, locationId, locationName, matchId, date) VALUES ',
+					 array('team1name','team2name','locationid','locationname','matchid','plannedtime'),
+					 '(?, ?, ?, ?, ?, str_to_date(?, \'%e-%c-%Y %H:%i:%S\'))'
+				);
+				break;						
+			case "players": 
+				buildAndExecQuery($parsedCsv,
+					'INSERT INTO lf_tmpdbload_playerscsv(memberId,firstName,lastName,gender,groupName,playerLevelSingle,playerLevelDouble,playerLevelMixed,typeName,role) VALUES ',
+					 array('memberid','firstname','lastname','gender','groupname','PlayerLevelSingle','PlayerLevelDouble','PlayerLevelMixed','TypeName','role')
+				);
+				break;					
+			case "baseTeam": 
+				buildAndExecQuery($parsedCsv,
+					'INSERT INTO lf_player_has_team(player_playerId, team_teamName) VALUES ',
+					 array('player_playerId','team_teamName')
+				);
+				break;			
+			case "fixedRanking": 
+				buildAndExecQuery($parsedCsv,
+					'INSERT INTO lf_tmpdbload_15mei(playerId, playerLevelSingle, playerLevelDouble, playerLevelMixed) VALUES ',
+					 array('Lidnummer','Klassement enkel','Klassement dubbel','Klassement gemengd')
+				);
+				break;								
+			case "ligaBaseTeam": 
+				buildAndExecQuery($parsedCsv,
+					'INSERT INTO lf_tmpdbload_basisopstellingliga(playerId, teamName, discipline, clubName) VALUES',
+					 array('Lidnummer','Teamnaam','Discipline','Club')
+				);
+				break;						
+	}
 
+$updateLfYear = <<<'EOD'
+update lf_tmpdbload_teamscsv set year=2014;
+EOD;
 $insertLfGroup = <<<'EOD'
 INSERT INTO lf_group (tournament,`type`,event,devision,series)
 select `year`,'PROV',lf_dbload_eventcode(eventName),lf_dbload_devision(drawName),lf_dbload_serie(drawName) from lf_tmpdbload_teamscsv
@@ -499,7 +491,7 @@ select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_
 EOD;
 $deleteLfTmpdbloadPlayers = <<<'EOD'
 delete from lf_tmpdbload_playerscsv
-where role = 'Speler'
+where role != 'Speler'
 and memberId in (
 select c.memberId from (
 select memberId from lf_tmpdbload_playerscsv t
@@ -540,11 +532,12 @@ EOD;
 
 	switch($type) {
 		case "teams": 
+			 getDatabase()->execute($updateLfYear);
 			 getDatabase()->execute($insertLfGroup);
 			 getDatabase()->execute($insertLfTeam);
 			break;
 		case "players":
-			// When player is from O-Vl Club and rented to another O-Vl it will appear twice. However, we only wan to keep the record with role='Uitgeleende speler
+			// When player is from O-Vl Club and rented to another O-Vl it will appear twice. However, we only want to keep the record with role='Speler'
 			// Some tricks needed to avoid mysql limitation: In MySQL, you can't modify the same table which you use in the SELECT part
 			// http://stackoverflow.com/questions/45494/mysql-error-1093-cant-specify-target-table-for-update-in-from-clause
 			getDatabase()->execute($deleteLfTmpdbloadPlayers);
@@ -568,6 +561,32 @@ EOD;
 		
 	//print_r($parsedCsv);
 }
+
+function buildAndExecQuery($parsedCsv, $queryStart,$columnsToSelect,$qPreparedRecord = "") {
+		//2014/12/04 For import performance reasons, its a lot faster to import using a single (big) query than one by one.		
+		//$query = "INSERT INTO lf_tmpdbload_15mei(playerId, playerLevelSingle, playerLevelDouble, playerLevelMixed) VALUES "; //Prequery
+		//$columnsToSelect = array('Lidnummer','Klassement enkel','Klassement dubbel','Klassement gemengd');
+		
+		$headers = array_flip($parsedCsv[0]);
+		$query = $queryStart;
+		
+		//Build up all prepared values (?,?,?,?,...) , (?,?,?,?,...),...
+		if (empty($qPreparedRecord)) {
+			$qPreparedRecord = '(' . implode(",",array_fill(0, count($columnsToSelect), "?")) . ')';
+		}
+		$qPreparedRecords = array_fill(0, count($parsedCsv)-2, $qPreparedRecord);
+		$query .=  implode(",",$qPreparedRecords);
+		
+		//Build up all bind parameters
+		$bindParams = array();				
+		for($i = 1, $size = count($parsedCsv)-1; $i < $size; ++$i) {
+			for ($j=0, $numberOfColumns = count($columnsToSelect); $j < $numberOfColumns; ++$j) {
+				$bindParams[] = $parsedCsv[$i][$headers[$columnsToSelect[$j]]];
+			}
+		}
+		getDatabase()->execute($query,$bindParams);
+}
+
 
 
 function parse_csv ($csv_string, $delimiter = ",", $skip_empty_lines = true, $trim_fields = true)
