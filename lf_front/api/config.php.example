@@ -1,0 +1,24 @@
+<?php
+define('DB_NAME', 'dbName');
+
+/** MySQL database username */
+define('DB_USER', 'dbUserName');
+
+/** MySQL database password */
+define('DB_PASSWORD', 'dbPwd');
+
+/** MySQL hostname */
+define('DB_HOST', 'localhost');
+
+/** Database Charset to use in creating database tables. */
+define('DB_CHARSET', 'utf8');
+ 
+/** The Database Collate type. Don't change this if in doubt. */
+define('DB_COLLATE', '');
+
+/** Site root is needed to be able to download file using cURL from the local website. (File access not available by one.com hosting) */
+define('SITE_ROOT','http://localhost');
+
+/** User credentials of toernooi.nl user with enough credentials to download CSV from PBO competition */
+define('PBO_USERNAME','toernooiNlUserName');
+define('PBO_PWD','toernooiNlPwd');
