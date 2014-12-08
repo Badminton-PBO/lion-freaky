@@ -246,6 +246,7 @@ if (!window.console.log) window.console.log = function () { };
 	
 
 	var Game = function(id, involvedNumberOfPlayers, x) {
+		var self=this;
 		this.playersInGame = ko.observableArray(x);		
 		this.id = id;
 		this.gameType=id.substring(0,2);
@@ -292,7 +293,11 @@ if (!window.console.log) window.console.log = function () { };
 
 		this.gameTitleCss = ko.computed(function() {
 			return this.involvedNumberOfPlayers > 1 ? "doubleTitleGame" : "singleTitleGame";
-		},this);		
+		},this);	
+		
+		this.removePlayer = function(p) {
+			self.playersInGame.remove(p);
+		};	
 		
 							
 				

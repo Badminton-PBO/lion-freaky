@@ -328,7 +328,12 @@
 													<div>													
 														<span data-bind="text: fullName"></span>,
 														<span data-bind="text: vblId"></span>,		
-														<span data-bind="text: ranking($parent.gameType)"></span>=<span data-bind="text: index($parent.gameType)"></span>
+														<span data-bind="text: ranking($parent.gameType)"></span>=<span data-bind="text: index($parent.gameType)"></span>														
+														<div class="pull-right">
+															<a href="#" data-bind="click: $parent.removePlayer">
+																<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+															</a>
+														</div>
 													</div>																												
 												</div>											
 											</td>
