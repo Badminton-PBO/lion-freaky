@@ -21,7 +21,7 @@ curl \
     --cookie-jar "$COOKIES_PATH" \
 	--data '__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=%2FwEPDwUJNjM0MDYzNDI3ZBgBBR5fX0NvbnRyb2xzUmVxdWlyZVBvc3RCYWNrS2V5X18WAgU9Y3RsMDAkY3RsMDAkY3RsMDAkY3BoUGFnZSRjcGhQYWdlJGNwaFBhZ2UkcG5sTG9naW4kUmVtZW1iZXJNZQVDY3RsMDAkY3RsMDAkY3RsMDAkY3BoUGFnZSRjcGhQYWdlJGNwaFBhZ2UkcG5sTG9naW4kTG9naW5JbWFnZUJ1dHRvbkDFcxzmupMNoFNI2833VjIpspSb&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=%2FwEdAAkkrxhVeFemLbIU82wv5PSCDc%2F5voaaGYfFlFBXi9EGFfyHSpCYj%2BAUNp9bXc20Z5f%2BOtme7httab8IViMP3HjzlRR%2BDpTMHdYiODpnuHxziR2B%2BiwIwJ5fF61AnAcX2%2BwvDdLMdOmJdT7lzlyuo8NCBjrAGg4uwJH4J35FqmwaB97lIlcv0kHWlCdwWozE4w6e5YuDNp%2F7v5Hoe%2Fq7l8Xai2IOSg%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='"$PBO_USERNAME"'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='"$PBO_PWD"'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen' \
     --output '../data/tmp/login.txt' \
-    'http://toernooi.nl/member/login.aspx'
+    'https://toernooi.nl/member/login.aspx'
 
 curl \
     --silent \
@@ -30,7 +30,7 @@ curl \
     --cookie "$COOKIES_PATH" \
     --cookie-jar "$COOKIES_PATH" \
     --output "../data/tmp/clubs.csv" \
-    'http://toernooi.nl/sport/admin/exportclubs.aspx?id='"$PBO_COMPETITIE_ID"'&ft=1'
+    'https://toernooi.nl/sport/admin/exportclubs.aspx?id='"$PBO_COMPETITIE_ID"'&ft=1'
 
 curl \
     --silent \
@@ -39,7 +39,7 @@ curl \
     --cookie "$COOKIES_PATH" \
     --cookie-jar "$COOKIES_PATH" \
     --output "../data/tmp/teams.csv" \
-    'http://toernooi.nl/sport/admin/exportteams.aspx?id='"$PBO_COMPETITIE_ID"'&ft=1'
+    'https://toernooi.nl/sport/admin/exportteams.aspx?id='"$PBO_COMPETITIE_ID"'&ft=1'
 
 curl \
     --silent \
@@ -48,7 +48,7 @@ curl \
     --cookie "$COOKIES_PATH" \
     --cookie-jar "$COOKIES_PATH" \
     --output "../data/tmp/players.csv" \
-    'http://toernooi.nl/organization/export/export_memberperroletypepergroup.aspx?id='"$PBO_OVL_ID"'&gid='"$PBO_OVL_GID"'&ft=1&glid=1'
+    'https://toernooi.nl/organization/export/export_memberperroletypepergroup.aspx?id='"$PBO_OVL_ID"'&gid='"$PBO_OVL_GID"'&ft=1&glid=1'
 
 curl \
     --silent \
@@ -57,4 +57,4 @@ curl \
     --cookie "$COOKIES_PATH" \
     --cookie-jar "$COOKIES_PATH" \
     --output "../data/tmp/matches.csv" \
-    'http://toernooi.nl/sport/admin/exportteammatches.aspx?id='"$PBO_COMPETITIE_ID"'&ft=1&sd='"$PBO_COMPETITIE_START_DAY"'000000&ed='"$PBO_COMPETITIE_END_DAY"'000000'
+    'https://toernooi.nl/sport/admin/exportteammatches.aspx?id='"$PBO_COMPETITIE_ID"'&ft=1&sd='"$PBO_COMPETITIE_START_DAY"'000000&ed='"$PBO_COMPETITIE_END_DAY"'000000'
