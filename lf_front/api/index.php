@@ -504,14 +504,10 @@ INSERT INTO lf_ranking (`date`,singles,doubles,mixed,player_playerId)
 select SYSDATE(),t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.memberId from lf_tmpdbload_playerscsv t
 join lf_club c on c.clubName=t.groupName;
 EOD;
-$fixSentseClubName = <<<'EOD'
-update lf_tmpdbload_playerscsv t set t.groupName = 'SENTSE BADMINTON'
-where t.groupName like 'SENTSE%';
-EOD;
 $insertLfPlayer = <<<'EOD'
 INSERT INTO lf_player (playerId,firstName,lastName,gender,club_clubId,type)
 select t.memberId,t.firstName,t.lastName, CASE when t.gender='V' then 'F' else t.gender END,c.clubId, case when t.typeName like 'Recreant%' then 'R' when t.typeName like 'Competitie%' then 'C' when t.typeName like 'Jeugd%' then 'J' END from lf_tmpdbload_playerscsv t
-join lf_club c on c.clubName=t.groupName;			
+join lf_club c on lf_dbload_normaliseTeamName(c.clubName)=lf_dbload_normaliseTeamName(t.groupName);			
 EOD;
 $insertLfRankingFixed = <<<'EOD'
 insert into lf_ranking(date,singles,doubles,mixed,player_playerId)
@@ -545,10 +541,7 @@ EOD;
 			// Some tricks needed to avoid mysql limitation: In MySQL, you can't modify the same table which you use in the SELECT part
 			// http://stackoverflow.com/questions/45494/mysql-error-1093-cant-specify-target-table-for-update-in-from-clause
 			getDatabase()->execute($deleteLfTmpdbloadPlayers);
-			
-			//Fix "SENTSE BADMINTON" versus "SENTSE BADMINTON Club"
-			getDatabase()->execute($fixSentseClubName);			
-			
+						
 			//When must import players from type=Recreant too because they can be part of a baseTeam!
 			getDatabase()->execute($insertLfPlayer);						
 			

@@ -244,7 +244,16 @@ DELIMITER ;
 
 
 
---
+DROP FUNCTION IF EXISTS lf_dbload_normaliseTeamName;
+DELIMITER $$
+CREATE FUNCTION lf_dbload_normaliseTeamName(teamName TEXT)
+  RETURNS TEXT
+BEGIN
+	return replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(upper(teamName),' BC',''),'BC ',''),'VZW',''),'DE ',''),' BK',''),' CLUB',''),'BADMINTONCLUB',''),'BADMINTON',''),' ',''),'-','');
+END;
+$$
+DELIMITER ;
+
 -- Constraints for dumped tables
 --
 
