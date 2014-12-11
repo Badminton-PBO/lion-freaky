@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `lf_club` (
   `clubId` int(11) NOT NULL,
   `clubName` varchar(45) DEFAULT NULL,
+  `clubCode` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`clubId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -168,7 +169,8 @@ CREATE TABLE IF NOT EXISTS `lf_tmpdbload_playerscsv` (
   `playerLevelDouble` varchar(2) NOT NULL,
   `playerLevelMixed` varchar(2) NOT NULL,
   `typeName` varchar(45) NOT NULL,
-  `role` varchar(45) NOT NULL
+  `role` varchar(45) NOT NULL,
+  `groupCode` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -242,17 +244,6 @@ END;
 $$
 DELIMITER ;
 
-
-
-DROP FUNCTION IF EXISTS lf_dbload_normaliseTeamName;
-DELIMITER $$
-CREATE FUNCTION lf_dbload_normaliseTeamName(teamName TEXT)
-  RETURNS TEXT
-BEGIN
-	return replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(upper(teamName),' BC',''),'BC ',''),'VZW',''),'DE ',''),' BK',''),' CLUB',''),'BADMINTONCLUB',''),'BADMINTON',''),' ',''),'-','');
-END;
-$$
-DELIMITER ;
 
 -- Constraints for dumped tables
 --

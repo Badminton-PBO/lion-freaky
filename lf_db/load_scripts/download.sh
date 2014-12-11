@@ -29,8 +29,8 @@ curl \
     --user-agent "$USER_AGENT" \
     --cookie "$COOKIES_PATH" \
     --cookie-jar "$COOKIES_PATH" \
-    --output "../data/tmp/clubs.csv" \
-    'https://toernooi.nl/sport/admin/exportclubs.aspx?id='"$PBO_COMPETITIE_ID"'&ft=1'
+    --output "../data/tmp/teams.csv" \
+    'https://toernooi.nl/sport/admin/exportteams.aspx?id='"$PBO_COMPETITIE_ID"'&ft=1'
 
 curl \
     --silent \
@@ -38,8 +38,8 @@ curl \
     --user-agent "$USER_AGENT" \
     --cookie "$COOKIES_PATH" \
     --cookie-jar "$COOKIES_PATH" \
-    --output "../data/tmp/teams.csv" \
-    'https://toernooi.nl/sport/admin/exportteams.aspx?id='"$PBO_COMPETITIE_ID"'&ft=1'
+    --output "../data/tmp/clubs.csv" \
+    'https://toernooi.nl/organization/export/group_subgroups_export.aspx?id='"$PBO_OVL_ID"'&gid='"$PBO_OVL_GID"'&ft=1'
 
 curl \
     --silent \

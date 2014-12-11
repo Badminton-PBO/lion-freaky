@@ -20,5 +20,12 @@ define('DB_COLLATE', '');
 define('SITE_ROOT','http://localhost');
 
 /** User credentials of toernooi.nl user with enough credentials to download CSV from PBO competition */
-define('PBO_USERNAME','toernooiNlUserName');
-define('PBO_PWD','toernooiNlPwd');
+define('PROV_USERNAME','toernooiNlUserName');
+define('PROV_PWD','toernooiNlPwd');
+
+/** toernooi.nl related data */
+define('PB_COMPETITIE_ID','EF6D253B-4410-4B4F-883D-48A61DDA350D');
+define('PB_COMPETITIE_START_DAY','20140801');
+define('PB_COMPETITIE_END_DAY','20150731');
+define('PROV_ID','638D0B55-C39B-43AB-8A9D-D50D62017FBE');
+define('PROV_GID','3825E3C5-1371-4FF6-94AF-C4A3B152802A');			
