@@ -122,7 +122,7 @@
 			
 	</head>
 	<body>
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row hidden-print">
 				<div class="col-md-11">
 					<a href="http://www.badminton-pbo.be/" target="_new"><img src="http://pbo.kwal.org/pbo/wp/wp-content/themes/classico-catalyst/css/images/logo.png"></a>
@@ -175,13 +175,15 @@
 			<!-- /ko -->
 			<div class="row hidden-print">
 				<div class="col-md-5">
+					<!-- ko if: !$root.chosenClub() -->
+					<p data-bind="with: $root.dbload">Gebaseerd op gegevens van <span data-bind="text: dateLayout"> </span>, <span data-bind="text: hourLayout">  </span></p>
+					<!-- /ko -->
 					<p>
 						Kies je badmintonclub:
 						<select data-bind="options: sampleClubs,
 										   optionsText:'clubName',
 										   value: chosenClub,
 										   optionsCaption: 'Selecteer...'"></select>
-						
 					</p>
 					<p data-bind="with: chosenClub">
 						Kies je team:

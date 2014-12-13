@@ -116,8 +116,14 @@ join lf_player_has_team pt on pt.team_teamName = t.teamName
 join lf_player p on p.playerId = pt.player_playerId 
 order by c.clubName,t.teamName
 EOD;
+
+$queryDBLoad = <<<EOD
+SELECT  date_format(max(`when`),'%Y%m%d%H%i%S') date FROM `lf_event`
+where eventType='DBLOAD'
+EOD;
 	
 	$players = getDatabase()->all($query);
+	$dbloads = getDatabase()->all($queryDBLoad);
 	
 	$currentClubName="";
 	$currentTeam="";
@@ -128,16 +134,19 @@ EOD;
 			$clubCounter++;
 			$teamCounter=-1;
 			$currentTeamName="";
-			$result[$clubCounter]= array("clubName" => $player['clubName'], "teams" =>array());
+			$result["clubs"][$clubCounter]= array("clubName" => $player['clubName'], "teams" =>array());
 			$currentClubName = $player['clubName'];
 		}
 		if ($currentTeamName != $player['teamName']) {
 			$teamCounter++;
-			$result[$clubCounter]["teams"][$teamCounter] = array('teamName' => $player['teamName'],'type' =>$player['type'], 'event' => $player['event'], 'devision' => $player['devision'],'series'=> $player['series'],'captainName'=> $player['captainName'], 'baseTeam' => array());
+			$result["clubs"][$clubCounter]["teams"][$teamCounter] = array('teamName' => $player['teamName'],'type' =>$player['type'], 'event' => $player['event'], 'devision' => $player['devision'],'series'=> $player['series'],'captainName'=> $player['captainName'], 'baseTeam' => array());
 			$currentTeamName = $player['teamName'];
 		}
-		array_push($result[$clubCounter]["teams"][$teamCounter]["baseTeam"],$player['playerId']);		
+		array_push($result["clubs"][$clubCounter]["teams"][$teamCounter]["baseTeam"],$player['playerId']);		
 	}	
+	$result['DBLOAD'] = $dbloads;
+	
+	
 	header("Content-type: application/json");
 	//header("Content-type: text/html");
 	header("Content-Disposition: attachment; filename=json.data");
@@ -391,7 +400,16 @@ EOD;
 			
 		}
 		
-        if($doLoad == 'true') {        
+        if($doLoad == 'true') {       
+			if (!isValidCSV($clubCSV,"Code;Nummer;Naam;")
+			    or !isValidCSV($teamsCSV,"clubcode;clubname;eventname")
+			    or !isValidCSV($matchesCSV,"matchid;eventid;eventcode")
+			    or !isValidCSV($playersCSV,"groupcode;groupname;code;memberid")
+			    or !isValidCSV($baseTeamCSV,"player_playerId,team_teamName")
+			    or !isValidCSV($fixedRankingCSV,"Lidnummer;Klassement enkel;Klassement dubbel;Klassement gemengd")
+			    or !isValidCSV($ligaBaseTeamCSV,"Discipline,Teamnaam,Lidnummer,Voornaam,")) {
+				print("NOK: invalid CSV detected");	
+			};
 			cleanDB();        
 			getDatabase()->execute("set names latin1");//set to windows encoding
 			loadCSV($clubCSV,'clubs');        
@@ -401,9 +419,19 @@ EOD;
 			loadCSV($baseTeamCSV,'baseTeam');
 			loadCSV($fixedRankingCSV,'fixedRanking');
 			loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+			logEvent('DBLOAD','SYSTEM');
 		}
 		
         print("OK");
+}
+
+function isValidCSV($CSV,$firstLineContent) {
+	$csvFirstLine = strtok($CSV, "\n");
+	if (strpos($csvFirstLine,$firstLineContent) === false) {
+		return false;
+	} else {
+		return true;
+	}
 }
 
 function cleanDB() {

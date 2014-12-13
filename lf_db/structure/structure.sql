@@ -245,6 +245,11 @@ $$
 DELIMITER ;
 
 
+
+
+-- Add index for lf_event
+ALTER TABLE `lf_event` ADD INDEX ( `eventType` ) ;
+
 -- Constraints for dumped tables
 --
 

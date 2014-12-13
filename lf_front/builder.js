@@ -100,12 +100,25 @@ if (!window.console.log) window.console.log = function () { };
 		return hh+":"+mm;
 	}	
 	
+	function buildDateTime(dateTime) {
+		return new Date(dateTime.substring(0,4), dateTime.substring(4,6)-1,dateTime.substring(6,8), dateTime.substring(8,10), dateTime.substring(10,12));
+	}
+	
+	var DBLoad = function(dateTime) {		
+		this.dateTime = dateTime;
+		this.date = buildDateTime(dateTime);		
+
+		this.dateLayout = formatDate(this.date);
+		this.hourLayout = formatHour(this.date);
+		
+	}
+	
 	var Meeting = function(hTeam,oTeam,dateTime,locationName) {
 		this.hTeam = hTeam;
 		this.oTeam = oTeam;
 		this.dateTime = dateTime;
 		this.locationName = locationName;
-		this.date = new Date(dateTime.substring(0,4), dateTime.substring(4,6)-1,dateTime.substring(6,8), dateTime.substring(8,10), dateTime.substring(10,12));
+		this.date = buildDateTime(dateTime);		
 		
 		this.fullMeetingLayout = formatDate(this.date) + " : " + this.hTeam + "-" + this.oTeam;
 		this.dateLayout = formatDate(this.date);
@@ -534,6 +547,7 @@ if (!window.console.log) window.console.log = function () { };
 		self.chosenTeam = ko.observable();
 		self.chosenMeeting = ko.observable();
 		self.sampleClubs = ko.observable();
+		self.dbload = ko.observable();
 		
 		self.availablePlayers = ko.observableArray();
 		self.notAllowedPlayersOtherBaseTeam = ko.observableArray();
@@ -548,7 +562,8 @@ if (!window.console.log) window.console.log = function () { };
 
 		//LOAD CLUBS/TEAMS
 		$.get("api/clubsAndTeams", function(data) {
-			self.sampleClubs(data);
+			self.sampleClubs(data.clubs);
+			self.dbload(new DBLoad(data.DBLOAD[0].date));
 		});
 		
 		self.filteredAvailablePlayers = ko.computed(function() {
