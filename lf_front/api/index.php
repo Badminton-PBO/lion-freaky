@@ -672,23 +672,50 @@ where e.when >= DATE(NOW()) - INTERVAL 51 WEEK
 group by week(e.when,5)
 order by week(e.when,5) asc
 EOD;
+
+$queryTotalCombinedSelectAndPrintCmdPerWeek = <<<'EOD'
+select week(STR_TO_DATE(q.date,'%Y%m%d'),5) 'week',count(*) 'combined' from (
+select e.who, date_format(e.when,'%Y%m%d') date,max(e.when) ,max(ep.when) from lf_event e
+join lf_event ep on ep.eventType in ('print2pdf','print') and e.who = ep.who and ep.when > e.when and ep.when < date_add(e.when, INTERVAL 30 MINUTE)
+where e.eventType='teamselect'
+and e.when >= DATE(NOW()) - INTERVAL 51 WEEK
+group by e.who, date_format(e.when,'%Y%m%d')
+order by date_format(e.when,'%Y%m%d') desc
+) q 
+group by week(STR_TO_DATE(q.date,'%Y%m%d'),5)
+EOD;
+
+
 	$query='';
+	
 	switch($statType) {
 		case "totalSelectAndPrintCmdPerTeam": 
-			 $query = $queryTotalSelectAndPrintCmdPerTeam;
+			 $result = getDatabase()->all($queryTotalSelectAndPrintCmdPerTeam);
 			break;
-		case "totalSelectAndPrintCmdPerWeek": 
-			 $query = $queryTotalSelectAndPrintCmdPerWeek;
+		case "totalSelectAndPrintCmdPerWeek": 			
+			$result=array();
+			$result1=getDatabase()->all($queryTotalSelectAndPrintCmdPerWeek);
+			$result2=getDatabase()->all($queryTotalCombinedSelectAndPrintCmdPerWeek);
+						
+			foreach($result1 as $key => $totalSelect) {				
+				$totalCombined='0';
+				foreach($result2 as $key => $combinedPerWeek) {
+					if ($totalSelect['week'] == $combinedPerWeek['week']) {
+						$totalCombined = $combinedPerWeek['combined'];
+					}
+				}
+				$totalSelect['combined']=$totalCombined;
+				array_push($result,$totalSelect);
+				
+			}				
 			break;
 	}
 
-	$result = getDatabase()->all($query);	
 	header("Content-type: application/json");
 	//header("Content-type: text/html");
 	header("Content-Disposition: attachment; filename=json.data");
 	header("Pragma: no-cache");
 	header("Expires: 0");
-	//echo $query;
 	echo json_encode($result);	 
 	
 }

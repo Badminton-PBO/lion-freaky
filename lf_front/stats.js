@@ -97,7 +97,6 @@ if (!window.console.log) window.console.log = function () { };
 		  .attr("y", function(d) { return y(d.value); })
 		  .attr("height", function(d) { return height - y(d.value); })
 		  .style("fill", function(d) { return color(d.name); });
-		console.log("HEEERE");
 
 		var legend = svg.selectAll(".legend")
 		  .data(statNames.slice())
