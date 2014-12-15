@@ -686,7 +686,7 @@ group by week(STR_TO_DATE(q.date,'%Y%m%d'),5)
 EOD;
 
 $queryTotalPerWeek = <<<'EOD'
-select week(m.date,5) week,count(*) 'matches' from lf_match m
+select week(m.date,5) week,count(*)*2 'matches' from lf_match m
 where m.date >= DATE(NOW()) - INTERVAL 51 WEEK
 group by week(m.date,5)
 EOD;
@@ -719,7 +719,7 @@ EOD;
 						$totalMatches = $totalPerWeek['matches'];
 					}
 				}
-				$totalSelect['totalMatches']=$totalMatches;
+				$totalSelect['totalMatchesX2']=$totalMatches;
 				array_push($result,$totalSelect);
 				
 			}				

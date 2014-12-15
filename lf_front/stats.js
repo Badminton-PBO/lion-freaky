@@ -52,7 +52,7 @@ if (!window.console.log) window.console.log = function () { };
 	d3.json("api/statistic/totalSelectAndPrintCmdPerWeek", function(error, data) {
 	//d3.json("json.data", function(error, data) {
 
-		var statNames = ["select","print","combined","totalMatches"];
+		var statNames = ["select","print","combined","totalMatchesX2"];
 		data.forEach(function(d) {
 			d.stats = statNames.map(function(name) { return {name: name, value: +d[name]}; });
 		});		
