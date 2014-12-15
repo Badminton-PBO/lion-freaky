@@ -7,9 +7,9 @@ if (!window.console.log) window.console.log = function () { };
 
 	function myViewModel() {
 		var self = this;
-		self.totalSelectAndPrintCmdPerWeekData = ko.observable();
+		self.totalSelectAndPrintCmdPerTeam = ko.observable();
 		$.get("api/statistic/totalSelectAndPrintCmdPerTeam", function(data) {
-			self.totalSelectAndPrintCmdPerWeekData(data);
+			self.totalSelectAndPrintCmdPerTeam(data);
 		});
 		
 	}
@@ -52,10 +52,11 @@ if (!window.console.log) window.console.log = function () { };
 	d3.json("api/statistic/totalSelectAndPrintCmdPerWeek", function(error, data) {
 	//d3.json("json.data", function(error, data) {
 
-		var statNames = ["select","print"];
+		var statNames = ["select","print","combined"];
 		data.forEach(function(d) {
 			d.stats = statNames.map(function(name) { return {name: name, value: +d[name]}; });
 		});		
+		//console.log(data);
 
 		x0.domain(data.map(function(d) { return d.week; }));
 		x1.domain(statNames).rangeRoundBands([0, x0.rangeBand()]);	  
@@ -89,15 +90,22 @@ if (!window.console.log) window.console.log = function () { };
 		  .attr("transform", function(d) { return "translate(" + x0(d.week) + ",0)"; });
 
 
-		bar.selectAll("rect")
+		var gBar = bar.selectAll("rect")
 		  .data(function(d) { return d.stats; })
-		.enter().append("rect")
-		  .attr("width", x1.rangeBand())
-		  .attr("x", function(d) { return x1(d.name); })
-		  .attr("y", function(d) { return y(d.value); })
-		  .attr("height", function(d) { return height - y(d.value); })
-		  .style("fill", function(d) { return color(d.name); });
-
+		.enter().append("g");
+		
+		gBar.append("rect")
+			  .attr("width", x1.rangeBand())
+			  .attr("x", function(d) { return x1(d.name); })
+			  .attr("y", function(d) { return y(d.value); })
+			  .attr("height", function(d) { return height - y(d.value); })
+			  .style("fill", function(d) { return color(d.name); });
+				 
+		gBar.append("text")
+   		    .attr("x", function(d) { return x1(d.name) +x1.rangeBand()/2; })
+		    .attr("y", function(d) { return height -5; })
+			.text(function(d) { return d.value!= '0' ? d.value: ""});
+		  
 		var legend = svg.selectAll(".legend")
 		  .data(statNames.slice())
 		.enter().append("g")
