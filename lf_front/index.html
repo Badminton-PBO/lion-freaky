@@ -371,79 +371,78 @@
 					</div>
 				</div>
 			</div>
-			<div id="printhtml" class="row visible-print-inline">
-			<!--<div id="printhtml" class="row">-->
+		</div>
+		<div class="container">
+			<div id="printhtml" class="row visible-print-block">
 				<h1 class="text-center">Ploeguitwisselingsformulier interclub competitie</h1>
-				<div class="row">
-					<div class="col-md-3" data-bind="with:$root.chosenTeam"><span data-bind="text: teamTypeLayout()"></span>, Provenciaal</div>
-					<div class="col-md-3" data-bind="with:$root.chosenTeam">Afdeling: <span data-bind="text: devision"></span> / Reeks: <span data-bind="text: series"></span></div>
-					<div class="col-md-3" data-bind="with:$root.chosenMeeting">Locatie: <span data-bind="text: locationName"></span></div>
-					<div class="col-md-3" data-bind="with:$root.chosenMeeting">Datum/Uur: <span data-bind="text: dateLayout"></span>  <span data-bind="text: hourLayout"></span></div>
-				</div>						
-				<div class="row">					
-					<table class="table table-bordered">
-						<tr>
-							<td><h2>Wedstrijd</h2></td>
-							<td class="text-center" data-bind="with:$root.chosenMeeting"><h2><span data-bind="text: hTeam"></span></h2></td>
-							<td class="text-center" data-bind="with:$root.chosenMeeting"><h2><span data-bind="text: oTeam"></span></h2></td>
-						</tr>
-					</table>
-				</div>
-				<div class="row" data-bind="if: $root.chosenMeeting()">
-					<table class="table table-condensed table-bordered">
-						<thead>
+				<div class="container">
+					<div class="row">
+						<div class="col-md-3" data-bind="with:$root.chosenTeam"><span data-bind="text: teamTypeLayout()"></span>, Provenciaal</div>
+						<div class="col-md-3" data-bind="with:$root.chosenTeam">Afdeling: <span data-bind="text: devision"></span> / Reeks: <span data-bind="text: series"></span></div>
+						<div class="col-md-3" data-bind="with:$root.chosenMeeting">Locatie: <span data-bind="text: locationName"></span></div>
+						<div class="col-md-3" data-bind="with:$root.chosenMeeting">Datum/Uur: <span data-bind="text: dateLayout"></span>  <span data-bind="text: hourLayout"></span></div>
+					</div>						
+					<div class="row">					
+						<table class="table table-bordered">
 							<tr>
-								<th width="10%">Discipline</th>
-								<th width="25%">Naam</th>
-								<th width="25%">Voornaam</th>
-								<th width="10%">Lidnummer</th>
-								<th width="10%">Klassement</th>
-								<th width="20%" style="text-align: center">Uitslagen</th>
+								<td><h3>Wedstrijd</h3></td>
+								<td class="text-center" data-bind="with:$root.chosenMeeting"><h3><span data-bind="text: hTeam"></span></h3></td>
+								<td class="text-center" data-bind="with:$root.chosenMeeting"><h3><span data-bind="text: oTeam"></span></h3></td>
 							</tr>
-						</thead>
-						<tbody>								
-							<!-- ko foreach: games -->		
-								<!-- ko foreach: playersInGame -->
-									<tr>
-										<!-- ko if: ($index() === 0) -->
-										<td style="padding:0px" data-bind="attr:{rowspan: $parent.playersInGame().length}"><span data-bind="text: $parent.id"></td>
-										<!-- /ko -->
-										<td style="padding:0px"><span data-bind="text: lastName"></span></td>
-										<td style="padding:0px"><span data-bind="text: firstName"></span></td>
-										<td style="padding:0px"><span data-bind="text: vblId"></span></td>
-										<td style="padding:0px"><span data-bind="text: ranking($parent.gameType)"></span></td>
-										<!-- ko if: ($index() === 0) -->
-										<td style="padding:0px" data-bind="attr:{rowspan: $parent.playersInGame().length}">&nbsp;</td>
-										<!-- /ko -->
-									</tr>
-								<!-- /ko -->
-							<!-- /ko -->																	
-							<tr>
-								<td rowspan="3">invallers</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>									
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>									
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-							</tr>								
-						</tbody>
-					</table>
-					<div data-bind="with:$root.chosenTeam">Ploegkapitein <span data-bind="text: teamName"></span>: <span data-bind="text: captainName"></span></div>					
-					<div>Handtekening,</div>
-					<div><table border="1px" width="200px"><tr><td height="50px">&nbsp;</td></tr></table></div>
+						</table>
+					</div>
+					<div class="row" data-bind="if: $root.chosenMeeting()">
+						<table class="table table-condensed table-bordered">
+							<thead>
+								<tr>
+									<th width="10%">Discipline</th>
+									<th width="25%">Naam</th>
+									<th width="25%">Voornaam</th>
+									<th width="10%">Lidnummer</th>
+									<th width="10%">Klassement</th>
+									<th width="20%" style="text-align: center">Uitslagen</th>
+								</tr>
+							</thead>
+							<tbody>								
+								<!-- ko foreach: games -->		
+									<!-- ko foreach: playersInGame -->
+										<tr>
+											<!-- ko if: ($index() === 0) -->
+											<td style="padding:0px" data-bind="attr:{rowspan: $parent.playersInGame().length}"><span data-bind="text: $parent.id"></td>
+											<!-- /ko -->
+											<td style="padding:0px"><span data-bind="text: lastName"></span></td>
+											<td style="padding:0px"><span data-bind="text: firstName"></span></td>
+											<td style="padding:0px"><span data-bind="text: vblId"></span></td>
+											<td style="padding:0px"><span data-bind="text: ranking($parent.gameType)"></span></td>
+											<!-- ko if: ($index() === 0) -->
+											<td style="padding:0px" data-bind="attr:{rowspan: $parent.playersInGame().length}">&nbsp;</td>
+											<!-- /ko -->
+										</tr>
+									<!-- /ko -->
+								<!-- /ko -->																	
+								<tr>
+									<td rowspan="2">invallers</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+								</tr>
+								<tr>									
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<div class="col-md-6" data-bind="with:$root.chosenTeam">Ploegkapitein <span data-bind="text: teamName"></span>: <span data-bind="text: captainName"></span></div>
+						<div class="col-md-2">Handtekening</div>
+						<div class="col-md-4"><table border="1px" width="200px"><tr><td height="50px">&nbsp;</td></tr></table></div>
+					</div>
 				</div>
-			</div>			
+			</div>									
 		</div>
 		<div id="printframe" style="display:none">
 			<iframe src="" id="iPrint" style="display:none" frameborder="0">
