@@ -685,6 +685,12 @@ order by date_format(e.when,'%Y%m%d') desc
 group by week(STR_TO_DATE(q.date,'%Y%m%d'),5)
 EOD;
 
+$queryTotalPerWeek = <<<'EOD'
+select week(m.date,5) week,count(*) 'matches' from lf_match m
+where m.date >= DATE(NOW()) - INTERVAL 51 WEEK
+group by week(m.date,5)
+EOD;
+
 
 	$query='';
 	
@@ -696,6 +702,7 @@ EOD;
 			$result=array();
 			$result1=getDatabase()->all($queryTotalSelectAndPrintCmdPerWeek);
 			$result2=getDatabase()->all($queryTotalCombinedSelectAndPrintCmdPerWeek);
+			$result3=getDatabase()->all($queryTotalPerWeek);
 						
 			foreach($result1 as $key => $totalSelect) {				
 				$totalCombined='0';
@@ -705,6 +712,14 @@ EOD;
 					}
 				}
 				$totalSelect['combined']=$totalCombined;
+
+				$totalMatches='0';
+				foreach($result3 as $key => $totalPerWeek) {
+					if ($totalSelect['week'] == $totalPerWeek['week']) {
+						$totalMatches = $totalPerWeek['matches'];
+					}
+				}
+				$totalSelect['totalMatches']=$totalMatches;
 				array_push($result,$totalSelect);
 				
 			}				
