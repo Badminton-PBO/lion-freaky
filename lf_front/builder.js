@@ -715,12 +715,6 @@ if (!window.console.log) window.console.log = function () { };
 		//////////////////////////////////////////////////////
 		//BEGIN Validation utilities
 		//////////////////////////////////////////////////////
-		
-		this.handleTrash = function(arg,event,ui) {
-			  $(".trashItem").fadeOut(1000);
-		}
-		
-		
 		self.numberOfGamesPerPlayerPerGameType = function(myPlayer,myGameType)  {
 			var gameCount=0;
 			$.each(self.games(), function(index1,game) {					
@@ -884,6 +878,5 @@ if (!window.console.log) window.console.log = function () { };
 	
 	var vm = new myViewModel(initialGamesEmpty());	
 	ko.applyBindings(vm);		
-	
-	$("#trashCan").append("<div class='btn btn-primary center-block' style='font-size:30px;padding-top:10px'><span class='glyphicon glyphicon-trash'></span></div>");
+
 })(ko, jQuery);

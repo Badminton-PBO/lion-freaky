@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html id="printfull">
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>PBO Ploegopstelling</title>
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 		<link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -14,6 +15,8 @@
 		<script type="text/javascript" src="libs/js/knockout-3.2.0.js"></script>
 		<script type="text/javascript" src="libs/knockout-sortable-master/build/knockout-sortable.min.js"></script>	
 
+		<!-- JQuery sortable on touch -->
+		<script src="libs/js/jquery.ui.touch-punch.min.js"></script>
 		
 		<!-- Bootstrap -->
 		<script type="text/javascript" src="libs/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
@@ -110,13 +113,6 @@
             height: 50px;
             background-color: #AAA;
         }
-        
-#ploegopstelling.affix {
-    position: fixed;
-    top: 0;
-    width: 650px;
-  }
-
 		</style>
 		
 			
@@ -202,72 +198,75 @@
 					<div data-bind="if: $root.chosenMeeting()">
 						
 						<div class="well well-sm">
-						<div>Filter opstelbare spelers:  <span data-bind="text: $root.filteredAvailablePlayers().length"/></span>/<span data-bind="text: $root.availablePlayers().length"/></div>
-						<!-- ko if: $root.chosenTeam().isMultiSexTeam() -->
-						<div>
-							<input type="radio" name="playerGender" value="ALL" data-bind="checked: playerGenderFilter"> Man/Vrouw</input>
-							<input type="radio" name="playerGender" value="M" data-bind="checked: playerGenderFilter"> Man</input>
-							<input type="radio" name="playerGender" value="F" data-bind="checked: playerGenderFilter"> Vrouw</input>
+							<div>Filter opstelbare spelers:  <span data-bind="text: $root.filteredAvailablePlayers().length"/></span>/<span data-bind="text: $root.availablePlayers().length"/></div>
+							<!-- ko if: $root.chosenTeam().isMultiSexTeam() -->
+							<div>
+								<input type="radio" name="playerGender" value="ALL" data-bind="checked: playerGenderFilter"> Man/Vrouw</input>
+								<input type="radio" name="playerGender" value="M" data-bind="checked: playerGenderFilter"> Man</input>
+								<input type="radio" name="playerGender" value="F" data-bind="checked: playerGenderFilter"> Vrouw</input>
+							</div>
+							<!-- /ko -->
+							<div>
+								<input type="radio" name="playerType" value="ALL" data-bind="checked: playerTypeFilter"> Allen</input>
+								<input type="radio" name="playerType" value="C" data-bind="checked: playerTypeFilter"> Competitie</input>
+								<input type="radio" name="playerType" value="R" data-bind="checked: playerTypeFilter"> Recreant</input>
+								<input type="radio" name="playerType" value="J" data-bind="checked: playerTypeFilter"> Jeugd</input>
+							</div>
 						</div>
-						<!-- /ko -->
-						<div>
-							<input type="radio" name="playerType" value="ALL" data-bind="checked: playerTypeFilter"> Allen</input>
-							<input type="radio" name="playerType" value="C" data-bind="checked: playerTypeFilter"> Competitie</input>
-							<input type="radio" name="playerType" value="R" data-bind="checked: playerTypeFilter"> Recreant</input>
-							<input type="radio" name="playerType" value="J" data-bind="checked: playerTypeFilter"> Jeugd</input>
-						</div>
-						</div>
-						<table class="table table-bordered table-condensed">
-							<thead>
+						<div class="well well-sm" style="height:60vh; overflow:auto">
+							<table class="table table-bordered table-condensed">
+								<thead>
+										<tr>
+											<th>Speler</th>
+											<th class="playerDetail">vast index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></th>
+											<th class="playerDetail">var. index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></th>
+										</tr>
+								</thead>
+								<tbody data-bind="foreach: filteredAvailablePlayers">
 									<tr>
-										<td>Speler</td>
-										<td class="playerDetail">vast index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></td>
-										<td class="playerDetail">var. index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></td>
+										<td data-bind="draggable: $data"><span class="glyphicon glyphicon-user"></span> <span data-bind="text: fullName"></span></td>
+										<td data-bind="text: fixedRankingLayout($root.chosenTeam().teamType)" class="playerDetail"></td>
+										<td data-bind="text: rankingLayout($root.chosenTeam().teamType)" class="playerDetail"></td>
 									</tr>
-							</thead>
-							<tbody data-bind="foreach: filteredAvailablePlayers">
-								<tr data-bind="draggable: $data">
-									<td><span class="glyphicon glyphicon-user"></span> <span data-bind="text: fullName"></span></td>
-									<td data-bind="text: fixedRankingLayout($root.chosenTeam().teamType)" class="playerDetail"></td>
-									<td data-bind="text: rankingLayout($root.chosenTeam().teamType)" class="playerDetail"></td>
-								</tr>
-							</tbody>							
-						</table>
+								</tbody>							
+							</table>
+						</div>
+						<div data-bind="if: ($root.chosenMeeting()  && ($root.notAllowedPlayersOtherBaseTeam().length > 0 || $root.notAllowedPlayersOnBaseMaxPlayerIndex().length > 0))">
+							<button id="nonplayersbutton" type="button" class="btn btn-primary" onclick="togglePlayers();">Niet opstelbare spelers &raquo;</button>						
+							<div id="nonplayerstable" class="well well-sm" style="display:none">
+								<table class="table table-bordered table-condensed">
+									<tbody>
+										<!-- ko foreach: notAllowedPlayersOtherBaseTeam -->
+										<tr data-toggle="tooltip" data-placement="right" title="De titularis mag niet in de basisopstelling van een ploeg uit dezelfde of hogere afdeling staan ">
+											<td data-bind="text: fullName"></td>
+										</tr>
+										<!-- /ko -->
+										<!-- ko foreach: notAllowedPlayersOnBaseMaxPlayerIndex -->
+										<tr data-toggle="tooltip" data-placement="right" title="Vaste index hoger dan dat van basisspeler">
+											<td><span data-bind="text: fullName"></span> (<span data-bind="text: fixedRankingLayout($root.chosenTeam().teamType)"></span>)</td>
+										</tr>
+										<!-- /ko -->								
+									</tbody>							
+								</table>					
+							</div>	
+						</div>
 					</div>
-					<p data-bind="if: ($root.chosenMeeting()  && ($root.notAllowedPlayersOtherBaseTeam().length > 0 || $root.notAllowedPlayersOnBaseMaxPlayerIndex().length > 0))">
-						<button id="nonplayersbutton" type="button" class="btn btn-primary" onclick="togglePlayers();">Niet opstelbare spelers &raquo;</button>						
-						<table id="nonplayerstable" class="table table-bordered table-condensed" style="display:none">
-							<tbody>
-								<!-- ko foreach: notAllowedPlayersOtherBaseTeam -->
-								<tr data-toggle="tooltip" data-placement="right" title="De titularis mag niet in de basisopstelling van een ploeg uit dezelfde of hogere afdeling staan ">
-									<td data-bind="text: fullName"></td>
-								</tr>
-								<!-- /ko -->
-								<!-- ko foreach: notAllowedPlayersOnBaseMaxPlayerIndex -->
-								<tr data-toggle="tooltip" data-placement="right" title="Vaste index hoger dan dat van basisspeler">
-									<td><span data-bind="text: fullName"></span> (<span data-bind="text: fixedRankingLayout($root.chosenTeam().teamType)"></span>)</td>
-								</tr>
-								<!-- /ko -->								
-							</tbody>							
-						</table>						
-					</p>
 				</div>
-				<div class="col-md-7 pull-right">
-					<div id="ploegopstelling" data-spy="affix" data-offset-top="60">
+				<div class="col-md-7" data-bind="if: $root.chosenMeeting()">
+					<div id="ploegopstelling">
 						<div class="row">
 							<div class="col-md-4">
 								<h2>Ploegopstelling</h2>
 							</div>
-							<div class="col-md-4" style="padding-top:10px">
-							<div class="row">								
-							<!-- ko if: $root.chosenTeam() -->
+							<div class="col-md-8" style="padding-top:10px">
+							<!-- ko if: $root.chosenMeeting() -->
 								<!-- ko if: $root.chosenTeam().isFull() -->
 								<div id="print" class='label label-default' style='font-size:30px;margin-right:10px;'>
 									<a href="#" onclick="javascript:window.print()">
 										<span class="glyphicon glyphicon-print">	
 									</a> 							
 								</div>
-								<div id="print2pdf" class='label label-default' style='font-size:30px'>
+								<div id="print2pdf" class='label label-default' style='font-size:30px;margin-right:10px;'>
 									<a href="#" data-bind="click: print2pdf">
 										<span class="glyphicon glyphicon-floppy-save">	
 									</a> 							
@@ -277,20 +276,16 @@
 								<div id="print" class='label label-default' style='font-size:30px;margin-right:10px;'>
 									<span class="glyphicon glyphicon-print"></span>	
 								</div>
-								<div id="print2pdf" class='label label-default' style='font-size:30px'>
+								<div id="print2pdf" class='label label-default' style='font-size:30px;margin-right:10px;'>
 									<span class="glyphicon glyphicon-floppy-save"></span>	
 								</div>
 								<!-- /ko -->
+								<div id="reset" class='label label-default' style='font-size:30px'>
+									<a href="#" data-bind="click: resetForm">
+										<span class="glyphicon glyphicon-trash"></span>	
+									</a>
+								</div>									
 							<!-- /ko -->
-							</div>
-							</div>
-							
-							<div class="col-md-4" style="padding-top: 10px">
-								<div id="trashCan" data-bind="sortable: {data: trash, afterMove: $root.handleTrash}, click: resetForm">
-									<div style="position: absolute;top: 25;left: 80;z-index: 10;">
-										<span class="trashItem" data-bind="text: fullName"></span>			
-									</div>							
-								</div>
 							</div>
 						</div>
 						<div class="row">
@@ -306,9 +301,9 @@
 						<div class="row">
 							<div class="col-md-8" data-bind="with:$root.chosenTeam">Ploegkapitein <span data-bind="text: teamName"></span>: <input data-bind="textInput: captainName" /></div>
 						</div>						
-						<div class="row">
+						<div class="row"></div>
 							<div id="error" data-bind="flash: lastError"></div>
-						</div>
+						</div>						
 						<div class="row">
 							<table class="table table-condensed">
 								<thead>
@@ -369,7 +364,7 @@
 							</div>							
 						</div>
 					</div>
-				</div>
+				</div>				
 			</div>
 		</div>
 		<div class="container">
