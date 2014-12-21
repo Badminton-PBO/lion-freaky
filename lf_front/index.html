@@ -107,12 +107,28 @@
     color: #ddd;   
 }		
 
-        .trash {
-            background-color: #000;
-            width: 300px;
-            height: 50px;
-            background-color: #AAA;
-        }
+.trash {
+	background-color: #000;
+	width: 300px;
+	height: 50px;
+	background-color: #AAA;
+}
+
+@media(min-width:0px) {
+	#playerListId {
+		height:20vh; 
+		overflow:auto;
+	}
+}
+
+@media(min-width:992px) {
+	#playerListId {
+		height:55vh; 
+		overflow:auto;
+	}
+}
+
+
 		</style>
 		
 			
@@ -213,7 +229,7 @@
 								<input type="radio" name="playerType" value="J" data-bind="checked: playerTypeFilter"> Jeugd</input>
 							</div>
 						</div>
-						<div class="well well-sm" style="height:60vh; overflow:auto">
+						<div id="playerListId" class="well well-sm" style="">
 							<table class="table table-bordered table-condensed">
 								<thead>
 										<tr>
@@ -224,14 +240,14 @@
 								</thead>
 								<tbody data-bind="foreach: filteredAvailablePlayers">
 									<tr>
-										<td data-bind="draggable: $data"><span class="glyphicon glyphicon-user"></span> <span data-bind="text: fullName"></span></td>
+										<td data-bind="draggable: $data"><span class="glyphicon glyphicon-user"></span> <span data-bind="text: fullName" style="color:#428bca"></span></td>
 										<td data-bind="text: fixedRankingLayout($root.chosenTeam().teamType)" class="playerDetail"></td>
 										<td data-bind="text: rankingLayout($root.chosenTeam().teamType)" class="playerDetail"></td>
 									</tr>
 								</tbody>							
 							</table>
 						</div>
-						<div data-bind="if: ($root.chosenMeeting()  && ($root.notAllowedPlayersOtherBaseTeam().length > 0 || $root.notAllowedPlayersOnBaseMaxPlayerIndex().length > 0))">
+						<div data-bind="if: ($root.chosenMeeting()  && ($root.notAllowedPlayersOtherBaseTeam().length > 0 || $root.notAllowedPlayersOnBaseMaxPlayerIndex().length > 0))" class="hidden-xs hidden-sm">
 							<button id="nonplayersbutton" type="button" class="btn btn-primary" onclick="togglePlayers();">Niet opstelbare spelers &raquo;</button>						
 							<div id="nonplayerstable" class="well well-sm" style="display:none">
 								<table class="table table-bordered table-condensed">
@@ -255,51 +271,53 @@
 				<div class="col-md-7" data-bind="if: $root.chosenMeeting()">
 					<div id="ploegopstelling">
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col-sd-4 col-xs-4">
 								<h2>Ploegopstelling</h2>
 							</div>
-							<div class="col-md-8" style="padding-top:10px">
-							<!-- ko if: $root.chosenMeeting() -->
-								<!-- ko if: $root.chosenTeam().isFull() -->
-								<div id="print" class='label label-default' style='font-size:30px;margin-right:10px;'>
-									<a href="#" onclick="javascript:window.print()">
-										<span class="glyphicon glyphicon-print">	
-									</a> 							
-								</div>
-								<div id="print2pdf" class='label label-default' style='font-size:30px;margin-right:10px;'>
-									<a href="#" data-bind="click: print2pdf">
-										<span class="glyphicon glyphicon-floppy-save">	
-									</a> 							
-								</div>
+							<div class="col-sd-8 col-xs-8 " style="padding-top:10px">
+								<div class="pull-right">
+								<!-- ko if: $root.chosenMeeting() -->
+									<!-- ko if: $root.chosenTeam().isFull() -->
+									<div id="print" class='label label-default' style='font-size:30px;margin-right:10px;'>
+										<a href="#" onclick="javascript:window.print()">
+											<span class="glyphicon glyphicon-print">	
+										</a> 							
+									</div>
+									<div id="print2pdf" class='label label-default' style='font-size:30px;margin-right:10px;'>
+										<a href="#" data-bind="click: print2pdf">
+											<span class="glyphicon glyphicon-floppy-save">	
+										</a> 							
+									</div>
+									<!-- /ko -->
+									<!-- ko ifnot: $root.chosenTeam().isFull() -->
+									<div id="print" class='label label-default' style='font-size:30px;margin-right:10px;'>
+										<span class="glyphicon glyphicon-print"></span>	
+									</div>
+									<div id="print2pdf" class='label label-default' style='font-size:30px;margin-right:10px;'>
+										<span class="glyphicon glyphicon-floppy-save"></span>	
+									</div>
+									<!-- /ko -->
+									<div id="reset" class='label label-default' style='font-size:30px'>
+										<a href="#" data-bind="click: resetForm">
+											<span class="glyphicon glyphicon-trash"></span>	
+										</a>
+									</div>									
 								<!-- /ko -->
-								<!-- ko ifnot: $root.chosenTeam().isFull() -->
-								<div id="print" class='label label-default' style='font-size:30px;margin-right:10px;'>
-									<span class="glyphicon glyphicon-print"></span>	
 								</div>
-								<div id="print2pdf" class='label label-default' style='font-size:30px;margin-right:10px;'>
-									<span class="glyphicon glyphicon-floppy-save"></span>	
-								</div>
-								<!-- /ko -->
-								<div id="reset" class='label label-default' style='font-size:30px'>
-									<a href="#" data-bind="click: resetForm">
-										<span class="glyphicon glyphicon-trash"></span>	
-									</a>
-								</div>									
-							<!-- /ko -->
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-md-4" data-bind="with:$root.chosenTeam"><span data-bind="text: teamTypeLayout()"></span>, Provenciaal</div>
-							<div class="col-md-4" data-bind="with:$root.chosenTeam">Afdeling: <span data-bind="text: devision"></span> / Reeks: <span data-bind="text: series"></span></div>
-							<div class="col-md-4" data-bind="with:$root.chosenMeeting">Locatie: <span data-bind="text: locationName"></span></div>							
+						<div class="row hidden-xs hidden-sm">
+							<div class="col-xs-4" data-bind="with:$root.chosenTeam"><span data-bind="text: teamTypeLayout()"></span>, Provenciaal</div>
+							<div class="col-xs-4" data-bind="with:$root.chosenTeam">Afdeling: <span data-bind="text: devision"></span> / Reeks: <span data-bind="text: series"></span></div>
+							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Locatie: <span data-bind="text: locationName"></span></div>							
+						</div>						
+						<div class="row hidden-xs hidden-sm">
+							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Thuisploeg: <span data-bind="text: hTeam"></span></div>
+							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Bezoekers: <span data-bind="text: oTeam"></span></div>
+							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Datum/Uur: <span data-bind="text: dateLayout"></span>  <span data-bind="text: hourLayout"></span></div>
 						</div>						
 						<div class="row">
-							<div class="col-md-4" data-bind="with:$root.chosenMeeting">Thuisploeg: <span data-bind="text: hTeam"></span></div>
-							<div class="col-md-4" data-bind="with:$root.chosenMeeting">Bezoekers: <span data-bind="text: oTeam"></span></div>
-							<div class="col-md-4" data-bind="with:$root.chosenMeeting">Datum/Uur: <span data-bind="text: dateLayout"></span>  <span data-bind="text: hourLayout"></span></div>
-						</div>						
-						<div class="row">
-							<div class="col-md-8" data-bind="with:$root.chosenTeam">Ploegkapitein <span data-bind="text: teamName"></span>: <input data-bind="textInput: captainName" /></div>
+							<div class="col-xs-8" data-bind="with:$root.chosenTeam">Ploegkapitein <span data-bind="text: teamName"></span>: <input data-bind="textInput: captainName" /></div>
 						</div>						
 						<div class="row"></div>
 							<div id="error" data-bind="flash: lastError"></div>
@@ -340,27 +358,41 @@
 										</tr>
 								</tbody>
 							</table>										
-						</div>									
+						</div>		
+						<div class="row visible-xs visible-sm">
+							<div class="col-xs-4" data-bind="with:$root.chosenTeam"><span data-bind="text: teamTypeLayout()"></span>, Provenciaal</div>
+							<div class="col-xs-4" data-bind="with:$root.chosenTeam">Afdeling: <span data-bind="text: devision"></span> / Reeks: <span data-bind="text: series"></span></div>
+							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Locatie: <span data-bind="text: locationName"></span></div>							
+						</div>						
+						<div class="row visible-xs visible-sm">
+							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Thuisploeg: <span data-bind="text: hTeam"></span></div>
+							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Bezoekers: <span data-bind="text: oTeam"></span></div>
+							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Datum/Uur: <span data-bind="text: dateLayout"></span>  <span data-bind="text: hourLayout"></span></div>
+						</div>														
 						<div class="row" data-bind="with: chosenTeam">	
 							<div class="col-md-6">
-								Teamindex papieren ploeg: <span data-bind="text: baseTeamIndex"></span>					
-								<br>Spelers op papier:
-								<ul data-bind="foreach: playersInBaseTeam">
-									<li>
-										<span data-bind="text: fullName"></span>,
-										<span data-bind="text: fixedIndexInsideTeam($root.chosenTeam().teamType)"></span>
-									</li>
-								</ul>						
+								<div class="well well-sm">
+									Teamindex papieren ploeg: <span data-bind="text: baseTeamIndex"></span>					
+									<br>Spelers op papier:
+									<ul data-bind="foreach: playersInBaseTeam">
+										<li>
+											<span data-bind="text: fullName"></span>,
+											<span data-bind="text: fixedIndexInsideTeam($root.chosenTeam().teamType)"></span>
+										</li>
+									</ul>						
+								</div>
 							</div>
 							<div class="col-md-6">
-								Teamindex effectieve ploeg: <span data-bind="text: effectiveTeamIndex"></span>
-								<br>Effectieve spelers:
-								<ul data-bind="foreach: effectivePlayersInTeam">
-									<li>
-										<span data-bind="text: fullName"></span>,
-										<span data-bind="text: fixedIndexInsideTeam($root.chosenTeam().teamType)"></span>
-									</li>
-								</ul>						
+								<div class="well well-sm">
+									Teamindex effectieve ploeg: <span data-bind="text: effectiveTeamIndex"></span>
+									<br>Effectieve spelers:
+									<ul data-bind="foreach: effectivePlayersInTeam">
+										<li>
+											<span data-bind="text: fullName"></span>,
+											<span data-bind="text: fixedIndexInsideTeam($root.chosenTeam().teamType)"></span>
+										</li>
+									</ul>						
+								</div>
 							</div>							
 						</div>
 					</div>
