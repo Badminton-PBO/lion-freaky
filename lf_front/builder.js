@@ -126,6 +126,12 @@ if (!window.console.log) window.console.log = function () { };
 		
 	}	
 
+	var Button = function(name,value,selected) {
+	  this.name = name;
+	  this.buttonValue =  ko.observable(value);
+	  this.selected = ko.observable(selected);
+	}
+	
 	
 	var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking,type) {
 		this.firstName = firstName;
@@ -311,8 +317,6 @@ if (!window.console.log) window.console.log = function () { };
 		this.removePlayer = function(p) {
 			self.playersInGame.remove(p);
 		};	
-		
-							
 				
 	};			
 	
@@ -537,6 +541,24 @@ if (!window.console.log) window.console.log = function () { };
 		];	
 	}
 
+	function initialGenderButtons() {
+		return [ 
+		new Button('Man/Vrouw','ALL',true),
+		new Button('Man','M',false),
+		new Button('Vrouw','F',false)
+		];
+	};
+	
+	
+	function initialPlayerTypeButtons() {
+		return [ 
+		 new Button('Allen','ALL',false), 
+         new Button('Competitie','C',true),
+         new Button('Recreant','R',false),
+         new Button('Jeugd','J',false)
+		];
+	};	
+
 	
 				
 	function myViewModel(games) {
@@ -553,11 +575,44 @@ if (!window.console.log) window.console.log = function () { };
 		self.notAllowedPlayersOtherBaseTeam = ko.observableArray();
 		self.notAllowedPlayersOnBaseMaxPlayerIndex = ko.observableArray();
 		self.lastError = ko.observable();
-		self.playerGenderFilter = ko.observable("ALL");
-		self.playerTypeFilter = ko.observable("C");
 		
 		self.trash = ko.observableArray([]);
 		self.trash.id = "trash";
+		self.selectedGameId =ko.observable("");
+		self.genderButtons = ko.observableArray(initialGenderButtons());
+		self.selectedGenderButton = ko.observable(self.genderButtons()[0]);
+		self.selectGenderButton = function(button) {
+			//console.log("Selecting "+button.name);
+			if (self.selectedGenderButton()){
+				 self.selectedGenderButton().selected(false); 
+			 }
+			
+			self.selectedGenderButton(button);
+			self.selectedGenderButton().selected(true);
+		};
+
+		self.playerTypeButtons = ko.observableArray(initialPlayerTypeButtons());
+		self.selectedPlayerTypeButton = ko.observable(self.playerTypeButtons()[1]);
+		self.selectPlayerTypeButton = function(button) {
+			//console.log("Selecting "+button.name);
+			if (self.playerTypeButtons()){
+				 self.selectedPlayerTypeButton().selected(false); 
+			 }
+			
+			self.selectedPlayerTypeButton(button);
+			self.selectedPlayerTypeButton().selected(true);
+		};
+
+
+
+		self.selectedGame = ko.computed(function() {
+			if (self.games()) {				
+				var x = self.games().filter(function(g) {
+					 return g.id == self.selectedGameId();
+				});
+				return x[0];
+			}
+		},self);
 
 
 		//LOAD CLUBS/TEAMS
@@ -569,12 +624,12 @@ if (!window.console.log) window.console.log = function () { };
 		self.filteredAvailablePlayers = ko.computed(function() {
 			//return this.availablePlayers();
 			return ko.utils.arrayFilter(self.availablePlayers(), function(player) {
-				return (self.playerGenderFilter() == 'ALL' || player.gender == self.playerGenderFilter()) &&
-					   (self.playerTypeFilter() == 'ALL' || player.type == self.playerTypeFilter());
+				return (self.selectedGenderButton().buttonValue() == 'ALL' || player.gender == self.selectedGenderButton().buttonValue()) &&
+					   (self.selectedPlayerTypeButton().buttonValue() == 'ALL' || player.type == self.selectedPlayerTypeButton().buttonValue());
 			});
 			
 		},self);
-		
+			
 
 		self.resetForm = function() {
 			console.log("Resetting form...");
@@ -634,7 +689,6 @@ if (!window.console.log) window.console.log = function () { };
 		window.onbeforeprint = beforePrint;
 		//END PRINT LOGGING
 			
-			
 								
 		self.chosenTeamName.subscribe(function(newTeam) {			
 			if (newTeam !== undefined && newTeam !== null) {
@@ -645,6 +699,8 @@ if (!window.console.log) window.console.log = function () { };
 				//Make not allowedPlayers invisible when chosing new team
 				$("#nonplayerstable").hide();
 				
+				//Reset player gender filter
+				self.selectGenderButton(self.genderButtons()[0]);
 								
 				//Load the games this teamType
 				switch(self.chosenTeam().teamType) {
@@ -873,6 +929,32 @@ if (!window.console.log) window.console.log = function () { };
 			$("#error").hide();
 			
 		};
+		
+		
+		//SUPPORT FOR SELECTING PLAYERS USING MODAL(touchscreen users)
+		$('body').on('show.bs.modal','div.selectPlayersModal', function (event) {
+		  var button = $(event.relatedTarget); 
+		  var gameId = button.data('game-id');  	  
+		  //console.log("Selected gameId"+gameId);
+		  self.selectedGameId(gameId);		  
+		});			  
+			
+		self.addPlayer = function(p) {
+			console.log("Need to add "+p.fullName+" to game "+self.selectedGameId());			
+			$('#selectPlayersModal').modal('hide');
+			addPlayerArg = {
+				item : p,
+				targetParent: self.selectedGame().playersInGame,
+				cancelDrop: false
+			}				
+			self.verifyAssignments(addPlayerArg,null,null);
+			if (!(addPlayerArg.cancelDrop)) {
+				self.selectedGame().playersInGame.push(p);
+				self.verifyAssignmentsAfterMove(addPlayerArg,null,null);
+			}
+			
+		};			
+		
 	};	
 	
 	

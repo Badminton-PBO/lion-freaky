@@ -14,13 +14,14 @@
 		<!-- Knockoutjs -->
 		<script type="text/javascript" src="libs/js/knockout-3.2.0.js"></script>
 		<script type="text/javascript" src="libs/knockout-sortable-master/build/knockout-sortable.min.js"></script>	
-
-		<!-- JQuery sortable on touch -->
-		<script src="libs/js/jquery.ui.touch-punch.min.js"></script>
 		
 		<!-- Bootstrap -->
-		<script type="text/javascript" src="libs/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
-		<link href="libs/bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">		
+		<script type="text/javascript" src="libs/bootstrap-3.3.1-dist/js/bootstrap.min.js"></script>
+		<link href="libs/bootstrap-3.3.1-dist/css/bootstrap.min.css" rel="stylesheet">		
+				
+		<!-- drag/drop support in touch devices -->
+		<script type="text/javascript" src="libs/js/jquery.ui.touch-punch.min.js"></script>
+				
 				
 		<script>
 			function togglePlayers(x) {
@@ -43,9 +44,11 @@
 				});   
 			  });
 			}			
+			
 			$(document).ready(function(){
 			  autoPlayYouTubeModal();
-			});			
+			});	
+					
 		</script>
 		
 		<style type="text/css">
@@ -77,6 +80,10 @@
 	padding: 20px 0px 0px 10px;
 }
 
+.secondplayer {
+	padding-top: 10px;
+}
+
 .singleTitleGame {
 	padding: 12px;
 }
@@ -96,7 +103,6 @@
     background-color: orange;
     color: #444;
     padding: 2px;
-    width: 500px;
     text-align: center;
     border-radius: 5px;
     box-shadow: 2px 2px 2px #999;
@@ -211,23 +217,22 @@
 										   value: $root.chosenMeeting,
 										   optionsCaption: 'Selecteer...'"></select>
 					</p>						
-					<div data-bind="if: $root.chosenMeeting()">
+					<div data-bind="if: $root.chosenMeeting()" class="hidden-xs hidden-sm">
 						
 						<div class="well well-sm">
 							<div>Filter opstelbare spelers:  <span data-bind="text: $root.filteredAvailablePlayers().length"/></span>/<span data-bind="text: $root.availablePlayers().length"/></div>
 							<!-- ko if: $root.chosenTeam().isMultiSexTeam() -->
-							<div>
-								<input type="radio" name="playerGender" value="ALL" data-bind="checked: playerGenderFilter"> Man/Vrouw</input>
-								<input type="radio" name="playerGender" value="M" data-bind="checked: playerGenderFilter"> Man</input>
-								<input type="radio" name="playerGender" value="F" data-bind="checked: playerGenderFilter"> Vrouw</input>
+							<div class="btn-group" aria-label="b1" data-toggle="buttons" data-bind="foreach:$root.genderButtons">																									
+							  <label class="btn btn-primary" data-bind="css: {active: selected},click: $root.selectGenderButton">
+								<input type="radio" name="playerGender"><span data-bind="text: name"></span></input>
+							  </label>												
 							</div>
 							<!-- /ko -->
-							<div>
-								<input type="radio" name="playerType" value="ALL" data-bind="checked: playerTypeFilter"> Allen</input>
-								<input type="radio" name="playerType" value="C" data-bind="checked: playerTypeFilter"> Competitie</input>
-								<input type="radio" name="playerType" value="R" data-bind="checked: playerTypeFilter"> Recreant</input>
-								<input type="radio" name="playerType" value="J" data-bind="checked: playerTypeFilter"> Jeugd</input>
-							</div>
+							<div class="btn-group" aria-label="b2" data-toggle="buttons" data-bind="foreach:$root.playerTypeButtons" style="margin-top:5px">												
+							  <label class="btn btn-primary" data-bind="css: {active: selected}, click: $root.selectPlayerTypeButton">
+								<input type="radio" name="playerType" ><span data-bind="text: name"></span></input>
+							  </label>													
+							</div>																														
 						</div>
 						<div id="playerListId" class="well well-sm" style="">
 							<table class="table table-bordered table-condensed">
@@ -306,12 +311,12 @@
 								</div>
 							</div>
 						</div>
-						<div class="row hidden-xs hidden-sm">
+						<div class="row">
 							<div class="col-xs-4" data-bind="with:$root.chosenTeam"><span data-bind="text: teamTypeLayout()"></span>, Provenciaal</div>
 							<div class="col-xs-4" data-bind="with:$root.chosenTeam">Afdeling: <span data-bind="text: devision"></span> / Reeks: <span data-bind="text: series"></span></div>
 							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Locatie: <span data-bind="text: locationName"></span></div>							
 						</div>						
-						<div class="row hidden-xs hidden-sm">
+						<div class="row">
 							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Thuisploeg: <span data-bind="text: hTeam"></span></div>
 							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Bezoekers: <span data-bind="text: oTeam"></span></div>
 							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Datum/Uur: <span data-bind="text: dateLayout"></span>  <span data-bind="text: hourLayout"></span></div>
@@ -319,10 +324,10 @@
 						<div class="row">
 							<div class="col-xs-8" data-bind="with:$root.chosenTeam">Ploegkapitein <span data-bind="text: teamName"></span>: <input data-bind="textInput: captainName" /></div>
 						</div>						
-						<div class="row"></div>
-							<div id="error" data-bind="flash: lastError"></div>
-						</div>						
 						<div class="row">
+							<div class="col-xs-12" id="error" data-bind="flash: lastError"></div>
+						</div>						
+						<div class="row hidden-xs hidden-sm">
 							<table class="table table-condensed">
 								<thead>
 									<tr>
@@ -353,22 +358,109 @@
 												</div>											
 											</td>
 											<td>
-												<span data-bind="text: totalIndexWithLayout"></span>
+												<div>
+													<span data-bind="text: totalIndexWithLayout"></span>	
+												</div>
 											</td>										
 										</tr>
 								</tbody>
 							</table>										
 						</div>		
 						<div class="row visible-xs visible-sm">
-							<div class="col-xs-4" data-bind="with:$root.chosenTeam"><span data-bind="text: teamTypeLayout()"></span>, Provenciaal</div>
-							<div class="col-xs-4" data-bind="with:$root.chosenTeam">Afdeling: <span data-bind="text: devision"></span> / Reeks: <span data-bind="text: series"></span></div>
-							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Locatie: <span data-bind="text: locationName"></span></div>							
-						</div>						
-						<div class="row visible-xs visible-sm">
-							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Thuisploeg: <span data-bind="text: hTeam"></span></div>
-							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Bezoekers: <span data-bind="text: oTeam"></span></div>
-							<div class="col-xs-4" data-bind="with:$root.chosenMeeting">Datum/Uur: <span data-bind="text: dateLayout"></span>  <span data-bind="text: hourLayout"></span></div>
-						</div>														
+						<!--div class="row"-->
+							<table class="table table-condensed">
+								<thead>
+									<tr>
+										<th class="col-md-2">Discipline</th>
+										<th class="col-md-6">Spelers</th>
+										<th class="col-md-2">&nbsp;</th>
+										<th class="col-md-2">Index</th>
+									</tr>
+								</thead>
+								<tbody data-bind="foreach: games">
+										<tr>
+											<td style="padding:0px">
+												<div data-bind="css: gameTitleCss()">
+													<span class="label label-default" data-bind="text: id">									
+												</div>
+											</td>
+											<td style="padding:0px">												
+												<div data-bind="sortable: {data : playersInGame, allowDrop: allowMorePlayers, beforeMove: $root.verifyAssignments, afterMove: $root.verifyAssignmentsAfterMove}, css: gameCss()">
+													<div data-bind="css: {secondplayer: $index() > 0}">													
+														<span data-bind="text: fullName"></span>,
+														<span data-bind="text: vblId"></span>,		
+														<span data-bind="text: ranking($parent.gameType)"></span>=<span data-bind="text: index($parent.gameType)"></span>														
+														<div class="pull-right" style="font-size:20px;">															 
+															<a href="#" data-bind="click: $parent.removePlayer">
+																<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+															</a>
+														</div>
+													</div>										
+												</div>											
+											</td>
+											<td>
+												<button id="selectplayersbutton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#selectPlayersModal" data-bind="attr: { 'data-game-id': id }">
+													<span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>												
+												</button>																
+											</td>
+											<td>
+												<span data-bind="text: totalIndexWithLayout"></span>
+											</td>										
+										</tr>
+								</tbody>
+							</table>	
+							<!-- Select Player Modal -->
+							<div class="modal selectPlayersModal" id="selectPlayersModal" tabindex="-1" role="dialog" aria-labelledby="selectPlayersModalLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+								<div class="modal-content">
+								  <div class="modal-header">
+									<button type="button" class="btn btn-primary pull-right" data-dismiss="modal"><span aria-hidden="true" style='font-size:15px'>&times;</span><span class="sr-only">Sluiten</span></button>
+									<h4 class="modal-title" id="myModalLabel">Selecteer speler</h4>
+								  </div>
+								  <div class="modal-body">
+										<div class="well well-sm">
+											<div>Filter opstelbare spelers:  <span data-bind="text: $root.filteredAvailablePlayers().length"/></span>/<span data-bind="text: $root.availablePlayers().length"/></div>
+											<!-- ko if: $root.chosenTeam().isMultiSexTeam() -->
+											<div class="btn-group" aria-label="b1" data-toggle="buttons" data-bind="foreach:$root.genderButtons">																									
+											  <label class="btn btn-primary" data-bind="css: {active: selected},click: $root.selectGenderButton">
+												<input type="radio" name="playerGender"><span data-bind="text: name"></span></input>
+											  </label>												
+											</div>
+											<!-- /ko -->
+											<div class="btn-group" aria-label="b2" data-toggle="buttons" data-bind="foreach:$root.playerTypeButtons">												
+											  <label class="btn btn-primary" data-bind="css: {active: selected}, click: $root.selectPlayerTypeButton">
+												<input type="radio" name="playerType" ><span data-bind="text: name"></span></input>
+											  </label>													
+											</div>																							
+										</div>
+										<div class="well well-sm" style="">
+											<table class="table table-bordered table-condensed">
+												<thead>
+														<tr>
+															<th>Speler</th>
+															<th class="playerDetail">vast index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></th>
+															<th class="playerDetail">var. index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></th>
+															<td>&nbsp;</td>
+														</tr>
+												</thead>
+												<tbody data-bind="foreach: $root.filteredAvailablePlayers">
+													<tr>
+														<td>
+															<button type="button" class="btn btn-primary" data-bind="click: $root.addPlayer"><span data-bind="text: fullName"></span></button>
+														</td>
+														<td data-bind="text: fixedRankingLayout($root.chosenTeam().teamType)" class="playerDetail"></td>
+														<td data-bind="text: rankingLayout($root.chosenTeam().teamType)" class="playerDetail"></td>
+													</tr>
+												</tbody>							
+											</table>
+										</div>
+								  </div>
+								</div>
+							  </div>
+							</div>					
+							
+																
+						</div>																				
 						<div class="row" data-bind="with: chosenTeam">	
 							<div class="col-md-6">
 								<div class="well well-sm">
