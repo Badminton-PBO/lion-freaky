@@ -54,7 +54,13 @@ if (!window.console.log) window.console.log = function () { };
 
 		var statNames = ["select","print","combined","totalMatchesX2"];
 		data.forEach(function(d) {
-			d.stats = statNames.map(function(name) { return {name: name, value: +d[name]}; });
+			d.stats = statNames.map(function(name) { 
+				if (name == 'combined') {
+					return {name: name, value: +d[name], percentage:Math.round((+d[name]/+d['totalMatchesX2'])*100)};
+				} else {
+					return {name: name, value: +d[name]};				
+				}
+				});
 		});		
 		//console.log(data);
 
@@ -102,9 +108,10 @@ if (!window.console.log) window.console.log = function () { };
 			  .style("fill", function(d) { return color(d.name); });
 				 
 		gBar.append("text")
-   		    .attr("x", function(d) { return x1(d.name) +x1.rangeBand()/2; })
+   		    .attr("x", function(d) { return x1(d.name) +x1.rangeBand()/2 +5; })
 		    .attr("y", function(d) { return height -5; })
-			.text(function(d) { return d.value!= '0' ? d.value: ""});
+		    .attr("transform",function(d) { return "rotate(-90,"+(x1(d.name) +x1.rangeBand()/2 +5)+","+(height -5)+")";})
+			.text(function(d) { return d.name =='combined' ? d.percentage+'%':d.value});
 		  
 		var legend = svg.selectAll(".legend")
 		  .data(statNames.slice())
