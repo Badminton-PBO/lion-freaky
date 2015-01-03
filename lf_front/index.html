@@ -423,7 +423,7 @@
 										<div class="well well-sm">
 											<div>Filter opstelbare spelers:  <span data-bind="text: $root.filteredAvailablePlayers().length"/></span>/<span data-bind="text: $root.availablePlayers().length"/></div>
 											<!-- ko if: $root.chosenTeam().isMultiSexTeam() -->
-											<div class="btn-group" aria-label="b1" data-toggle="buttons" data-bind="foreach:$root.genderButtons">																									
+											<div class="btn-group" aria-label="b1" data-toggle="buttons" data-bind="foreach:$root.filteredGenderButtons">																									
 											  <label class="btn btn-primary" data-bind="css: {active: selected},click: $root.selectGenderButton">
 												<input type="radio" name="playerGender"><span data-bind="text: name"></span></input>
 											  </label>												

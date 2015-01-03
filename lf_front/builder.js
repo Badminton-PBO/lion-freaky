@@ -317,6 +317,14 @@ if (!window.console.log) window.console.log = function () { };
 		this.removePlayer = function(p) {
 			self.playersInGame.remove(p);
 		};	
+		
+		this.allowMorePlayersOfGender = function(gender) {
+			return ((this.gameType == 'HE' || this.gameType == 'HD') && gender=='M') ||
+				   ((this.gameType == 'DE' || this.gameType == 'DD') && gender=='F') ||
+				   (this.gameType == 'GD' && this.playersInGame().length == 0) ||			
+				   (this.gameType == 'GD' && this.playersInGame().length == 1 && this.playersInGame()[0].gender=='M' && gender=='F') ||
+				   (this.gameType == 'GD' && this.playersInGame().length == 1 && this.playersInGame()[0].gender=='F' && gender=='M')
+		}
 				
 	};			
 	
@@ -604,7 +612,6 @@ if (!window.console.log) window.console.log = function () { };
 		};
 
 
-
 		self.selectedGame = ko.computed(function() {
 			if (self.games()) {				
 				var x = self.games().filter(function(g) {
@@ -612,6 +619,14 @@ if (!window.console.log) window.console.log = function () { };
 				});
 				return x[0];
 			}
+		},self);
+
+
+		self.filteredGenderButtons = ko.computed(function() {			
+			return ko.utils.arrayFilter(self.genderButtons(), function(genderButton) {
+				return (typeof self.selectedGame() != 'undefined') && self.selectedGame().allowMorePlayersOfGender(genderButton.buttonValue());
+			});
+			
 		},self);
 
 
@@ -935,8 +950,9 @@ if (!window.console.log) window.console.log = function () { };
 		$('body').on('show.bs.modal','div.selectPlayersModal', function (event) {
 		  var button = $(event.relatedTarget); 
 		  var gameId = button.data('game-id');  	  
-		  //console.log("Selected gameId"+gameId);
-		  self.selectedGameId(gameId);		  
+		  //console.log("Selected gameId in modal "+gameId);
+		  self.selectedGameId(gameId);		
+		  self.selectGenderButton(self.filteredGenderButtons()[0]);  		  
 		});			  
 			
 		self.addPlayer = function(p) {
