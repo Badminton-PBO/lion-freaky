@@ -244,7 +244,33 @@ END;
 $$
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS lf_dbload_teamType;
+DELIMITER $$
+CREATE FUNCTION lf_dbload_teamType(teamName TEXT)
+  RETURNS TEXT
+BEGIN
+	return reverse(trim(substring(REVERSE(teamName),1,1)));
+END;
+$$
+DELIMITER ;
 
+
+DROP FUNCTION IF EXISTS lf_dbload_genderCount;
+DELIMITER $$
+CREATE FUNCTION lf_dbload_genderCount(teamName TEXT,gender TEXT)
+  RETURNS int(2)
+  NOT DETERMINISTIC
+BEGIN
+	DECLARE select_var int(2);
+	SET select_var = (
+select  count(*) from lf_team t
+join lf_player_has_team pht on pht.team_teamName = t.teamName
+join lf_player p on p.playerId = pht.player_playerId
+where t.teamName=teamName and p.gender=gender);
+	return select_var;
+END;
+$$
+DELIMITER ;
 
 
 -- Add index for lf_event

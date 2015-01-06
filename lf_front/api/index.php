@@ -409,20 +409,20 @@ EOD;
 			    or !isValidCSV($fixedRankingCSV,"Lidnummer;Klassement enkel;Klassement dubbel;Klassement gemengd")
 			    or !isValidCSV($ligaBaseTeamCSV,"Discipline,Teamnaam,Lidnummer,Voornaam,")) {
 				print("NOK: invalid CSV detected");	
-			};
-			cleanDB();        
-			getDatabase()->execute("set names latin1");//set to windows encoding
-			loadCSV($clubCSV,'clubs');        
-			loadCSV($teamsCSV,'teams');
-			loadCSV($matchesCSV,'matches');
-			loadCSV($playersCSV,'players');
-			loadCSV($baseTeamCSV,'baseTeam');
-			loadCSV($fixedRankingCSV,'fixedRanking');
-			loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
-			logEvent('DBLOAD','SYSTEM');
+			} else {
+				cleanDB();        
+				getDatabase()->execute("set names latin1");//set to windows encoding
+				loadCSV($clubCSV,'clubs');        
+				loadCSV($teamsCSV,'teams');
+				loadCSV($matchesCSV,'matches');
+				loadCSV($playersCSV,'players');
+				loadCSV($baseTeamCSV,'baseTeam');
+				loadCSV($fixedRankingCSV,'fixedRanking');
+				loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+				logEvent('DBLOAD','SYSTEM');
+				print("OK");
+			}
 		}
-		
-        print("OK");
 }
 
 function isValidCSV($CSV,$firstLineContent) {
@@ -564,6 +564,29 @@ INSERT INTO lf_player_has_team(player_playerId,team_teamName)
 select t.playerId, t.teamName from lf_tmpdbload_basisopstellingliga t
 join lf_team lft on lft.teamName = t.teamName;
 EOD;
+$insertLfBaseTeamAddMissingPlayers = <<<'EOD'
+INSERT INTO lf_player(playerId,firstName,lastName,gender,club_clubid,type)
+SELECT pht.player_playerId,
+CASE
+	when lf_dbload_teamType(t.teamName) = 'H' then 'UNKNOWN'
+	when lf_dbload_teamType(t.teamName) = 'D' then 'UNKNOWN'
+	when lf_dbload_genderCount(t.teamName,'F') < 2 and lf_dbload_genderCount(t.teamName,'M') = 2 then 'UNKNOWN'
+	when lf_dbload_genderCount(t.teamName,'M') < 2 and lf_dbload_genderCount(t.teamName,'F') = 2 then 'UNKNOWN'
+	else 'UNKNOWGENDER'
+END,
+'UNKNOWN',
+CASE
+	when lf_dbload_teamType(t.teamName) = 'H' then 'M'
+	when lf_dbload_teamType(t.teamName) = 'D' then 'F'
+	when lf_dbload_genderCount(t.teamName,'F') < 2 and lf_dbload_genderCount(t.teamName,'M') = 2 then 'F'
+	when lf_dbload_genderCount(t.teamName,'M') < 2 and lf_dbload_genderCount(t.teamName,'F') = 2 then 'M'
+	else 'F'
+END,
+t.club_clubId,
+'C' FROM `lf_player_has_team` pht 
+join lf_team t on t.teamName = pht.team_teamName
+where pht.player_playerId not in (select playerId from lf_player);
+EOD;
 
 	switch($type) {
 		case "teams": 
@@ -582,6 +605,9 @@ EOD;
 			
 			getDatabase()->execute($insertLfRanking);			
 			break;
+		case "baseTeam":
+			getDatabase()->execute($insertLfBaseTeamAddMissingPlayers);			
+			break;		
 		case "fixedRanking": 
 			 getDatabase()->execute($insertLfRankingFixed);
 			break;
