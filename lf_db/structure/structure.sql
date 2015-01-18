@@ -183,6 +183,16 @@ CREATE TABLE IF NOT EXISTS `lf_tmpdbload_teamscsv` (
   `captainName` VARCHAR( 90 ) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE IF NOT EXISTS `lf_tmpdbload_playersremoved` (
+  `playerId` int(11) NOT NULL,
+  `gender` varchar(1) DEFAULT NULL,
+  `club_clubId` int(11) NOT NULL,
+  KEY `fk_player_club1_idx` (`club_clubId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 -- Functions to faciliate load from CSV into the DB
 
 DROP FUNCTION IF EXISTS lf_dbload_eventcode;

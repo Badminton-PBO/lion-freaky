@@ -526,7 +526,7 @@ select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_
 EOD;
 $deleteLfTmpdbloadPlayers = <<<'EOD'
 delete from lf_tmpdbload_playerscsv
-where role != 'Speler'
+where role != 'Uitgeleende speler'
 and memberId in (
 select c.memberId from (
 select memberId from lf_tmpdbload_playerscsv t
@@ -564,28 +564,38 @@ INSERT INTO lf_player_has_team(player_playerId,team_teamName)
 select t.playerId, t.teamName from lf_tmpdbload_basisopstellingliga t
 join lf_team lft on lft.teamName = t.teamName;
 EOD;
-$insertLfBaseTeamAddMissingPlayers = <<<'EOD'
-INSERT INTO lf_player(playerId,firstName,lastName,gender,club_clubid,type)
+$insertLfBaseTeamAddMissingPlayersStep1 = <<<'EOD'
+INSERT INTO lf_tmpdbload_playersremoved(playerId,gender,club_clubid)
 SELECT pht.player_playerId,
-CASE
-	when lf_dbload_teamType(t.teamName) = 'H' then 'UNKNOWN'
-	when lf_dbload_teamType(t.teamName) = 'D' then 'UNKNOWN'
-	when lf_dbload_genderCount(t.teamName,'F') < 2 and lf_dbload_genderCount(t.teamName,'M') = 2 then 'UNKNOWN'
-	when lf_dbload_genderCount(t.teamName,'M') < 2 and lf_dbload_genderCount(t.teamName,'F') = 2 then 'UNKNOWN'
-	else 'UNKNOWGENDER'
-END,
-'UNKNOWN',
 CASE
 	when lf_dbload_teamType(t.teamName) = 'H' then 'M'
 	when lf_dbload_teamType(t.teamName) = 'D' then 'F'
 	when lf_dbload_genderCount(t.teamName,'F') < 2 and lf_dbload_genderCount(t.teamName,'M') = 2 then 'F'
 	when lf_dbload_genderCount(t.teamName,'M') < 2 and lf_dbload_genderCount(t.teamName,'F') = 2 then 'M'
-	else 'F'
+	else 'X'
 END,
-t.club_clubId,
-'C' FROM `lf_player_has_team` pht 
+t.club_clubId FROM `lf_player_has_team` pht 
 join lf_team t on t.teamName = pht.team_teamName
 where pht.player_playerId not in (select playerId from lf_player);
+EOD;
+$insertLfBaseTeamAddMissingPlayersStep2 = <<<'EOD'
+INSERT INTO lf_player(playerId,firstName,lastName,gender,club_clubid,type)
+select removeplayer.playerId,
+CASE
+	when removeplayer.gender_best_attempt = 'X' then 'UNKNOWNGENDER'
+	else 'UNKNOWN'
+END,
+'UNKNOWN',
+CASE
+	when removeplayer.gender_best_attempt = 'X' then 'F'
+	else removeplayer.gender_best_attempt
+END,
+removeplayer.club_clubId,
+'C'
+ from (
+select playerId,club_clubId,min(gender) gender_best_attempt from lf_tmpdbload_playersremoved
+group by playerId,club_clubId
+) as removeplayer
 EOD;
 
 	switch($type) {
@@ -606,7 +616,8 @@ EOD;
 			getDatabase()->execute($insertLfRanking);			
 			break;
 		case "baseTeam":
-			getDatabase()->execute($insertLfBaseTeamAddMissingPlayers);			
+			getDatabase()->execute($insertLfBaseTeamAddMissingPlayersStep1);			
+			getDatabase()->execute($insertLfBaseTeamAddMissingPlayersStep2);
 			break;		
 		case "fixedRanking": 
 			 getDatabase()->execute($insertLfRankingFixed);
