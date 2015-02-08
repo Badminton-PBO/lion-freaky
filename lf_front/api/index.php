@@ -444,6 +444,7 @@ function cleanDB() {
 	getDatabase()->execute('DELETE from lf_club');
 	getDatabase()->execute('DELETE from lf_group');
 	getDatabase()->execute('DELETE from lf_tmpdbload_teamscsv');
+	getDatabase()->execute('DELETE from lf_tmpdbload_playersremoved');
 	getDatabase()->execute('DELETE from lf_tmpdbload_playerscsv');
 	getDatabase()->execute('DELETE FROM lf_tmpdbload_15mei');
 	getDatabase()->execute('DELETE FROM lf_tmpdbload_basisopstellingliga');
