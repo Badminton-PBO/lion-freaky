@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html id="printfull">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>PBO Verplaatsing competitie match</title>
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+		
+		<!-- JQuery -->
+		<script type="text/javascript" src="libs/js/jquery-1.11.1.min.js"></script>	
+		<script type="text/javascript" src="libs/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>	
+
+		<!-- Knockoutjs -->
+		<script type="text/javascript" src="libs/js/knockout-3.2.0.js"></script>
+		<script type="text/javascript" src="libs/knockout-sortable-master/build/knockout-sortable.min.js"></script>	
+		
+		<!-- Bootstrap -->
+		<script type="text/javascript" src="libs/bootstrap-3.3.1-dist/js/bootstrap.min.js"></script>
+		<link href="libs/bootstrap-3.3.1-dist/css/bootstrap.min.css" rel="stylesheet">		
+			
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row hidden-print">
+				<div class="col-xs-10 hidden-xs">
+					<a href="http://www.badminton-pbo.be/" target="_new"><img src="images/logo.png"></a>
+				</div>
+				<div class="col-xs-10 visible-xs">
+					<a href="http://www.badminton-pbo.be/" target="_new"><img src="images/logo_noText.png"></a>
+				</div>
+			</div>
+			<!-- ko if: !$root.chosenClub() -->
+			<div class="well">
+				<h1>Doelstelling</h1>
+				Streamline verplaatsings aanvragen PBO competitie.
+			</div>
+			<!-- /ko -->
+			<div class="row hidden-print">
+				<div class="col-md-5">
+					<p>
+						Kies je badmintonclub:
+						<select data-bind="options: sampleClubs,
+										   optionsText:'clubName',
+										   value: chosenClub,
+										   optionsCaption: 'Selecteer...'"></select>
+					</p>
+					<p data-bind="with: chosenClub">
+						Kies je team:
+						<select data-bind="options: teams.filter(function(team) { return team.type != 'LIGA'}),
+										   optionsText: 'teamName',
+										   value: $parent.chosenTeamName,
+										   optionsCaption: 'Selecteer...'"></select>
+					</p>
+					<div data-bind="if: $root.chosenTeamName()" class="hidden-xs hidden-sm">			
+						<div id="matchListId" class="well well-sm" style="">
+							<table class="table table-bordered table-condensed">
+								<thead>
+										<tr>
+											<th>Match</th>
+											<th>Huidig tijdstip</th>
+											<th>Status</th>
+											<th>Actie bij</th>
+										</tr>
+								</thead>
+								<tbody data-bind="foreach: availableMeetings">
+									<tr>
+										<td><span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></td>
+										<td><span data-bind="text:dateLayout"></span> <span data-bind="text:hourLayout"></span></td>
+										<td>X</td>
+										<td>Y</td>
+									</tr>
+								</tbody>							
+							</table>							
+						</div>
+					</div>
+				</div>
+				<div class="col-md-7" data-bind="if: $root.chosenMeeting()">
+					<div id="ploegopstelling">
+						<div class="row row-fluid">
+							<div class="col-xs-12 col-sm-6">
+								<h2>Verplaatsing aanvraag</h2>
+							</div>
+							<div class="col-xs-12 col-sm-6" style="padding-top:10px; padding-bottom:15px">
+							</div>
+						</div>
+						<div class="row hidden-xs hidden-sm">
+							<table class="table table-condensed">
+								<thead>
+									<tr>
+										<th class="col-md-2">Discipline</th>
+										<th class="col-md-8">Spelers</th>
+										<th class="col-md-2">Index</th>
+									</tr>
+								</thead>
+							</table>										
+						</div>		
+					</div>
+				</div>				
+			</div>
+		</div>
+		<script type="text/javascript" src="builderVerplaatsing.js" charset="utf-8"></script>	
+	</body>	
+</html>
