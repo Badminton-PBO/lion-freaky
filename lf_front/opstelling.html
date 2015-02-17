@@ -1,18 +1,143 @@
 <!DOCTYPE html>
-<html>
+<html id="printfull">
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>PBO Apps</title>
+		<title>PBO Ploegopstelling</title>
 		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 		<link rel="icon" href="images/favicon.ico" type="image/x-icon">
-			
+		
+		
 		<!-- JQuery -->
 		<script type="text/javascript" src="libs/js/jquery-1.11.1.min.js"></script>	
+		<script type="text/javascript" src="libs/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>	
+
+		<!-- Knockoutjs -->
+		<script type="text/javascript" src="libs/js/knockout-3.2.0.js"></script>
+		<script type="text/javascript" src="libs/knockout-sortable-master/build/knockout-sortable.min.js"></script>	
 		
 		<!-- Bootstrap -->
 		<script type="text/javascript" src="libs/bootstrap-3.3.1-dist/js/bootstrap.min.js"></script>
 		<link href="libs/bootstrap-3.3.1-dist/css/bootstrap.min.css" rel="stylesheet">		
 				
+		<!-- drag/drop support in touch devices -->
+		<script type="text/javascript" src="libs/js/jquery.ui.touch-punch.min.js"></script>
+				
+				
+		<script>
+			function togglePlayers(x) {
+				$("#nonplayerstable").toggle('fold');
+				if ($("#nonplayerstable").is(':visible')) {
+				 $("html, body").animate({scrollTop: $("#nonplayerstable").offset().top});
+				}	
+			}			
+
+			//FUNCTION TO GET AND AUTO PLAY YOUTUBE VIDEO FROM DATATAG
+			function autoPlayYouTubeModal(){
+			  var trigger = $("body").find('[data-toggle="modal"]');
+			  trigger.click(function() {
+				var theModal = $(this).data( "target" );
+				videoSRC = $(this).attr( "data-theVideo" );
+				videoSRCauto = videoSRC+"?autoplay=1" ;
+				$(theModal+' iframe').attr('src', videoSRCauto);
+				$(theModal+' button.close').click(function () {
+					$(theModal+' iframe').attr('src', videoSRC);
+				});   
+			  });
+			}			
+			
+			$(document).ready(function(){
+			  autoPlayYouTubeModal();
+			});	
+					
+		</script>
+		
+		<style type="text/css">
+.doubleGame {
+	border: solid 3px #666;
+	min-height: 60px;
+	background-color: #666;
+	margin: 5px;
+	padding: 2px;
+	border-radius: 5px;
+	box-shadow: 2px 2px 2px #999;
+	color: #fff;
+	min-width:150px;
+}
+
+.singleGame {
+	border: solid 3px #666;
+	min-height: 30px;
+	background-color: #666;
+	margin: 5px;
+	padding: 2px;
+	border-radius: 5px;
+	box-shadow: 2px 2px 2px #999;
+	color: #fff;
+	min-width:150px;
+}
+
+.doubleTitleGame {
+	padding: 20px 0px 0px 10px;
+}
+
+.secondplayer {
+	padding-top: 10px;
+}
+
+.singleTitleGame {
+	padding: 12px;
+}
+
+/* unvisited link */
+#print a:link, #print a:visited, #print a:hover, #print a:active, #print2pdf a:link, #print2pdf a:visited, #print2pdf a:hover, #print2pdf a:active {
+    color: #005500;
+}
+
+.playerDetail {
+	font-size:10px;
+}
+
+#message, #error {
+    font-size: 1em;
+    margin-top: 10px;
+    background-color: orange;
+    color: #444;
+    padding: 2px;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px #999;
+}
+
+#error {
+    background-color: #ff3333;
+    color: #ddd;   
+}		
+
+.trash {
+	background-color: #000;
+	width: 300px;
+	height: 50px;
+	background-color: #AAA;
+}
+
+@media(min-width:0px) {
+	#playerListId {
+		height:20vh; 
+		overflow:auto;
+	}
+}
+
+@media(min-width:992px) {
+	#playerListId {
+		height:55vh; 
+		overflow:auto;
+	}
+}
+
+
+		</style>
+		
+			
 	</head>
 	<body>
 		<div class="container-fluid">
@@ -138,7 +263,7 @@
 								</tbody>							
 							</table>
 						</div>
-						<div data-bind="if: ($root.chosenMeeting()  && ($root.notAllowedPlayersOtherBaseTeam().length > 0 || $root.notAllowedPlayersMaxPlayerRanking().length > 0))" class="hidden-xs hidden-sm">
+						<div data-bind="if: ($root.chosenMeeting()  && ($root.notAllowedPlayersOtherBaseTeam().length > 0 || $root.notAllowedPlayersOnBaseMaxPlayerIndex().length > 0))" class="hidden-xs hidden-sm">
 							<button id="nonplayersbutton" type="button" class="btn btn-primary" onclick="togglePlayers();">Niet opstelbare spelers &raquo;</button>						
 							<div id="nonplayerstable" class="well well-sm" style="display:none">
 								<table class="table table-bordered table-condensed">
@@ -148,9 +273,9 @@
 											<td data-bind="text: fullName"></td>
 										</tr>
 										<!-- /ko -->
-										<!-- ko foreach: notAllowedPlayersMaxPlayerRanking -->
-										<tr data-toggle="tooltip" data-placement="right" title="De titularis mag geen hoger klassement hebben dan het hoogste klassement van een basisspler van hetzelfde geslacht.">
-											<td><span data-bind="text: fullName"></span> (max=<span data-bind="text: maxFixedRankingInsideTeam($root.chosenTeam().teamType)"></span>)</td>
+										<!-- ko foreach: notAllowedPlayersOnBaseMaxPlayerIndex -->
+										<tr data-toggle="tooltip" data-placement="right" title="Vaste index hoger dan dat van basisspeler">
+											<td><span data-bind="text: fullName"></span> (<span data-bind="text: fixedRankingLayout($root.chosenTeam().teamType)"></span>)</td>
 										</tr>
 										<!-- /ko -->								
 									</tbody>							
@@ -361,9 +486,7 @@
 									<ul data-bind="foreach: playersInBaseTeam">
 										<li>
 											<span data-bind="text: fullName"></span>,
-											<span data-bind="text: fixedIndexInsideTeam($root.chosenTeam().teamType)"></span>,
-											max=<span data-bind="text: maxFixedRankingConvertedToIndexInsideTeam($root.chosenTeam().teamType)"></span>,											
-											max=<span data-bind="text: maxFixedRankingInsideTeam($root.chosenTeam().teamType)"></span>
+											<span data-bind="text: fixedIndexInsideTeam($root.chosenTeam().teamType)"></span>
 										</li>
 									</ul>						
 								</div>
@@ -461,5 +584,6 @@
 			<iframe src="" id="iPrint" style="display:none" frameborder="0">
 			</iframe>
 		</div>
+		<script type="text/javascript" src="builder.js" charset="utf-8"></script>	
 	</body>	
 </html>
