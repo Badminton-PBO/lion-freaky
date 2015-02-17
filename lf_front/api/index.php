@@ -702,13 +702,23 @@ EOD;
 
 
 $queryTotalSelectAndPrintCmdPerWeek = <<<'EOD'
-select week(e.when,5) as 'week', 
-(select count(*) from lf_event e1 where week(e1.when,5) = week(e.when,5) and e.when >= DATE(NOW()) - INTERVAL 51 WEEK and e1.eventType='teamselect') as 'select',
-(select count(*) from lf_event e1 where week(e1.when,5) = week(e.when,5) and e.when >= DATE(NOW()) - INTERVAL 51 WEEK and e1.eventType in ('print','print2pdf')) as 'print'
-from lf_event e
-where e.when >= DATE(NOW()) - INTERVAL 51 WEEK
-group by week(e.when,5)
-order by week(e.when,5) asc
+select q1.week,
+ COALESCE(max(case when q1.eventType='teamSelect' then q1.count end),0) 'select',
+ COALESCE(max(case when q1.eventType='print' then q1.count end),0) print
+ from (
+	select 
+		week(e.when,5) week,
+		case when eventType in ('print','print2pdf') then 'print'
+		else eventType end eventType,
+		count(*) count
+	from lf_event e
+		where e.when >= DATE(NOW()) - INTERVAL 51 WEEK
+		and e.eventType in ('teamSelect','print','print2pdf')
+	group by week(e.when,5),
+		  case when eventType in ('print','print2pdf') then 'print'
+		  else eventType end
+) q1
+group by q1.week
 EOD;
 
 $queryTotalCombinedSelectAndPrintCmdPerWeek = <<<'EOD'
