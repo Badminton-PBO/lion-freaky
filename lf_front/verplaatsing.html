@@ -17,6 +17,11 @@
 		<!-- Bootstrap -->
 		<script type="text/javascript" src="libs/bootstrap-3.3.1-dist/js/bootstrap.min.js"></script>
 		<link href="libs/bootstrap-3.3.1-dist/css/bootstrap.min.css" rel="stylesheet">		
+
+		<!-- DateTimePicker stuff -->
+		<script type="text/javascript" src="libs/js/moment-with-locales.min.js"></script>
+		<script type="text/javascript" src="libs/js/bootstrap-datetimepicker-4.0.0/bootstrap-datetimepicker.min.js"></script>
+		<link rel="stylesheet" href="libs/js/bootstrap-datetimepicker-4.0.0/bootstrap-datetimepicker.min.css" />
 			
 	</head>
 	<body>
@@ -36,7 +41,7 @@
 			</div>
 			<!-- /ko -->
 			<div class="row hidden-print">
-				<div class="col-md-5">
+				<div class="col-xs-12">
 					<p>
 						Kies je badmintonclub:
 						<select data-bind="options: sampleClubs,
@@ -48,52 +53,152 @@
 						Kies je team:
 						<select data-bind="options: teams.filter(function(team) { return team.type != 'LIGA'}),
 										   optionsText: 'teamName',
-										   value: $parent.chosenTeamName,
+										   value: $parent.chosenTeam,
 										   optionsCaption: 'Selecteer...'"></select>
 					</p>
-					<div data-bind="if: $root.chosenTeamName()" class="hidden-xs hidden-sm">			
-						<div id="matchListId" class="well well-sm" style="">
+					<div data-bind="if: $root.chosenTeam()">			
+						<div id="matchListId" class="well well-sm">
 							<table class="table table-bordered table-condensed">
 								<thead>
 										<tr>
 											<th>Match</th>
-											<th>Huidig tijdstip</th>
+											<th>Laatst vastgelegd tijdstip</th>
 											<th>Status</th>
 											<th>Actie bij</th>
 										</tr>
 								</thead>
 								<tbody data-bind="foreach: availableMeetings">
 									<tr>
-										<td><span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></td>
+										<td><a data-bind="click: $root.chosenMeeting"><span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></a></td>
 										<td><span data-bind="text:dateLayout"></span> <span data-bind="text:hourLayout"></span></td>
-										<td>X</td>
-										<td>Y</td>
+										<td><span data-bind="text: status"></span></td>
+										<td><span data-bind="text: actionFor"></td>
 									</tr>
 								</tbody>							
 							</table>							
 						</div>
 					</div>
 				</div>
-				<div class="col-md-7" data-bind="if: $root.chosenMeeting()">
-					<div id="ploegopstelling">
+				<div class="col-xs-12" data-bind="with: $root.chosenMeeting()">
+					<div>
 						<div class="row row-fluid">
-							<div class="col-xs-12 col-sm-6">
-								<h2>Verplaatsing aanvraag</h2>
+							<div class="col-xs-12">
+								<h2>Verplaatsing aanvraag <span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></h2>
 							</div>
-							<div class="col-xs-12 col-sm-6" style="padding-top:10px; padding-bottom:15px">
-							</div>
+							<div class="col-xs-12 col-sm-4" style="padding-top:10px; padding-bottom:15px">
+								<div id="reset" class='label label-default' style='font-size:30px' data-bind="visible: isAddProposalAllowed">
+									<a href="#" data-bind="click: $root.addNewProposal">
+										<span class="glyphicon glyphicon-plus"></span>	
+									</a>
+								</div>	
+								<div id="save" class='label label-default' style='font-size:30px;margin-right:10px;'>
+									<a href="#" data-bind="click: $root.save">
+										<span class="glyphicon glyphicon-floppy-save">	
+									</a> 							
+								</div>																
+							</div>						
 						</div>
-						<div class="row hidden-xs hidden-sm">
+						<div class="row-fluid">							
 							<table class="table table-condensed">
 								<thead>
 									<tr>
-										<th class="col-md-2">Discipline</th>
-										<th class="col-md-8">Spelers</th>
-										<th class="col-md-2">Index</th>
+										<th class="col-md-2">Voorstel van</th>
+										<th class="col-md-4">Tijdstip</th>
+										<th class="col-md-2">Beschikbaarheid <span data-bind="text:hTeam"></span></th>
+										<th class="col-md-2">Beschikbaarheid <span data-bind="text:oTeam"></span></th>
+										<th class="col-md-1">Uitgekozen</th>
+										<th class="col-md-1">&nbsp;</th>
 									</tr>
 								</thead>
+								<tbody data-bind="foreach: proposedChanges">
+									<tr>
+										<td>
+											<span data-bind="text:requestedByTeam"></span>
+										</td>
+										<td>
+											<!-- ko ifnot: (requestedByTeam() == $root.chosenTeam().teamName && acceptedState() == '-') -->
+												<span data-bind="text: proposedDateTimeLayout"></span>
+											<!-- /ko -->
+											
+											<!-- ko if: (requestedByTeam() == $root.chosenTeam().teamName && acceptedState() == '-') -->
+											<a class="input-group date">
+											   <input type="text" class="form-control" data-bind="datetimepicker: proposedDateTime" />
+											   <span class="input-group-addon">
+													<span class="glyphicon glyphicon-calendar"></span>
+											   </span>
+											</a>																																
+											<!-- /ko -->
+											
+										</td>
+										<td>
+											<!-- ko if: requestedByTeam() == $parent.hTeam -->
+											MOGELIJK
+											<!-- /ko -->
+											<!-- ko ifnot: requestedByTeam() == $parent.hTeam -->
+											<select data-bind="options:$root.proposalAcceptedStates, value: acceptedState, enable: requestedByTeam() != $root.chosenTeam().teamName"></select>
+											<!-- /ko -->
+										</td>
+										<td>
+											<!-- ko if: requestedByTeam() == $parent.oTeam -->
+											MOGELIJK
+											<!-- /ko -->
+											<!-- ko ifnot: requestedByTeam() == $parent.oTeam -->
+											<select data-bind="options:$root.proposalAcceptedStates, value: acceptedState, enable: requestedByTeam() != $root.chosenTeam().teamName"></select>
+											<!-- /ko -->
+
+										</td>
+										<td>
+											<input type="checkbox" data-bind="checked:finallyChosen, enable: isCheckFinalAllowed"/>
+										</td>
+										<td>
+											<!-- ko if: (requestedByTeam() == $root.chosenTeam().teamName && acceptedState() == '-') -->
+											<button class="button" data-bind="click: $parent.removeProposal">
+												<span class="glyphicon glyphicon-minus"></span>
+											</button>
+											<!-- /ko -->
+										</td>
+									</tr>
+								</tbody>															
 							</table>										
-						</div>		
+						</div>														
+						<div class="row-fluid">
+							<div class="well well-sm">
+								<h2>Commentaar</h2>
+								<table class="table table-condensed">
+									<thead>
+										<tr>
+											<th class="col-md-3">Door</th>
+											<th class="col-md-9">Commentaar</th>
+										</tr>
+									</thead>
+									<tbody>
+										<!-- ko foreach: comments -->
+										<tr>
+											<td>
+												<span data-bind="text:owner"></span>,<br><span data-bind="text:dateTime"></span>
+											</td>
+											<td>
+												<span data-bind="text:text"></span>
+											</td>
+										</tr>
+										<!-- /ko -->
+										<tr>
+											<td>
+												Voeg nieuw commentaar toe:
+											</td>
+											<td>
+												<textarea data-bind="textInput: $root.newCommentText"></textarea>
+												<div class='label label-default' style='font-size:30px'>
+													<a href="#" data-bind="click: $root.addNewComment">
+														<span class="glyphicon glyphicon-plus"></span>	
+													</a>
+												</div>	
+											</td>
+										</tr>
+									</tbody>															
+								</table>																
+							</div>
+						</div>
 					</div>
 				</div>				
 			</div>

@@ -191,6 +191,43 @@ CREATE TABLE IF NOT EXISTS `lf_tmpdbload_playersremoved` (
   KEY `fk_player_club1_idx` (`club_clubId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Table structure for table `lf_match_extra`
+-- as lf_match is always fully reloaded, another structure is needed to keep some data that 'survives' a reload. 
+--
+CREATE TABLE IF NOT EXISTS `lf_match_extra` (
+  `matchIdExtra` int(11) NOT NULL AUTO_INCREMENT,
+  `oTeamName` varchar(45) NOT NULL,
+  `hTeamName` varchar(45) NOT NULL,
+  `status` varchar(45) DEFAULT 'LAATST VASTGELEGD TIJDSTIP',
+  `actionFor` varchar(45) DEFAULT NULL,
+  PRIMARY KEY `matchIdExtra` (`matchIdExtra`),
+  UNIQUE KEY `uk_match_status` (`oTeamName`,`hTeamName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `lf_match_cr`
+--
+
+CREATE TABLE IF NOT EXISTS `lf_match_cr` (
+  `matchCRId` int(11) NOT NULL AUTO_INCREMENT,
+  `match_matchIdExtra` int(11) NOT NULL,  
+  `proposedDate` datetime NOT NULL,
+  `requestedByTeam` varchar(45) NOT NULL,
+  `requestedOn` datetime NOT NULL,
+  `acceptedState` varchar(45) NOT NULL,
+  `finallyChosen` boolean NOT NULL,
+  UNIQUE KEY `matchCRId` (`matchCRId`),
+  KEY `match_matchIdExtra` (`match_matchIdExtra`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Constraints for table `lf_match_cr`
+--
+ALTER TABLE `lf_match_cr`
+  ADD CONSTRAINT `fk_match_cr_match` FOREIGN KEY (`match_matchIdExtra`) REFERENCES `lf_match_extra` (`matchIdExtra`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 
 
 -- Functions to faciliate load from CSV into the DB
@@ -321,6 +358,7 @@ ALTER TABLE `lf_ranking`
 ALTER TABLE `lf_team`
   ADD CONSTRAINT `fk_team_club1` FOREIGN KEY (`club_clubId`) REFERENCES `lf_club` (`clubId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_team_group1` FOREIGN KEY (`group_groupId`) REFERENCES `lf_group` (`groupId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

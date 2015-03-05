@@ -28,6 +28,8 @@ getRoute()->get('/logEvent/([\w]+)/([\w\s-]+)','logEvent');
 getRoute()->get('/dbload','dbload');
 getRoute()->get('/dbload/(\w+)/(\w+)','dbload');
 getRoute()->get('/statistic/([\w]+)','statistic');
+getRoute()->get('/meetingAndMeetingChangeRequest/([\w\s-]+)','meetingAndMeetingChangeRequest');
+getRoute()->post('/saveMeetingChangeRequest', 'saveMeetingChangeRequest');
 getRoute()->get('/', 'usage');
 getRoute()->run(); 
 
@@ -598,7 +600,12 @@ select playerId,club_clubId,min(gender) gender_best_attempt from lf_tmpdbload_pl
 group by playerId,club_clubId
 ) as removeplayer
 EOD;
-
+$insertLfMatchExtra = <<<'EOD'
+insert into lf_match_extra(oTeamName,hTeamName)
+SELECT m.outTeamName,m.homeTeamName FROM lf_match m
+left join lf_match_extra e on e.oTeamName =m.outTeamName and e.hTeamName = m.homeTeamName
+where e.matchIdExtra is null
+EOD;
 	switch($type) {
 		case "teams": 
 			 getDatabase()->execute($updateLfYear);
@@ -627,6 +634,9 @@ EOD;
 			 getDatabase()->execute($insertFakeLigaGroup);
 			 getDatabase()->execute($insertLfTeamLiga);
 			 getDatabase()->execute($insertLfPlayerHasTeamLiga);			 
+			break;
+		case "matches":
+			getDatabase()->execute($insertLfMatchExtra);
 			break;
 	}	
 	
@@ -780,5 +790,108 @@ EOD;
 	header("Pragma: no-cache");
 	header("Expires: 0");
 	echo json_encode($result);	 
+}
+
+function  meetingAndMeetingChangeRequest($teamName) {
+$queryEvent = <<<EOD
+select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName,e.matchIdExtra from lf_match m
+join lf_match_extra e on e.hTeamName = m.homeTeamName and e.oTeamName = m.outTeamName
+where (m.homeTeamName = :team or m.outTeamName = :team)
+and m.date >= now()
+order by m.date asc;
+EOD;
+
+$queryMatchCR = <<<EOD
+select e.matchIdExtra,cr.acceptedState, cr.finallyChosen, e.hTeamName,e.oTeamName,cr.matchCRId,date_format(cr.proposedDate,'%Y%m%d%H%i') proposedDate,cr.requestedByTeam,date_format(cr.requestedOn,'%Y%m%d%H%i%S') requestedOn  from lf_match_cr cr
+join lf_match_extra e on e.matchIdExtra = cr.match_matchIdExtra
+where (e.hTeamName = :team or e.oTeamName = :team)
+order by cr.proposedDate asc;
+EOD;
+
+
+	$result = array('meetings'=>array());
 	
+	//Add match data		
+	$matches = getDatabase()->all($queryEvent, array(':team' =>$teamName));
+	$matchesCRs = getDatabase()->all($queryMatchCR, array(':team' =>$teamName));
+	foreach($matches as $key => $match) {
+		$matchCRs = array();
+		foreach($matchesCRs as $key => $matchesCR) {
+			if ($match['homeTeamName'] == $matchesCR['hTeamName'] and $match['outTeamName'] == $matchesCR['oTeamName']) {
+				//Matching matchCR, adding to result
+				array_push($matchCRs,
+					array(
+						'acceptedState' => $matchesCR['acceptedState'],
+						'finallyChosen' => $matchesCR['finallyChosen'],
+						'hTeamName' => $matchesCR['hTeamName'],
+						'oTeamName' => $matchesCR['oTeamName'],
+						'matchCRId' => $matchesCR['matchCRId'],
+						'proposedDate' => $matchesCR['proposedDate'],
+						'requestedByTeam' => $matchesCR['requestedByTeam'],
+						'requestedOn' => $matchesCR['requestedOn'],
+						'matchIdExtra' => $matchesCR['matchIdExtra']
+					)
+				);
+			}
+		}
+		
+		array_push($result["meetings"],array('hTeam' => $match['homeTeamName'], 'oTeam' => $match['outTeamName'], 'dateTime' => $match['date'], 'locationName' => $match['locationName'],'matchIdExtra' => $match['matchIdExtra'],'CRs' => $matchCRs));
+				
+	}		
+	
+	header("Content-type: application/json");
+	//header("Content-type: text/html");
+	header("Content-Disposition: attachment; filename=json.data");
+	header("Pragma: no-cache");
+	header("Expires: 0");
+
+	echo json_encode($result);
+	//echo(var_dump($matchesCRs));
+	//echo json_encode($players);	 
+	//echo "Reporting:".$teamName;
+}
+
+function saveMeetingChangeRequest($parameter) {
+   echo (var_dump($_POST));	
+   
+$deleteExistingMatchCR = <<<'EOD'
+delete from lf_match_cr where match_matchIdExtra=:matchIdExtra
+EOD;
+   
+$insertMatchCR = <<<'EOD'
+INSERT INTO lf_match_cr(proposedDate,requestedByTeam,requestedOn,acceptedState,finallyChosen,match_matchIdExtra) 
+VALUES(STR_TO_DATE(:proposedDate,'%Y%m%d%H%i'),:requestedByTeam,now(),:acceptedState,:finallyChosen,:matchIdExtra)
+EOD;
+
+$updateMatchExtra = <<<'EOD'
+update lf_match_extra e set status = :status, actionFor = :actionFor
+where matchIdExtra = :matchIdExtra;
+EOD;
+
+
+
+	$chosenMeeting = $_POST['chosenMeeting'];
+	getDatabase()->execute($deleteExistingMatchCR,
+					array(
+					':matchIdExtra' => $chosenMeeting['matchIdExtra']
+					));	
+
+	foreach ($chosenMeeting['proposedChanges'] as $key => $proposedChange) {
+		getDatabase()->execute($insertMatchCR,
+						array(
+						':proposedDate' => $proposedChange['proposedDateTime'],
+						':requestedByTeam' => $proposedChange['requestedByTeam'],
+						':acceptedState' => $proposedChange['acceptedState'],
+						':finallyChosen' => ($proposedChange['finallyChosen'] == 'false' ? 0 : 1),
+						':matchIdExtra' => $chosenMeeting['matchIdExtra']
+						));				
+	}
+	getDatabase()->execute($updateMatchExtra,
+					array(
+					':status' => $chosenMeeting['status'],
+					':actionFor' => $chosenMeeting['actionFor'],
+					':matchIdExtra' => $chosenMeeting['matchIdExtra']
+					));				
+
+   
 }
