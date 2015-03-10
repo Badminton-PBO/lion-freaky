@@ -133,9 +133,9 @@ moment.locale("nl");
 	}	
 
 	
-	var Meeting = function(vm,hTeam,oTeam,dateTime,locationName,matchIdExtra) {
+	var Meeting = function(hTeam,oTeam,dateTime,locationName,matchIdExtra) {
 		var self= this;
-		this.vm = vm;
+		//this.vm = vm;
 		this.hTeam = hTeam;
 		this.oTeam = oTeam;
 		this.dateTime = dateTime;
@@ -177,21 +177,18 @@ moment.locale("nl");
 			}
 		},this);
 		
-		this.isAddProposalAllowed = ko.computed(function() {
+		this.isAddProposalAllowed = function(selectedTeam) {
 			//Only allowed to add new proposal if all proposals are answers with a "NIET MOGELIJK"
-			var proposalRequestedByOtherTeam = this.proposedChanges().filter(proposalRequestedNotByFilter(this.vm.chosenTeam().teamName));
+			var proposalRequestedByOtherTeam = self.proposedChanges().filter(proposalRequestedNotByFilter(selectedTeam.teamName));
 			console.log(proposalRequestedByOtherTeam.length);
 			if (proposalRequestedByOtherTeam.length == proposalRequestedByOtherTeam.filter(proposalAcceptedStateFilter('NIET MOGELIJK')).length) {
 				return true;
 			} else {
 				return false;
-			}
-		},this);
-	
+			}			
+		};
 	}	
 				
-
-
 
 	var Button = function(name,value,selected) {
 	  this.name = name;
@@ -239,7 +236,7 @@ moment.locale("nl");
 				//LOAD PLAYERS FOR THIS CLUB/TEAM
 				$.get("api/meetingAndMeetingChangeRequest/"+encodeURIComponent(newTeam.teamName), function(data) {
 					$.each(data.meetings, function(index,m) {
-						var myMeeting = new Meeting(self,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra);
+						var myMeeting = new Meeting(m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra);
 						
 						$.each(m.CRs, function(index,cr) {
 							myMeeting.proposedChanges.push(new ProposedChange(cr.matchCRId,cr.proposedDate,cr.acceptedState,cr.requestedByTeam,cr.requestedOn,cr.finallyChosen == '1' ? true : false));
@@ -277,6 +274,14 @@ moment.locale("nl");
 			});			
 			
 		}
+		
+		self.isAddProposalAllowed = ko.computed(function() {
+			if (typeof self.chosenMeeting() === 'undefined') {
+				return false;
+			} else {
+				return self.chosenMeeting().isAddProposalAllowed(self.chosenTeam());
+			}
+		});		
 		
 	};	
 	
