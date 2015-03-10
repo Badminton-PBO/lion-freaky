@@ -78,7 +78,8 @@ moment.locale("nl");
 		this.hourLayout = formatHour(this.date);
 		
 	}
-	var ProposedChange = function(matchCRId,proposedDateTime,acceptedState,requestedByTeam,requestedOn,finallyChosen) {
+	var ProposedChange = function(meeting,matchCRId,proposedDateTime,acceptedState,requestedByTeam,requestedOn,finallyChosen) {
+		this.meeting = meeting;
 		this.matchCRId=matchCRId;
 		this.proposedDateTime=ko.observable(proposedDateTime);
 		this.acceptedState=ko.observable(acceptedState);
@@ -87,11 +88,20 @@ moment.locale("nl");
 		this.finallyChosen=ko.observable(finallyChosen);		
 		
 		this.proposedDateTimeLayout = moment(this.proposedDateTime(),"YYYYMMDDHHmm").format("ddd DD MMM HH:mm");
-	
+		
 		this.isCheckFinalAllowed = ko.computed(function(){
-			return (this.acceptedState() == 'MOGELIJK' || this.acceptedState() == 'MOGELIJK EN BIJ VOORKEUR');
-		},this);
+			return this.acceptedState() == 'MOGELIJK';
+		},this);	
+		
 	}
+	
+	//Avoiding circular reference when saving to stringify to JSON
+	ProposedChange.prototype.toJSON = function() {
+		var copy = ko.toJS(this);
+		delete copy.meeting;
+		return copy;
+	}	
+		
 		
 	function giveNewProposedChange(requestedByTeam,hTeam,oTeam) {
 		var newProposedChange =  new ProposedChange();
@@ -121,6 +131,13 @@ moment.locale("nl");
 			return a.acceptedState() == myAcceptedState;
 		}
 	}	
+
+	function proposalFinallyChosenStateFilter(myFinallyChosen) {
+		return function(a) {
+			return a.finallyChosen() == myFinallyChosen;
+		}
+	}	
+
 	function proposalRequestedByFilter(myRequestedBy) {
 		return function(a) {
 			return a.requestedByTeam() == myRequestedBy;
@@ -133,9 +150,9 @@ moment.locale("nl");
 	}	
 
 	
-	var Meeting = function(hTeam,oTeam,dateTime,locationName,matchIdExtra) {
+	var Meeting = function(vm,hTeam,oTeam,dateTime,locationName,matchIdExtra) {
 		var self= this;
-		//this.vm = vm;
+		this.vm = vm;
 		this.hTeam = hTeam;
 		this.oTeam = oTeam;
 		this.dateTime = dateTime;
@@ -154,6 +171,12 @@ moment.locale("nl");
 			//console.log(this.proposedChanges().filter(proposalAcceptedStateFilter('-')));
 			if(this.proposedChanges().filter(proposalAcceptedStateFilter('-')).length>0) {
 				return "IN AANVRAAG";
+			} else if(this.proposedChanges().filter(proposalAcceptedStateFilter('MOGELIJK')).length>0) {
+				if (this.proposedChanges().filter(proposalAcceptedStateFilter('MOGELIJK')).filter(proposalFinallyChosenStateFilter(true)).length>0) {
+					return "OVEREENKOMST";
+				}else {
+					return "IN AANVRAAG";
+				}
 			}else {
 				return "LAATST VASTGELEGD TIJDSTIP";
 			}
@@ -172,22 +195,32 @@ moment.locale("nl");
 				} else {
 					return this.hTeam;
 				}					
+			} else if (this.status() == "OVEREENKOMST"){				
+				return "PBO";
 			} else {
 				return "-"
 			}
 		},this);
 		
-		this.isAddProposalAllowed = function(selectedTeam) {
+		this.isAddProposalAllowed = ko.computed(function(){
 			//Only allowed to add new proposal if all proposals are answers with a "NIET MOGELIJK"
-			var proposalRequestedByOtherTeam = self.proposedChanges().filter(proposalRequestedNotByFilter(selectedTeam.teamName));
-			console.log(proposalRequestedByOtherTeam.length);
+			var proposalRequestedByOtherTeam = this.proposedChanges().filter(proposalRequestedNotByFilter(this.vm.chosenTeam().teamName));
 			if (proposalRequestedByOtherTeam.length == proposalRequestedByOtherTeam.filter(proposalAcceptedStateFilter('NIET MOGELIJK')).length) {
 				return true;
 			} else {
 				return false;
 			}			
-		};
+		},this);
+
 	}	
+	
+	//Avoiding circular reference when saving to stringify to JSON
+	Meeting.prototype.toJSON = function() {
+		var copy = ko.toJS(this);
+		delete copy.vm;
+		return copy;
+	}	
+
 				
 
 	var Button = function(name,value,selected) {
@@ -217,7 +250,8 @@ moment.locale("nl");
 		self.chosenMeeting = ko.observable();
 		self.newCommentText = ko.observable();	
 		
-		self.proposalAcceptedStates = ['-','NIET MOGELIJK','MOGELIJK','MOGELIJK EN BIJ VOORKEUR'];
+		//self.proposalAcceptedStates = ['-','NIET MOGELIJK','MOGELIJK','MOGELIJK EN BIJ VOORKEUR'];
+		self.proposalAcceptedStates = ['-','NIET MOGELIJK','MOGELIJK'];
 
 		//LOAD CLUBS/TEAMS
 		$.get("api/clubsAndTeams", function(data) {
@@ -236,10 +270,10 @@ moment.locale("nl");
 				//LOAD PLAYERS FOR THIS CLUB/TEAM
 				$.get("api/meetingAndMeetingChangeRequest/"+encodeURIComponent(newTeam.teamName), function(data) {
 					$.each(data.meetings, function(index,m) {
-						var myMeeting = new Meeting(m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra);
+						var myMeeting = new Meeting(self,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra);
 						
 						$.each(m.CRs, function(index,cr) {
-							myMeeting.proposedChanges.push(new ProposedChange(cr.matchCRId,cr.proposedDate,cr.acceptedState,cr.requestedByTeam,cr.requestedOn,cr.finallyChosen == '1' ? true : false));
+							myMeeting.proposedChanges.push(new ProposedChange(myMeeting,cr.matchCRId,cr.proposedDate,cr.acceptedState,cr.requestedByTeam,cr.requestedOn,cr.finallyChosen == '1' ? true : false));
 							
 						});
 						
@@ -274,15 +308,7 @@ moment.locale("nl");
 			});			
 			
 		}
-		
-		self.isAddProposalAllowed = ko.computed(function() {
-			if (typeof self.chosenMeeting() === 'undefined') {
-				return false;
-			} else {
-				return self.chosenMeeting().isAddProposalAllowed(self.chosenTeam());
-			}
-		});		
-		
+				
 	};	
 	
 	
@@ -290,3 +316,4 @@ moment.locale("nl");
 	ko.applyBindings(vm);		
 
 })(ko, jQuery);
+
