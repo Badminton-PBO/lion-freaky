@@ -90,7 +90,12 @@ moment.locale("nl");
 		this.proposedDateTimeLayout = moment(this.proposedDateTime(),"YYYYMMDDHHmm").format("ddd DD MMM HH:mm");
 		
 		this.isCheckFinalAllowed = ko.computed(function(){
-			return this.acceptedState() == 'MOGELIJK';
+			return this.meeting.vm.chosenTeam().teamName == this.meeting.hTeam 
+				   && (this.finallyChosen()  
+					   || (this.acceptedState() == 'MOGELIJK' 
+						   && this.meeting.proposedChanges().filter(proposalFinallyChosenStateFilter(true)).length == 0
+						   && this.meeting.vm.chosenTeam().teamName == this.meeting.hTeam)
+					   );
 		},this);	
 		
 	}
