@@ -852,7 +852,7 @@ EOD;
 }
 
 function saveMeetingChangeRequest($parameter) {
-   echo (var_dump($_POST));	
+   //echo (var_dump($_POST));	
    
 $deleteExistingMatchCR = <<<'EOD'
 delete from lf_match_cr where match_matchIdExtra=:matchIdExtra
@@ -893,5 +893,11 @@ EOD;
 					':matchIdExtra' => $chosenMeeting['matchIdExtra']
 					));				
 
-   
+	header("Content-type: application/json");
+	//header("Content-type: text/html");
+	header("Content-Disposition: attachment; filename=json.data");
+	header("Pragma: no-cache");
+	header("Expires: 0");
+	echo json_encode($chosenMeeting);	 
+
 }
