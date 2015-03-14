@@ -108,12 +108,13 @@ moment.locale("nl");
 	}	
 		
 		
-	function giveNewProposedChange(requestedByTeam,hTeam,oTeam) {
-		var newProposedChange =  new ProposedChange();
+	function giveNewProposedChange(meeting,requestedByTeam,hTeam,oTeam) {
+		var newProposedChange =  new ProposedChange(meeting);
 		newProposedChange.proposedDateTime(moment().format("YYYYMMDDHHmm"));
 		newProposedChange.requestedByTeam(requestedByTeam);
 		newProposedChange.finallyChosen(false);
 		newProposedChange.acceptedState("-");
+		newProposedChange.meeting = meeting;
 		return newProposedChange;
 	}
 
@@ -291,7 +292,7 @@ moment.locale("nl");
 		
 		self.addNewProposal = function() {
 			console.log("Adding new proposal...");			
-			self.chosenMeeting().proposedChanges.push(giveNewProposedChange(self.chosenTeam().teamName,self.chosenMeeting().hTeam,self.chosenMeeting().oTeam));
+			self.chosenMeeting().proposedChanges.push(giveNewProposedChange(self.chosenMeeting(),self.chosenTeam().teamName,self.chosenMeeting().hTeam,self.chosenMeeting().oTeam));
 		};
 		
 
