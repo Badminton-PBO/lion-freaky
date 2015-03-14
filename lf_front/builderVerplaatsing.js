@@ -2,6 +2,21 @@
 if (!window.console) window.console = {};
 if (!window.console.log) window.console.log = function () { };
 
+function getUrlParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) 
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) 
+        {
+            return decodeURIComponent(sParameterName[1]);
+        }
+    }
+}
+
+
 moment.locale("nl");
 
 (function(ko, $, undefined) {
@@ -155,7 +170,6 @@ moment.locale("nl");
 		}
 	}	
 
-	
 	var Meeting = function(chosenTeamName,hTeam,oTeam,dateTime,locationName,matchIdExtra) {
 		var self= this;
 		this.chosenTeamName = chosenTeamName;
@@ -210,7 +224,6 @@ moment.locale("nl");
 		
 		this.isAddProposalAllowed = ko.computed(function(){
 			var proposalRequestedByOtherTeam = this.proposedChanges().filter(proposalRequestedNotByFilter(this.chosenTeamName));
-			console.log("isAddProposalAllowed "+ this.hTeam + " " + this.oTeam);
 			if (proposalRequestedByOtherTeam.length == proposalRequestedByOtherTeam.filter(proposalAcceptedStateFilter('NIET MOGELIJK')).length) {
 				return true;
 			} else {
@@ -222,7 +235,6 @@ moment.locale("nl");
 	//Avoiding circular reference when saving to stringify to JSON
 	Meeting.prototype.toJSON = function() {
 		var copy = ko.toJS(this);
-		//delete copy.vm;
 		return copy;
 	}	
 
@@ -257,12 +269,31 @@ moment.locale("nl");
 		self.lastError = ko.observable();
 		self.lastSuccess = ko.observable();
 		
+		console.log("URL team:"+getUrlParameter("team"));
+		console.log("URL cTeam:"+getUrlParameter("cTeam"));
+		self.requestedTeamName = getUrlParameter("team");
+		self.requestedCounterTeamName = getUrlParameter("cTeam");
+		
 		//self.proposalAcceptedStates = ['-','NIET MOGELIJK','MOGELIJK','MOGELIJK EN BIJ VOORKEUR'];
 		self.proposalAcceptedStates = ['-','NIET MOGELIJK','MOGELIJK'];
 
 		//LOAD CLUBS/TEAMS
 		$.get("api/clubsAndTeams", function(data) {
 			self.sampleClubs(data.clubs);
+			
+			//Teamname selected by URL
+			if (typeof self.requestedTeamName !== 'undefined') {
+				data.clubs.forEach(function(club) {
+					club.teams.forEach(function(team) {
+						if (team.teamName == self.requestedTeamName) {
+							console.log("Found requestedTeamName "+ team.teamName)
+							self.chosenClub(club);
+							self.chosenTeam(team);
+						}
+					});
+				});
+			}
+
 		});
 			
 
@@ -279,21 +310,32 @@ moment.locale("nl");
 		self.chosenTeam.subscribe(function(newTeam) {			
 			if (newTeam !== undefined && newTeam !== null) {
 				console.log("Team initing...");								
-				self.availableMeetings.removeAll();				
 				//LOAD PLAYERS FOR THIS CLUB/TEAM
+				self.chosenMeeting(null);
 				$.get("api/meetingAndMeetingChangeRequest/"+encodeURIComponent(newTeam.teamName), function(data) {
+					var myMeetings = [];
 					$.each(data.meetings, function(index,m) {
 						var myMeeting = new Meeting(self.chosenTeam().teamName,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra);
-						
+												
 						$.each(m.CRs, function(index,cr) {
 							myMeeting.proposedChanges.push(new ProposedChange(myMeeting,cr.matchCRId,cr.proposedDate,cr.acceptedState,cr.requestedByTeam,cr.requestedOn,cr.finallyChosen == '1' ? true : false));
 							
 						});
-						
-						self.availableMeetings.push(myMeeting);
-					});							
+						myMeetings.push(myMeeting);						
+					});	
+					self.availableMeetings(myMeetings);
+					
+					//Counterteam selected by URL
+					if (typeof self.requestedCounterTeamName !== 'undefined') {
+						self.availableMeetings().forEach(function(meeting) {
+							if (meeting.hTeam == self.requestedCounterTeamName || meeting.oTeam == self.requestedCounterTeamName) {
+								self.chosenMeeting(meeting);
+							}
+						});
+					}
+					
 				});
-				self.chosenMeeting(null);
+				
 			}
 		});
 			
@@ -326,6 +368,7 @@ moment.locale("nl");
 			});			
 			
 		}
+		
 				
 	};	
 	
