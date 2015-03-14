@@ -19,7 +19,7 @@ moment.locale("nl");
 					$(element).data("timeout", setTimeout(function() {
 						$(element).fadeOut();
 						valueAccessor()(null);
-					}, 30000));
+					}, 3000));
 				});
 			}
 		},
@@ -209,7 +209,6 @@ moment.locale("nl");
 		},this);
 		
 		this.isAddProposalAllowed = ko.computed(function(){
-			//Only allowed to add new proposal if all proposals are answers with a "NIET MOGELIJK"
 			var proposalRequestedByOtherTeam = this.proposedChanges().filter(proposalRequestedNotByFilter(this.vm.chosenTeam().teamName));
 			if (proposalRequestedByOtherTeam.length == proposalRequestedByOtherTeam.filter(proposalAcceptedStateFilter('NIET MOGELIJK')).length) {
 				return true;
@@ -217,7 +216,6 @@ moment.locale("nl");
 				return false;
 			}			
 		},this);
-
 	}	
 	
 	//Avoiding circular reference when saving to stringify to JSON
@@ -255,6 +253,8 @@ moment.locale("nl");
 		self.availableMeetings = ko.observableArray();
 		self.chosenMeeting = ko.observable();
 		self.newCommentText = ko.observable();	
+		self.lastError = ko.observable();
+		self.lastSuccess = ko.observable();
 		
 		//self.proposalAcceptedStates = ['-','NIET MOGELIJK','MOGELIJK','MOGELIJK EN BIJ VOORKEUR'];
 		self.proposalAcceptedStates = ['-','NIET MOGELIJK','MOGELIJK'];
@@ -269,6 +269,12 @@ moment.locale("nl");
 			console.log("Resetting form...");
 		};
 
+		self.chosenClub.subscribe(function(newClub) {
+			//self.chosenMeeting(null);
+			//self.availableMeetings.removeAll();											
+			//self.chosenTeam(null);
+		});
+		
 		self.chosenTeam.subscribe(function(newTeam) {			
 			if (newTeam !== undefined && newTeam !== null) {
 				console.log("Team initing...");								
@@ -286,10 +292,10 @@ moment.locale("nl");
 						self.availableMeetings.push(myMeeting);
 					});							
 				});
+				self.chosenMeeting(null);
 			}
 		});
-		
-		
+			
 		self.addNewProposal = function() {
 			console.log("Adding new proposal...");			
 			self.chosenMeeting().proposedChanges.push(giveNewProposedChange(self.chosenMeeting(),self.chosenTeam().teamName,self.chosenMeeting().hTeam,self.chosenMeeting().oTeam));
@@ -306,11 +312,16 @@ moment.locale("nl");
 			var vmjs = $.parseJSON(ko.toJSON(self));
 			var resultObject = {"chosenMeeting": vmjs.chosenMeeting};
 			var posting = $.post("api/saveMeetingChangeRequest",resultObject, function(data) {
-				console.log("MeetingChangeRequest saved.");				
+				if (typeof data.matchIdExtra !== 'undefined') {
+					self.lastSuccess("Verplaatsings aanvraag bewaard.");
+				}else {
+					self.lastError("Problemen bij het bewaren van deze verplaatsings aanvraag.");
+				}
+
 			});
 			
 			posting.fail(function(data) {
-				//self.lastError("Problemen bij het opslaan van dit recept! :(");				
+				self.lastError("Problemen bij het bewaren van deze verplaatsings aanvraag.");
 			});			
 			
 		}

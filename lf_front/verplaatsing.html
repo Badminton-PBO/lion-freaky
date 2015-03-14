@@ -22,6 +22,30 @@
 		<script type="text/javascript" src="libs/js/moment-with-locales.min.js"></script>
 		<script type="text/javascript" src="libs/js/bootstrap-datetimepicker-4.0.0/bootstrap-datetimepicker.min.js"></script>
 		<link rel="stylesheet" href="libs/js/bootstrap-datetimepicker-4.0.0/bootstrap-datetimepicker.min.css" />
+		
+		<style type="text/css">
+#message, #error, #success {
+    font-size: 1em;
+    margin-top: 10px;    
+    color: #444;
+    padding: 2px;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px #999;
+}
+
+#error {
+    background-color: #d9534f;
+    border-color: #d43f3a;
+    color: #fff; 
+}		
+
+#success {
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+    color: #fff;   
+}				
+		</style>
 			
 	</head>
 	<body>
@@ -61,7 +85,7 @@
 							<table class="table table-bordered table-condensed">
 								<thead>
 										<tr>
-											<th>Match</th>
+											<th>Ontmoeting <span data-bind="text: $root.availableMeetings().length"></span></th>
 											<th>Laatst vastgelegd tijdstip</th>
 											<th>Status</th>
 											<th>Actie bij</th>
@@ -72,7 +96,7 @@
 										<td><a data-bind="click: $root.chosenMeeting"><span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></a></td>
 										<td><span data-bind="text:dateLayout"></span> <span data-bind="text:hourLayout"></span></td>
 										<td><span data-bind="text: status"></span></td>
-										<td><span data-bind="text: actionFor"></td>
+										<td><span data-bind="text: actionFor"></span></td>
 									</tr>
 								</tbody>							
 							</table>							
@@ -84,22 +108,17 @@
 						<div class="row row-fluid">
 							<div class="col-xs-12">
 								<h2>Verplaatsing aanvraag <span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></h2>
-							</div>
-							<div class="col-xs-12 col-sm-4" style="padding-top:10px; padding-bottom:15px">
-								<div id="reset" class='label label-default' style='font-size:30px' data-bind="visible: isAddProposalAllowed">
-									<a href="#" data-bind="click: $root.addNewProposal">
-										<span class="glyphicon glyphicon-plus"></span>
-									</a>
-								</div>	
-								<div id="save" class='label label-default' style='font-size:30px;margin-right:10px;'>
-									<a href="#" data-bind="click: $root.save">
-										<span class="glyphicon glyphicon-floppy-save">	
-									</a> 							
-								</div>																
-							</div>						
-						</div>
+							</div>					
+						</div>	
+						<div class="row">
+							<div class="col-xs-12" id="error" data-bind="flash: $root.lastError"></div>
+						</div>						
+						<div class="row">
+							<div class="col-xs-12" id="success" data-bind="flash: $root.lastSuccess"></div>
+						</div>	
+						
 						<div class="row-fluid">							
-							<table class="table table-condensed">
+							<table class="table table-condensed" data-bind="visible: proposedChanges().length > 0">
 								<thead>
 									<tr>
 										<th class="col-md-2">Voorstel van</th>
@@ -160,8 +179,29 @@
 									</tr>
 								</tbody>															
 							</table>										
+							<div data-bind="visible: proposedChanges().length == 0">
+								Momenteel zijn er geen verplaatsings aanvragen voor deze ontmoeting. Voor er &eacute;&eacute;n toe via de <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> knop.
+							</div>
+						</div>
+						<div class="row row-fluid">
+							<div class="col-xs-offset-9 col-xs-3" style="padding-top:10px; padding-bottom:15px">
+								
+								<div id="reset" class='label label-default' style='font-size:30px; margin-right:10px' data-bind="visible: isAddProposalAllowed">
+									<a href="#" data-bind="click: $root.addNewProposal">
+										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>	
+									</a>
+								</div>	
+								
+								<div id="save" class='label label-default' style='font-size:30px;margin-right:10px;'>
+									<a href="#" data-bind="click: $root.save">
+										<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>	
+									</a> 							
+								</div>																
+
+
+							</div>	
 						</div>														
-						<div class="row-fluid">
+						<div class="row row-fluid">
 							<div class="well well-sm">
 								<h2>Commentaar</h2>
 								<table class="table table-condensed">
