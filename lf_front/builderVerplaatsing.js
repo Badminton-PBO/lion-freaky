@@ -90,11 +90,11 @@ moment.locale("nl");
 		this.proposedDateTimeLayout = moment(this.proposedDateTime(),"YYYYMMDDHHmm").format("ddd DD MMM HH:mm");
 		
 		this.isCheckFinalAllowed = ko.computed(function(){
-			return this.meeting.vm.chosenTeam().teamName == this.meeting.hTeam 
+			return this.meeting.chosenTeamName == this.meeting.hTeam 
 				   && (this.finallyChosen()  
 					   || (this.acceptedState() == 'MOGELIJK' 
 						   && this.meeting.proposedChanges().filter(proposalFinallyChosenStateFilter(true)).length == 0
-						   && this.meeting.vm.chosenTeam().teamName == this.meeting.hTeam)
+						   && this.meeting.chosenTeamName == this.meeting.hTeam)
 					   );
 		},this);	
 		
@@ -156,9 +156,9 @@ moment.locale("nl");
 	}	
 
 	
-	var Meeting = function(vm,hTeam,oTeam,dateTime,locationName,matchIdExtra) {
+	var Meeting = function(chosenTeamName,hTeam,oTeam,dateTime,locationName,matchIdExtra) {
 		var self= this;
-		this.vm = vm;
+		this.chosenTeamName = chosenTeamName;
 		this.hTeam = hTeam;
 		this.oTeam = oTeam;
 		this.dateTime = dateTime;
@@ -209,7 +209,8 @@ moment.locale("nl");
 		},this);
 		
 		this.isAddProposalAllowed = ko.computed(function(){
-			var proposalRequestedByOtherTeam = this.proposedChanges().filter(proposalRequestedNotByFilter(this.vm.chosenTeam().teamName));
+			var proposalRequestedByOtherTeam = this.proposedChanges().filter(proposalRequestedNotByFilter(this.chosenTeamName));
+			console.log("isAddProposalAllowed "+ this.hTeam + " " + this.oTeam);
 			if (proposalRequestedByOtherTeam.length == proposalRequestedByOtherTeam.filter(proposalAcceptedStateFilter('NIET MOGELIJK')).length) {
 				return true;
 			} else {
@@ -221,7 +222,7 @@ moment.locale("nl");
 	//Avoiding circular reference when saving to stringify to JSON
 	Meeting.prototype.toJSON = function() {
 		var copy = ko.toJS(this);
-		delete copy.vm;
+		//delete copy.vm;
 		return copy;
 	}	
 
@@ -270,9 +271,9 @@ moment.locale("nl");
 		};
 
 		self.chosenClub.subscribe(function(newClub) {
-			//self.chosenMeeting(null);
-			//self.availableMeetings.removeAll();											
-			//self.chosenTeam(null);
+			self.chosenMeeting(null);
+			self.availableMeetings.removeAll();											
+			self.chosenTeam(null);
 		});
 		
 		self.chosenTeam.subscribe(function(newTeam) {			
@@ -282,7 +283,7 @@ moment.locale("nl");
 				//LOAD PLAYERS FOR THIS CLUB/TEAM
 				$.get("api/meetingAndMeetingChangeRequest/"+encodeURIComponent(newTeam.teamName), function(data) {
 					$.each(data.meetings, function(index,m) {
-						var myMeeting = new Meeting(self,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra);
+						var myMeeting = new Meeting(self.chosenTeam().teamName,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra);
 						
 						$.each(m.CRs, function(index,cr) {
 							myMeeting.proposedChanges.push(new ProposedChange(myMeeting,cr.matchCRId,cr.proposedDate,cr.acceptedState,cr.requestedByTeam,cr.requestedOn,cr.finallyChosen == '1' ? true : false));
@@ -298,7 +299,7 @@ moment.locale("nl");
 			
 		self.addNewProposal = function() {
 			console.log("Adding new proposal...");			
-			self.chosenMeeting().proposedChanges.push(giveNewProposedChange(self.chosenMeeting(),self.chosenTeam().teamName,self.chosenMeeting().hTeam,self.chosenMeeting().oTeam));
+			self.chosenMeeting().proposedChanges.push(giveNewProposedChange(self.chosenTeam().teamName,self.chosenTeam().teamName,self.chosenMeeting().hTeam,self.chosenMeeting().oTeam));
 		};
 		
 
