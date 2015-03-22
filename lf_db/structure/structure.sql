@@ -126,6 +126,7 @@ CREATE TABLE IF NOT EXISTS `lf_team` (
   `club_clubId` int(11) NOT NULL,
   `group_groupId` int(11) NOT NULL,
   `captainName` VARCHAR( 90 ) NOT NULL,
+  `email` VARCHAR( 90 ) NULL,
   PRIMARY KEY (`teamName`,`group_groupId`),
   KEY `fk_team_club1_idx` (`club_clubId`),
   KEY `fk_team_group1_idx` (`group_groupId`)
@@ -180,7 +181,8 @@ CREATE TABLE IF NOT EXISTS `lf_tmpdbload_teamscsv` (
   `year` year(4) NOT NULL,
   `eventName` varchar(80) NOT NULL,
   `drawName` varchar(80) NOT NULL,
-  `captainName` VARCHAR( 90 ) NOT NULL
+  `captainName` VARCHAR( 90 ) NOT NULL,
+  `email` VARCHAR( 90 ) NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
