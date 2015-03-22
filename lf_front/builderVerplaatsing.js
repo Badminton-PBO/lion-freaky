@@ -356,7 +356,7 @@ moment.locale("nl");
 			var resultObject = {"chosenMeeting": vmjs.chosenMeeting,"sendMail":sendMail};
 			var posting = $.post("api/saveMeetingChangeRequest",resultObject, function(data) {
 				if (data.processedSuccessfull) {
-					$resultText = (sendMail ? "Verplaatsings aanvraag bewaard en e-mail verzonden naar tegenpartij.":"Verplaatsings aanvraag bewaard.");
+					$resultText = (sendMail ? "Verplaatsings aanvraag bewaard en e-mail verzonden naar tegenpartij ("+data.mailTo+")" : "Verplaatsings aanvraag bewaard.");
 					self.lastSuccess($resultText);
 				}else {
 					self.lastError("Problemen bij het bewaren van deze verplaatsings aanvraag.");

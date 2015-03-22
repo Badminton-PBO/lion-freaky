@@ -913,8 +913,9 @@ EOD;
 					));	
 
 	if ($sendMail == 'true') {
-		$sendResult = sendMailUsingMailGun($chosenMeeting);
-		$processedSuccessfull = $processedSuccessfull && $sendResult;
+		$mailTo = sendMailUsingMailGun($chosenMeeting);
+		$chosenMeeting["mailTo"]= $mailTo;	
+		$processedSuccessfull = $processedSuccessfull && !(empty($mailTo));
 	}
 
 	$chosenMeeting["processedSuccessfull"]= $processedSuccessfull;	
@@ -929,8 +930,6 @@ EOD;
 
 }
 
-
-
 function sendMailUsingMailGun($chosenMeeting) {
 	$team="";
 	$cTeam="";
@@ -941,11 +940,23 @@ function sendMailUsingMailGun($chosenMeeting) {
 		$team=$chosenMeeting['hTeam'];
 		$cTeam=$chosenMeeting['oTeam'];
 	}
-	
+	//Retrieve team email address
+$queryTeam = <<<'EOD'
+select t.email from lf_team t
+where t.teamName = :team;
+EOD;
+	$dbTeam = getDatabase()->all($queryTeam, array(':team' =>$team));
+	$teamMailTo=$dbTeam[0]['email'];
+
 	$link=SITE_ROOT.'/verplaatsing.html?team='.rawurlencode($team).'&cTeam='.rawurlencode($cTeam);
 	$subject='Wijziging PBO wedstrijdaanvraag '.$chosenMeeting['hTeam'].' - '.$chosenMeeting['oTeam'];
 
+	$mailTo = (defined('VERPLAATSING_MAIL_TO_STATIC') ? VERPLAATSING_MAIL_TO_STATIC : $teamMailTo);
+	$chosenMeeting['mailTo'] = $mailTo;
+
 $body = <<<EOT
+mailto:$mailTo
+
 Beste PBO ploegkapitein
 Volgende wedstrijdaanvraag is gewijzigd
 $link.
@@ -954,18 +965,18 @@ EOT;
 	$domain = MAILGUN_DOMAIN;
 	$from = VERPLAATSING_MAIL_FROM;
 	$mgResult = $mg->sendMessage($domain, array ('from' => $from,
-									'to' => 'thomas.dekeyser@gmail.com',
+									'to' => $mailTo,
 									'subject' => $subject,
 									'text' => $body));
-	return $mgResult->http_response_code == 200 ? true: false;
+	return $mgResult->http_response_code == 200 ? $mailTo: "";
 }
 
 function testMailGun() {
-	//$mg = new Mailgun("key-728db439943514e5617a9caa75dd9588");
+	//$mg = new Mailgun(MAILGUN_KEY);
 	//$domain = "sandbox297cade920bd490c991e0a94311d0c48.mailgun.org";
 	//$from = "postmaster@sandbox297cade920bd490c991e0a94311d0c48.mailgun.org";
 
-	$mg = new Mailgun("key-728db439943514e5617a9caa75dd9588");
+	$mg = new Mailgun(MAILGUN_KEY);
 	$domain = "mg.gentsebc.be";
 	$from = "thomas@mg.gentsebc.be";
 	
