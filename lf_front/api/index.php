@@ -483,8 +483,8 @@ function loadCSV($CSV,$type) {
 				break;
 			case "teams": 
 				buildAndExecQuery($parsedCsv,
-					'INSERT INTO lf_tmpdbload_teamscsv(name, clubCode, eventName, drawName, captainName ) VALUES ',
-					 array('name','clubcode','eventname','DrawName','contact')
+					'INSERT INTO lf_tmpdbload_teamscsv(name, clubCode, eventName, drawName, captainName,email ) VALUES ',
+					 array('name','clubcode','eventname','DrawName','contact','email')
 				);
 				break;
 			case "matches": 
@@ -529,8 +529,8 @@ select `year`,'PROV',lf_dbload_eventcode(eventName),lf_dbload_devision(drawName)
 group by `year`,lf_dbload_eventcode(eventName),lf_dbload_devision(drawName),lf_dbload_serie(drawName);
 EOD;
 $insertLfTeam = <<<'EOD'
-INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId, captainName)
-select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.eventName) = lfg.event and  lf_dbload_devision(t.drawName) = lfg.devision and lf_dbload_serie(t.drawName) = lfg.series),t.captainName  from lf_tmpdbload_teamscsv t;
+INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId, captainName,email)
+select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.eventName) = lfg.event and  lf_dbload_devision(t.drawName) = lfg.devision and lf_dbload_serie(t.drawName) = lfg.series),t.captainName,t.email  from lf_tmpdbload_teamscsv t;
 EOD;
 $deleteLfTmpdbloadPlayersWhenDuplicatePrefereSpelerAboveKYUSpeler = <<<'EOD'
 delete n2 from lf_tmpdbload_playerscsv n1, lf_tmpdbload_playerscsv n2
