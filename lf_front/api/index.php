@@ -7,6 +7,8 @@ Epi::init('route','database');
 EpiDatabase::employ('mysql',constant('DB_NAME'),constant('DB_HOST'),constant('DB_USER'),constant('DB_PASSWORD')); // type = mysql, database = mysql, host = localhost, user = root, password = [empty]
 Epi::setSetting('exceptions', false);
 ini_set('memory_limit', '256M');// Extra memory needed to load big CSV like fixedRankingMei15
+require '../libs/mailgun-php/vendor/autoload.php';
+use Mailgun\Mailgun;
 
 //phpinfo();
 //Epi::init('base','cache','session');
@@ -29,6 +31,7 @@ getRoute()->get('/dbload','dbload');
 getRoute()->get('/dbload/(\w+)/(\w+)','dbload');
 getRoute()->get('/statistic/([\w]+)','statistic');
 getRoute()->get('/meetingAndMeetingChangeRequest/([\w\s-]+)','meetingAndMeetingChangeRequest');
+getRoute()->get('/testMailGun','testMailGun');
 getRoute()->post('/saveMeetingChangeRequest', 'saveMeetingChangeRequest');
 getRoute()->get('/', 'usage');
 getRoute()->run(); 
@@ -884,8 +887,9 @@ where matchIdExtra = :matchIdExtra;
 EOD;
 
 
-
+	$processedSuccessfull=true;
 	$chosenMeeting = $_POST['chosenMeeting'];
+	$sendMail = $_POST['sendMail'];
 	getDatabase()->execute($deleteExistingMatchCR,
 					array(
 					':matchIdExtra' => $chosenMeeting['matchIdExtra']
@@ -906,7 +910,15 @@ EOD;
 					':status' => $chosenMeeting['status'],
 					':actionFor' => $chosenMeeting['actionFor'],
 					':matchIdExtra' => $chosenMeeting['matchIdExtra']
-					));				
+					));	
+
+	if ($sendMail == 'true') {
+		$sendResult = sendMailUsingMailGun($chosenMeeting);
+		$processedSuccessfull = $processedSuccessfull && $sendResult;
+	}
+
+	$chosenMeeting["processedSuccessfull"]= $processedSuccessfull;	
+	
 
 	header("Content-type: application/json");
 	//header("Content-type: text/html");
@@ -915,4 +927,52 @@ EOD;
 	header("Expires: 0");
 	echo json_encode($chosenMeeting);	 
 
+}
+
+
+
+function sendMailUsingMailGun($chosenMeeting) {
+	$team="";
+	$cTeam="";
+	if ($chosenMeeting['chosenTeamName'] == $chosenMeeting['hTeam']) {
+		$team=$chosenMeeting['oTeam'];
+		$cTeam=$chosenMeeting['hTeam'];
+	} else {
+		$team=$chosenMeeting['hTeam'];
+		$cTeam=$chosenMeeting['oTeam'];
+	}
+	
+	$link=SITE_ROOT.'/verplaatsing.html?team='.rawurlencode($team).'&cTeam='.rawurlencode($cTeam);
+	$subject='Wijziging PBO wedstrijdaanvraag '.$chosenMeeting['hTeam'].' - '.$chosenMeeting['oTeam'];
+
+$body = <<<EOT
+Beste PBO ploegkapitein
+Volgende wedstrijdaanvraag is gewijzigd
+$link.
+EOT;
+	$mg = new Mailgun(MAILGUN_KEY);
+	$domain = MAILGUN_DOMAIN;
+	$from = VERPLAATSING_MAIL_FROM;
+	$mgResult = $mg->sendMessage($domain, array ('from' => $from,
+									'to' => 'thomas.dekeyser@gmail.com',
+									'subject' => $subject,
+									'text' => $body));
+	return $mgResult->http_response_code == 200 ? true: false;
+}
+
+function testMailGun() {
+	//$mg = new Mailgun("key-728db439943514e5617a9caa75dd9588");
+	//$domain = "sandbox297cade920bd490c991e0a94311d0c48.mailgun.org";
+	//$from = "postmaster@sandbox297cade920bd490c991e0a94311d0c48.mailgun.org";
+
+	$mg = new Mailgun("key-728db439943514e5617a9caa75dd9588");
+	$domain = "mg.gentsebc.be";
+	$from = "thomas@mg.gentsebc.be";
+	
+	$x = $mg->sendMessage($domain, array ('from' => $from,
+									'to' => 'thomas.dekeyser@gmail.com',
+									'cc' => 'melanie.desegher@gmail.com',
+									'subject' => 'Test Mailgun',
+									'text' => 'This is a simple text message.'));
+	var_dump($x);
 }

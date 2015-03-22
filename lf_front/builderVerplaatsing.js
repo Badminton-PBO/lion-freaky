@@ -351,12 +351,13 @@ moment.locale("nl");
 			self.newCommentText("");
 		};
 		
-		self.save = function() {
+		self.saveAndSend = function(sendMail) {
 			var vmjs = $.parseJSON(ko.toJSON(self));
-			var resultObject = {"chosenMeeting": vmjs.chosenMeeting};
+			var resultObject = {"chosenMeeting": vmjs.chosenMeeting,"sendMail":sendMail};
 			var posting = $.post("api/saveMeetingChangeRequest",resultObject, function(data) {
-				if (typeof data.matchIdExtra !== 'undefined') {
-					self.lastSuccess("Verplaatsings aanvraag bewaard.");
+				if (data.processedSuccessfull) {
+					$resultText = (sendMail ? "Verplaatsings aanvraag bewaard en e-mail verzonden naar tegenpartij.":"Verplaatsings aanvraag bewaard.");
+					self.lastSuccess($resultText);
 				}else {
 					self.lastError("Problemen bij het bewaren van deze verplaatsings aanvraag.");
 				}
@@ -368,7 +369,13 @@ moment.locale("nl");
 			});			
 			
 		}
-		
+		self.save = function() {
+			self.saveAndSend(false);			
+		}
+
+		self.send = function() {
+			self.saveAndSend(true);
+		}
 				
 	};	
 	
