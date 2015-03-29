@@ -22,7 +22,7 @@
 		<script type="text/javascript" src="libs/js/moment-with-locales.min.js"></script>
 		<script type="text/javascript" src="libs/js/bootstrap-datetimepicker-4.0.0/bootstrap-datetimepicker.min.js"></script>
 		<link rel="stylesheet" href="libs/js/bootstrap-datetimepicker-4.0.0/bootstrap-datetimepicker.min.css" />
-		
+				
 		<style type="text/css">
 #message, #error, #success {
     font-size: 1em;
@@ -81,11 +81,11 @@
 										   optionsCaption: 'Selecteer...'"></select>
 					</p>
 					<div data-bind="if: $root.chosenTeam()">			
-						<div id="matchListId" class="well well-sm">
-							<table class="table table-bordered table-condensed">
+						<div class="well well-sm" data-bind="style: { height: $root.chosenMeeting() ? '30vh' : '60vh', overflow: 'auto'}">
+							<table class="table table-striped table-condensed">
 								<thead>
 										<tr>
-											<th>Ontmoeting <span data-bind="text: $root.availableMeetings().length"></span></th>
+											<th>Ontmoeting</th>
 											<th>Laatst vastgelegd tijdstip</th>
 											<th>Status</th>
 											<th>Actie bij</th>
@@ -248,6 +248,6 @@
 				</div>				
 			</div>
 		</div>
-		<script type="text/javascript" src="builderVerplaatsing.js" charset="utf-8"></script>	
+		<script type="text/javascript" src="builderVerplaatsing.js" charset="utf-8"></script>		
 	</body>	
 </html>
