@@ -268,9 +268,10 @@ moment.locale("nl");
 		self.newCommentText = ko.observable();	
 		self.lastError = ko.observable();
 		self.lastSuccess = ko.observable();
+		self.selectedStatusses = ko.observableArray();
 		
-		console.log("URL team:"+getUrlParameter("team"));
-		console.log("URL cTeam:"+getUrlParameter("cTeam"));
+		//console.log("URL team:"+getUrlParameter("team"));
+		//console.log("URL cTeam:"+getUrlParameter("cTeam"));
 		self.requestedTeamName = getUrlParameter("team");
 		self.requestedCounterTeamName = getUrlParameter("cTeam");
 		
@@ -279,6 +280,10 @@ moment.locale("nl");
 
 		//LOAD CLUBS/TEAMS
 		$.get("api/clubsAndTeams", function(data) {
+			data.clubs.forEach(function(club) {
+				var allTeam = new Team('Allen','','','','');
+				club.teams.push(allTeam);
+			});
 			self.sampleClubs(data.clubs);
 			
 			//Teamname selected by URL
@@ -310,9 +315,9 @@ moment.locale("nl");
 		self.chosenTeam.subscribe(function(newTeam) {			
 			if (newTeam !== undefined && newTeam !== null) {
 				console.log("Team initing...");								
-				//LOAD PLAYERS FOR THIS CLUB/TEAM
+				//LOAD EVENTS FOR THIS CLUB/TEAM
 				self.chosenMeeting(null);
-				$.get("api/meetingAndMeetingChangeRequest/"+encodeURIComponent(newTeam.teamName), function(data) {
+				$.get("api/meetingAndMeetingChangeRequest/"+encodeURIComponent(self.chosenClub().clubName)+"/"+encodeURIComponent(newTeam.teamName), function(data) {
 					var myMeetings = [];
 					$.each(data.meetings, function(index,m) {
 						var myMeeting = new Meeting(self.chosenTeam().teamName,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra);
@@ -333,7 +338,7 @@ moment.locale("nl");
 							}
 						});
 					}
-					
+									
 				});
 				
 			}
@@ -371,12 +376,16 @@ moment.locale("nl");
 		}
 		self.save = function() {
 			self.saveAndSend(false);			
-		}
+		};
 
 		self.send = function() {
 			self.saveAndSend(true);
-		}
-				
+		};
+			
+		self.availableStatusses = ko.computed(function() {
+			return ['A','B','C'];
+		},this);
+		
 	};	
 	
 	
@@ -384,4 +393,3 @@ moment.locale("nl");
 	ko.applyBindings(vm);		
 
 })(ko, jQuery);
-

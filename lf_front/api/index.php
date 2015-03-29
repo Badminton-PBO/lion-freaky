@@ -30,7 +30,7 @@ getRoute()->get('/logEvent/([\w]+)/([\w\s-]+)','logEvent');
 getRoute()->get('/dbload','dbload');
 getRoute()->get('/dbload/(\w+)/(\w+)','dbload');
 getRoute()->get('/statistic/([\w]+)','statistic');
-getRoute()->get('/meetingAndMeetingChangeRequest/([\w\s-]+)','meetingAndMeetingChangeRequest');
+getRoute()->get('/meetingAndMeetingChangeRequest/([\w\s-]+)/([\w\s-]+)','meetingAndMeetingChangeRequest');
 getRoute()->get('/testMailGun','testMailGun');
 getRoute()->post('/saveMeetingChangeRequest', 'saveMeetingChangeRequest');
 getRoute()->get('/', 'usage');
@@ -797,28 +797,54 @@ EOD;
 	echo json_encode($result);	 
 }
 
-function  meetingAndMeetingChangeRequest($teamName) {
-$queryEvent = <<<EOD
+function  meetingAndMeetingChangeRequest($clubName,$teamName) {
+$queryEventPerTeam = <<<EOD
 select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName,e.matchIdExtra from lf_match m
 join lf_match_extra e on e.hTeamName = m.homeTeamName and e.oTeamName = m.outTeamName
 where (m.homeTeamName = :team or m.outTeamName = :team)
-and m.date >= now()
 order by m.date asc;
 EOD;
+//and m.date >= now()
 
-$queryMatchCR = <<<EOD
+
+$queryMatchCRPerTeam = <<<EOD
 select e.matchIdExtra,cr.acceptedState, cr.finallyChosen, e.hTeamName,e.oTeamName,cr.matchCRId,date_format(cr.proposedDate,'%Y%m%d%H%i') proposedDate,cr.requestedByTeam,date_format(cr.requestedOn,'%Y%m%d%H%i%S') requestedOn  from lf_match_cr cr
 join lf_match_extra e on e.matchIdExtra = cr.match_matchIdExtra
 where (e.hTeamName = :team or e.oTeamName = :team)
 order by cr.proposedDate asc;
 EOD;
 
+$queryEventPerClub = <<<EOD
+select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName,e.* from lf_match m
+join lf_match_extra e on e.hTeamName = m.homeTeamName and e.oTeamName = m.outTeamName
+join lf_team t on t.teamName = m.homeTeamName or t.teamName = m.outTeamName
+join lf_club c on c.clubId = t.club_clubId
+where c.clubName= :club
+order by m.date asc;
+EOD;
+//and m.date >= now()
+$queryMatchCRPerClub = <<<EOD
+select e.matchIdExtra,cr.acceptedState, cr.finallyChosen, e.hTeamName,e.oTeamName,cr.matchCRId,date_format(cr.proposedDate,'%Y%m%d%H%i') proposedDate,cr.requestedByTeam,date_format(cr.requestedOn,'%Y%m%d%H%i%S') requestedOn  from lf_match_cr cr
+join lf_match_extra e on e.matchIdExtra = cr.match_matchIdExtra
+join lf_match m on e.hTeamName = m.homeTeamName and e.oTeamName = m.outTeamName
+join lf_team t on t.teamName = m.homeTeamName or t.teamName = m.outTeamName
+join lf_club c on c.clubId = t.club_clubId
+where c.clubName='GENTSE BC'
+order by cr.proposedDate asc;
+EOD;
 
 	$result = array('meetings'=>array());
 	
 	//Add match data		
-	$matches = getDatabase()->all($queryEvent, array(':team' =>$teamName));
-	$matchesCRs = getDatabase()->all($queryMatchCR, array(':team' =>$teamName));
+	if ($teamName == 'Allen') {
+		$matches = getDatabase()->all($queryEventPerClub, array(':club' =>$clubName));
+		$matchesCRs = getDatabase()->all($queryMatchCRPerClub, array(':club' =>$clubName));
+		
+	} else {
+		$matches = getDatabase()->all($queryEventPerTeam, array(':team' =>$teamName));
+		$matchesCRs = getDatabase()->all($queryMatchCRPerTeam, array(':team' =>$teamName));
+	}
+	
 	foreach($matches as $key => $match) {
 		$matchCRs = array();
 		foreach($matchesCRs as $key => $matchesCR) {
@@ -954,7 +980,8 @@ EOT;
 	$mgResult = $mg->sendMessage($domain, array ('from' => $from,
 									'to' => $mailTo,
 									'subject' => $subject,
-									'text' => $body));
+									'text' => $body,
+									'o:testmode' => MAILGUN_IN_TEST_MODE));
 	return $mgResult->http_response_code == 200 ? $mailTo: "";
 }
 
