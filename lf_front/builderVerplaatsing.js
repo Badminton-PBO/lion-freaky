@@ -374,9 +374,6 @@ moment.locale("nl");
 			});			
 			
 		}
-		self.save = function() {
-			self.saveAndSend(false);			
-		};
 
 		self.send = function() {
 			self.saveAndSend(true);
