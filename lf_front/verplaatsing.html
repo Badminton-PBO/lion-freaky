@@ -180,30 +180,26 @@
 								</tbody>															
 							</table>										
 							<div data-bind="visible: proposedChanges().length == 0">
-								Momenteel zijn er geen verplaatsings aanvragen voor deze ontmoeting. Voor er &eacute;&eacute;n toe via de <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> knop.
+								Momenteel zijn er geen verplaatsings aanvragen voor deze ontmoeting.
 							</div>
 						</div>
 						<div class="row row-fluid">
-							<div class="col-xs-offset-9 col-xs-3" style="padding-top:10px; padding-bottom:15px">
+							<div class="col-xs-1" style="padding-top:10px; padding-bottom:15px">
 								
-								<div id="reset" class='label label-default' style='font-size:30px; margin-right:10px' data-bind="visible: isAddProposalAllowed">
+								<div id="add" class='btn btn-default' style='font-size:20px; margin-right:10px' data-bind="visible: isAddProposalAllowed">
 									<a href="#" data-bind="click: $root.addNewProposal">
-										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>	
+										Nieuwe aanvraag toevoegen</span>	
 									</a>
 								</div>	
-								
-								<div id="save" class='label label-default' style='font-size:30px;margin-right:10px;'>
-									<a href="#" data-bind="click: $root.save">
-										<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>	
-									</a> 															
-								</div>								
-								
-								<div id="send" class='label label-default' style='font-size:30px;margin-right:10px;'>
+																							
+							</div>	
+			
+							<div class="col-xs-offset-8 col-xs-3" style="padding-top:10px; padding-bottom:15px">
+								<div id="send" class='btn btn-default' style='font-size:20px;margin-right:10px;'>
 									<a href="#" data-bind="click: $root.send">
-										<span class="glyphicon glyphicon-send" aria-hidden="true"></span>	
+										Bewaar en verstuur <span class="glyphicon glyphicon-send" aria-hidden="true"></span>	
 									</a> 															
 								</div>															
-																
 							</div>	
 						</div>														
 						<div class="row row-fluid">
