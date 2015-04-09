@@ -170,7 +170,7 @@ moment.locale("nl");
 		}
 	}	
 
-	var Meeting = function(chosenTeamName,hTeam,oTeam,dateTime,locationName,matchIdExtra) {
+	var Meeting = function(chosenTeamName,hTeam,oTeam,dateTime,locationName,matchIdExtra,status,actionFor) {
 		var self= this;
 		this.chosenTeamName = chosenTeamName;
 		this.hTeam = hTeam;
@@ -187,6 +187,8 @@ moment.locale("nl");
 		this.comments = ko.observableArray();
 		//this.comments.push(new Comment("Gentse 3G","201502151930","apeoazeipazoeiopaziepazeopaopeiazpeipaziepazpazoieopazieopaziepoaz"));
 		//this.comments.push(new Comment("Pluimrukkers 1058G","201502151930","apeoazeipazoeiopaziepazeopaopeiazpeipaziepazpazoieopazieopaziepoaz"));
+		this.statusX = ko.observable(status);
+		this.actionForX = ko.observable(actionFor);
 		this.status = ko.computed(function(){
 			//console.log(this.proposedChanges().filter(proposalAcceptedStateFilter('-')));
 			if(this.proposedChanges().filter(proposalAcceptedStateFilter('-')).length>0) {
@@ -320,7 +322,7 @@ moment.locale("nl");
 				$.get("api/meetingAndMeetingChangeRequest/"+encodeURIComponent(self.chosenClub().clubName)+"/"+encodeURIComponent(newTeam.teamName), function(data) {
 					var myMeetings = [];
 					$.each(data.meetings, function(index,m) {
-						var myMeeting = new Meeting(self.chosenTeam().teamName,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra);
+						var myMeeting = new Meeting(self.chosenTeam().teamName,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra,m.status,m.actionFor);
 												
 						$.each(m.CRs, function(index,cr) {
 							myMeeting.proposedChanges.push(new ProposedChange(myMeeting,cr.matchCRId,cr.proposedDate,cr.acceptedState,cr.requestedByTeam,cr.requestedOn,cr.finallyChosen == '1' ? true : false));
@@ -335,6 +337,8 @@ moment.locale("nl");
 						self.availableMeetings().forEach(function(meeting) {
 							if (meeting.hTeam == self.requestedCounterTeamName || meeting.oTeam == self.requestedCounterTeamName) {
 								self.chosenMeeting(meeting);
+								console.log("Meeting found:");//TODO BUGGGGG met "team and cTeam" heb je niet voldoen gegevens -> twee matches die aan die criteria voldoen!
+								console.log(meeting.proposedChanges().length);
 							}
 						});
 					}

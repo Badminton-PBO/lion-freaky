@@ -812,7 +812,7 @@ EOD;
 
 function  meetingAndMeetingChangeRequest($clubName,$teamName) {
 $queryEventPerTeam = <<<EOD
-select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName,e.matchIdExtra from lf_match m
+select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName,e.matchIdExtra,e.status,e.actionFor from lf_match m
 join lf_match_extra e on e.hTeamName = m.homeTeamName and e.oTeamName = m.outTeamName
 where (m.homeTeamName = :team or m.outTeamName = :team)
 order by m.date asc;
@@ -828,7 +828,7 @@ order by cr.proposedDate asc;
 EOD;
 
 $queryEventPerClub = <<<EOD
-select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName,e.* from lf_match m
+select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName,e.matchIdExtra,e.status,e.actionFor from lf_match m
 join lf_match_extra e on e.hTeamName = m.homeTeamName and e.oTeamName = m.outTeamName
 join lf_team t on t.teamName = m.homeTeamName or t.teamName = m.outTeamName
 join lf_club c on c.clubId = t.club_clubId
@@ -842,7 +842,7 @@ join lf_match_extra e on e.matchIdExtra = cr.match_matchIdExtra
 join lf_match m on e.hTeamName = m.homeTeamName and e.oTeamName = m.outTeamName
 join lf_team t on t.teamName = m.homeTeamName or t.teamName = m.outTeamName
 join lf_club c on c.clubId = t.club_clubId
-where c.clubName='GENTSE BC'
+where c.clubName= :club
 order by cr.proposedDate asc;
 EOD;
 
@@ -879,7 +879,7 @@ EOD;
 			}
 		}
 		
-		array_push($result["meetings"],array('hTeam' => $match['homeTeamName'], 'oTeam' => $match['outTeamName'], 'dateTime' => $match['date'], 'locationName' => $match['locationName'],'matchIdExtra' => $match['matchIdExtra'],'CRs' => $matchCRs));
+		array_push($result["meetings"],array('hTeam' => $match['homeTeamName'], 'oTeam' => $match['outTeamName'], 'dateTime' => $match['date'], 'locationName' => $match['locationName'],'matchIdExtra' => $match['matchIdExtra'],'status' => $match['status'],'actionFor' => $match['actionFor'],'CRs' => $matchCRs));
 				
 	}		
 	
