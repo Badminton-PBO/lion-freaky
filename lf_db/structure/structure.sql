@@ -231,6 +231,21 @@ ALTER TABLE `lf_match_cr`
   ADD CONSTRAINT `fk_match_cr_match` FOREIGN KEY (`match_matchIdExtra`) REFERENCES `lf_match_extra` (`matchIdExtra`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 
+-- --------------------------------------------------------
+--
+-- Table structure for table `lf_match_cr`
+--
+CREATE TABLE IF NOT EXISTS `lf_match_comment` (
+  `commentId` int(11) NOT NULL AUTO_INCREMENT,
+  `match_matchIdExtra` int(11) NOT NULL,  
+  `commentDate` datetime NOT NULL,
+  `commentByTeam` varchar(45) NOT NULL,
+  UNIQUE KEY `commentId` (`commentId`),
+  KEY `match_matchIdExtra` (`match_matchIdExtra`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 
 -- Functions to faciliate load from CSV into the DB
 
