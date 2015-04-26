@@ -36,9 +36,9 @@ if (!window.console.log) window.console.log = function () { };
 	}
 
 
-	function playerComparatorFixedIndexInsideTeam(teamType) {
+	function playerComparatorMaxFixedRankingConvertedToIndexInsideTeam(teamType) {
 		return function(a, b) {
-			return b.fixedIndexInsideTeam(teamType) - a.fixedIndexInsideTeam(teamType);
+			return b.maxFixedRankingConvertedToIndexInsideTeam(teamType) - a.maxFixedRankingConvertedToIndexInsideTeam(teamType);
 		}
 	}
 
@@ -160,7 +160,23 @@ if (!window.console.log) window.console.log = function () { };
 					return 1;				
 			}			
 		}
-		
+
+		this.indexToRanking = function(index) {
+			switch(index) {
+				case 20: 
+					return "A";
+				case 10:
+					return "B1";
+				case 6:
+					return "B2";
+				case 4:
+					return "C1";
+				case 2:
+					return "C2";
+				case 1:
+					return "D";				
+			}			
+		}		
 		//Some definitions			
 		this.fixedRankingSingle = fixedRanking[0].toUpperCase();
 		this.fixedRankingDouble = fixedRanking[1].toUpperCase();
@@ -229,6 +245,27 @@ if (!window.console.log) window.console.log = function () { };
 							return this.fixedIndex("DE") + this.fixedIndex("DD") + this.fixedIndex("GD");
 					}
 			}
+		}
+		
+		this.maxFixedRankingConvertedToIndexInsideTeam = function(teamType) {
+			//to support ART53.2
+			switch(teamType) {
+				case "H":
+					return Math.max(this.fixedIndex("HE"),this.fixedIndex("HD"));
+				case "D":
+					return Math.max(this.fixedIndex("DE"),this.fixedIndex("DD"));
+				case "G":
+					switch(this.gender) {
+						case "M":
+							return Math.max(this.fixedIndex("HE"),this.fixedIndex("HD"),this.fixedIndex("GD"));
+						case "F":
+							return Math.max(this.fixedIndex("DE"),this.fixedIndex("DD"),this.fixedIndex("GD"));
+					}
+			}			
+		}
+		
+		this.maxFixedRankingInsideTeam = function(teamType) {
+			return this.indexToRanking(this.maxFixedRankingConvertedToIndexInsideTeam(teamType));
 		}
 		
 		this.myFixedIndex = this.fixedIndexInsideTeam("H");
@@ -422,10 +459,9 @@ if (!window.console.log) window.console.log = function () { };
 		this.isAllowedToPlayBasedOnBaseMaxPlayerIndex = function(myPlayer) {
 			if (this.teamNumber == 1)// all players from the club can play in the first team
 				return true;			
-			var sortedBasePlayerWithSameGender = this.playersInBaseTeam().filter(playerGenderFilter(myPlayer.gender)).sort(playerComparatorFixedIndexInsideTeam(this.teamType));
+			var sortedBasePlayerWithSameGender = this.playersInBaseTeam().filter(playerGenderFilter(myPlayer.gender)).sort(playerComparatorMaxFixedRankingConvertedToIndexInsideTeam(this.teamType));
 			//console.log("Checking isAllowedToPlayBasedOnBaseMaxPlayerIndex for "+myPlayer.fullName);
-			//return true;
-			return myPlayer.fixedIndexInsideTeam(this.teamType) <= sortedBasePlayerWithSameGender[0].fixedIndexInsideTeam(this.teamType);
+			return myPlayer.maxFixedRankingConvertedToIndexInsideTeam(this.teamType) <= sortedBasePlayerWithSameGender[0].maxFixedRankingConvertedToIndexInsideTeam(this.teamType);
 		}
 		
 
@@ -581,7 +617,7 @@ if (!window.console.log) window.console.log = function () { };
 		
 		self.availablePlayers = ko.observableArray();
 		self.notAllowedPlayersOtherBaseTeam = ko.observableArray();
-		self.notAllowedPlayersOnBaseMaxPlayerIndex = ko.observableArray();
+		self.notAllowedPlayersMaxPlayerRanking = ko.observableArray();
 		self.lastError = ko.observable();
 		
 		self.trash = ko.observableArray([]);
@@ -681,7 +717,7 @@ if (!window.console.log) window.console.log = function () { };
 			self.chosenTeamName(null);
 			self.availablePlayers.removeAll();
 			self.notAllowedPlayersOtherBaseTeam.removeAll();
-			self.notAllowedPlayersOnBaseMaxPlayerIndex.removeAll();
+			self.notAllowedPlayersMaxPlayerRanking.removeAll();
 			self.chosenTeam(null);										
 		});
 		
@@ -733,7 +769,7 @@ if (!window.console.log) window.console.log = function () { };
 				
 				self.availablePlayers.removeAll();				
 				self.notAllowedPlayersOtherBaseTeam.removeAll();
-				self.notAllowedPlayersOnBaseMaxPlayerIndex.removeAll();
+				self.notAllowedPlayersMaxPlayerRanking.removeAll();
 				
 				
 				//LOAD PLAYERS FOR THIS CLUB/TEAM
@@ -757,7 +793,7 @@ if (!window.console.log) window.console.log = function () { };
 								if(self.chosenTeam().isAllowedToPlayBasedOnBaseMaxPlayerIndex(myPlayer)) {
 									self.availablePlayers.push(myPlayer);
 								} else {
-									self.notAllowedPlayersOnBaseMaxPlayerIndex.push(myPlayer);
+									self.notAllowedPlayersMaxPlayerRanking.push(myPlayer);
 								}								
 							} else {
 								self.notAllowedPlayersOtherBaseTeam.push(myPlayer);
@@ -775,7 +811,7 @@ if (!window.console.log) window.console.log = function () { };
 					self.chosenTeam().playersInBaseTeam(self.chosenTeam().playersInBaseTeam().sort(playerComparatorBasedSortingValue()));
 					self.availablePlayers(self.availablePlayers().sort(playerComparatorBasedSortingValue()));
 					self.notAllowedPlayersOtherBaseTeam(self.notAllowedPlayersOtherBaseTeam().sort(playerComparatorBasedSortingValue()));
-					self.notAllowedPlayersOnBaseMaxPlayerIndex(self.notAllowedPlayersOnBaseMaxPlayerIndex().sort(playerComparatorBasedSortingValue()));
+					self.notAllowedPlayersMaxPlayerRanking(self.notAllowedPlayersMaxPlayerRanking().sort(playerComparatorBasedSortingValue()));
 					
 					//self.chosenTeam().calculateAndSetBaseTeamIndex();
 				},'json');										
