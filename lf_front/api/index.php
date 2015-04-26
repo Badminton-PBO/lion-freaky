@@ -525,15 +525,25 @@ $insertLfTeam = <<<'EOD'
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId, captainName)
 select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.eventName) = lfg.event and  lf_dbload_devision(t.drawName) = lfg.devision and lf_dbload_serie(t.drawName) = lfg.series),t.captainName  from lf_tmpdbload_teamscsv t;
 EOD;
-$deleteLfTmpdbloadPlayers = <<<'EOD'
-delete from lf_tmpdbload_playerscsv
-where role != 'Uitgeleende speler'
-and memberId in (
-select c.memberId from (
-select memberId from lf_tmpdbload_playerscsv t
-group by memberId
-having count(*) >1) as c
-);		
+$deleteLfTmpdbloadPlayersWhenDuplicatePrefereSpelerAboveKYUSpeler = <<<'EOD'
+delete n2 from lf_tmpdbload_playerscsv n1, lf_tmpdbload_playerscsv n2
+where n1.memberId = n2.memberId
+and n1.role='Speler' and n2.role like 'KYU%'	
+EOD;
+$deleteLfTmpdbloadPlayersWhenDuplicatePrefereCompetitieSpelerAboveJeugd = <<<'EOD'
+delete n2 from lf_tmpdbload_playerscsv n1, lf_tmpdbload_playerscsv n2
+where n1.memberId = n2.memberId
+and n1.typeName='Competitiespeler' and n2.typeName = 'Jeugd'
+EOD;
+$deleteLfTmpdbloadPlayersWhenDuplicatePrefereUitgeleendeSpelerAboveSpeler = <<<'EOD'
+delete n2 from lf_tmpdbload_playerscsv n1, lf_tmpdbload_playerscsv n2
+where n1.memberId = n2.memberId
+and n1.role='Uitgeleende speler' and n2.role = 'Speler'	
+EOD;
+$deleteLfTmpdbloadPlayersWhenDuplicateJustPickAndChoose = <<<'EOD'
+delete n2 from lf_tmpdbload_playerscsv n1, lf_tmpdbload_playerscsv n2
+where n1.memberId = n2.memberId
+and n2.id > n1.id
 EOD;
 $insertLfRanking = <<<'EOD'
 INSERT INTO lf_ranking (`date`,singles,doubles,mixed,player_playerId)
@@ -609,8 +619,11 @@ EOD;
 			// When player is from O-Vl Club and rented to another O-Vl it will appear twice. However, we only want to keep the record with role='Speler'
 			// Some tricks needed to avoid mysql limitation: In MySQL, you can't modify the same table which you use in the SELECT part
 			// http://stackoverflow.com/questions/45494/mysql-error-1093-cant-specify-target-table-for-update-in-from-clause
-			getDatabase()->execute($deleteLfTmpdbloadPlayers);
-						
+			getDatabase()->execute($deleteLfTmpdbloadPlayersWhenDuplicatePrefereSpelerAboveKYUSpeler);
+			getDatabase()->execute($deleteLfTmpdbloadPlayersWhenDuplicatePrefereCompetitieSpelerAboveJeugd);
+			getDatabase()->execute($deleteLfTmpdbloadPlayersWhenDuplicatePrefereUitgeleendeSpelerAboveSpeler);
+			getDatabase()->execute($deleteLfTmpdbloadPlayersWhenDuplicateJustPickAndChoose);
+
 			//When must import players from type=Recreant too because they can be part of a baseTeam!
 			getDatabase()->execute($insertLfPlayer);						
 			

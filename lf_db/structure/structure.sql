@@ -160,6 +160,7 @@ CREATE TABLE IF NOT EXISTS `lf_tmpdbload_basisopstellingliga` (
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `lf_tmpdbload_playerscsv` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `memberId` int(11) NOT NULL,
   `firstName` varchar(45) NOT NULL,
   `lastName` varchar(45) NOT NULL,
