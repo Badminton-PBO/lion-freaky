@@ -174,12 +174,15 @@ function dbload($doLoad = 'true',$addTestClub = 'false') {
 		$PROV_ID=PROV_ID;
 		$PROV_GID=PROV_GID;		
 		$PROV_USERNAME=PROV_USERNAME;
-		$PROV_PWD=PROV_PWD;	
+		$PROV_PWD=PROV_PWD;
 
-		$USER_AGENT='Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.11) Gecko/20101012 Firefox/3.6.11';
+        $USER_AGENT='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/41.0.2272.76 Chrome/41.0.2272.76 Safari/537.36';
 		//Following was valid until 20141113
 		//$LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=%2FwEPDwUJNjM0MDYzNDI3ZBgBBR5fX0NvbnRyb2xzUmVxdWlyZVBvc3RCYWNrS2V5X18WAgU9Y3RsMDAkY3RsMDAkY3RsMDAkY3BoUGFnZSRjcGhQYWdlJGNwaFBhZ2UkcG5sTG9naW4kUmVtZW1iZXJNZQVDY3RsMDAkY3RsMDAkY3RsMDAkY3BoUGFnZSRjcGhQYWdlJGNwaFBhZ2UkcG5sTG9naW4kTG9naW5JbWFnZUJ1dHRvbg%3D%3D&__EVENTVALIDATION=%2FwEdAAk8ZxYRHnvYNT8dqfzKa%2FZYDc%2F5voaaGYfFlFBXi9EGFfyHSpCYj%2BAUNp9bXc20Z5f%2BOtme7httab8IViMP3HjzlRR%2BDpTMHdYiODpnuHxziR2B%2BiwIwJ5fF61AnAcX2%2BwvDdLMdOmJdT7lzlyuo8NCBjrAGg4uwJH4J35FqmwaB97lIlcv0kHWlCdwWozE4w4%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='.$PBO_USERNAME.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='.$PBO_PWD.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
-		$LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=UUiMxwEx9hHvimyioyqnDsPeGHVhftVJBPzvMyBm5nWccdiBywv3QDxgEVHimBhZLfFxnqMgLpiBa8CEKKa3x6Uhn0LDZHrEMQdVDfhSGLlzrzVwQnCCMgjIrrff1w%2Fns2ZbUOIqxYB%2BuyKbAcZX1yj1sTbXns%2FWneHaUeug74iw2Xhl%2BXeX%2BPsSZFtEDRn6g50dG%2FMSqWd69WRYyhOEgAy6Yit%2FHOph0ZJ%2BbAW%2FxlZjn370gsyD0w0sPQYsKLtSUQAddNs449CLeUxVmAoz62w3z6FS0Wo3SxN3IeVJ7CR7bdS0&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=esjTYL6h5M6mOKWnx8EE9ZzO6FcwluwV6dQ6fO6I3XARrWQgvo3eJFvsbWtvibhiVdclIwNz85bH%2FmRomytK6rQZ%2F4eCGyogZvZIRGOi8SHThiDianeeT5xtK0p1F1Ohu%2FSzhOt6p11cJVZHV2qLM1c5iHs%2BYImLY2TMjUs%2FFGmUEreinSxoisZiGr5OgmYJOJOJrwDU8nPW4fEe%2FYsg%2B%2B2kT14i%2B56o4F7teXtsyQvIEBVrePxYhOncwTXw6XQf4962vg%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='.$PROV_USERNAME.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='.$PROV_PWD.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
+		//Following was valid unti 20150309
+		//$LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=%2FwEPDwUJNjM0MDYzNDI3ZBgBBR5fX0NvbnRyb2xzUmVxdWlyZVBvc3RCYWNrS2V5X18WAgU9Y3RsMDAkY3RsMDAkY3RsMDAkY3BoUGFnZSRjcGhQYWdlJGNwaFBhZ2UkcG5sTG9naW4kUmVtZW1iZXJNZQVDY3RsMDAkY3RsMDAkY3RsMDAkY3BoUGFnZSRjcGhQYWdlJGNwaFBhZ2UkcG5sTG9naW4kTG9naW5JbWFnZUJ1dHRvbkDFcxzmupMNoFNI2833VjIpspSb&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=%2FwEdAAkkrxhVeFemLbIU82wv5PSCDc%2F5voaaGYfFlFBXi9EGFfyHSpCYj%2BAUNp9bXc20Z5f%2BOtme7httab8IViMP3HjzlRR%2BDpTMHdYiODpnuHxziR2B%2BiwIwJ5fF61AnAcX2%2BwvDdLMdOmJdT7lzlyuo8NCBjrAGg4uwJH4J35FqmwaB97lIlcv0kHWlCdwWozE4w6e5YuDNp%2F7v5Hoe%2Fq7l8Xai2IOSg%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='.$PROV_USERNAME.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='.$PROV_PWD.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
+		//$LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=UUiMxwEx9hHvimyioyqnDsPeGHVhftVJBPzvMyBm5nWccdiBywv3QDxgEVHimBhZLfFxnqMgLpiBa8CEKKa3x6Uhn0LDZHrEMQdVDfhSGLlzrzVwQnCCMgjIrrff1w%2Fns2ZbUOIqxYB%2BuyKbAcZX1yj1sTbXns%2FWneHaUeug74iw2Xhl%2BXeX%2BPsSZFtEDRn6g50dG%2FMSqWd69WRYyhOEgAy6Yit%2FHOph0ZJ%2BbAW%2FxlZjn370gsyD0w0sPQYsKLtSUQAddNs449CLeUxVmAoz62w3z6FS0Wo3SxN3IeVJ7CR7bdS0&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=esjTYL6h5M6mOKWnx8EE9ZzO6FcwluwV6dQ6fO6I3XARrWQgvo3eJFvsbWtvibhiVdclIwNz85bH%2FmRomytK6rQZ%2F4eCGyogZvZIRGOi8SHThiDianeeT5xtK0p1F1Ohu%2FSzhOt6p11cJVZHV2qLM1c5iHs%2BYImLY2TMjUs%2FFGmUEreinSxoisZiGr5OgmYJOJOJrwDU8nPW4fEe%2FYsg%2B%2B2kT14i%2B56o4F7teXtsyQvIEBVrePxYhOncwTXw6XQf4962vg%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='.$PROV_USERNAME.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='.$PROV_PWD.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
+        $LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=bVJyNakpPV0f4usZzwuN0RFVXjxNPOBoGtK6FEtcdTPSG444DYCeMxjPP%2BiPDCaICHQ%2F1dZqZeZzeXeywJGGihN0%2Fp8gYzn6OTPl87P4FkPqL58X95uuuiVhxEQX4%2FJWFtdYbgx2D9OTVR0bC5jkB%2FVU116v4UcjRXIqUnmyLwgbSmnnBKWyv6ozI718LKmcj7rg3HPgGbq8Yikllj2288lkzCDxVAJuS9MP%2BbWpLQere1BO8qdTyI10Kh8xT%2FbYdW1DJ2PIKaKG08Hho%2F8ynCX1tyfPnrXkp%2BSY96qgh5749ag3&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=J835wQEgbd7lzA11VgzazffOVk1r%2BXIF%2Bmh7%2FskUlhLI18g6BjbRZrR39RELNs8I4ZS%2BV3Pg7rIB9%2FyiS%2FhudynPEygQu74u0hjhQja2FjJ5FoZPp6ItBWcVl4t4UY%2B88JU4j%2BXvrzja8NzwUIa%2BeUPiAsWG9G3pbdtKmEDVoxQnULUdmeGnRZeirmYN%2Fl7zAQ1jzO%2B73Z47Y%2BdZhP15McNE99cMoyoas8wCWpypwsyB%2F3nIghBD2sZQKVk5hKQUcR7PwQ%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='.$PROV_USERNAME.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='.$PROV_PWD.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
 		$CLUBS_CSV_URL='https://toernooi.nl/organization/export/group_subgroups_export.aspx?id='.$PROV_ID.'&gid='.$PROV_GID.'&ft=1';
 		$TEAMS_CSV_URL='https://toernooi.nl/sport/admin/exportteams.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
 		$PLAYERS_CSV_URL='https://toernooi.nl/organization/export/export_memberperroletypepergroup.aspx?id='.$PROV_ID.'&gid='.$PROV_GID.'&ft=1&glid=1';		
@@ -207,14 +210,16 @@ function dbload($doLoad = 'true',$addTestClub = 'false') {
         //curl_setopt($ch, CURLOPT_COOKIEJAR, '/tmp/cookie.txt');
         //curl_setopt($ch, CURLOPT_COOKIEFILE, '/tmp/cookie.txt');
         //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);        
-        
+
+        //set cookie to bypass "do you accept cookies" warning
+        curl_setopt($ch, CURLOPT_COOKIE, "st=c=1");
         //return all http header and cookies
         curl_setopt($ch, CURLOPT_HEADER, 1);        
         //return the transfer as a string
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         // $output contains the output string
-        $logonResponse = curl_exec($ch);       
+        $logonResponse = curl_exec($ch);
         
         //Parse the cookies out of the r
         preg_match_all('|Set-Cookie: (.*);|U', $logonResponse, $results);
@@ -223,7 +228,7 @@ function dbload($doLoad = 'true',$addTestClub = 'false') {
         //Ready to download csv files
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_POST, FALSE);                
-        curl_setopt($ch, CURLOPT_COOKIE, $cookies);
+        curl_setopt($ch, CURLOPT_COOKIE, "st=c=1; ".$cookies);
 
         //Download CLUBS CSV
         curl_setopt($ch, CURLOPT_URL, $CLUBS_CSV_URL);       
