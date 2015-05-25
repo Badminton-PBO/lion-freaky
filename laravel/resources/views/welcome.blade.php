@@ -1,48 +1,22 @@
-<html>
-	<head>
-		<title>Laravel</title>
-		
-		<link href='//fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
+@extends('pboapp')
 
-		<style>
-			body {
-				margin: 0;
-				padding: 0;
-				width: 100%;
-				height: 100%;
-				color: #B0BEC5;
-				display: table;
-				font-weight: 100;
-				font-family: 'Lato';
-			}
 
-			.container {
-				text-align: center;
-				display: table-cell;
-				vertical-align: middle;
-			}
-
-			.content {
-				text-align: center;
-				display: inline-block;
-			}
-
-			.title {
-				font-size: 96px;
-				margin-bottom: 40px;
-			}
-
-			.quote {
-				font-size: 24px;
-			}
-		</style>
-	</head>
-	<body>
+@section('content')
 		<div class="container">
 			<div class="content">
-				<div class="title">Laravel 5</div>
-				<div class="quote">{{ Inspiring::quote() }}</div>
+                <div class="jumbotron">
+                    <div class="span6 offset3">
+                    <h1 style="text-align: center">PBO apps</h1>
+                    </div>
+                    <p><a class="btn btn-primary btn-lg" href="opstelling.html" role="button">Competitie opstellings formulier</a></p>
+                    <p>Stel online een geldige ploegopstelling samen</p>
+
+                    <br><br>
+
+                    <p><a class="btn btn-primary btn-lg" href="verplaatsing" role="button">Verplaatsing competitie match</a></p>
+                    <p>De online een aanvraag tot verplaatsing van een competitiematch</p>
+
+                </div>
 			</div>
 		</div>
-	</body>
-</html>
+@endsection
