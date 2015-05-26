@@ -30,6 +30,9 @@ Route::get('/logEvent/{eventType}/{who}','EventController@logEvent');
 
 Route::get('verplaatsing', 'VerplaatsingsController@index');
 
+Route::get('verplaatsing/clubAndTeams', 'VerplaatsingsController@clubAndTeams');
+
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
