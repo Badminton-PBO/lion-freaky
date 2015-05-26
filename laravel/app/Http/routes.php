@@ -15,6 +15,19 @@ Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
 
+Route::get('opstelling', 'OpstellingsController@index');
+
+Route::get('opstelling/clubAndTeams', 'OpstellingsController@clubAndTeams');
+
+Route::get('opstelling/teamAndClubPlayers/{teamName}', 'OpstellingsController@teamAndClubPlayers');
+
+
+Route::get('dbload/{doLoad}/{addTestClub}', 'DBLoadController@dbload');
+
+Route::get('/statistic/{statType}','StatisticsController@statistic');
+
+Route::get('/logEvent/{eventType}/{who}','EventController@logEvent');
+
 Route::get('verplaatsing', 'VerplaatsingsController@index');
 
 Route::controllers([
