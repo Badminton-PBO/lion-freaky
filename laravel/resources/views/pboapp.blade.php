@@ -8,6 +8,8 @@
 
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
+    @yield('heads')
+
     <!-- Bootstrap -->
     <script type="text/javascript" src="libs/bootstrap-3.3.1-dist/js/bootstrap.min.js"></script>
     <link href="libs/bootstrap-3.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,10 +25,14 @@
             <div class="col-xs-10 visible-xs">
                 <a href="http://www.badminton-pbo.be/" target="_new"><img src="{{ asset('/images/logo_noText.png') }}"></a>
             </div>
+
+            @yield('help')
         </div>
+
+	    @yield('content')
+
     </div>
-
-	@yield('content')
-
+    @yield('printable')
+    @yield('tailscripts')
 </body>
 </html>

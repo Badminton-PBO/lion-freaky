@@ -667,7 +667,7 @@ if (!window.console.log) window.console.log = function () { };
 
 
 		//LOAD CLUBS/TEAMS
-		$.get("api/clubsAndTeams", function(data) {
+		$.get("opstelling/clubAndTeams", function(data) {
 			self.sampleClubs(data.clubs);
 			self.dbload(new DBLoad(data.DBLOAD[0].date));
 		});
@@ -702,7 +702,7 @@ if (!window.console.log) window.console.log = function () { };
 			var vmjs = $.parseJSON(ko.toJSON(self));
 			var resultObject = {"games":vmjs.games, "chosenMeeting": vmjs.chosenMeeting, "chosenTeam": vmjs.chosenTeam};
 			var result = JSON.stringify(resultObject);
-			$.get("api/logEvent/print2pdf/"+encodeURIComponent(self.chosenTeam().teamName), function(data) {
+			$.get("logEvent/print2pdf/"+encodeURIComponent(self.chosenTeam().teamName), function(data) {
 				console.log("print2pdf logged");
 			});
 			$("#iPrint").empty();
@@ -724,7 +724,7 @@ if (!window.console.log) window.console.log = function () { };
 			
 		//START PRINT LOGGING
 		var beforePrint = function() {
-			$.get("api/logEvent/print/"+encodeURIComponent(self.chosenTeam().teamName), function(data) {
+			$.get("logEvent/print/"+encodeURIComponent(self.chosenTeam().teamName), function(data) {
 				console.log("print logged");
 			});
 		};
@@ -773,7 +773,7 @@ if (!window.console.log) window.console.log = function () { };
 				
 				
 				//LOAD PLAYERS FOR THIS CLUB/TEAM
-				$.get("api/teamAndClubPlayers/"+encodeURIComponent(newTeam.teamName), function(data) {
+				$.get("opstelling/teamAndClubPlayers/"+encodeURIComponent(newTeam.teamName), function(data) {
 					//First set the base team because it has an influence if players are allowed or not
 					$.each(data.players, function(index,p) {
 						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type);						
