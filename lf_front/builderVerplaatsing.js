@@ -281,7 +281,7 @@ moment.locale("nl");
 		self.proposalAcceptedStates = ['-','NIET MOGELIJK','MOGELIJK'];
 
 		//LOAD CLUBS/TEAMS
-		$.get("api/clubsAndTeams", function(data) {
+		$.get("verplaatsing/clubAndTeams", function(data) {
 			data.clubs.forEach(function(club) {
 				var allTeam = new Team('Allen','','','','');
 				club.teams.push(allTeam);
@@ -300,9 +300,9 @@ moment.locale("nl");
 					});
 				});
 			}
+            self.chosenClub(self.sampleClubs()[0]);
 
 		});
-			
 
 		self.resetForm = function() {
 			console.log("Resetting form...");
@@ -386,7 +386,8 @@ moment.locale("nl");
 		self.availableStatusses = ko.computed(function() {
 			return ['A','B','C'];
 		},this);
-		
+
+
 	};	
 	
 	

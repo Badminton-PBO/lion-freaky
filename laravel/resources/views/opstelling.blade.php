@@ -1,17 +1,9 @@
 @extends('pboapp')
 
 @section('heads')
-    <!-- JQuery -->
-    <script type="text/javascript" src="libs/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="libs/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>
-
     <!-- Knockoutjs -->
     <script type="text/javascript" src="libs/js/knockout-3.2.0.js"></script>
     <script type="text/javascript" src="libs/knockout-sortable-master/build/knockout-sortable.min.js"></script>
-
-    <!-- Bootstrap -->
-    <script type="text/javascript" src="libs/bootstrap-3.3.1-dist/js/bootstrap.min.js"></script>
-    <link href="libs/bootstrap-3.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- drag/drop support in touch devices -->
     <script type="text/javascript" src="libs/js/jquery.ui.touch-punch.min.js"></script>

@@ -6,13 +6,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>PBO apps</title>
 
-	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 
-    @yield('heads')
+    <!-- JQuery -->
+    <script type="text/javascript" src="libs/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="libs/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>
 
     <!-- Bootstrap -->
     <script type="text/javascript" src="libs/bootstrap-3.3.1-dist/js/bootstrap.min.js"></script>
     <link href="libs/bootstrap-3.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+
+    @yield('heads')
 
 </head>
 <body>
@@ -32,7 +37,10 @@
 	    @yield('content')
 
     </div>
+
     @yield('printable')
+
     @yield('tailscripts')
+
 </body>
 </html>
