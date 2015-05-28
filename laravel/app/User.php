@@ -1,65 +1,34 @@
 <?php namespace App;
 
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User implements AuthenticatableContract {
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
-    public $username="";
-    protected  $password="";
-    protected $remember_me="";
-
-    public function __construct($username,$password)
-    {
-        $this->username = $username;
-        $this->password = $password;
-    }
-
+    use Authenticatable, CanResetPassword;
 
     /**
-     * Get the unique identifier for the user.
+     * The database table used by the model.
      *
-     * @return mixed
+     * @var string
      */
-    public function getAuthIdentifier() {
-        return $this->username;
-    }
+    protected $table = 'users';
 
     /**
-     * Get the password for the user.
+     * The attributes that are mass assignable.
      *
-     * @return string
+     * @var array
      */
-    public function getAuthPassword() {
-        return $this->password;
-    }
+    protected $fillable = ['name', 'email', 'password','club_id'];
 
     /**
-     * Get the token value for the "remember me" session.
+     * The attributes excluded from the model's JSON form.
      *
-     * @return string
+     * @var array
      */
-    public function getRememberToken() {
-        return $this->remember_me;
-    }
+    protected $hidden = ['password', 'remember_token'];
 
-    /**
-     * Set the token value for the "remember me" session.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setRememberToken($value) {
-        $this->remember_me = $value;
-    }
-
-    /**
-     * Get the column name for the "remember me" token.
-     *
-     * @return string
-     */
-    public function getRememberTokenName()
-    {
-        return "TODO";
-    }
 }
