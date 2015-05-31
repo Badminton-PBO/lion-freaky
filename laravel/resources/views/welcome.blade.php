@@ -14,7 +14,7 @@
                     <br><br>
 
                     <p><a class="btn btn-primary btn-lg" href="verplaatsing" role="button">Verplaatsing competitie match</a></p>
-                    <p>De online een aanvraag tot verplaatsing van een competitiematch</p>
+                    <p>Online aanvraag tot verplaatsing van een competitiematch</p>
 
                 </div>
 			</div>

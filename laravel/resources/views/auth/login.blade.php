@@ -1,4 +1,4 @@
-@extends('app')
+@extends('pboapp')
 
 @section('content')
     <div class="container-fluid">

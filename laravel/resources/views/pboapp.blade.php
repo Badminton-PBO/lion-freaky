@@ -10,12 +10,12 @@
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 
     <!-- JQuery -->
-    <script type="text/javascript" src="libs/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="libs/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
 
     <!-- Bootstrap -->
-    <script type="text/javascript" src="libs/bootstrap-3.3.1-dist/js/bootstrap.min.js"></script>
-    <link href="libs/bootstrap-3.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
 
     @yield('heads')
 

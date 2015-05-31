@@ -16,6 +16,18 @@ function getUrlParameter(sParam)
     }
 }
 
+function read_cookie(key)
+{
+    var result;
+    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? (result[1]) : null;
+}
+
+//Make sure all future AJAX request include the XSRF token as expected by laravel
+$.ajaxSetup({
+    headers: {
+        'X-XSRF-TOKEN': read_cookie('XSRF-TOKEN')
+    }
+});
 
 moment.locale("nl");
 
@@ -319,7 +331,9 @@ moment.locale("nl");
 				console.log("Team initing...");								
 				//LOAD EVENTS FOR THIS CLUB/TEAM
 				self.chosenMeeting(null);
-				$.get("api/meetingAndMeetingChangeRequest/"+encodeURIComponent(self.chosenClub().clubName)+"/"+encodeURIComponent(newTeam.teamName), function(data) {
+                //api/meetingAndMeetingChangeRequest
+                //verplaatsing/meetingAndMeetingChangeRequest
+				$.get("verplaatsing/meetingAndMeetingChangeRequest/"+encodeURIComponent(self.chosenClub().clubName)+"/"+encodeURIComponent(newTeam.teamName), function(data) {
 					var myMeetings = [];
 					$.each(data.meetings, function(index,m) {
 						var myMeeting = new Meeting(self.chosenTeam().teamName,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra,m.status,m.actionFor);
@@ -363,16 +377,23 @@ moment.locale("nl");
 		self.saveAndSend = function(sendMail) {
 			var vmjs = $.parseJSON(ko.toJSON(self));
 			var resultObject = {"chosenMeeting": vmjs.chosenMeeting,"sendMail":sendMail};
-			var posting = $.post("api/saveMeetingChangeRequest",resultObject, function(data) {
-				if (data.processedSuccessfull) {
-					$resultText = (sendMail ? "Verplaatsings aanvraag bewaard en e-mail verzonden naar tegenpartij ("+data.mailTo+")" : "Verplaatsings aanvraag bewaard.");
-					self.lastSuccess($resultText);
-				}else {
-					self.lastError("Problemen bij het bewaren van deze verplaatsings aanvraag.");
-				}
 
-			});
-			
+            var posting = $.ajax({
+                method:"POST",
+                url:"verplaatsing/saveMeetingChangeRequest",
+                data: resultObject
+            });
+
+            posting.done(function(data) {
+                console.log("data.processedSuccessfull:"+data.processedSuccessfull);
+                if (data.processedSuccessfull) {
+                    $resultText = (sendMail ? "Verplaatsings aanvraag bewaard en e-mail verzonden naar tegenpartij (" + data.mailTo + ")" : "Verplaatsings aanvraag bewaard.");
+                    self.lastSuccess($resultText);
+                } else {
+                    self.lastError("Problemen bij het bewaren van deze verplaatsings aanvraag.");
+                }
+            });
+
 			posting.fail(function(data) {
 				self.lastError("Problemen bij het bewaren van deze verplaatsings aanvraag.");
 			});			
