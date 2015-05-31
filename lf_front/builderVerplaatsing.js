@@ -16,19 +16,6 @@ function getUrlParameter(sParam)
     }
 }
 
-function read_cookie(key)
-{
-    var result;
-    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? (result[1]) : null;
-}
-
-//Make sure all future AJAX request include the XSRF token as expected by laravel
-$.ajaxSetup({
-    headers: {
-        'X-XSRF-TOKEN': read_cookie('XSRF-TOKEN')
-    }
-});
-
 moment.locale("nl");
 
 (function(ko, $, undefined) {
@@ -381,7 +368,10 @@ moment.locale("nl");
             var posting = $.ajax({
                 method:"POST",
                 url:"verplaatsing/saveMeetingChangeRequest",
-                data: resultObject
+                data: resultObject,
+                headers : {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
 
             posting.done(function(data) {
