@@ -32,6 +32,12 @@ Route::get('verplaatsing', 'VerplaatsingsController@index');
 
 Route::get('verplaatsing/clubAndTeams', 'VerplaatsingsController@clubAndTeams');
 
+Route::get('verplaatsing/meetingAndMeetingChangeRequest/{clubName}/{teamName}', 'VerplaatsingsController@meetingAndMeetingChangeRequest');
+
+Route::post('verplaatsing/saveMeetingChangeRequest', 'VerplaatsingsController@saveMeetingChangeRequest');
+
+Route::get('verplaatsing/testMailGun', 'VerplaatsingsController@testMailGun');
+
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
