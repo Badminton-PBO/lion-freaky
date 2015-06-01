@@ -273,8 +273,8 @@ moment.locale("nl");
 		
 		//console.log("URL team:"+getUrlParameter("team"));
 		//console.log("URL cTeam:"+getUrlParameter("cTeam"));
-		self.requestedTeamName = getUrlParameter("team");
-		self.requestedCounterTeamName = getUrlParameter("cTeam");
+		self.requestedhomeTeamName = getUrlParameter("hteam");
+		self.requestedOutTeamName = getUrlParameter("oTeam");
 		
 		//self.proposalAcceptedStates = ['-','NIET MOGELIJK','MOGELIJK','MOGELIJK EN BIJ VOORKEUR'];
 		self.proposalAcceptedStates = ['-','NIET MOGELIJK','MOGELIJK'];
@@ -288,11 +288,11 @@ moment.locale("nl");
 			self.sampleClubs(data.clubs);
 			
 			//Teamname selected by URL
-			if (typeof self.requestedTeamName !== 'undefined') {
-				data.clubs.forEach(function(club) {
+			if (typeof self.requestedhomeTeamName !== 'undefined') {
+				data.clubs.forEach(function(club) {//Should only contain one club
 					club.teams.forEach(function(team) {
-						if (team.teamName == self.requestedTeamName) {
-							console.log("Found requestedTeamName "+ team.teamName)
+						if (team.teamName == self.requestedhomeTeamName || team.teamName == self.requestedOutTeamName) {
+							console.log("Found requestedTeamName "+ team.teamName);
 							self.chosenClub(club);
 							self.chosenTeam(team);
 						}
@@ -309,8 +309,7 @@ moment.locale("nl");
 
 		self.chosenClub.subscribe(function(newClub) {
 			self.chosenMeeting(null);
-			self.availableMeetings.removeAll();											
-			self.chosenTeam(null);
+			self.availableMeetings.removeAll();
 		});
 		
 		self.chosenTeam.subscribe(function(newTeam) {			
@@ -334,11 +333,12 @@ moment.locale("nl");
 					self.availableMeetings(myMeetings);
 					
 					//Counterteam selected by URL
-					if (typeof self.requestedCounterTeamName !== 'undefined') {
+					if (typeof self.requestedhomeTeamName !== 'undefined') {
 						self.availableMeetings().forEach(function(meeting) {
-							if (meeting.hTeam == self.requestedCounterTeamName || meeting.oTeam == self.requestedCounterTeamName) {
+                            console.log(meeting.hTeam + "::"+meeting.oTeam);
+							if (meeting.hTeam == self.requestedhomeTeamName && meeting.oTeam == self.requestedOutTeamName) {
 								self.chosenMeeting(meeting);
-								console.log("Meeting found:");//TODO BUGGGGG met "team and cTeam" heb je niet voldoen gegevens -> twee matches die aan die criteria voldoen!
+								console.log("Meeting found:"+meeting);
 								console.log(meeting.proposedChanges().length);
 							}
 						});

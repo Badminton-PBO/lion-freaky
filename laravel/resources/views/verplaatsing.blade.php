@@ -183,7 +183,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row row-fluid">
+                <div class="row row-fluid" style="display: none">
                     <div class="well well-sm">
                         <h2>Commentaar</h2>
                         <table class="table table-condensed">

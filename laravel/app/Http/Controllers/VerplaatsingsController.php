@@ -246,10 +246,8 @@ EOD;
         $cTeam="";
         if ($chosenMeeting['chosenTeamName'] == $chosenMeeting['hTeam']) {
             $team=$chosenMeeting['oTeam'];
-            $cTeam=$chosenMeeting['hTeam'];
         } else {
             $team=$chosenMeeting['hTeam'];
-            $cTeam=$chosenMeeting['oTeam'];
         }
         //Retrieve team email address
         $queryTeam = <<<'EOD'
@@ -259,7 +257,7 @@ EOD;
         $dbTeam = DB::select($queryTeam, array('team' =>$team));
         $teamMailTo=$dbTeam[0]->email;
 
-        $link=env('SITE_ROOT','').'/verplaatsing?team='.rawurlencode($team).'&cTeam='.rawurlencode($cTeam);
+        $link=env('SITE_ROOT','').'/verplaatsing?hteam='.rawurlencode($chosenMeeting['hTeam']).'&oTeam='.rawurlencode($chosenMeeting['oTeam']);
         $subject='Wijziging PBO wedstrijdaanvraag '.$chosenMeeting['hTeam'].' - '.$chosenMeeting['oTeam'];
 
         $chosenMeeting['mailTo'] = $teamMailTo;
