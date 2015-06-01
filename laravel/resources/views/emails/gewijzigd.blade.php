@@ -6,6 +6,6 @@
 Beste PBO ploegkapitein
 
 Volgende wedstrijdaanvraag is gewijzigd
-<a href="{{$link}}}>{{$link}}</a>
+<a href="{!! $link !!}>{!! $link !!}</a>
 </body>
 </html>
