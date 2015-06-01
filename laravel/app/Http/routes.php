@@ -26,6 +26,8 @@ Route::get('dbload/{doLoad}/{addTestClub}', 'DBLoadController@dbload');
 
 Route::get('/statistic/{statType}','StatisticsController@statistic');
 
+Route::get('/stats','StatisticsController@index');
+
 Route::get('/logEvent/{eventType}/{who}','EventController@logEvent');
 
 Route::get('verplaatsing', 'VerplaatsingsController@index');
