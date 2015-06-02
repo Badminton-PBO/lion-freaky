@@ -54,7 +54,7 @@ return [
 	|
 	*/
 
-	'from' => ['address' => 'test@pbo.org', 'name' => 'PBO'],
+	'from' => ['address' => env('DEFAULT_MAIL_FROM','pbo@pbo.org'), 'name' => env('DEFAULT_MAIL_FROM_TEXT','PBO')],
 
 	/*
 	|--------------------------------------------------------------------------

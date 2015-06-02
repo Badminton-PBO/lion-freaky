@@ -227,7 +227,7 @@ EOD;
         );
 
         if ($sendMail == 'true') {
-            $mailTo = $this->sendMailUsingMailGun($chosenMeeting);
+            $mailTo = $this->sendMail($chosenMeeting);
             $chosenMeeting["mailTo"]= $mailTo;
             $processedSuccessfull = $processedSuccessfull && !(empty($mailTo));
         }
@@ -241,33 +241,67 @@ EOD;
 
     }
 
-    function sendMailUsingMailGun($chosenMeeting) {
-        $team="";
-        $cTeam="";
+    function sendMail($chosenMeeting)
+    {
+        $receiverTeam = "";
+        $requesterTeam = "";
         if ($chosenMeeting['chosenTeamName'] == $chosenMeeting['hTeam']) {
-            $team=$chosenMeeting['oTeam'];
+            $receiverTeam = $chosenMeeting['oTeam'];
+            $requesterTeam = $chosenMeeting['hTeam'];
         } else {
-            $team=$chosenMeeting['hTeam'];
+            $receiverTeam = $chosenMeeting['hTeam'];
+            $requesterTeam = $chosenMeeting['oTeam'];
         }
         //Retrieve team email address
         $queryTeam = <<<'EOD'
 select t.email from lf_team t
 where t.teamName = :team;
 EOD;
-        $dbTeam = DB::select($queryTeam, array('team' =>$team));
-        $teamMailTo=$dbTeam[0]->email;
+        $dbTeam = DB::select($queryTeam, array('team' => $requesterTeam));
+        $requesterTeamEmail = $dbTeam[0]->email;
 
-        $link=env('SITE_ROOT','').'/verplaatsing?hteam='.rawurlencode($chosenMeeting['hTeam']).'&oTeam='.rawurlencode($chosenMeeting['oTeam']);
-        $subject='Wijziging PBO wedstrijdaanvraag '.$chosenMeeting['hTeam'].' - '.$chosenMeeting['oTeam'];
+        $dbTeam = DB::select($queryTeam, array('team' => $receiverTeam));
+        $receiverTeamEmail = $dbTeam[0]->email;
 
-        $chosenMeeting['mailTo'] = $teamMailTo;
-        $data = array('mailTo' => $teamMailTo,'mailToText' => $team,'subject'=>$subject,'link' => $link);
-        $laravelMailResult = Mail::send('emails.gewijzigd', $data , function($message) use ($data)
-        {
-            $message->to($data['mailTo'], $data['mailToText'])->subject($data['subject']);
-        });
 
-        return $teamMailTo;
+        $link = env('SITE_ROOT', '') . '/verplaatsing?hteam=' . rawurlencode($chosenMeeting['hTeam']) . '&oTeam=' . rawurlencode($chosenMeeting['oTeam']);
+        $subject = 'Verplaatsingsaanvraag ' . $chosenMeeting['hTeam'] . ' - ' . $chosenMeeting['oTeam'];
+
+        $data = array('mailToReceiver' => $receiverTeamEmail,
+            'mailToReceiverText' => $receiverTeam,
+            'mailToRequester' => $requesterTeamEmail,
+            'mailToRequesterText' => $requesterTeam,
+            'subject' => $subject,
+            'link' => $link,
+            'hTeam' => $chosenMeeting['hTeam'],
+            'oTeam' => $chosenMeeting['oTeam'],
+            'dateTimeLayout' => $chosenMeeting['dateLayout'] . ',' . $chosenMeeting['hourLayout'],
+            'requester' => $requesterTeam);
+
+        if ($chosenMeeting['actionFor'] != 'PBO') {
+            Mail::send('emails.verplaatsing-receiver', $data, function ($message) use ($data) {
+                $message->to($data['mailToReceiver'], $data['mailToReceiverText'])->subject($data['subject']);
+            });
+            Mail::send('emails.verplaatsing-requester', $data, function ($message) use ($data) {
+                $message->to($data['mailToRequester'], $data['mailToRequesterText'])->subject($data['subject']);
+            });
+            return "$receiverTeam <".$receiverTeamEmail.">";
+        } else {
+            foreach ($chosenMeeting['proposedChanges'] as $key => $proposedChange) {
+                if ($proposedChange['finallyChosen'] == 'true') {
+                    $data['proposedDateTimeLayout']= $proposedChange['proposedDateTimeLayout'];
+                }
+            }
+            Mail::send('emails.verplaatsing-agreement', $data, function ($message) use ($data) {
+                $message->to($data['mailToReceiver'], $data['mailToReceiverText'])
+                    ->to($data['mailToRequester'], $data['mailToRequesterText'])
+                    ->to(env('VERPLAATSING_MAIL_PBO',''))
+                    ->subject($data['subject']);
+            });
+            return env('VERPLAATSING_MAIL_PBO','');
+        }
+
+
     }
 
     public function testMailGun() {
