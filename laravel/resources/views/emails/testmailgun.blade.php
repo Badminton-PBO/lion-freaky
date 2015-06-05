@@ -1,1 +1,1 @@
-Test mailgun {{ $key1 }}
+Test mailgun {{ $link }}
