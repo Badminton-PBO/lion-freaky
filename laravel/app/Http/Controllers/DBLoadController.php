@@ -273,6 +273,7 @@ EOD;
                 DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
                 DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
                 EventController::logEvent('DBLOAD','SYSTEM');
+                $this->updateMatchCRAccordingNewData();
                 print("OK");
             }
         }
@@ -557,4 +558,39 @@ EOD;
         );
     }
 
+    function updateMatchCRAccordingNewData() {
+        $matchesInStatusOvereenkomstThatGotMovedQuery = <<<'EOD'
+select e.matchIdExtra from lf_match_cr cr
+join lf_match_extra e on e.matchIdExtra = cr.match_matchIdExtra
+join lf_match m on m.homeTeamName = e.hTeamName and m.outTeamName = e.oTeamName
+where e.status='OVEREENKOMST'
+and cr.finallyChosen=1
+and m.date = cr.proposedDate
+EOD;
+
+        $deleteMatchCR = <<<'EOD'
+delete from lf_match_cr
+where match_matchIdExtra = :matchIdExtra
+EOD;
+
+        $updateMatchExtra = <<<'EOD'
+update lf_match_extra
+set status=null,actionFor=null
+where matchIdExtra = :matchIdExtra
+EOD;
+
+        $matchesInStatusOvereenkomstThatGotMoved = DB::select($matchesInStatusOvereenkomstThatGotMovedQuery);
+
+        foreach($matchesInStatusOvereenkomstThatGotMoved as $key => $match) {
+            $matchIdExtra = (int)$match->matchIdExtra;
+
+            //Delete lf_match_cr with this matchIdExtra
+            DB::statement($deleteMatchCR,array('matchIdExtra'=>$matchIdExtra));
+
+            //update lf_match_extra status=null, actionFor=null
+            DB::update($updateMatchExtra,array('matchIdExtra'=>$matchIdExtra));
+
+            //TODO emailbevestiging-> match effectief verplaatst
+        }
+    }
 }
