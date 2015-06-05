@@ -278,6 +278,18 @@ EOD;
             'dateTimeLayout' => $chosenMeeting['dateLayout'] . ',' . $chosenMeeting['hourLayout'],
             'requester' => $requesterTeam);
 
+/*        $data = array('mailToReceiver' => 'thomas.dekeyser@gmail.com',
+            'mailToReceiverText' => $receiverTeam,
+            'mailToRequester' => 'thomas.dekeyser@gmail.com',
+            'mailToRequesterText' => $requesterTeam,
+            'subject' => $subject,
+            'link' => $link,
+            'hTeam' => $chosenMeeting['hTeam'],
+            'oTeam' => $chosenMeeting['oTeam'],
+            'dateTimeLayout' => $chosenMeeting['dateLayout'] . ',' . $chosenMeeting['hourLayout'],
+            'requester' => $requesterTeam);*/
+
+
         if ($chosenMeeting['actionFor'] != 'PBO') {
             Mail::send('emails.verplaatsing-receiver', $data, function ($message) use ($data) {
                 $message->to($data['mailToReceiver'], $data['mailToReceiverText'])->subject($data['subject']);
@@ -305,9 +317,26 @@ EOD;
     }
 
     public function testMailGun() {
-        Mail::send('emails.testmailgun', array('key1' => 'Key1Value'), function($message)
+
+        $data = array('mailToReceiver' => 'thomas.dekeyser@gmail.com',
+            'mailToReceiverText' => 'Thomas',
+            'subject' => 'TESTTDE',
+            'link' => 'TESTTDE',
+            'hTeam' => 'TESTTDE',
+            'oTeam' => 'TESTTDE',
+            'dateTimeLayout' => 'TESTTDE',
+            'requester' => 'TESTTDE');
+
+        Mail::send('emails.verplaatsing-receiver', $data, function ($message) use ($data)
         {
-            $message->to('thomas.dekeyser@gmail.com', 'Thomas Dekeyser')->subject('Test mailgun!');
+            $message->to($data['mailToReceiver'], $data['mailToReceiverText'])->subject($data['subject']);
         });
+
+/*        Mail::send('emails.testmailgun', $data, function ($message) use ($data)
+        {
+            $message->to($data['mailToReceiver'], $data['mailToReceiverText'])->subject($data['subject']);
+        })*/;
+
+
     }
 }
