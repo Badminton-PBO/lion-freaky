@@ -25,8 +25,7 @@ return [
 	| your application so that it is used when running Artisan tasks.
 	|
 	*/
-
-	'url' => 'http://localhost',
+	'url' => 'http://localhost/pbo',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -52,7 +51,7 @@ return [
 	|
 	*/
 
-	'locale' => 'en',
+	'locale' => 'nl',
 
 	/*
 	|--------------------------------------------------------------------------

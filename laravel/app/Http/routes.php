@@ -13,7 +13,10 @@
 
 Route::get('/', 'WelcomeController@index');
 
-Route::get('home', 'HomeController@index');
+Route::get('home',[
+    'as'=>'home',
+    'uses' =>'WelcomeController@index'
+]);
 
 Route::get('opstelling', 'OpstellingsController@index');
 

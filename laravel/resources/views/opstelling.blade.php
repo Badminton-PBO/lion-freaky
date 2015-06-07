@@ -128,7 +128,6 @@
 @section('help')
     <div class="col-xs-2">
         <div class="pull-right">
-            <br>
             <button id="nonplayersbutton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myHelpModal" data-theVideo="https://www.youtube.com/embed/Ka_RfATnW0E">
                 <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>
             </button>

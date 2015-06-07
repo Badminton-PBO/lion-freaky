@@ -32,7 +32,21 @@
                 <a href="http://www.badminton-pbo.be/" target="_new"><img src="{{ asset('/images/logo_noText.png') }}"></a>
             </div>
 
-            @yield('help')
+
+            <div class="col-xs-2" style="padding-top: 10px">
+                @if (!(Auth::guest()))
+                        <a class="btn btn-primary" href="auth/logout" role="button">
+                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                        </a>
+                @else
+                        <a class="btn btn-primary" href="{{route('home')}}" role="button">
+                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                        </a>
+                @endif
+                @yield('help')
+            </div>
+
+
         </div>
 
 	    @yield('content')
