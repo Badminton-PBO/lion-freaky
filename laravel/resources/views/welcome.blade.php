@@ -8,7 +8,7 @@
                     <div class="span6 offset3">
                     <h1 style="text-align: center">PBO apps</h1>
                     </div>
-                    <p><a class="btn btn-primary btn-lg" href="opstelling.html" role="button">Competitie opstellings formulier</a></p>
+                    <p><a class="btn btn-primary btn-lg" href="opstelling" role="button">Competitie opstellings formulier</a></p>
                     <p>Stel online een geldige ploegopstelling samen</p>
 
                     <br><br>

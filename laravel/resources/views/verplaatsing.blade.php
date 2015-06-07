@@ -38,11 +38,7 @@
 
 
 @section('help')
-    <div>
-        <a class="btn btn-primary" href="auth/logout" role="button">
-            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
-        </a>
-    </div>
+
 @endsection
 
 @section('content')
