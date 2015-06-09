@@ -72,8 +72,8 @@
                         <tr>
                             <td><a data-bind="click: $root.chosenMeeting"><span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></a></td>
                             <td><span data-bind="text:dateLayout"></span> <span data-bind="text:hourLayout"></span></td>
-                            <td><span data-bind="text: status"></span></td>
-                            <td><span data-bind="text: actionFor"></span></td>
+                            <td><span data-bind="text: dbStatus"></span></td>
+                            <td><span data-bind="text: dbActionFor"></span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -131,7 +131,7 @@
                                 MOGELIJK
                                 <!-- /ko -->
                                 <!-- ko ifnot: requestedByTeam() == $parent.hTeam -->
-                                <select data-bind="options:$root.proposalAcceptedStates, value: acceptedState, enable: requestedByTeam() != $root.chosenTeam().teamName && !(finallyChosen())"></select>
+                                <select data-bind="options: proposalAcceptedStates, value: acceptedState, enable: requestedByTeam() != $root.chosenTeam().teamName && !(finallyChosen())"></select>
                                 <!-- /ko -->
                             </td>
                             <td>
@@ -139,7 +139,7 @@
                                 MOGELIJK
                                 <!-- /ko -->
                                 <!-- ko ifnot: requestedByTeam() == $parent.oTeam -->
-                                <select data-bind="options:$root.proposalAcceptedStates, value: acceptedState, enable: requestedByTeam() != $root.chosenTeam().teamName && !(finallyChosen())"></select>
+                                <select data-bind="options: proposalAcceptedStates, value: acceptedState, enable: requestedByTeam() != $root.chosenTeam().teamName && !(finallyChosen())"></select>
                                 <!-- /ko -->
 
                             </td>
@@ -172,7 +172,7 @@
                     </div>
 
                     <div class="col-xs-offset-8 col-xs-3" style="padding-top:10px; padding-bottom:15px">
-                        <div id="send" class='btn btn-default' style='font-size:20px;margin-right:10px;'>
+                        <div id="send" class='btn btn-default' style='font-size:20px;margin-right:10px;' data-bind="visible : isSaveAndSendAllowed">
                             <a href="#" data-bind="click: $root.send">
                                 Bewaar en verstuur <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
                             </a>
