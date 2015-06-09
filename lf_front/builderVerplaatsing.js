@@ -60,7 +60,7 @@ moment.locale("nl");
 			var widget = $(element).parent().data("DateTimePicker");
 			//when the view model is updated, update the widget
 			var dateInKModel = window.ko.utils.unwrapObservable(valueAccessor()).toString();
-			console.log("Changing date from '"+dateInKModel+"' to '"+moment(dateInKModel,"YYYYMMDDHHmm").toDate()+"'.");
+			//console.log("Changing date from '"+dateInKModel+"' to '"+moment(dateInKModel,"YYYYMMDDHHmm").toDate()+"'.");
 			widget.date(moment(dateInKModel,"YYYYMMDDHHmm").toDate());
 		}
 	};
@@ -110,7 +110,16 @@ moment.locale("nl");
 						   && this.meeting.proposedChanges().filter(proposalFinallyChosenStateFilter(true)).length == 0
 						   && this.meeting.chosenTeamName == this.meeting.hTeam)
 					   );
-		},this);	
+		},this);
+
+        this.proposalAcceptedStates = ko.computed(function() {
+            //Once choosen, it should not be possible to set it back to undefined
+            if (this.acceptedState() == '-') {
+                return ['-','NIET MOGELIJK','MOGELIJK'];
+            } else {
+                return ['NIET MOGELIJK','MOGELIJK'];
+            }
+        },this);
 		
 	}
 	
@@ -167,7 +176,14 @@ moment.locale("nl");
 		return function(a) {
 			return a.requestedByTeam() != myRequestedBy;
 		}
-	}	
+	}
+
+    function dbStatusLayout(status) {
+        return ($.trim(status)) ? status : "LAATST VASTGELEGD TIJDSTIP"
+    }
+    function dbActionForLayout(actionFor) {
+        return ($.trim(actionFor)) ? actionFor : "-"
+    }
 
 	var Meeting = function(chosenTeamName,hTeam,oTeam,dateTime,locationName,matchIdExtra,status,actionFor) {
 		var self= this;
@@ -177,7 +193,8 @@ moment.locale("nl");
 		this.dateTime = dateTime;
 		this.locationName = locationName;
 		this.matchIdExtra = matchIdExtra;
-		this.date = buildDateTime(dateTime);				
+		this.date = buildDateTime(dateTime);
+        this.counterTeamName = this.chosenTeamName == this.hTeam ? this.oTeam : this.hTeam;
 		
 		this.dateLayout = formatDate(this.date);
 		this.hourLayout = formatHour(this.date);
@@ -186,8 +203,8 @@ moment.locale("nl");
 		this.comments = ko.observableArray();
 		//this.comments.push(new Comment("Gentse 3G","201502151930","apeoazeipazoeiopaziepazeopaopeiazpeipaziepazpazoieopazieopaziepoaz"));
 		//this.comments.push(new Comment("Pluimrukkers 1058G","201502151930","apeoazeipazoeiopaziepazeopaopeiazpeipaziepazpazoieopazieopaziepoaz"));
-		this.statusX = ko.observable(status);
-		this.actionForX = ko.observable(actionFor);
+        this.dbStatus = ko.observable(dbStatusLayout(status));
+		this.dbActionFor = ko.observable(dbActionForLayout(actionFor));
 		this.status = ko.computed(function(){
 			//console.log(this.proposedChanges().filter(proposalAcceptedStateFilter('-')));
 			if(this.proposedChanges().filter(proposalAcceptedStateFilter('-')).length>0) {
@@ -204,7 +221,6 @@ moment.locale("nl");
 		},this);	
 		
 		this.removeProposal= function(p) {
-			console.log("Removing proposal meeting...");
 			self.proposedChanges.remove(p);
 		};
 		
@@ -224,14 +240,19 @@ moment.locale("nl");
 		},this);
 		
 		this.isAddProposalAllowed = ko.computed(function(){
-			var proposalRequestedByOtherTeam = this.proposedChanges().filter(proposalRequestedNotByFilter(this.chosenTeamName));
-			if (proposalRequestedByOtherTeam.length == proposalRequestedByOtherTeam.filter(proposalAcceptedStateFilter('NIET MOGELIJK')).length) {
-				return true;
-			} else {
-				return false;
-			}			
+            //It should be  possible to add new proposals as long as status!=OVEREENKOMST
+            return this.status() != 'OVEREENKOMST';
 		},this);
-	}	
+
+        this.isSaveAndSendAllowed = ko.computed(function(){
+            //All proposals from counterTeam must be answered before saving
+            var unAnsweredProposals=this.proposedChanges().filter(proposalAcceptedStateFilter('-'));
+            return unAnsweredProposals.filter(proposalRequestedByFilter(this.counterTeamName)).length == 0;
+        },this)
+
+
+	}
+
 	
 	//Avoiding circular reference when saving to stringify to JSON
 	Meeting.prototype.toJSON = function() {
@@ -276,9 +297,6 @@ moment.locale("nl");
 		self.requestedhomeTeamName = getUrlParameter("hteam");
 		self.requestedOutTeamName = getUrlParameter("oTeam");
 		
-		//self.proposalAcceptedStates = ['-','NIET MOGELIJK','MOGELIJK','MOGELIJK EN BIJ VOORKEUR'];
-		self.proposalAcceptedStates = ['-','NIET MOGELIJK','MOGELIJK'];
-
 		//LOAD CLUBS/TEAMS
 		$.get("verplaatsing/clubAndTeams", function(data) {
 			data.clubs.forEach(function(club) {
@@ -335,11 +353,8 @@ moment.locale("nl");
 					//Counterteam selected by URL
 					if (typeof self.requestedhomeTeamName !== 'undefined') {
 						self.availableMeetings().forEach(function(meeting) {
-                            console.log(meeting.hTeam + "::"+meeting.oTeam);
 							if (meeting.hTeam == self.requestedhomeTeamName && meeting.oTeam == self.requestedOutTeamName) {
 								self.chosenMeeting(meeting);
-								console.log("Meeting found:"+meeting);
-								console.log(meeting.proposedChanges().length);
 							}
 						});
 					}
@@ -368,7 +383,9 @@ moment.locale("nl");
             var posting = $.ajax({
                 method:"POST",
                 url:"verplaatsing/saveMeetingChangeRequest",
-                data: resultObject,
+                data: JSON.stringify({"chosenMeeting": vmjs.chosenMeeting,"sendMail":sendMail}),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
                 headers : {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
@@ -378,6 +395,8 @@ moment.locale("nl");
                 console.log("data.processedSuccessfull:"+data.processedSuccessfull);
                 if (data.processedSuccessfull) {
                     $resultText = (sendMail ? "Verplaatsings aanvraag bewaard en e-mail verzonden naar tegenpartij (" + data.mailTo + ")" : "Verplaatsings aanvraag bewaard.");
+                    self.chosenMeeting().dbStatus(dbStatusLayout(data.status));
+                    self.chosenMeeting().dbActionFor(dbActionForLayout(data.actionFor));
                     self.lastSuccess($resultText);
                 } else {
                     self.lastError("Problemen bij het bewaren van deze verplaatsings aanvraag.");
@@ -393,11 +412,6 @@ moment.locale("nl");
 		self.send = function() {
 			self.saveAndSend(true);
 		};
-			
-		self.availableStatusses = ko.computed(function() {
-			return ['A','B','C'];
-		},this);
-
 
 	};	
 	

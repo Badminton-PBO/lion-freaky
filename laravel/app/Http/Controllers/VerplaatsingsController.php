@@ -212,7 +212,7 @@ EOD;
                     ':proposedDate' => $proposedChange['proposedDateTime'],
                     ':requestedByTeam' => $proposedChange['requestedByTeam'],
                     ':acceptedState' => $proposedChange['acceptedState'],
-                    ':finallyChosen' => ($proposedChange['finallyChosen'] == 'false' ? 0 : 1),
+                    ':finallyChosen' => ($proposedChange['finallyChosen'] == false ? 0 : 1),
                     ':matchIdExtra' => $chosenMeeting['matchIdExtra']
                 )
             );
