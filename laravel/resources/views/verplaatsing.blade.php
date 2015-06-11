@@ -135,31 +135,32 @@
 
                             </td>
                             <td>
-                                <!-- ko if: requestedByTeam() == $parent.hTeam -->
-                                MOGELIJK
-                                <!-- /ko -->
-                                <!-- ko ifnot: requestedByTeam() == $parent.hTeam -->
-                                <select data-bind="options: proposalAcceptedStates, value: acceptedState, enable: requestedByTeam() != $root.chosenTeam().teamName && !(finallyChosen())"></select>
-                                <!-- /ko -->
+                                <span data-bind="visible: requestedByTeam() == $parent.hTeam">MOGELIJK</span>
+
+                                <div data-bind="visible: requestedByTeam() != $parent.hTeam && requestedByTeam() != $root.chosenTeam().teamName && !(finallyChosen())">
+                                    <select data-bind="options: proposalAcceptedStates, value: acceptedState"></select>
+                                </div>
+
+                                <span data-bind="text: acceptedState, visible: requestedByTeam() != $parent.hTeam && !(requestedByTeam() != $root.chosenTeam().teamName && !(finallyChosen()))"></span>
+
                             </td>
                             <td>
-                                <!-- ko if: requestedByTeam() == $parent.oTeam -->
-                                MOGELIJK
-                                <!-- /ko -->
-                                <!-- ko ifnot: requestedByTeam() == $parent.oTeam -->
-                                <select data-bind="options: proposalAcceptedStates, value: acceptedState, enable: requestedByTeam() != $root.chosenTeam().teamName && !(finallyChosen())"></select>
-                                <!-- /ko -->
+                                <span data-bind="visible: requestedByTeam() == $parent.oTeam">MOGELIJK</span>
+
+                                <div data-bind="visible: requestedByTeam() != $parent.oTeam  && requestedByTeam() != $root.chosenTeam().teamName && !(finallyChosen())">
+                                    <select data-bind="options: proposalAcceptedStates, value: acceptedState"></select>
+                                </div>
+
+                                <span data-bind="text: acceptedState, visible: requestedByTeam() != $parent.oTeam  && !(requestedByTeam() != $root.chosenTeam().teamName && !(finallyChosen()))"></span>
 
                             </td>
                             <td>
                                 <input type="checkbox" data-bind="checked:finallyChosen, enable: isCheckFinalAllowed"/>
                             </td>
                             <td>
-                                <!-- ko if: (requestedByTeam() == $root.chosenTeam().teamName && acceptedState() == '-') -->
-                                <button class="button" data-bind="click: $parent.removeProposal">
+                                <button class="button" data-bind="click: $parent.removeProposal, visible: requestedByTeam() == $root.chosenTeam().teamName && acceptedState() == '-'">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
-                                <!-- /ko -->
                             </td>
                         </tr>
                         </tbody>
