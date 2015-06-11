@@ -248,7 +248,13 @@ moment.locale("nl");
             //All proposals from counterTeam must be answered before saving
             var unAnsweredProposals=this.proposedChanges().filter(proposalAcceptedStateFilter('-'));
             return unAnsweredProposals.filter(proposalRequestedByFilter(this.counterTeamName)).length == 0;
-        },this)
+        },this);
+
+        this.finalDateTime = ko.computed(function() {
+            if (this.proposedChanges().filter(proposalFinallyChosenStateFilter(true)).length > 0) {
+                return this.proposedChanges().filter(proposalFinallyChosenStateFilter(true))[0].proposedDateTimeLayout;
+            }
+        },this);
 
 
 	}
