@@ -58,8 +58,8 @@
                                        optionsCaption: 'Selecteer...'"></select>
             </p>
             <div data-bind="if: $root.chosenTeam()">
-                <div class="well well-sm" data-bind="style: { height: $root.chosenMeeting() ? '30vh' : '60vh', overflow: 'auto'}">
-                    <table class="table table-striped table-condensed">
+                <div class="panel panel-default">
+                    <table class="table table-striped table-condensed" style="table-layout:fixed">
                         <thead>
                         <tr>
                             <th>Ontmoeting</th>
@@ -68,19 +68,23 @@
                             <th>Actie bij</th>
                         </tr>
                         </thead>
-                        <tbody data-bind="foreach: availableMeetings">
-                        <tr>
-                            <td><a data-bind="click: $root.chosenMeeting"><span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></a></td>
-                            <td><span data-bind="text:dateLayout"></span> <span data-bind="text:hourLayout"></span></td>
-                            <td><span data-bind="text: dbStatus"></span>
-                                <!-- ko if: (dbStatus() == 'OVEREENKOMST') -->
-                                voor <span data-bind="text: finalDateTime"></span>
-                                <!-- /ko -->
-                            </td>
-                            <td><span data-bind="text: dbActionFor"></span></td>
-                        </tr>
-                        </tbody>
                     </table>
+                    <div data-bind="style: { height: $root.chosenMeeting() ? '30vh' : '60vh', overflow: 'auto'}">
+                        <table class="table table-striped table-condensed" style="table-layout:fixed">
+                            <tbody data-bind="foreach: availableMeetings">
+                            <tr>
+                                <td><a data-bind="click: $root.chosenMeeting"><span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></a></td>
+                                <td><span data-bind="text:dateLayout"></span> <span data-bind="text:hourLayout"></span></td>
+                                <td><span data-bind="text: dbStatus"></span>
+                                    <!-- ko if: (dbStatus() == 'OVEREENKOMST') -->
+                                    voor <span data-bind="text: finalDateTime"></span>
+                                    <!-- /ko -->
+                                </td>
+                                <td><span data-bind="text: dbActionFor"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
