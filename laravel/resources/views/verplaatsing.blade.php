@@ -63,7 +63,7 @@
                         <thead>
                         <tr>
                             <th>Ontmoeting</th>
-                            <th>Laatst vastgelegd tijdstip</th>
+                            <th>Huidig tijdstip</th>
                             <th>Status</th>
                             <th>Actie bij</th>
                         </tr>
@@ -72,7 +72,11 @@
                         <tr>
                             <td><a data-bind="click: $root.chosenMeeting"><span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></a></td>
                             <td><span data-bind="text:dateLayout"></span> <span data-bind="text:hourLayout"></span></td>
-                            <td><span data-bind="text: dbStatus"></span></td>
+                            <td><span data-bind="text: dbStatus"></span>
+                                <!-- ko if: (dbStatus() == 'OVEREENKOMST') -->
+                                voor <span data-bind="text: finalDateTime"></span>
+                                <!-- /ko -->
+                            </td>
                             <td><span data-bind="text: dbActionFor"></span></td>
                         </tr>
                         </tbody>
