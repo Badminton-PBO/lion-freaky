@@ -278,17 +278,6 @@ EOD;
             'dateTimeLayout' => $chosenMeeting['dateLayout'] . ',' . $chosenMeeting['hourLayout'],
             'requester' => $requesterTeam);
 
-/*        $data = array('mailToReceiver' => 'thomas.dekeyser@gmail.com',
-            'mailToReceiverText' => $receiverTeam,
-            'mailToRequester' => 'thomas.dekeyser@gmail.com',
-            'mailToRequesterText' => $requesterTeam,
-            'subject' => $subject,
-            'link' => $link,
-            'hTeam' => $chosenMeeting['hTeam'],
-            'oTeam' => $chosenMeeting['oTeam'],
-            'dateTimeLayout' => $chosenMeeting['dateLayout'] . ',' . $chosenMeeting['hourLayout'],
-            'requester' => $requesterTeam);*/
-
 
         if ($chosenMeeting['actionFor'] != 'PBO') {
             Mail::send('emails.verplaatsing-receiver', $data, function ($message) use ($data) {
@@ -312,7 +301,6 @@ EOD;
             });
             return env('VERPLAATSING_MAIL_PBO','');
         }
-
 
     }
 
