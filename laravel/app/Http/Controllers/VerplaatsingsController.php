@@ -292,10 +292,10 @@ EOD;
 
         if ($chosenMeeting['actionFor'] != 'PBO') {
             Mail::send('emails.verplaatsing-receiver', $data, function ($message) use ($data) {
-                $message->to($data['mailToReceiver'], $data['mailToReceiverText'])->subject($data['subject']);
+                $message->to(VerplaatsingsController::giveFinalMailto($data['mailToReceiver']), $data['mailToReceiverText'])->subject($data['subject']);
             });
             Mail::send('emails.verplaatsing-requester', $data, function ($message) use ($data) {
-                $message->to($data['mailToRequester'], $data['mailToRequesterText'])->subject($data['subject']);
+                $message->to(VerplaatsingsController::giveFinalMailto($data['mailToRequester']), $data['mailToRequesterText'])->subject($data['subject']);
             });
             return "$receiverTeam <".$receiverTeamEmail.">";
         } else {
@@ -305,9 +305,9 @@ EOD;
                 }
             }
             Mail::send('emails.verplaatsing-agreement', $data, function ($message) use ($data) {
-                $message->to($data['mailToReceiver'], $data['mailToReceiverText'])
-                    ->to($data['mailToRequester'], $data['mailToRequesterText'])
-                    ->to(env('VERPLAATSING_MAIL_PBO',''))
+                $message->to(VerplaatsingsController::giveFinalMailto($data['mailToReceiver']), $data['mailToReceiverText'])
+                    ->to(VerplaatsingsController::giveFinalMailto($data['mailToRequester']), $data['mailToRequesterText'])
+                    ->to(VerplaatsingsController::giveFinalMailto(env('VERPLAATSING_MAIL_PBO','')))
                     ->subject($data['subject']);
             });
             return env('VERPLAATSING_MAIL_PBO','');
@@ -329,7 +329,7 @@ EOD;
 
         Mail::send('emails.verplaatsing-receiver', $data, function ($message) use ($data)
         {
-            $message->to($data['mailToReceiver'], $data['mailToReceiverText'])->subject($data['subject']);
+            $message->to(VerplaatsingsController::giveFinalMailto($data['mailToReceiver']), $data['mailToReceiverText'])->subject($data['subject']);
         });
 
 /*        Mail::send('emails.testmailgun', $data, function ($message) use ($data)
@@ -337,6 +337,11 @@ EOD;
             $message->to($data['mailToReceiver'], $data['mailToReceiverText'])->subject($data['subject']);
         })*/;
 
+    }
 
+    //Support testing where we have to use a fixed mailto address
+    public static function giveFinalMailto($mailto) {
+        $myFixedMailTo = env('VERPLAATSING_FIXED_MAILTO_ADDRESS','');
+        return empty($myFixedMailTo) ? $mailto : $myFixedMailTo;
     }
 }
