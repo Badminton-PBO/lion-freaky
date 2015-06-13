@@ -3,7 +3,7 @@
 @section('heads')
     <!-- Knockoutjs -->
     <script type="text/javascript" src="libs/js/knockout-3.2.0.js"></script>
-    <script type="text/javascript" src="libs/knockout-sortable-master/build/knockout-sortable.min.js"></script>
+
 
     <!-- DateTimePicker stuff -->
     <script type="text/javascript" src="libs/js/moment-with-locales.min.js"></script>
