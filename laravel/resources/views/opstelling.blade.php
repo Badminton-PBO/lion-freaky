@@ -241,7 +241,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div data-bind="if: ($root.chosenMeeting()  && ($root.notAllowedPlayersOtherBaseTeam().length > 0 || $root.notAllowedPlayersOnBaseMaxPlayerIndex().length > 0))" class="hidden-xs hidden-sm">
+                <div data-bind="if: ($root.chosenMeeting()  && ($root.notAllowedPlayersOtherBaseTeam().length > 0 || $root.notAllowedPlayersMaxPlayerRanking().length > 0))" class="hidden-xs hidden-sm">
                     <button id="nonplayersbutton" type="button" class="btn btn-primary" onclick="togglePlayers();">Niet opstelbare spelers &raquo;</button>
                     <div id="nonplayerstable" class="well well-sm" style="display:none">
                         <table class="table table-bordered table-condensed">
@@ -251,9 +251,9 @@
                                 <td data-bind="text: fullName"></td>
                             </tr>
                             <!-- /ko -->
-                            <!-- ko foreach: notAllowedPlayersOnBaseMaxPlayerIndex -->
-                            <tr data-toggle="tooltip" data-placement="right" title="Vaste index hoger dan dat van basisspeler">
-                                <td><span data-bind="text: fullName"></span> (<span data-bind="text: fixedRankingLayout($root.chosenTeam().teamType)"></span>)</td>
+                            <!-- ko foreach: notAllowedPlayersMaxPlayerRanking -->
+                            <tr data-toggle="tooltip" data-placement="right" title="De titularis mag geen hoger klassement hebben dan het hoogste klassement van een basisspler van hetzelfde geslacht.">
+                                <td><span data-bind="text: fullName"></span> (max=<span data-bind="text: maxFixedRankingInsideTeam($root.chosenTeam().teamType)"></span>)</td>
                             </tr>
                             <!-- /ko -->
                             </tbody>
