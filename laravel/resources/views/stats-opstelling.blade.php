@@ -2,10 +2,10 @@
 
 @section('heads')
     <!-- d3 -->
-    <script type="text/javascript" src="libs/js/d3.v3.min.js"></script>
+    <script type="text/javascript" src="../libs/js/d3.v3.min.js"></script>
 
     <!-- Knockoutjs -->
-    <script type="text/javascript" src="libs/js/knockout-3.2.0.js"></script>
+    <script type="text/javascript" src="../libs/js/knockout-3.2.0.js"></script>
 
     <style>
 
@@ -62,5 +62,5 @@
 @endsection
 
 @section('tailscripts')
-    <script type="text/javascript" src="stats.js"></script>
+    <script type="text/javascript" src="../stats-opstelling.js"></script>
 @endsection

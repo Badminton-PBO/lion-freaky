@@ -8,7 +8,7 @@ if (!window.console.log) window.console.log = function () { };
 	function myViewModel() {
 		var self = this;
 		self.totalSelectAndPrintCmdPerTeam = ko.observable();
-		$.get("statistic/totalSelectAndPrintCmdPerTeam", function(data) {
+		$.get("opstelling/totalSelectAndPrintCmdPerTeam", function(data) {
 			self.totalSelectAndPrintCmdPerTeam(data);
 		});
 		
@@ -49,7 +49,7 @@ if (!window.console.log) window.console.log = function () { };
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-	d3.json("statistic/totalSelectAndPrintCmdPerWeek", function(error, data) {
+	d3.json("opstelling/totalSelectAndPrintCmdPerWeek", function(error, data) {
 	//d3.json("json.data", function(error, data) {
 
 		var statNames = ["select","print","combined","totalMatchesX2"];

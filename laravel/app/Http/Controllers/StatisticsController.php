@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 
 class StatisticsController extends Controller {
 
-    function index() {
-        return view("stats");
+    function opstelling() {
+        return view("stats-opstelling");
     }
 
-    function statistic($statType) {
+    function statisticsOpstelling($statType) {
 
         $queryTotalSelectAndPrintCmdPerTeam = <<<'EOD'
 select c.clubName,

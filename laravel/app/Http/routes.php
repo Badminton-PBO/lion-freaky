@@ -27,9 +27,9 @@ Route::get('opstelling/teamAndClubPlayers/{teamName}', 'OpstellingsController@te
 
 Route::get('dbload/{doLoad}/{addTestClub}', 'DBLoadController@dbload');
 
-Route::get('/statistic/{statType}','StatisticsController@statistic');
+Route::get('/stats/opstelling/{statType}','StatisticsController@statisticsOpstelling');
 
-Route::get('/stats','StatisticsController@index');
+Route::get('/stats/opstelling','StatisticsController@opstelling');
 
 Route::get('/logEvent/{eventType}/{who}','EventController@logEvent');
 
