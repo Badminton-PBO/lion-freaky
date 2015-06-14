@@ -31,6 +31,10 @@ Route::get('/stats/opstelling/{statType}','StatisticsController@statisticsOpstel
 
 Route::get('/stats/opstelling','StatisticsController@opstelling');
 
+Route::get('/stats/verplaatsing/{statType}','StatisticsController@statisticsVerplaatsing');
+
+Route::get('/stats/verplaatsing','StatisticsController@verplaatsing');
+
 Route::get('/logEvent/{eventType}/{who}','EventController@logEvent');
 
 Route::get('verplaatsing', 'VerplaatsingsController@index');

@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use DB;
+use Response;
 
 use Illuminate\Http\Request;
 
@@ -10,6 +11,10 @@ class StatisticsController extends Controller {
 
     function opstelling() {
         return view("stats-opstelling");
+    }
+
+    function verplaatsing() {
+        return view("stats-verplaatsing");
     }
 
     function statisticsOpstelling($statType) {
@@ -106,5 +111,34 @@ EOD;
         header("Pragma: no-cache");
         header("Expires: 0");
         echo json_encode($result);
+    }
+
+    function statisticsVerplaatsing($statType) {
+        $queryMeetingsWithActionForPBO= <<<'EOD'
+select me.hTeamName,me.oTeamName,m.date,cr.proposedDate from lf_match_extra me
+join lf_match m on m.homeTeamName = me.hTeamName and m.outTeamName = me.oTeamName
+join lf_match_cr cr on cr.match_matchIdExtra = me.matchIdExtra and cr.finallyChosen=1
+where me.actionFor='PBO'
+order by me.matchIdExtra asc
+EOD;
+
+        $meetingWithOpenRequest= <<<'EOD'
+select me.hTeamName,me.oTeamName,m.date,me.actionFor,(select max(cr.requestedOn) from lf_match_cr cr where cr.match_matchIdExtra = me.matchIdExtra) as max_requested_on from lf_match_extra me
+join lf_match m on m.homeTeamName = me.hTeamName and m.outTeamName = me.oTeamName
+where me.status='IN AANVRAAG'
+order by me.matchIdExtra asc
+EOD;
+        switch($statType) {
+            case "meetingsWithActionForPBO":
+                $result = DB::select($queryMeetingsWithActionForPBO);
+                break;
+            case "meetingWithOpenRequest":
+                $result = DB::select($meetingWithOpenRequest);
+                break;
+        }
+        $response = Response::json($result);
+        $response->header('Pragma', 'no-cache');
+        $response->header('Expires', '0');
+        return $response;
     }
 }
