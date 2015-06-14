@@ -172,19 +172,16 @@
                 <div class="row row-fluid">
                     <div class="col-xs-1" style="padding-top:10px; padding-bottom:15px">
 
-                        <div id="add" class='btn btn-default' style='font-size:20px; margin-right:10px' data-bind="visible: isAddProposalAllowed">
-                            <a href="#" data-bind="click: $root.addNewProposal">
-                                Nieuwe aanvraag toevoegen</span>
-                            </a>
+
+                        <div data-bind="visible: isAddProposalAllowed">
+                            <button type="button" class="btn btn-primary start" id="add" data-bind="click: $root.addNewProposal">Nieuwe aanvraag toevoegen</button>
                         </div>
 
                     </div>
 
                     <div class="col-xs-offset-8 col-xs-3" style="padding-top:10px; padding-bottom:15px">
-                        <div id="send" class='btn btn-default' style='font-size:20px;margin-right:10px;' data-bind="visible : isSaveAndSendAllowed">
-                            <a href="#" data-bind="click: $root.send">
-                                Bewaar en verstuur <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
-                            </a>
+                        <div data-bind="visible : isSaveAndSendAllowed">
+                            <button type="button" class="btn btn-primary start" id="saveAndSend" data-loading-text="Verwerking..." data-bind="click:$root.send">Bewaar en verstuur <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
                         </div>
                     </div>
                 </div>

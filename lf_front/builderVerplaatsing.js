@@ -386,6 +386,7 @@ moment.locale("nl");
 			var vmjs = $.parseJSON(ko.toJSON(self));
 			var resultObject = {"chosenMeeting": vmjs.chosenMeeting,"sendMail":sendMail};
 
+            $('#saveAndSend').button('loading');
             var posting = $.ajax({
                 method:"POST",
                 url:"verplaatsing/saveMeetingChangeRequest",
@@ -398,7 +399,7 @@ moment.locale("nl");
             });
 
             posting.done(function(data) {
-                console.log("data.processedSuccessfull:"+data.processedSuccessfull);
+                $('#saveAndSend').button('reset');
                 if (data.processedSuccessfull) {
                     $resultText = (sendMail ? "Verplaatsings aanvraag bewaard en e-mail verzonden naar tegenpartij (" + data.mailTo + ")" : "Verplaatsings aanvraag bewaard.");
                     self.chosenMeeting().dbStatus(dbStatusLayout(data.status));
@@ -410,6 +411,7 @@ moment.locale("nl");
             });
 
 			posting.fail(function(data) {
+                $('#saveAndSend').button('reset');
 				self.lastError("Problemen bij het bewaren van deze verplaatsings aanvraag.");
 			});			
 			
