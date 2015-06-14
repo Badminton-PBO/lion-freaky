@@ -197,7 +197,7 @@ EOD;
 
 
         $processedSuccessfull=true;
-        $chosenMeeting = Request::input("chosenMeeting");
+            $chosenMeeting = Request::input("chosenMeeting");
         $sendMail = Request::input("sendMail");
 
         DB::delete($deleteExistingMatchCR,
@@ -225,6 +225,9 @@ EOD;
                 ':matchIdExtra' => $chosenMeeting['matchIdExtra']
             )
         );
+
+        //Create event for this request
+        EventController::logEvent('v-saved',$chosenMeeting['chosenTeamName']);
 
         if ($sendMail == 'true') {
             $mailTo = $this->sendMail($chosenMeeting);
