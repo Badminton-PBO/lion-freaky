@@ -133,7 +133,7 @@ moment.locale("nl");
 		
 	function giveNewProposedChange(meeting,requestedByTeam,hTeam,oTeam) {
 		var newProposedChange =  new ProposedChange(meeting);
-		newProposedChange.proposedDateTime(moment().format("YYYYMMDDHHmm"));
+		newProposedChange.proposedDateTime(moment().hour(20).minutes(0).format("YYYYMMDDHHmm"));
 		newProposedChange.requestedByTeam(requestedByTeam);
 		newProposedChange.finallyChosen(false);
 		newProposedChange.acceptedState("-");
