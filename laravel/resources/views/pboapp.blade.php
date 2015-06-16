@@ -35,12 +35,12 @@
 
             <div class="col-xs-2" style="padding-top: 10px">
                 @if (!(Auth::guest()))
-                        <a class="btn btn-primary" href="auth/logout" role="button">
+                        <a class="btn btn-primary" href="{{url('auth/logout')}}" role="button">
                             <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
                         </a>
                 @else
                         <a class="btn btn-primary" href="{{route('home')}}" role="button">
-                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                         </a>
                 @endif
                 @yield('help')
