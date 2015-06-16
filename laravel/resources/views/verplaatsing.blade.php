@@ -32,6 +32,9 @@
             border-color: #4cae4c;
             color: #fff;
         }
+        .selectedMeeting {
+            font-weight: bold;
+        }
     </style>
 
 @endsection
@@ -72,7 +75,7 @@
                     <div data-bind="style: { height: $root.chosenMeeting() ? '30vh' : '60vh', overflow: 'auto'}">
                         <table class="table table-striped table-condensed" style="table-layout:fixed">
                             <tbody data-bind="foreach: availableMeetings">
-                            <tr>
+                            <tr data-bind="css: { selectedMeeting: $root.chosenMeeting() && ($root.chosenMeeting().matchIdExtra == matchIdExtra) }">
                                 <td><a data-bind="click: $root.chosenMeeting"><span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></a></td>
                                 <td><span data-bind="text:dateLayout"></span> <span data-bind="text:hourLayout"></span></td>
                                 <td><span data-bind="text: dbStatus"></span>
