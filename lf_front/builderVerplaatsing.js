@@ -112,14 +112,15 @@ moment.locale("nl");
 					   );
 		},this);
 
-        this.proposalAcceptedStates = ko.computed(function() {
-            //Once choosen, it should not be possible to set it back to undefined
-            if (this.acceptedState() == '-') {
-                return ['-','NIET MOGELIJK','MOGELIJK'];
-            } else {
-                return ['NIET MOGELIJK','MOGELIJK'];
+        this.proposalAcceptedStates = ko.observableArray(['-','NIET MOGELIJK','MOGELIJK']);
+
+        this.acceptedState.subscribe(function(newAcceptedState){
+            //Once chosen, it should not be possible to set it back to undefined.
+            if (newAcceptedState!='-' && this.proposalAcceptedStates.indexOf("-") == 0) {
+                this.proposalAcceptedStates.shift();
+                this.acceptedState(newAcceptedState);
             }
-        },this);
+        },this)
 		
 	}
 	
