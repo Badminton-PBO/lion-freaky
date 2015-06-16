@@ -184,7 +184,7 @@
 
                     <div class="col-xs-offset-8 col-xs-3" style="padding-top:10px; padding-bottom:15px">
                         <div data-bind="visible : isSaveAndSendAllowed">
-                            <button type="button" class="btn btn-primary start" id="saveAndSend" data-loading-text="Verwerking..." data-bind="click:$root.send">Bewaar en verstuur <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
+                            <button type="button" class="btn btn-primary start" id="saveAndSend" data-loading-text="Verwerking..." data-bind="click:$root.send"><span data-bind="text: $root.giveSaveAndSendButtonText"/></span> <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
                         </div>
                     </div>
                 </div>

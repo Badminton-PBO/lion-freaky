@@ -302,7 +302,7 @@ EOD;
                     ->to(VerplaatsingsController::giveFinalMailto(env('VERPLAATSING_MAIL_PBO','')))
                     ->subject($data['subject']);
             });
-            return env('VERPLAATSING_MAIL_PBO','');
+            return env('VERPLAATSING_MAIL_PBO','').','."$receiverTeam <".$receiverTeamEmail.">".','."$requesterTeam <".$requesterTeamEmail.">";
         }
 
     }

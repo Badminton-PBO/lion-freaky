@@ -383,15 +383,15 @@ moment.locale("nl");
 			self.newCommentText("");
 		};
 		
-		self.saveAndSend = function(sendMail) {
+		self.saveAndSend = function() {
 			var vmjs = $.parseJSON(ko.toJSON(self));
-			var resultObject = {"chosenMeeting": vmjs.chosenMeeting,"sendMail":sendMail};
+			var resultObject = {"chosenMeeting": vmjs.chosenMeeting,"sendMail":true};
 
             $('#saveAndSend').button('loading');
             var posting = $.ajax({
                 method:"POST",
                 url:"verplaatsing/saveMeetingChangeRequest",
-                data: JSON.stringify({"chosenMeeting": vmjs.chosenMeeting,"sendMail":sendMail}),
+                data: JSON.stringify({"chosenMeeting": vmjs.chosenMeeting,"sendMail":true}),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 headers : {
@@ -402,7 +402,7 @@ moment.locale("nl");
             posting.done(function(data) {
                 $('#saveAndSend').button('reset');
                 if (data.processedSuccessfull) {
-                    $resultText = (sendMail ? "Verplaatsings aanvraag bewaard en e-mail verzonden naar tegenpartij (" + data.mailTo + ")" : "Verplaatsings aanvraag bewaard.");
+                    $resultText = "Verplaatsings aanvraag bewaard en e-mail verzonden naar : " + data.mailTo ;
                     self.chosenMeeting().dbStatus(dbStatusLayout(data.status));
                     self.chosenMeeting().dbActionFor(dbActionForLayout(data.actionFor));
                     self.lastSuccess($resultText);
@@ -419,8 +419,17 @@ moment.locale("nl");
 		}
 
 		self.send = function() {
-			self.saveAndSend(true);
+			self.saveAndSend();
 		};
+
+        self.giveSaveAndSendButtonText = ko.computed(function(){
+            if (this.chosenMeeting() && this.chosenMeeting().status() == 'OVEREENKOMST') {
+                return "Bewaar en verstuur naar PBO en "+this.chosenMeeting().counterTeamName;
+            } else if (this.chosenMeeting()){
+                return "Bewaar en verstuur naar "+this.chosenMeeting().counterTeamName;
+            }
+
+        },this);
 
 	};	
 	
