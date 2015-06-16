@@ -174,7 +174,7 @@
 
 
                         <div data-bind="visible: isAddProposalAllowed">
-                            <button type="button" class="btn btn-primary start" id="add" data-bind="click: $root.addNewProposal">Nieuwe aanvraag toevoegen</button>
+                            <button type="button" class="btn btn-primary start" id="add" data-bind="click: $root.addNewProposal">Nieuw tijdstip toevoegen</button>
                         </div>
 
                     </div>
