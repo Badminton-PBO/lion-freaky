@@ -48,7 +48,9 @@
     <!-- ko if: !$root.chosenTeam() -->
     <div class="well">
         <h1>Doelstelling</h1>
-        Streamline verplaatsings aanvragen PBO competitie.
+        Bij de start van elk nieuw competitieseizoen is het zowel voor de ploegkapiteins, competitie verantwoordelijke binnen de clubs als de PBO een gevecht om alle ontmoetingen op tijd op correct data te krijgen.
+        Het vlot afhandelen van aanvragen tot verplaatsing van een welbepaalde ontmoeting speelt hierbij en cruciale rol. Tot nu toe liep dit meestal via al dan niet lange mailkettingen met de nodige reminders enzo.
+        Om dit iets gestructueerder te laten verlopen is er beslist om een tool te ontwikkelen waarbij aanvragen tot verplaatsing eenvoudig kunnen worden geregeld met alle betrokken partijen.
     </div>
     <!-- /ko -->
     <div class="row hidden-print">
@@ -95,7 +97,7 @@
             <div>
                 <div class="row row-fluid">
                     <div class="col-xs-12">
-                        <h2>Verplaatsing aanvraag <span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></h2>
+                        <h2>Verplaatsingsaanvraag <span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></h2>
                     </div>
                 </div>
                 <div class="row">
@@ -162,7 +164,7 @@
                             </td>
                             <td>
                                 <button class="button" data-bind="click: $parent.removeProposal, visible: requestedByTeam() == $root.chosenTeam().teamName && acceptedState() == '-'">
-                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span class="glyphicon glyphicon-trash"></span>
                                 </button>
                             </td>
                         </tr>
@@ -177,7 +179,7 @@
 
 
                         <div data-bind="visible: isAddProposalAllowed">
-                            <button type="button" class="btn btn-primary start" id="add" data-bind="click: $root.addNewProposal">Nieuw tijdstip toevoegen</button>
+                            <button type="button" class="btn btn-primary start" id="add" data-bind="click: $root.addNewProposal"><span data-bind="text: $root.giveAddNewProposalButtonText"></span></button>
                         </div>
 
                     </div>

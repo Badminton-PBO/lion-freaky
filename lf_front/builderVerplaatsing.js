@@ -431,6 +431,15 @@ moment.locale("nl");
 
         },this);
 
+        self.giveAddNewProposalButtonText = ko.computed(function(){
+            if (this.chosenMeeting() && this.chosenMeeting().proposedChanges().length>0) {
+                return "Bijkomend tijdstip toevoegen";
+            } else {
+                return "Verplaatsingsaanvraag toevoegen";
+            }
+
+        },this);
+
 	};	
 	
 	

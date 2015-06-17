@@ -8,6 +8,6 @@
     Beste,
     <br/><br/>
 
-    U diende net een verzoek in om de wedstrijd "{{$hTeam}} - {{$oTeam}}" van "{{$dateTimeLayout}}" te verplaatsen.<br/>
+    U hebt zonet wijzigingen aangebracht aan de verplaatsingsaanvraag voor de ontmoeting "{{$hTeam}} - {{$oTeam}}" van "{{$dateTimeLayout}}"<br/>
     U kan de data nog altijd corrigeren via <a href="{!! $link !!}">{!! $link !!}</a>
 @endsection

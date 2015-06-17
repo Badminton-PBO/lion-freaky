@@ -8,6 +8,6 @@
     Beste,
     <br/><br/>
 
-    {{$requester}} diende een verzoek in om de wedstrijd "{{$hTeam}} - {{$oTeam}}" van "{{$dateTimeLayout}}" te verplaatsen.<br/>
-    U kan de data bekijken en bevestigen of een nieuw tegenvoorstel indienen via <a href="{!! $link !!}">{!! $link !!}</a>
+    {{$requester}} heeft zonet wijzigingen aangebracht aan de verplaatsingsaanvraag voor de ontmoeting "{{$hTeam}} - {{$oTeam}}" van "{{$dateTimeLayout}}" te verplaatsen.<br/>
+    Gelieve te bevestigen en/of een tegenvoorstel in te dienen via <a href="{!! $link !!}">{!! $link !!}</a>
 @endsection
