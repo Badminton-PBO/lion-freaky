@@ -186,7 +186,9 @@ moment.locale("nl");
         return ($.trim(actionFor)) ? actionFor : "-"
     }
 
-	var Meeting = function(chosenTeamName,hTeam,oTeam,dateTime,locationName,matchIdExtra,status,actionFor) {
+
+    //new Meeting(self.chosenTeam().teamName,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra,m.status, m.actionFor, m.hTeamComment, m.oTeamComment)
+	var Meeting = function(chosenTeamName,hTeam,oTeam,dateTime,locationName,matchIdExtra,status,actionFor,hTeamComment, oTeamComment) {
 		var self= this;
 		this.chosenTeamName = chosenTeamName;
 		this.hTeam = hTeam;
@@ -196,6 +198,8 @@ moment.locale("nl");
 		this.matchIdExtra = matchIdExtra;
 		this.date = buildDateTime(dateTime);
         this.counterTeamName = this.chosenTeamName == this.hTeam ? this.oTeam : this.hTeam;
+        this.hTeamComment = ko.observable(hTeamComment);
+        this.oTeamComment = ko.observable(oTeamComment);
 		
 		this.dateLayout = formatDate(this.date);
 		this.hourLayout = formatHour(this.date);
@@ -347,7 +351,7 @@ moment.locale("nl");
 				$.get("verplaatsing/meetingAndMeetingChangeRequest/"+encodeURIComponent(self.chosenClub().clubName)+"/"+encodeURIComponent(newTeam.teamName), function(data) {
 					var myMeetings = [];
 					$.each(data.meetings, function(index,m) {
-						var myMeeting = new Meeting(self.chosenTeam().teamName,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra,m.status,m.actionFor);
+						var myMeeting = new Meeting(self.chosenTeam().teamName,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra,m.status, m.actionFor, m.hTeamComment, m.oTeamComment);
 												
 						$.each(m.CRs, function(index,cr) {
 							myMeeting.proposedChanges.push(new ProposedChange(myMeeting,cr.matchCRId,cr.proposedDate,cr.acceptedState,cr.requestedByTeam,cr.requestedOn,cr.finallyChosen == '1' ? true : false));

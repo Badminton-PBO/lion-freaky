@@ -90,7 +90,7 @@ EOD;
 
     public function  meetingAndMeetingChangeRequest($clubName,$teamName) {
         $queryEventPerTeam = <<<EOD
-select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName,e.matchIdExtra,e.status,e.actionFor from lf_match m
+select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName,e.matchIdExtra,e.status,e.actionFor,e.hTeamComment,e.oTeamComment from lf_match m
 join lf_match_extra e on e.hTeamName = m.homeTeamName and e.oTeamName = m.outTeamName
 where (m.homeTeamName = :team1 or m.outTeamName = :team2)
 order by m.date asc;
@@ -106,7 +106,7 @@ order by cr.proposedDate asc;
 EOD;
 
         $queryEventPerClub = <<<EOD
-select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName,e.matchIdExtra,e.status,e.actionFor from lf_match m
+select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName,e.matchIdExtra,e.status,e.actionFor,,e.hTeamComment,e.oTeamComment from lf_match m
 join lf_match_extra e on e.hTeamName = m.homeTeamName and e.oTeamName = m.outTeamName
 join lf_team t on t.teamName = m.homeTeamName or t.teamName = m.outTeamName
 join lf_club c on c.clubId = t.club_clubId
@@ -165,6 +165,8 @@ EOD;
                     'matchIdExtra' => $match->matchIdExtra,
                     'status' => $match->status,
                     'actionFor' => $match->actionFor,
+                    'hTeamComment' => $match->hTeamComment,
+                    'oTeamComment' => $match->oTeamComment,
                     'CRs' => $matchCRs));
 
         }
@@ -191,7 +193,7 @@ VALUES(STR_TO_DATE(:proposedDate,'%Y%m%d%H%i'),:requestedByTeam,now(),:acceptedS
 EOD;
 
         $updateMatchExtra = <<<'EOD'
-update lf_match_extra e set status = :status, actionFor = :actionFor
+update lf_match_extra e set status = :status, actionFor = :actionFor, hTeamComment = :hTeamComment, oTeamComment = :oTeamComment
 where matchIdExtra = :matchIdExtra;
 EOD;
 
@@ -222,7 +224,9 @@ EOD;
             array(
                 ':status' => $chosenMeeting['status'],
                 ':actionFor' => $chosenMeeting['actionFor'],
-                ':matchIdExtra' => $chosenMeeting['matchIdExtra']
+                ':matchIdExtra' => $chosenMeeting['matchIdExtra'],
+                ':hTeamComment' => $chosenMeeting['hTeamComment'],
+                ':oTeamComment' => $chosenMeeting['oTeamComment']
             )
         );
 

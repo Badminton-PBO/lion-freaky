@@ -204,6 +204,8 @@ CREATE TABLE IF NOT EXISTS `lf_match_extra` (
   `hTeamName` varchar(45) NOT NULL,
   `status` varchar(45) DEFAULT 'LAATST VASTGELEGD TIJDSTIP',
   `actionFor` varchar(45) DEFAULT NULL,
+  `hTeamComment` VARCHAR( 3000 ) DEFAULT NULL,
+  `oTeamComment` VARCHAR( 3000 ) DEFAULT NULL,
   PRIMARY KEY `matchIdExtra` (`matchIdExtra`),
   UNIQUE KEY `uk_match_status` (`oTeamName`,`hTeamName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -229,23 +231,7 @@ CREATE TABLE IF NOT EXISTS `lf_match_cr` (
 -- Constraints for table `lf_match_cr`
 --
 ALTER TABLE `lf_match_cr`
-  ADD CONSTRAINT `fk_match_cr_match` FOREIGN KEY (`match_matchIdExtra`) REFERENCES `lf_match_extra` (`matchIdExtra`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-
--- --------------------------------------------------------
---
--- Table structure for table `lf_match_cr`
---
-CREATE TABLE IF NOT EXISTS `lf_match_comment` (
-  `commentId` int(11) NOT NULL AUTO_INCREMENT,
-  `match_matchIdExtra` int(11) NOT NULL,  
-  `commentDate` datetime NOT NULL,
-  `commentByTeam` varchar(45) NOT NULL,
-  UNIQUE KEY `commentId` (`commentId`),
-  KEY `match_matchIdExtra` (`match_matchIdExtra`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
+  ADD CONSTRAINT `fk_match_cr_match` FOREIGN KEY (`match_matchIdExtra`) REFERENCES `lf_match_extra` (`matchIdExtra`) ON DELETE NO ACTION ON UPDATE NO ACTIO
 
 
 -- Functions to faciliate load from CSV into the DB

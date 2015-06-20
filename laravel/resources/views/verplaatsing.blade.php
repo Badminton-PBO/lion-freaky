@@ -190,42 +190,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="row row-fluid" style="display: none">
-                    <div class="well well-sm">
-                        <h2>Commentaar</h2>
-                        <table class="table table-condensed">
-                            <thead>
-                            <tr>
-                                <th class="col-md-3">Door</th>
-                                <th class="col-md-9">Commentaar</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <!-- ko foreach: comments -->
-                            <tr>
-                                <td>
-                                    <span data-bind="text:owner"></span>,<br><span data-bind="text:dateTime"></span>
-                                </td>
-                                <td>
-                                    <span data-bind="text:text"></span>
-                                </td>
-                            </tr>
-                            <!-- /ko -->
-                            <tr>
-                                <td>
-                                    Voeg nieuw commentaar toe:
-                                </td>
-                                <td>
-                                    <textarea data-bind="textInput: $root.newCommentText"></textarea>
-                                    <div class='label label-default' style='font-size:30px'>
-                                        <a href="#" data-bind="click: $root.addNewComment">
-                                            <span class="glyphicon glyphicon-plus"></span>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div class="row row-fluid">
+                    <div class="col-xs-12">
+                        <div class="well col-xs-5">
+                            <h4>Commentaar <span data-bind="text: hTeam"></span></h4>
+                            <textarea rows="10" style="width: 100%" data-bind="value: hTeamComment, enable:  $root.chosenTeam().teamName == hTeam"></textarea>
+                        </div>
+                        <div class="well col-xs-5 col-xs-offset-2">
+                            <h4>Commentaar <span data-bind="text: oTeam"></span></h4>
+                            <textarea rows="10" style="width: 100%" data-bind="value: oTeamComment, enable:  $root.chosenTeam().teamName == oTeam"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
