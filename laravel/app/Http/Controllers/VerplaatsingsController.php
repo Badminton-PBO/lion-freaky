@@ -93,6 +93,7 @@ EOD;
 select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName,e.matchIdExtra,e.status,e.actionFor,e.hTeamComment,e.oTeamComment from lf_match m
 join lf_match_extra e on e.hTeamName = m.homeTeamName and e.oTeamName = m.outTeamName
 where (m.homeTeamName = :team1 or m.outTeamName = :team2)
+and m.date >= DATE_SUB(now(),INTERVAL :startDate DAY)
 order by m.date asc;
 EOD;
 //and m.date >= now()
@@ -111,6 +112,7 @@ join lf_match_extra e on e.hTeamName = m.homeTeamName and e.oTeamName = m.outTea
 join lf_team t on t.teamName = m.homeTeamName or t.teamName = m.outTeamName
 join lf_club c on c.clubId = t.club_clubId
 where c.clubName= :club
+and m.date >=DATE_SUB(now(),INTERVAL :startDate DAY)
 order by m.date asc;
 EOD;
 //and m.date >= now()
@@ -128,11 +130,11 @@ EOD;
 
         //Add match data
         if ($teamName == 'Allen') {
-            $matches = DB::select($queryEventPerClub, array('club' =>$clubName));
+            $matches = DB::select($queryEventPerClub, array('club' =>$clubName,'startDate' => env('SHOW_MEETINGS_STARTING_FROM_NOW_MINUS_DAYS', 0)));
             $matchesCRs = DB::select($queryMatchCRPerClub, array('club' =>$clubName));
 
         } else {
-            $matches = DB::select($queryEventPerTeam, array('team1' =>$teamName,'team2' =>$teamName));
+            $matches = DB::select($queryEventPerTeam, array('team1' =>$teamName,'team2' =>$teamName,'startDate' => env('SHOW_MEETINGS_STARTING_FROM_NOW_MINUS_DAYS', 0)));
             $matchesCRs = DB::select($queryMatchCRPerTeam, array('team1' =>$teamName,'team2' =>$teamName));
         }
 

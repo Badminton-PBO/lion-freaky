@@ -90,22 +90,20 @@ EOD;
         $queryEvent = <<<EOD
 select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName from lf_match m
 where (m.homeTeamName = :team1 or m.outTeamName = :team2)
-and m.date >= now()
-order by m.date asc;
-EOD;
-
-        $queryEventAll = <<<EOD
-select m.homeTeamName,m.outTeamName, date_format(m.date,'%Y%m%d%H%i%S') date,m.locationName from lf_match m
-where (m.homeTeamName = :team1 or m.outTeamName = :team2)
+and m.date >= DATE_SUB(now(),INTERVAL :startDate DAY)
 order by m.date asc;
 EOD;
 
         $players = DB::select($query, array('team' =>$teamName));
         $result = array('clubName' => $players[0]->clubName, 'teamName' => $teamName, 'meetings'=>array(),'players'=>array());
 
-        $finaleQueryEvent = env('SHOW_ALL_MEETINGS', false) ? $queryEventAll : $queryEvent;
         //Add match data
-        $matches = DB::select($finaleQueryEvent, array('team1' =>$teamName,'team2' =>$teamName));
+        $matches = DB::select($queryEvent,
+            array('team1' =>$teamName,
+                  'team2' =>$teamName,
+                  'startDate' => env('SHOW_MEETINGS_STARTING_FROM_NOW_MINUS_DAYS', 0)
+                )
+            );
         foreach($matches as $key => $match) {
             array_push($result["meetings"],array('hTeam' => $match->homeTeamName, 'oTeam' => $match->outTeamName, 'dateTime' => $match->date, 'locationName' => $match->locationName));
         }
