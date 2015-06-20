@@ -193,11 +193,11 @@
                 <div class="row row-fluid">
                     <div class="col-xs-12">
                         <div class="well col-xs-5">
-                            <h4>Commentaar <span data-bind="text: hTeam"></span></h4>
+                            <h4>Commentaar <span data-bind="text: hTeam"></span> (optioneel)</h4>
                             <textarea rows="10" style="width: 100%" data-bind="value: hTeamComment, enable:  $root.chosenTeam().teamName == hTeam"></textarea>
                         </div>
                         <div class="well col-xs-5 col-xs-offset-2">
-                            <h4>Commentaar <span data-bind="text: oTeam"></span></h4>
+                            <h4>Commentaar <span data-bind="text: oTeam"></span> (optioneel)</h4>
                             <textarea rows="10" style="width: 100%" data-bind="value: oTeamComment, enable:  $root.chosenTeam().teamName == oTeam"></textarea>
                         </div>
                     </div>

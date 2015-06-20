@@ -40,12 +40,9 @@ class VerplaatsingsController extends Controller
 
     public function clubAndTeams()
     {
-        $query = <<<EOD
-select c.clubName,t.teamName,t.captainName,g.event,g.`type`,g.devision,g.series,p.playerId from lf_club c
+        $queryTeams = <<<EOD
+select c.clubName,t.teamName from lf_club c
 join lf_team t on c.clubId = t.club_clubId
-join lf_group g on g.groupId = t.group_groupId
-join lf_player_has_team pt on pt.team_teamName = t.teamName
-join lf_player p on p.playerId = pt.player_playerId
 where c.clubId=:clubId
 order by c.clubName,t.teamName
 EOD;
@@ -55,30 +52,30 @@ SELECT  date_format(max(`when`),'%Y%m%d%H%i%S') date FROM `lf_event`
 where eventType='DBLOAD'
 EOD;
 
-        $players = DB::select($query, array('clubId' => Auth::user()->club_id));
+        $queryMeetingsWithActionForThisTeam = <<<EOD
+select me.hTeamName,me.oTeamName,m.date,me.actionFor from lf_match_extra me
+join lf_match m on m.homeTeamName = me.hTeamName and m.outTeamName = me.oTeamName
+where me.actionFor in (
+select t.teamName from lf_team t
+join lf_club c on c.clubId = t.club_clubId
+where c.clubId=:clubId
+)
+order by me.matchIdExtra asc
+EOD;
+
+
+        $dbteams = DB::select($queryTeams, array('clubId' => Auth::user()->club_id));
         $dbloads = DB::select($queryDBLoad);
 
-        $currentClubName = "";
-        $currentTeam = "";
-        $clubCounter = -1;
         $teamCounter = -1;
-        foreach ($players as $key => $player) {
-            if ($currentClubName != $player->clubName) {
-                $clubCounter++;
-                $teamCounter = -1;
-                $currentTeamName = "";
-                $result["clubs"][$clubCounter] = array("clubName" => $player->clubName, "teams" => array());
-                $currentClubName = $player->clubName;
-            }
-            if ($currentTeamName != $player->teamName) {
+        if (sizeof($dbteams) > 0) {
+            $result["clubs"][0] = array("clubName" => $dbteams[0]->clubName, "teams" => array());
+            foreach($dbteams as $key => $team) {
                 $teamCounter++;
-                $result["clubs"][$clubCounter]["teams"][$teamCounter] = array('teamName' => $player->teamName, 'type' => $player->type, 'event' => $player->event, 'devision' => $player->devision, 'series' => $player->series, 'captainName' => $player->captainName, 'baseTeam' => array());
-                $currentTeamName = $player->teamName;
+                $result["clubs"][0]["teams"][$teamCounter] = array('teamName' => $team->teamName);
             }
-            array_push($result["clubs"][$clubCounter]["teams"][$teamCounter]["baseTeam"], $player->playerId);
         }
         $result['DBLOAD'] = $dbloads;
-
 
         header("Content-Disposition: attachment; filename=json.data");
         header("Pragma: no-cache");
@@ -129,14 +126,9 @@ EOD;
         $result = array('meetings'=>array());
 
         //Add match data
-        if ($teamName == 'Allen') {
-            $matches = DB::select($queryEventPerClub, array('club' =>$clubName,'startDate' => env('SHOW_MEETINGS_STARTING_FROM_NOW_MINUS_DAYS', 0)));
-            $matchesCRs = DB::select($queryMatchCRPerClub, array('club' =>$clubName));
+        $matches = DB::select($queryEventPerTeam, array('team1' =>$teamName,'team2' =>$teamName,'startDate' => env('SHOW_MEETINGS_STARTING_FROM_NOW_MINUS_DAYS', 0)));
+        $matchesCRs = DB::select($queryMatchCRPerTeam, array('team1' =>$teamName,'team2' =>$teamName));
 
-        } else {
-            $matches = DB::select($queryEventPerTeam, array('team1' =>$teamName,'team2' =>$teamName,'startDate' => env('SHOW_MEETINGS_STARTING_FROM_NOW_MINUS_DAYS', 0)));
-            $matchesCRs = DB::select($queryMatchCRPerTeam, array('team1' =>$teamName,'team2' =>$teamName));
-        }
 
         foreach($matches as $key => $match) {
             $matchCRs = array();

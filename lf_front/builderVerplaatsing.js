@@ -310,10 +310,6 @@ moment.locale("nl");
 		
 		//LOAD CLUBS/TEAMS
 		$.get("verplaatsing/clubAndTeams", function(data) {
-			data.clubs.forEach(function(club) {
-				var allTeam = new Team('Allen','','','','');
-				club.teams.push(allTeam);
-			});
 			self.sampleClubs(data.clubs);
 			
 			//Teamname selected by URL
