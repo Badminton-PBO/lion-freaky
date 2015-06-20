@@ -52,7 +52,7 @@ SELECT  date_format(max(`when`),'%Y%m%d%H%i%S') date FROM `lf_event`
 where eventType='DBLOAD'
 EOD;
 
-        $queryMeetingsWithActionForThisTeam = <<<EOD
+        $queryMeetingsWithActionForThisClub = <<<EOD
 select me.hTeamName,me.oTeamName,m.date,me.actionFor from lf_match_extra me
 join lf_match m on m.homeTeamName = me.hTeamName and m.outTeamName = me.oTeamName
 where me.actionFor in (
@@ -65,15 +65,26 @@ EOD;
 
 
         $dbteams = DB::select($queryTeams, array('clubId' => Auth::user()->club_id));
+        $dbQueryMeetingsWithActionForThisClub = DB::select($queryMeetingsWithActionForThisClub, array('clubId' => Auth::user()->club_id));
+
         $dbloads = DB::select($queryDBLoad);
 
-        $teamCounter = -1;
+
         if (sizeof($dbteams) > 0) {
-            $result["clubs"][0] = array("clubName" => $dbteams[0]->clubName, "teams" => array());
+            $result["clubs"][0] = array("clubName" => $dbteams[0]->clubName, "teams" => array(), "openRequests" => array());
+            $teamCounter = -1;
             foreach($dbteams as $key => $team) {
                 $teamCounter++;
                 $result["clubs"][0]["teams"][$teamCounter] = array('teamName' => $team->teamName);
             }
+
+            $openRequestCounter = -1;
+            foreach($dbQueryMeetingsWithActionForThisClub as $key => $openRequest) {
+                $openRequestCounter++;
+                $result["clubs"][0]["openRequests"][$openRequestCounter] = array('hTeamName' => $openRequest->hTeamName,'oTeamName' => $openRequest->oTeamName,'date' => $openRequest->date,'actionFor' => $openRequest->actionFor);
+            }
+
+
         }
         $result['DBLOAD'] = $dbloads;
 

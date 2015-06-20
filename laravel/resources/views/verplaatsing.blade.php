@@ -56,12 +56,34 @@
     <div class="row hidden-print">
         <div class="col-xs-12">
             <p data-bind="with: chosenClub">
-                Kies je team:
+                Kies een team om andere ontmoetingen te wijzigen
                 <select data-bind="options: teams.filter(function(team) { return team.type != 'LIGA'}),
                                        optionsText: 'teamName',
                                        value: $parent.chosenTeam,
-                                       optionsCaption: 'Selecteer...'"></select>
+                                       optionsCaption: $root.selectTeamCaption()"></select>
             </p>
+            <div data-bind="if:($root.chosenClub() && !($root.chosenTeam()) && $root.chosenClub().openRequests.length > 0)">
+                <h2>Ontmoeting die actie vereisen van <span data-bind="text: $root.chosenClub().clubName"></span></h2>
+                <div class="panel panel-default">
+                    <table class="table table-striped table-condensed" style="table-layout:fixed">
+                        <thead>
+                            <tr>
+                                <th>Ontmoeting</th>
+                                <th>Huidig tijdstip</th>
+                                <th>Actie bij</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: $root.chosenClub().openRequests">
+                            <tr>
+                                <td><a data-bind="click: $root.goToOpenRequest"><span data-bind="text:hTeamName"/></span>-<span data-bind="text:oTeamName"></span></a></td>
+                                <td><span data-bind="text: date"></span> </td>
+                                <td><span data-bind="text: actionFor"></span> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div data-bind="if: $root.chosenTeam()">
                 <div class="panel panel-default">
                     <table class="table table-striped table-condensed" style="table-layout:fixed">
@@ -93,8 +115,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12" data-bind="with: $root.chosenMeeting()">
-            <div>
+        <div class="col-xs-12" data-bind="if: $root.chosenTeam()">
+            <div data-bind="with: $root.chosenMeeting()">
                 <div class="row row-fluid">
                     <div class="col-xs-12">
                         <h2>Verplaatsingsaanvraag <span data-bind="text:hTeam"></span> - <span data-bind="text:oTeam"></span></h2>

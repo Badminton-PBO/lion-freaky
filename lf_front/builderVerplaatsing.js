@@ -179,6 +179,11 @@ moment.locale("nl");
 		}
 	}
 
+    function teamByNameFilter(myTeamName) {
+        return function(a) {
+            return a.teamName == myTeamName;
+        }
+    }
     function dbStatusLayout(status) {
         return ($.trim(status)) ? status : "LAATST VASTGELEGD TIJDSTIP"
     }
@@ -305,7 +310,7 @@ moment.locale("nl");
 		
 		//console.log("URL team:"+getUrlParameter("team"));
 		//console.log("URL cTeam:"+getUrlParameter("cTeam"));
-		self.requestedhomeTeamName = getUrlParameter("hteam");
+		self.requestedHomeTeamName = getUrlParameter("hteam");
 		self.requestedOutTeamName = getUrlParameter("oTeam");
 		
 		//LOAD CLUBS/TEAMS
@@ -313,11 +318,11 @@ moment.locale("nl");
 			self.sampleClubs(data.clubs);
 			
 			//Teamname selected by URL
-			if (typeof self.requestedhomeTeamName !== 'undefined') {
+			if (typeof self.requestedHomeTeamName !== 'undefined') {
 				data.clubs.forEach(function(club) {//Should only contain one club
 					club.teams.forEach(function(team) {
-						if (team.teamName == self.requestedhomeTeamName || team.teamName == self.requestedOutTeamName) {
-							console.log("Found requestedTeamName "+ team.teamName);
+						if (team.teamName == self.requestedHomeTeamName || team.teamName == self.requestedOutTeamName) {
+							//console.log("Found requestedTeamName "+ team.teamName);
 							self.chosenClub(club);
 							self.chosenTeam(team);
 						}
@@ -339,7 +344,6 @@ moment.locale("nl");
 		
 		self.chosenTeam.subscribe(function(newTeam) {			
 			if (newTeam !== undefined && newTeam !== null) {
-				console.log("Team initing...");								
 				//LOAD EVENTS FOR THIS CLUB/TEAM
 				self.chosenMeeting(null);
                 //api/meetingAndMeetingChangeRequest
@@ -358,10 +362,14 @@ moment.locale("nl");
 					self.availableMeetings(myMeetings);
 					
 					//Counterteam selected by URL
-					if (typeof self.requestedhomeTeamName !== 'undefined') {
+
+					if (typeof self.requestedHomeTeamName !== 'undefined') {
 						self.availableMeetings().forEach(function(meeting) {
-							if (meeting.hTeam == self.requestedhomeTeamName && meeting.oTeam == self.requestedOutTeamName) {
+							if (meeting.hTeam == self.requestedHomeTeamName && meeting.oTeam == self.requestedOutTeamName) {
 								self.chosenMeeting(meeting);
+                                //Once selected and viewed, we don't want this to influence further selection any more.
+                                self.requestedHomeTeamName = undefined;
+                                self.requestedOutTeamName = undefined;
 							}
 						});
 					}
@@ -439,6 +447,23 @@ moment.locale("nl");
             }
 
         },this);
+
+        self.goToOpenRequest = function(data) {
+            var hTeamNameArray = self.chosenClub().teams.filter(teamByNameFilter(data.hTeamName));
+            var clubTeam;
+            if (hTeamNameArray.length>0) {
+                clubTeam = hTeamNameArray[0];
+            } else {
+                var oTeamNameArray = self.chosenClub().teams.filter(teamByNameFilter(data.oTeamName));
+                clubTeam = oTeamNameArray[0];//must be one
+            }
+            self.requestedHomeTeamName = data.hTeamName;
+            self.requestedOutTeamName = data.oTeamName;
+            self.chosenTeam(clubTeam);
+        }
+        self.selectTeamCaption = function() {
+            return (self.chosenClub().openRequests.length > 0) ? "Ontmoetingen die actie vereisen van "+self.chosenClub().clubName: "Selecteer...";
+        }
 
 	};	
 	
