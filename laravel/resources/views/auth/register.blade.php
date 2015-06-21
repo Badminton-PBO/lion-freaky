@@ -34,13 +34,14 @@
 								<input type="email" class="form-control" name="email" value="{{ old('email') }}">
 							</div>
 						</div>
-
+                        <!--
                         <div class="form-group">
                             <label class="col-md-4 control-label">Club Id (ex. c30009)</label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="club_id" value="{{ old('club_id') }}">
                             </div>
                         </div>
+                        -->
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Password</label>
