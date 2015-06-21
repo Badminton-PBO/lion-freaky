@@ -98,7 +98,7 @@ moment.locale("nl");
 		this.proposedDateTime=ko.observable(proposedDateTime);
 		this.acceptedState=ko.observable(acceptedState);
 		this.requestedByTeam=ko.observable(requestedByTeam);
-		this.requestedOn=requestedOn;
+		this.requestedOn=ko.observable(requestedOn);
 		this.finallyChosen=ko.observable(finallyChosen);		
 		
 		this.proposedDateTimeLayout = moment(this.proposedDateTime(),"YYYYMMDDHHmm").format("ddd DD MMM HH:mm");
@@ -135,6 +135,7 @@ moment.locale("nl");
 	function giveNewProposedChange(meeting,requestedByTeam,hTeam,oTeam) {
 		var newProposedChange =  new ProposedChange(meeting);
 		newProposedChange.proposedDateTime(moment().hour(20).minutes(0).format("YYYYMMDDHHmm"));
+        newProposedChange.requestedOn(moment().format("YYYYMMDDHHmm"));
 		newProposedChange.requestedByTeam(requestedByTeam);
 		newProposedChange.finallyChosen(false);
 		newProposedChange.acceptedState("-");

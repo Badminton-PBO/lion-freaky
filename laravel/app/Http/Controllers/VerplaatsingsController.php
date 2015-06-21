@@ -194,7 +194,7 @@ EOD;
 
         $insertMatchCR = <<<'EOD'
 INSERT INTO lf_match_cr(proposedDate,requestedByTeam,requestedOn,acceptedState,finallyChosen,match_matchIdExtra)
-VALUES(STR_TO_DATE(:proposedDate,'%Y%m%d%H%i'),:requestedByTeam,now(),:acceptedState,:finallyChosen,:matchIdExtra)
+VALUES(STR_TO_DATE(:proposedDate,'%Y%m%d%H%i'),:requestedByTeam,STR_TO_DATE(:requestedOn,'%Y%m%d%H%i'),:acceptedState,:finallyChosen,:matchIdExtra)
 EOD;
 
         $updateMatchExtra = <<<'EOD'
@@ -218,6 +218,7 @@ EOD;
                 array(
                     ':proposedDate' => $proposedChange['proposedDateTime'],
                     ':requestedByTeam' => $proposedChange['requestedByTeam'],
+                    ':requestedOn' => $proposedChange['requestedOn'],
                     ':acceptedState' => $proposedChange['acceptedState'],
                     ':finallyChosen' => ($proposedChange['finallyChosen'] == false ? 0 : 1),
                     ':matchIdExtra' => $chosenMeeting['matchIdExtra']
