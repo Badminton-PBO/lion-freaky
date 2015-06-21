@@ -216,11 +216,11 @@
                     <div class="col-xs-12">
                         <div class="well col-xs-5">
                             <h4>Commentaar <span data-bind="text: hTeam"></span> (optioneel)</h4>
-                            <textarea rows="10" style="width: 100%" data-bind="value: hTeamComment, enable:  $root.chosenTeam().teamName == hTeam"></textarea>
+                            <textarea rows="10" style="width: 100%" data-bind="value: hTeamComment, enable:  $root.chosenTeam().teamName == hTeam" maxlength="2500"></textarea>
                         </div>
                         <div class="well col-xs-5 col-xs-offset-2">
                             <h4>Commentaar <span data-bind="text: oTeam"></span> (optioneel)</h4>
-                            <textarea rows="10" style="width: 100%" data-bind="value: oTeamComment, enable:  $root.chosenTeam().teamName == oTeam"></textarea>
+                            <textarea rows="10" style="width: 100%" data-bind="value: oTeamComment, enable:  $root.chosenTeam().teamName == oTeam" maxlength="2500"></textarea>
                         </div>
                     </div>
                 </div>
