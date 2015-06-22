@@ -33,7 +33,7 @@ moment.locale("nl");
 					$(element).data("timeout", setTimeout(function() {
 						$(element).fadeOut();
 						valueAccessor()(null);
-					}, 6000));
+					}, 10000));
 				});
 			}
 		},
