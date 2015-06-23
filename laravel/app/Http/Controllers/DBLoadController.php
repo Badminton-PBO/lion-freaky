@@ -597,7 +597,7 @@ EOD;
             DB::update($updateMatchExtra,array('matchIdExtra'=>$matchIdExtra));
 
 
-            $subject= "Verplaatsings aanvraag ".$match->hTeamName." - ".$match->oTeamName. " bevestigd";
+            $subject= "Verplaatsings aanvraag ".$match->hTeamName." - ".$match->oTeamName. " verwerkt";
 
             $data = array(
                 'subject' => $subject,
