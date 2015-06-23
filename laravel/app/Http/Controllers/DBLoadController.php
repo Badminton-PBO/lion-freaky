@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use DB;
+use Mail;
 
 use Illuminate\Http\Request;
 
@@ -560,7 +561,12 @@ EOD;
 
     function updateMatchCRAccordingNewData() {
         $matchesInStatusOvereenkomstThatGotMovedQuery = <<<'EOD'
-select e.matchIdExtra from lf_match_cr cr
+select e.matchIdExtra,
+e.hTeamName,
+(select t.email from lf_team t where t.teamName=e.hTeamName) hTeamEmail,
+e.oTeamName,(select t.email from lf_team t where t.teamName=e.oTeamName) oTeamEmail,
+date_format(m.date,'%W %e %M, %H:%i') dateTimeLayout
+from lf_match_cr cr
 join lf_match_extra e on e.matchIdExtra = cr.match_matchIdExtra
 join lf_match m on m.homeTeamName = e.hTeamName and m.outTeamName = e.oTeamName
 where e.status='OVEREENKOMST'
@@ -578,7 +584,7 @@ update lf_match_extra
 set status=null,actionFor=null
 where matchIdExtra = :matchIdExtra
 EOD;
-
+        DB::statement("SET lc_time_names = 'nl_NL';");//set NL language
         $matchesInStatusOvereenkomstThatGotMoved = DB::select($matchesInStatusOvereenkomstThatGotMovedQuery);
 
         foreach($matchesInStatusOvereenkomstThatGotMoved as $key => $match) {
@@ -590,7 +596,22 @@ EOD;
             //update lf_match_extra status=null, actionFor=null
             DB::update($updateMatchExtra,array('matchIdExtra'=>$matchIdExtra));
 
-            //TODO emailbevestiging-> match effectief verplaatst
+
+            $subject= "Verplaatsings aanvraag ".$match->hTeamName." - ".$match->oTeamName. " bevestigd";
+
+            $data = array(
+                'subject' => $subject,
+                'hTeam' => $match->hTeamName,
+                'oTeam' => $match->oTeamName,
+                'hTeamEmail' => $match->hTeamEmail,
+                'oTeamEmail' => $match->oTeamEmail,
+                'dateTimeLayout' => $match->dateTimeLayout);
+
+            Mail::send('emails.verplaatsing-moved', $data, function ($message) use ($data) {
+                $message->to(VerplaatsingsController::giveFinalMailto($data['hTeamEmail']), $data['hTeam'])
+                    ->to(VerplaatsingsController::giveFinalMailto($data['oTeamEmail']), $data['oTeam'])
+                    ->subject($data['subject']);
+            });
         }
     }
 }
