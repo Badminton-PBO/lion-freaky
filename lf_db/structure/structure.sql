@@ -172,7 +172,8 @@ CREATE TABLE IF NOT EXISTS `lf_tmpdbload_playerscsv` (
   `playerLevelMixed` varchar(2) NOT NULL,
   `typeName` varchar(45) NOT NULL,
   `role` varchar(45) NOT NULL,
-  `groupCode` varchar(45) NOT NULL
+  `groupCode` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -183,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `lf_tmpdbload_teamscsv` (
   `eventName` varchar(80) NOT NULL,
   `drawName` varchar(80) NOT NULL,
   `captainName` VARCHAR( 90 ) NOT NULL,
-  `email` VARCHAR( 90 ) NULL,
+  `email` VARCHAR( 90 ) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -252,13 +253,59 @@ CREATE TABLE IF NOT EXISTS `lf_users` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 --
 -- Constraints for table `lf_match_cr`
 --
 ALTER TABLE `lf_match_cr`
-  ADD CONSTRAINT `fk_match_cr_match` FOREIGN KEY (`match_matchIdExtra`) REFERENCES `lf_match_extra` (`matchIdExtra`) ON DELETE NO ACTION ON UPDATE NO ACTIO
+  ADD CONSTRAINT `fk_match_cr_match` FOREIGN KEY (`match_matchIdExtra`) REFERENCES `lf_match_extra` (`matchIdExtra`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Add index for lf_event
+ALTER TABLE `lf_event` ADD INDEX ( `eventType` ) ;
+
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `lf_match`
+--
+ALTER TABLE `lf_match`
+  ADD CONSTRAINT `fk_match_teamname1` FOREIGN KEY (`homeTeamName`) REFERENCES `lf_team` (`teamName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_match_teamname2` FOREIGN KEY (`outTeamName`) REFERENCES `lf_team` (`teamName`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `lf_player`
+--
+ALTER TABLE `lf_player`
+  ADD CONSTRAINT `fk_player_club1` FOREIGN KEY (`club_clubId`) REFERENCES `lf_club` (`clubId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `lf_player_has_team`
+--
+ALTER TABLE `lf_player_has_team`
+  ADD CONSTRAINT `fk_player_has_team_team1` FOREIGN KEY (`team_teamName`) REFERENCES `lf_team` (`teamName`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- DISABLE, to many load problemss
+--ALTER TABLE `lf_player_has_team`
+--  ADD CONSTRAINT `fk_player_has_team_player1` FOREIGN KEY (`player_playerId`) REFERENCES `lf_player` (`playerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+
+
+--
+-- Constraints for table `lf_ranking`
+--
+ALTER TABLE `lf_ranking`
+  ADD CONSTRAINT `fk_ranking_player1` FOREIGN KEY (`player_playerId`) REFERENCES `lf_player` (`playerId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `lf_team`
+--
+ALTER TABLE `lf_team`
+  ADD CONSTRAINT `fk_team_club1` FOREIGN KEY (`club_clubId`) REFERENCES `lf_club` (`clubId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_team_group1` FOREIGN KEY (`group_groupId`) REFERENCES `lf_group` (`groupId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+
 
 
 -- Functions to faciliate load from CSV into the DB
@@ -303,7 +350,7 @@ CREATE FUNCTION lf_dbload_serie(drawname TEXT)
 BEGIN
 	CASE
 	when instr(drawname,'provinciale ') > 0 then return substring(drawname, instr(drawname,'provinciale ')+length('provinciale '));
-	else 
+	else
 		begin
 			return '';
 		end;
@@ -349,48 +396,3 @@ where t.teamName=teamName and p.gender=gender);
 END;
 $$
 DELIMITER ;
-
-
--- Add index for lf_event
-ALTER TABLE `lf_event` ADD INDEX ( `eventType` ) ;
-
--- Constraints for dumped tables
---
-
---
--- Constraints for table `lf_match`
---
-ALTER TABLE `lf_match`
-  ADD CONSTRAINT `fk_match_teamname1` FOREIGN KEY (`homeTeamName`) REFERENCES `lf_team` (`teamName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_match_teamname2` FOREIGN KEY (`outTeamName`) REFERENCES `lf_team` (`teamName`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `lf_player`
---
-ALTER TABLE `lf_player`
-  ADD CONSTRAINT `fk_player_club1` FOREIGN KEY (`club_clubId`) REFERENCES `lf_club` (`clubId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `lf_player_has_team`
---
-ALTER TABLE `lf_player_has_team`
-  ADD CONSTRAINT `fk_player_has_team_player1` FOREIGN KEY (`player_playerId`) REFERENCES `lf_player` (`playerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_player_has_team_team1` FOREIGN KEY (`team_teamName`) REFERENCES `lf_team` (`teamName`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `lf_ranking`
---
-ALTER TABLE `lf_ranking`
-  ADD CONSTRAINT `fk_ranking_player1` FOREIGN KEY (`player_playerId`) REFERENCES `lf_player` (`playerId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `lf_team`
---
-ALTER TABLE `lf_team`
-  ADD CONSTRAINT `fk_team_club1` FOREIGN KEY (`club_clubId`) REFERENCES `lf_club` (`clubId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_team_group1` FOREIGN KEY (`group_groupId`) REFERENCES `lf_group` (`groupId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
