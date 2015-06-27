@@ -27,7 +27,7 @@ class UserTableSeeder extends Seeder {
 
     public function run()
     {
-        DB::table('users')->delete();
+        DB::table('lf_users')->delete();
 
         User::create(['name' => '4Fun', 'email' => '4Fun@pbo.org','club_id' => '30103','password'=>bcrypt('123456')]);
         User::create(['name' => '4GHENT BC', 'email' => '4GHENTBC@pbo.org','club_id' => '30004','password'=>bcrypt('123456')]);
