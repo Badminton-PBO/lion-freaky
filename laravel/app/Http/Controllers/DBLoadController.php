@@ -612,6 +612,8 @@ EOD;
                     ->to(VerplaatsingsController::giveFinalMailto($data['oTeamEmail']), $data['oTeam'])
                     ->subject($data['subject']);
             });
+            EventController::logEvent('v-moved',$data['hTeam']);
+            EventController::logEvent('v-moved',$data['oTeam']);
         }
     }
 }
