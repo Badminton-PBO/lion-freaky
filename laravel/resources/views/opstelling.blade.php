@@ -144,10 +144,6 @@
                             <!-- iframe-scr will be set upon modal load to avoid unnecessary loadings when help button is not used-->
                             <iframe width="420" height="315" src="" frameborder="0"></iframe>
 
-                            <blockquote>
-                                <p>Deze tool is volledig functioneel, maar wordt momenteel nog verder afgewerkt. De uitrol gebeurt geleidelijk naar alle clubs.</p>
-                                <footer>PBO, 2014/11/22</footer>
-                            </blockquote>
                             <p>Gelieve problemen met deze tool te melden via <a href="mailto:competitie@badminton-pbo.be?SUBJECT=Online%20Competitieformulier">competitie[at]badminton-pbo.be</a></p>
                         </div>
                         <div class="modal-footer">
@@ -165,13 +161,6 @@
     <div class="well">
         <h1>Doelstelling</h1>
         <a href="http://www.badmintonvlaanderen.be" target="_new">Badminton Vlaanderen</a> veranderde voor het seizoen 2014-2015 een pak artikelnummers van de C320. De <a href="http://www.badmintonvlaanderen.be/page/27552/Reglementen#C%20320" target="_new">C320</a> is het competitiereglement dat gebruikt wordt om oa. de PBO-competitie in goede banen te leiden. Deze verandering werd vooral gedaan omdat elke competitiespeler sinds het seizoen 2013-2014 drie klassementen heeft: enkel, dubbel en gemengd). De reglementen zijn dus bepaald door Badminton Vlaanderen. Omdat PBO echter veel vragen krijgt omtrent deze materie is er besloten om een tool te ontwikkelen om te controleren of een opstelling kan/mag gebruikt worden. Zowel de spelers die je kan selecteren als de opstellingsvolgorde worden gescreend in deze tool. Dmv. deze tool kan je dus rustig puzzelen aan een opstelling en deze ook afprinten of doormailen in PDF.
-    </div>
-    <div class="alert alert-warning" role="alert">
-        <blockquote>
-            <p>Deze tool is nu ook geschikt gemaakt voor tablets en smartphones.</p>
-            <footer>PBO, 3 jan 2015</footer>
-        </blockquote>
-
     </div>
     <!-- /ko -->
     <div class="row hidden-print">
