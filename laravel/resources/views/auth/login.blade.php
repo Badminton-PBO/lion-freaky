@@ -1,5 +1,59 @@
 @extends('pboapp')
 
+@section('heads')
+    <script>
+        //FUNCTION TO GET AND AUTO PLAY YOUTUBE VIDEO FROM DATATAG
+        function autoPlayYouTubeModal(){
+            var trigger = $("body").find('[data-toggle="modal"]');
+            trigger.click(function() {
+                var theModal = $(this).data( "target" );
+                videoSRC = $(this).attr( "data-theVideo" );
+                videoSRCauto = videoSRC+"?autoplay=1" ;
+                $(theModal+' iframe').attr('src', videoSRCauto);
+                $(theModal+' button.close').click(function () {
+                    $(theModal+' iframe').attr('src', videoSRC);
+                });
+            });
+        }
+
+        $(document).ready(function(){
+            autoPlayYouTubeModal();
+        });
+
+    </script>
+@endsection
+
+
+@section('help')
+    <div class="col-xs-2">
+        <div class="pull-right">
+            <button id="nonplayersbutton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myHelpModal" data-theVideo="https://www.youtube.com/embed/i0MNquAJZEY">
+                <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>
+            </button>
+            <!-- Help Modal -->
+            <div class="modal fade" id="myHelpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width: 830px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Sluiten</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Help</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>In onderstaande video wordt de login procedure uitgelegd en de manier om paswoord te resetten.</p>
+                            <!-- iframe-scr will be set upon modal load to avoid unnecessary loadings when help button is not used-->
+                            <iframe width="800" height="600" src="" frameborder="0"></iframe>
+                            <p>Gelieve problemen met deze tool te melden via <a href="mailto:competitie@badminton-pbo.be?SUBJECT=Online%20Verplaatsing">competitie[at]badminton-pbo.be</a></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Sluiten</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <div class="container-fluid">
         <div class="row">
