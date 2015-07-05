@@ -47,6 +47,7 @@ Route::post('verplaatsing/saveMeetingChangeRequest', 'VerplaatsingsController@sa
 
 Route::get('verplaatsing/testMailGun', 'VerplaatsingsController@testMailGun');
 
+Route::get('api/calendarSync','CalendarSyncController@pboTeamMatches');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
