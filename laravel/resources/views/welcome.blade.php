@@ -49,7 +49,7 @@
                         <p>Dien een aanvraag in tot verplaatsing van een competitiematch</p>
                         </div>
                         <div class="col-md-4">
-                            <div id="nonplayersbutton" class="btn" data-toggle="modal" data-target="#myHelpModal" data-theVideo="https://www.youtube.com/embed/GCQUNj13kPo" style="position: relative; left: 0; top: 0;">
+                            <div id="nonplayersbutton" class="btn" data-toggle="modal" data-target="#myHelpModal" data-theVideo="https://www.youtube.com/embed/koEOIdsnRSc" style="position: relative; left: 0; top: 0;">
                                 <img src="images/VerplaatsingYoutube.png" width="300" style="position: relative; top: 0; left: 0;">
                                 <div class="btn btn-primary" style="position: absolute; top: 50px; left: 140px;">
                                     <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>

@@ -65,8 +65,8 @@
 @section('help')
 <div class="col-xs-2">
     <div class="pull-right">
-        <button id="nonplayersbutton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myHelpModal" data-theVideo="https://www.youtube.com/embed/GCQUNj13kPo">
-            <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>
+        <button id="nonplayersbutton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myHelpModal" data-theVideo="https://www.youtube.com/embed/koEOIdsnRSc">
+            <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span> Help
         </button>
         <!-- Help Modal -->
         <div class="modal fade" id="myHelpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
