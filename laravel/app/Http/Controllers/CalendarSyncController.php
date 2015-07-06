@@ -17,7 +17,7 @@ class CalendarSyncController extends Controller {
 	public function pboTeamMatches()
 	{
         $queryPboTeamMatches = <<<EOD
-select t.teamName,concat(m.homeTeamName,' - ',m.outTeamName) subject,date_format(m.date,'%d/%m/%Y') startDate,date_format(m.date,'%T') startTime,date_format(date_add(m.date, INTERVAL 3 HOUR),'%d/%m/%Y') endDate,date_format(date_add(m.date, INTERVAL 3 HOUR),'%T') endTime,m.locationName from lf_match m
+select t.teamName,concat(m.homeTeamName,' - ',m.outTeamName) subject,date_format(m.date,'%d/%m/%Y') startDate,date_format(m.date,'%T') startTime,date_format(date_add(m.date, INTERVAL 179 MINUTE),'%T') endTime,m.locationName from lf_match m
 join lf_team t on m.homeTeamName = t.teamName  or m.outTeamName =t.teamName
 where t.teamName in (select teamName from lf_team)
 order by t.teamName, m.date
@@ -41,7 +41,6 @@ EOD;
             $currentEvent->addChild('location',$match->locationName);
             $currentEvent->addChild('startDate',$match->startDate);
             $currentEvent->addChild('startTime',$match->startTime);
-            $currentEvent->addChild('endDate',$match->endDate);
             $currentEvent->addChild('endTime',$match->endTime);
 
             //array_push($result["teams"][$teamCounter]["matches"],array('subject' => $match->subject ,'location' => $match->locationName,'startDate' => $match->startDate,'startTime' => $match->startTime,'endDate' => $match->endDate,'endTime' => $match->endTime));
