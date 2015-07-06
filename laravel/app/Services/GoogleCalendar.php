@@ -9,6 +9,9 @@ class GoogleCalendar {
 
     protected $service;
 
+    protected $calendars;
+
+
     function __construct() {
         /* Get config variables */
         $client_id = Config::get('google.client_id');
@@ -38,17 +41,35 @@ class GoogleCalendar {
             $this->client->getAuth()->refreshTokenWithAssertion($cred);
         }
         Cache::forever('service_token', $this->client->getAccessToken());
+
+        //Call one time
+        $calendarList = $this->service->calendarList->listCalendarList();
+        $this->calendars = $calendarList->getItems();
     }
 
-    public function getCalendarId($teamName)
+    public function modifyCalendar($teamName, $matches)
+    {
+        $calendarName = $this->getCalendarName($teamName);
+        $calendarId = $this->getCalendarId($calendarName);
+        $eventList = $this->service->events->listEvents($calendarId);
+        $events = $eventList->getItems();
+
+        $this->client->setUseBatch(true);
+        $googleBatch = new \Google_Http_Batch($this->client);
+        foreach($matches as $match) {
+            $this->addEventIfNeeded($match, $calendarId, $events, $googleBatch);
+        }
+        $googleBatch->execute();
+    }
+
+    private function getCalendarId($teamName)
     {
         $needToAdd = true;
-        $calendarList = $this->service->calendarList->listCalendarList();
         $calendarId = "";
-        $calendarItems = $calendarList->getItems();
-        if(!empty($calendarItems))
+
+        if(!empty($this->calendars))
         {
-            foreach($calendarItems as $calendar)
+            foreach($this->calendars as $calendar)
             {
                 if($calendar->getSummary() == $teamName)
                 {
@@ -61,6 +82,7 @@ class GoogleCalendar {
         }
         if($needToAdd)
         {
+            $this->client->setUseBatch(false);
             $newCalendar = new \Google_Service_Calendar_Calendar();
             $newCalendar->setSummary($teamName);
             $createdCalendar = $this->service->calendars->insert($newCalendar);
@@ -71,18 +93,20 @@ class GoogleCalendar {
         return $calendarId;
     }
 
-    //Still Testing...
-    public function addEventIfNeeded($match, $calendarId){
-        $eventList = $this->service->events->listEvents($calendarId);
+    private function addEventIfNeeded($match, $calendarId,$events, &$batch){
         $newEvent = $this->createEvent($match);
-        $this->service->events->insert($calendarId,$newEvent);
-        die;
-        $isExistingEvent = $this->findMatchingEvent($newEvent, $eventList->getItems());
-        if(!$isExistingEvent){
-            //insert...
+        $matchingEvent = $this->findMatchingEvent($newEvent, $events, $calendarId, $batch);
+        if(is_null($matchingEvent)){
+            echo "geen match gevonden - inserteren";
+            $req = $this->service->events->insert($calendarId,$newEvent);
+            $batch->add($req);
         }
+        else{
+            echo "Match gevonden - ignore";
+        }
+
     }
-    public function getCalendarName($teamName){
+    private function getCalendarName($teamName){
         return $teamName . " Competitie";
     }
 
@@ -106,7 +130,7 @@ class GoogleCalendar {
         return $newEvent;
     }
 
-    private function findMatchingEvent($newEvent, $events) {
+    private function findMatchingEvent($newEvent, $events, $calendarId, &$batch) {
         $matchingEvent = null;
         if(!empty($events)){
             foreach($events as $event){
@@ -119,9 +143,19 @@ class GoogleCalendar {
         }
         if(!is_null($matchingEvent))
         {
+            /* @var $matchingEvent \Google_Service_Calendar_Event */
+            if($matchingEvent->getStart()->getDateTime() == $newEvent->getStart()->getDateTime()
+                && $matchingEvent->getEnd()->getDateTime() == $newEvent->getEnd()->getDateTime()
+                && $matchingEvent->getLocation() == $newEvent->getLocation()
+                && $matchingEvent->getDescription() == $newEvent->getDescription()){
 
-
+                return null;
+            }
+            $req = $this->service->events->delete($calendarId,$matchingEvent->getId());
+            $batch->add($req);
         }
+
+        return $matchingEvent;
 
     }
 
