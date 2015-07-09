@@ -22,6 +22,17 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
+CREATE TABLE IF NOT EXISTS `lf_batch` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(32) NOT NULL,
+  `date` date NOT NULL,
+  `number` int(11) NOT NULL,
+  `finished` tinyint(1) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 --
 -- Table structure for table `lf_club`
 --

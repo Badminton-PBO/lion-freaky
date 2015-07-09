@@ -1,3 +1,5 @@
 /vendor
 /node_modules
 .env
+/resources/assets/GoogleCert.p12
+/config/google.php
