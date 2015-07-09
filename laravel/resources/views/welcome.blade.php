@@ -33,14 +33,12 @@
                     <div class="span6 offset3">
                     <h1 style="text-align: center">PBO apps</h1>
                     </div>
-                    <!--
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-8">
                         <p><a class="btn btn-primary btn-lg" href="opstelling" role="button">Competitie opstellings formulier</a></p>
                         <p>Stel een geldige ploegopstelling samen</p>
                         </div>
                     </div>
-                    -->
 
                     <div class="row">
                         <div class="col-md-8">
@@ -75,10 +73,14 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
-
-
-                        </div>    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p><a class="btn btn-primary btn-lg" href="agenda" role="button">Competitie agenda</a></p>
+                            <p>Synchroniseer een competitie agenda per ploeg naar je smartphone.</p>
+                        </div>
                     </div>
                 </div>
 			</div>

@@ -49,6 +49,8 @@ Route::get('verplaatsing/testMailGun', 'VerplaatsingsController@testMailGun');
 
 Route::get('api/calendarSync','CalendarSyncController@pboTeamMatches');
 
+Route::get('agenda','CalendarSyncController@index');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

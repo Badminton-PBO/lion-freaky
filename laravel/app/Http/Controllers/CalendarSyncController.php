@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class CalendarSyncController extends Controller {
 
+    public function index() {
+        return view('agenda');
+    }
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -20,7 +24,7 @@ class CalendarSyncController extends Controller {
 select t.teamName,concat(m.homeTeamName,' - ',m.outTeamName) subject,date_format(m.date,'%d/%m/%Y') startDate,date_format(m.date,'%T') startTime,date_format(date_add(m.date, INTERVAL 179 MINUTE),'%T') endTime,m.locationName from lf_match m
 join lf_team t on m.homeTeamName = t.teamName  or m.outTeamName =t.teamName
 where t.teamName in (select teamName from lf_team)
-order by t.teamName, m.date
+order by t.teamName desc, m.date
 EOD;
 
         $matches = DB::select($queryPboTeamMatches);
