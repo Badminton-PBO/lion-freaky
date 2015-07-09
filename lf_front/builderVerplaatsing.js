@@ -73,7 +73,7 @@ moment.locale("nl");
 
 
 	function formatDate(d) {
-		return moment(d).format("ddd DD MMM");
+		return moment(d).format("ddd DD MMM YYYY");
 	}
 	
 	function formatHour(d) {

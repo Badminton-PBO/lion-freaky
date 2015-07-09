@@ -53,6 +53,9 @@ Route::get('syncPBO', 'KalenderController@syncMatches');
 
 Route::get('syncCalendars', 'KalenderController@syncCalendars');
 
+Route::get('api/calendarSync','CalendarSyncController@pboTeamMatches');
+
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

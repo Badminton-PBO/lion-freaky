@@ -269,10 +269,11 @@ EOD;
                 DBLoadController::loadCSV($clubCSV,'clubs');
                 DBLoadController::loadCSV($teamsCSV,'teams');
                 DBLoadController::loadCSV($matchesCSV,'matches');
-                DBLoadController::loadCSV($playersCSV,'players');
-                DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
-                DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
-                DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+                //TDE 2015 /07 / 03
+                //DBLoadController::loadCSV($playersCSV,'players');
+                //DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
+                //DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
+                //DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
                 EventController::logEvent('DBLOAD','SYSTEM');
                 $this->updateMatchCRAccordingNewData();
                 print("OK");
@@ -325,8 +326,8 @@ EOD;
                     }
                 }
                 DBLoadController::buildAndExecQuery($parsedCsv,
-                    'INSERT INTO lf_club(clubId, clubName, clubCode) VALUES',
-                    array('Nummer','Naam','?Code')
+                    'INSERT INTO lf_club(clubId, clubName, clubCode,email) VALUES',
+                    array('Nummer','Naam','?Code','Email')
                 );
                 break;
             case "teams":
@@ -612,6 +613,8 @@ EOD;
                     ->to(VerplaatsingsController::giveFinalMailto($data['oTeamEmail']), $data['oTeam'])
                     ->subject($data['subject']);
             });
+            EventController::logEvent('v-moved',$data['hTeam']);
+            EventController::logEvent('v-moved',$data['oTeam']);
         }
     }
 }

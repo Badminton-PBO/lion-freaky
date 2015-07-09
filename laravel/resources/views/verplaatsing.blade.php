@@ -10,6 +10,28 @@
     <script type="text/javascript" src="libs/js/bootstrap-datetimepicker-4.0.0/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" href="libs/js/bootstrap-datetimepicker-4.0.0/bootstrap-datetimepicker.min.css" />
 
+
+    <script>
+        //FUNCTION TO GET AND AUTO PLAY YOUTUBE VIDEO FROM DATATAG
+        function autoPlayYouTubeModal(){
+            var trigger = $("body").find('[data-toggle="modal"]');
+            trigger.click(function() {
+                var theModal = $(this).data( "target" );
+                videoSRC = $(this).attr( "data-theVideo" );
+                videoSRCauto = videoSRC+"?autoplay=1" ;
+                $(theModal+' iframe').attr('src', videoSRCauto);
+                $(theModal+' button.close').click(function () {
+                    $(theModal+' iframe').attr('src', videoSRC);
+                });
+            });
+        }
+
+        $(document).ready(function(){
+            autoPlayYouTubeModal();
+        });
+
+    </script>
+
     <style type="text/css">
         #message, #error, #success {
             font-size: 1em;
@@ -41,16 +63,42 @@
 
 
 @section('help')
-
+<div class="col-xs-2">
+    <div class="pull-right">
+        <button id="nonplayersbutton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myHelpModal" data-theVideo="https://www.youtube.com/embed/koEOIdsnRSc">
+            <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span> Help
+        </button>
+        <!-- Help Modal -->
+        <div class="modal fade" id="myHelpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width: 830px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Sluiten</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Help</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>In onderstaande video wordt het gebruik van de verplaatsings module getoond.</p>
+                        <!-- iframe-scr will be set upon modal load to avoid unnecessary loadings when help button is not used-->
+                        <iframe width="800" height="600" src="" frameborder="0"></iframe>
+                        <p>Gelieve problemen met deze tool te melden via <a href="mailto:competitie@badminton-pbo.be?SUBJECT=Online%20Verplaatsing">competitie[at]badminton-pbo.be</a></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Sluiten</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('content')
     <!-- ko if: !$root.chosenTeam() -->
     <div class="well">
         <h1>Doelstelling</h1>
-        Bij de start van elk nieuw competitieseizoen is het zowel voor de ploegkapiteins, competitie verantwoordelijke binnen de clubs als de PBO een gevecht om alle ontmoetingen op tijd op correct data te krijgen.
-        Het vlot afhandelen van aanvragen tot verplaatsing van een welbepaalde ontmoeting speelt hierbij en cruciale rol. Tot nu toe liep dit meestal via al dan niet lange mailkettingen met de nodige reminders enzo.
-        Om dit iets gestructueerder te laten verlopen is er beslist om een tool te ontwikkelen waarbij aanvragen tot verplaatsing eenvoudig kunnen worden geregeld met alle betrokken partijen.
+        Begin augustus worden jaarlijks de nieuwe speeldata vrijgegeven door PBO. Tussen dit moment en voor aanvang van de eerste speeldag van de competitie (circa 1 sept.) krijgen de clubs/ploegen de kans om speelmomenten die minder gepast zijn te wisselen in samenspraak met de tegenstander van de desbetreffende wedstrijd.
+        Tot voor lancering van deze applicatie kon iedereen dit via zijn eigen methode, wat zijn voor- en nadelen had.
+        Omdat het voor PBO en sommigen soms moeilijk was om het overzicht te bewaren in sommige ellenlange emailconversaties werd deze applicatie geschreven. Deze applicatie zou vrij eenvoudig te gebruiken moeten zijn maar als je er toch nog vragen hebt of ergens vastzit, aarzel dan niet om contact op te nemen via email op  <a href="mailto:competitie@badminton-pbo.be?SUBJECT=Online%20Verplaatsing">competitie[at]badminton-pbo.be</a>
     </div>
     <!-- /ko -->
     <div class="row hidden-print">
