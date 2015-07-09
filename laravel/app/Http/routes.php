@@ -46,8 +46,12 @@ Route::get('verplaatsing/meetingAndMeetingChangeRequest/{clubName}/{teamName}', 
 Route::post('verplaatsing/saveMeetingChangeRequest', 'VerplaatsingsController@saveMeetingChangeRequest');
 
 Route::get('verplaatsing/testMailGun', 'VerplaatsingsController@testMailGun');
-Route::get('syncPBO', 'KalenderController@sync');
 
+Route::get('authenticateUser', 'KalenderController@authenticateUser');
+
+Route::get('syncPBO', 'KalenderController@syncMatches');
+
+Route::get('syncCalendars', 'KalenderController@syncCalendars');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

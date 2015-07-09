@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
+use App\OAuth;
 
 class GoogleCalendar {
+
+    protected $googleCalendar_Type = "googleCalendar";
 
     protected $client;
 
@@ -13,42 +16,59 @@ class GoogleCalendar {
 
 
     function __construct() {
-        /* Get config variables */
-        $client_id = Config::get('google.client_id');
-        $service_account_name = Config::get('google.service_account_name');
-        $key_file_location = base_path() . Config::get('google.key_file_location');
-
         $this->client = new \Google_Client();
-        $this->client->setApplicationName("Your Application Name");
-        $this->service = new \Google_Service_Calendar($this->client);
+        $this->client->setClientId(Config::get('google.client_id'));
+        $this->client->setClientSecret(Config::get('google.client_secret'));
+        $this->client->setRedirectUri(Config::get('google.redirect_uri'));
 
-        /* If we have an access token */
-        if (Cache::has('service_token')) {
-            $this->client->setAccessToken(Cache::get('service_token'));
+        $oauth = new OAuth();
+        $credentials = $oauth->getCredential($this->googleCalendar_Type);
+
+        if(!empty($credentials)){
+            $googleCredentials = $credentials->credentials;
+            $this->client->setScopes(array('https://www.googleapis.com/auth/calendar'));
+            $this->client->setAccessToken($googleCredentials);
+            $this->service = new \Google_Service_Calendar($this->client);
+            $calendarList = $this->service->calendarList->listCalendarList();
+            $this->calendars = $calendarList->getItems();
         }
-
-        $key = file_get_contents($key_file_location);
-        /* Add the scopes you need */
-        $scopes = array('https://www.googleapis.com/auth/calendar');
-        $cred = new \Google_Auth_AssertionCredentials(
-            $service_account_name,
-            $scopes,
-            $key
-        );
-
-        $this->client->setAssertionCredentials($cred);
-        if ($this->client->getAuth()->isAccessTokenExpired()) {
-            $this->client->getAuth()->refreshTokenWithAssertion($cred);
-        }
-        Cache::forever('service_token', $this->client->getAccessToken());
-
-        //Call one time
-        $calendarList = $this->service->calendarList->listCalendarList();
-        $this->calendars = $calendarList->getItems();
     }
 
-    public function modifyCalendar($teamName, $matches)
-    {
+    public function authenticateUser($code){
+        $oauth = new OAuth();
+        $credentials = $oauth->getCredential($this->googleCalendar_Type);
+        if(!empty($credentials)){
+            die("Reeds geauthenticeerd");
+        }
+        if (!empty($code)) {
+            $credentials = $this->client->authenticate($code);
+
+            $oauth->insertCredential($this->googleCalendar_Type,$credentials);
+            print "Tokens succesvol opgeslagen! Vanaf nu kunnen de andere aanroepen gebruikt worden.";
+        } else {
+
+            $this->client->setAccessType('offline');
+            $this->client->setApprovalPrompt('force');
+            $this->client->setScopes(array('https://www.googleapis.com/auth/calendar'));
+            $authUrl = $this->client->createAuthUrl();
+            print "<a class='login' href='$authUrl'>Authenticeer!</a>";
+            exit;
+        }
+    }
+
+    public function deleteAllCalendars() {
+        foreach($this->calendars as $calendar) {
+            $result = $this->service->calendars->delete($calendar->getId());
+        }
+    }
+
+    public function createCalendar($teamName){
+        $calendarName = $this->getCalendarName($teamName);
+        $calendarId = $this->getCalendarId($calendarName);
+    }
+
+    public function modifyCalendar($teamName, $matches){
+        $this->client->setUseBatch(false);
         $calendarName = $this->getCalendarName($teamName);
         $calendarId = $this->getCalendarId($calendarName);
         $eventList = $this->service->events->listEvents($calendarId);
@@ -62,17 +82,13 @@ class GoogleCalendar {
         $googleBatch->execute();
     }
 
-    private function getCalendarId($teamName)
-    {
+    private function getCalendarId($teamName){
         $needToAdd = true;
         $calendarId = "";
 
-        if(!empty($this->calendars))
-        {
-            foreach($this->calendars as $calendar)
-            {
-                if($calendar->getSummary() == $teamName)
-                {
+        if(!empty($this->calendars)) {
+            foreach($this->calendars as $calendar) {
+                if($calendar->getSummary() == $teamName) {
                     $calendarId = $calendar->getId();
                     $needToAdd = false;
                     echo $teamName . " is already added ...";
@@ -80,15 +96,13 @@ class GoogleCalendar {
                 }
             }
         }
-        if($needToAdd)
-        {
+        if($needToAdd) {
             $this->client->setUseBatch(false);
             $newCalendar = new \Google_Service_Calendar_Calendar();
             $newCalendar->setSummary($teamName);
             $createdCalendar = $this->service->calendars->insert($newCalendar);
             $calendarId = $createdCalendar->getId();
             $this->setPublicAccess($calendarId);
-            $this->setServiceAccountAccess($calendarId);
         }
         return $calendarId;
     }
@@ -141,8 +155,7 @@ class GoogleCalendar {
                 }
             }
         }
-        if(!is_null($matchingEvent))
-        {
+        if(!is_null($matchingEvent)) {
             /* @var $matchingEvent \Google_Service_Calendar_Event */
             if($matchingEvent->getStart()->getDateTime() == $newEvent->getStart()->getDateTime()
                 && $matchingEvent->getEnd()->getDateTime() == $newEvent->getEnd()->getDateTime()
@@ -166,19 +179,6 @@ class GoogleCalendar {
         $rule = new \Google_Service_Calendar_AclRule();
         $rule->setScope($scope);
         $rule->setRole("reader");
-
-        $result = $this->service->acl->insert($calendarId, $rule);
-    }
-
-    private function  setServiceAccountAccess($calendarId){
-        $owner_account_name = Config::get('google.owner_account_name');
-        $scope = new \Google_Service_Calendar_AclRuleScope();
-        $scope->setType("user");
-        $scope->setValue($owner_account_name);
-
-        $rule = new \Google_Service_Calendar_AclRule();
-        $rule->setScope($scope);
-        $rule->setRole("owner");
 
         $result = $this->service->acl->insert($calendarId, $rule);
     }

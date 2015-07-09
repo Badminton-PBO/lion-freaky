@@ -19,12 +19,53 @@ class KalenderController extends Controller {
 
     private $calendar;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->calendar = new GoogleCalendar();
     }
 
-    public function sync(){
+    public function authenticateUser(){
+        $code = "";
+        if(isset($_GET["code"])){
+            $code = $_GET["code"];
+        }
+        $this->calendar->authenticateUser($code);
+    }
+
+    public function syncCalendars() {
+        //Haal Batch op. Indien finished => einde
+        $time_start = microtime(true);
+        $batch = new Batch();
+        $batch = $batch->getBatch("syncCalendarsGC", date('Y-m-d'));
+        if($batch->finished == 1) {
+            return;
+        }
+        $number = $batch->number;
+
+        $team = new Team();
+        $teams = $team->getAll();
+        if($number >= count($teams)){
+            $batch->setFinished();
+        }
+        for(;;){
+            if($number >= count($teams)){
+                $batch->setFinished();
+                exit;
+            }
+            $team = $teams[$number];
+            $this->calendar->createCalendar($team->teamName);
+            $batch->incrementBatch();
+            $time_end = microtime(true);
+            $time = $time_end - $time_start;
+            echo "Process Time: {$time} <br/>";
+            if($time > 35) {
+                die("timeout nadert");
+            }
+            $number++;
+        }
+
+    }
+
+    public function syncMatches(){
         //Haal Batch op. Indien finished => einde
         $time_start = microtime(true);
         $batch = new Batch();
@@ -36,11 +77,11 @@ class KalenderController extends Controller {
 
         $team = new Team();
         $teams = $team->getAll();
-        if($number == count($teams)-1){
+        if($number >= count($teams)){
             $batch->setFinished();
         }
         for(;;){
-            if($number == count($teams) -1){
+            if($number >= count($teams)){
                 $batch->setFinished();
                 exit;
             }
@@ -53,21 +94,11 @@ class KalenderController extends Controller {
             $batch->incrementBatch();
             $time_end = microtime(true);
             $time = $time_end - $time_start;
-            echo "Process Time: {$time}";
-            if($time > 35)
-            {
+            echo "Process Time: {$time} <br/>";
+            if($time > 35) {
                 die("timeout nadert");
             }
             $number++;
         }
-
-
     }
-
-
-
-
-
-
-
 }
