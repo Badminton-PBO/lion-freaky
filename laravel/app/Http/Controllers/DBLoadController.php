@@ -582,7 +582,7 @@ EOD;
 
         $updateMatchExtra = <<<'EOD'
 update lf_match_extra
-set status=null,actionFor=null
+set status=null,actionFor=null,hTeamComment=null,oTeamComment=null
 where matchIdExtra = :matchIdExtra
 EOD;
         DB::statement("SET lc_time_names = 'nl_NL';");//set NL language
