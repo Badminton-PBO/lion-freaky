@@ -43,6 +43,12 @@
                     -->
                     <div class="row">
                         <div class="col-md-8">
+                            <p><a class="btn btn-primary btn-lg" href="" role="button">Competitie opstellings formulier</a></p>
+                            <p>Beschikbaar vanaf begin september.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
                         <br><br>
                         <p><a class="btn btn-primary btn-lg" href="verplaatsing" role="button">Verplaatsing competitie match</a></p>
                         <p>Dien een aanvraag in tot verplaatsing van een competitiematch</p>
