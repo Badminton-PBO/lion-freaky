@@ -51,7 +51,7 @@
                         <div class="col-md-8">
                         <br><br>
                         <p><a class="btn btn-primary btn-lg" href="verplaatsing" role="button">Verplaatsing competitie match</a></p>
-                        <p>Dien een aanvraag in tot verplaatsing van een competitiematch</p>
+                        <p>Dien een aanvraag in tot verplaatsing van een competitie match</p>
                         </div>
                         <div class="col-md-4">
                             <div id="nonplayersbutton" class="btn" data-toggle="modal" data-target="#myHelpModal" data-theVideo="https://www.youtube.com/embed/koEOIdsnRSc" style="position: relative; left: 0; top: 0;">

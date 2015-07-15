@@ -2,7 +2,30 @@
 
 
 @section('heads')
+    <script type="text/javascript" src="libs/js/moment-with-locales.min.js"></script>
+
     <script>
+
+        function setAgenda(){
+            var dateformat="YYYYMMDD";
+            var startDate=moment().format(dateformat);
+            var currentMonth = moment().month()+1;
+            if (currentMonth == 7 || currentMonth == 8) {
+                startDate=moment().format("YYYY")+"0825";
+            }
+            var endDate = moment(startDate,dateformat).add(90,'days').format(dateformat);
+
+            var trigger = $("body").find('[data-toggle="modal"]');
+            trigger.click(function() {
+                var theModal = $(this).data( "target" );
+                agendaId = $(this).attr( "data-theAgendaId" );
+                agendaSrc = 'https://www.google.com/calendar/embed?mode=AGENDA&dates='+startDate+'%2F'+endDate+'&showCalendars=0&height=600&wkst=2&bgcolor=%23FFFFFF&color=%23125A12&ctz=Europe%2FBrussels&src='+agendaId;
+                $(theModal+' iframe').attr('src', agendaSrc);
+                $(theModal+' button.close').click(function () {
+                    $(theModal+' iframe').attr('src', agendaSrc);
+                });
+            });
+        }
         $(document).ready(function(){
             $.ajax({
                 type: "GET",
@@ -21,12 +44,10 @@
                 var teamName = entries[0];
                 var teamCalendarID = entries[1];
                 var teamIcal = "https://www.google.com/calendar/ical/"+teamCalendarID+"/public/basic.ics";
-                $("#calendarTable").append("<tr>"+"<td>"+teamName+"</td>"+"<td>"+teamCalendarID+"</td>"+"<td><a href='"+teamIcal+"'> "+teamIcal+"</a></td>"+"</tr>");
-
-                console.log(teamName);
+                $("#calendarTable").append("<tr>"+"<td><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#myAgendaModal' data-theAgendaId='"+teamCalendarID+"'>"+teamName+"</button></td>"+"<td>"+teamCalendarID+"</td>"+"<td><a href='"+teamIcal+"'> "+teamIcal+"</a></td></tr>");
             }
 
-
+            setAgenda();
         }
 
     </script>
@@ -36,6 +57,25 @@
 
 <div class="well">
     <a id="calendarsmartphone"><i class="icon-info-sign"></i></a> Je kan deze publieke agenda&#8217;s importeren op je smartphone/tablet of PC. De competitie kalenders worden automatisch gesynchroniseerd vanop toernooi.nl Altijd en overal meeste recente gegevens op zak!
+</div>
+
+<div class="modal fade" id="myAgendaModal" tabindex="-1" role="dialog" aria-labelledby="myAgendaModal" aria-hidden="true">
+    <div class="modal-dialog" style="width: 1230px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Sluiten</span></button>
+                <h4 class="modal-title">Agenda</h4>
+            </div>
+            <div class="modal-body">
+                <p>Tip: in "Agenda" mode kan je verder scrollen</p>
+                <!-- iframe-scr will be set upon modal load to avoid unnecessary loadings when help button is not used-->
+                <iframe width="1200" height="600" src="" frameborder="0"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Sluiten</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <table class="table table-striped">
