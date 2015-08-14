@@ -96,7 +96,7 @@ Landegem 2H competitie,22ognnub04ksp9fvjs21tenv7c@group.calendar.google.com
 Landegem 3G competitie,sbqb1mnejkd3133gaoem1qc4v0@group.calendar.google.com
 Landegem 3H competitie,pcchr2ipmdag6suro4qcebf4ac@group.calendar.google.com
 Landegem 4G competitie,jj38s4oor4hinfu49k6fp93bds@group.calendar.google.com
-Landegem2G competitie,55sp224lfj1e8oav191b7hnbu4@group.calendar.google.com
+Landegem 2G competitie,55sp224lfj1e8oav191b7hnbu4@group.calendar.google.com
 Latem - De Pinte 2D competitie,udqpjibgt91hdnb74kf2v2pi9c@group.calendar.google.com
 Latem - De Pinte 2G competitie,97vgfpk1nuamq2jt1i1ii4t5v0@group.calendar.google.com
 Latem - De Pinte 2H competitie,40cb0spoip6gibk8g73lf4n4oc@group.calendar.google.com
@@ -105,7 +105,7 @@ Latem - De Pinte 3H competitie,hi4nf1j3r6c00h50nft2mccea8@group.calendar.google.
 Latem - De Pinte 4G competitie,90am0srk0ajcqbejh6l4sq2hnk@group.calendar.google.com
 Latem - De Pinte 4H competitie,qv49r5rrvaf72akb368lgqrv04@group.calendar.google.com
 Latem - De Pinte 5H competitie,06k56jqnm887lv5v1al7v9mmn0@group.calendar.google.com
-Lede 1 H competitie,frkkfge6u47oigfjo8gm1ee4oc@group.calendar.google.com
+Lede 1H competitie,frkkfge6u47oigfjo8gm1ee4oc@group.calendar.google.com
 Lede 1G competitie,tb5us7cqrqkdrci4h80ghrhad4@group.calendar.google.com
 Lokerse 10H competitie,m2jtkcfnacpb8gk4l7tmdotjp0@group.calendar.google.com
 Lokerse 11H competitie,692q6mbvi6368c59namgvlm77g@group.calendar.google.com
@@ -125,7 +125,7 @@ Lokerse 8G competitie,43h4kugjejjae3om6v4shhctcg@group.calendar.google.com
 Lokerse 8H competitie,mnaucpthd3u3p4lv8pe4akt2s0@group.calendar.google.com
 Lokerse 9G competitie,jnilcpimpb5h61ao3jsr77eetg@group.calendar.google.com
 Lokerse 9H competitie,l0refnqh28aro16ct0bb863a74@group.calendar.google.com
-NILSTON 1H competitie,kag16ebhudj3ppqjc1q4a6v8cg@group.calendar.google.com
+Nilston 1H competitie,kag16ebhudj3ppqjc1q4a6v8cg@group.calendar.google.com
 Oudegem 2D competitie,rmnt7hobdj4ia73q0ng3ctd400@group.calendar.google.com
 Oudegem 2G competitie,5puvr9a1pf3ir15v8kck396am8@group.calendar.google.com
 Oudegem 2H competitie,tt4c106a1g962s96kudtel19v0@group.calendar.google.com
