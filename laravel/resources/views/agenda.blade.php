@@ -7,6 +7,7 @@
     <script>
 
         var defaultAcceptedGoogleColors=["B1440E","691426","875509","875509","711616","2F6309","182C57","711616","AB8B00","6B3304","125A12","125A12","333333","5F6B02","2F6309","42104A","29527A","5229A3","6B3304","711616","8C500B","875509","6B3304","8D6F47","691426","182C57","28754E","6B3304","865A5A","28754E","28754E","182C57","0F4B38"];
+        var defaultAcceptedGoogleColorsLength = defaultAcceptedGoogleColors.length;
 
         function setAgenda(){
             var dateformat="YYYYMMDD";
@@ -17,22 +18,37 @@
             }
             var endDate = moment(startDate,dateformat).add(90,'days').format(dateformat);
 
-            var trigger = $("body").find('[data-toggle="modal"]');
+            var trigger = $("body").find('[data-toggle="modal"][data-toggle-type="single"]');
             trigger.click(function() {
                 var theModal = $(this).data( "target" );
                 agendaId = $(this).attr( "data-theAgendaId" );
-                clubName = $(this).attr( "data-clubName" );
-                allAgendaIds="";
-                $("body").find('[data-clubName='+clubName+']').each(function(index) {
-                    allAgendaIds+='&src='+$(this).attr( "data-theAgendaId" )+'&color=%23'+defaultAcceptedGoogleColors[index];
-                });
-
-                agendaSrc = 'https://www.google.com/calendar/embed?showTitle=0&mode=AGENDA&dates='+startDate+'%2F'+endDate+'&height=600&wkst=2&bgcolor=%23FFFFFF&ctz=Europe%2FBrussels'+allAgendaIds;
-                console.log(agendaSrc);
+                agendaSrc = 'https://www.google.com/calendar/embed?mode=AGENDA&dates='+startDate+'%2F'+endDate+'&showCalendars=0&height=600&wkst=2&bgcolor=%23FFFFFF&color=%23125A12&ctz=Europe%2FBrussels&src='+agendaId;
                 $(theModal+' iframe').attr('src', agendaSrc);
                 $(theModal+' button.close').click(function () {
                     $(theModal+' iframe').attr('src', agendaSrc);
                 });
+            });
+
+            var triggerSelect = $("body").find('[data-toggle="modal"][data-toggle-type="multiple"]');
+            triggerSelect.click(function() {
+                var theModal = $(this).data( "target" );
+                console.log(theModal);
+                allAgendaIdSrcs="";
+                foundOne=false;
+                $("body input:checked").each(function(index) {
+                    allAgendaIdSrcs+='&src='+$(this).attr( "data-theAgendaId" )+'&color=%23'+defaultAcceptedGoogleColors[index % defaultAcceptedGoogleColorsLength];
+                    foundOne=true;
+                });
+                if(!foundOne) {
+                    alert("Gelieve minstens 1 kalender te selecteren");
+                } else {
+                    agendaSrc = 'https://www.google.com/calendar/embed?showTitle=0&mode=AGENDA&dates='+startDate+'%2F'+endDate+'&height=600&wkst=2&bgcolor=%23FFFFFF&ctz=Europe%2FBrussels'+allAgendaIdSrcs;
+                    console.log(agendaSrc);
+                    $(theModal+' iframe').attr('src', agendaSrc);
+                    $(theModal+' button.close').click(function () {
+                        $(theModal+' iframe').attr('src', agendaSrc);
+                    });
+                }
             });
         }
         $(document).ready(function(){
@@ -51,13 +67,9 @@
             for (var i = 0; i < allTextLines.length; i++) {
                 var entries = allTextLines[i].split(',');
                 var teamName = entries[0];
-                var clubName="unknown";
-                var clubNameEndIndex = teamName.search(/\s[1-9]+[GHD] competitie/i);
-                if (clubNameEndIndex>0)
-                    var clubName=teamName.substring(0,clubNameEndIndex);
                 var teamCalendarID = entries[1];
                 var teamIcal = "https://www.google.com/calendar/ical/"+teamCalendarID+"/public/basic.ics";
-                $("#calendarTable").append("<tr>"+"<td><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#myAgendaModal' data-clubName='"+clubName+"' data-theAgendaId='"+teamCalendarID+"'>"+teamName+"/"+clubName+"</button></td>"+"<td>"+teamCalendarID+"</td>"+"<td><a href='"+teamIcal+"'> "+teamIcal+"</a></td></tr>");
+                $("#calendarTable").append("<tr><td><input type='checkbox' data-theAgendaId='"+teamCalendarID+"'/></td>"+"<td><button type='button' class='btn btn-primary' data-toggle='modal' data-toggle-type='single' data-target='#myAgendaModal' data-theAgendaId='"+teamCalendarID+"'>"+teamName+"</button></td>"+"<td>"+teamCalendarID+"</td>"+"<td><a href='"+teamIcal+"'> "+teamIcal+"</a></td></tr>");
             }
 
             setAgenda();
@@ -94,6 +106,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th><button type="button" class="btn btn-primary" data-toggle="modal" data-toggle-type='multiple' data-target='#myAgendaModal'>Combineer</button></th>
             <th>Kalender</th>
             <th>code (bv. Android)</th>
             <th>iCal-URL (bv.Apple iOS)</th>
