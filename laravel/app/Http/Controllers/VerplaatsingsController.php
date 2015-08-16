@@ -63,15 +63,40 @@ where c.clubId=:clubId
 order by me.matchIdExtra asc
 EOD;
 
+        $queryMeetingsWithActionsForOthersInvolvingThisClub = <<<EOD
+select me.hTeamName,me.oTeamName,m.date,me.actionFor from lf_match_extra me
+join lf_match m on m.homeTeamName = me.hTeamName and m.outTeamName = me.oTeamName
+where
+(
+me.hTeamName in (select t.teamName from lf_team t
+join lf_club c on c.clubId = t.club_clubId
+where c.clubId=:clubId1
+)
+or me.oTeamName in (select t.teamName from lf_team t
+join lf_club c on c.clubId = t.club_clubId
+where c.clubId=:clubId2
+)
+)
+and me.actionFor not in (
+select t.teamName from lf_team t
+join lf_club c on c.clubId = t.club_clubId
+where c.clubId=:clubId3
+)
+and me.status in ('IN AANVRAAG','OVEREENKOMST')
+order by me.matchIdExtra asc
+EOD;
+
+
 
         $dbteams = DB::select($queryTeams, array('clubId' => Auth::user()->club_id));
         $dbQueryMeetingsWithActionForThisClub = DB::select($queryMeetingsWithActionForThisClub, array('clubId' => Auth::user()->club_id));
+        $dbQueryMeetingsWithActionsForOthersInvolvingThisClub = DB::select($queryMeetingsWithActionsForOthersInvolvingThisClub, array('clubId1' => Auth::user()->club_id,'clubId2' => Auth::user()->club_id, 'clubId3' => Auth::user()->club_id));
 
         $dbloads = DB::select($queryDBLoad);
 
 
         if (sizeof($dbteams) > 0) {
-            $result["clubs"][0] = array("clubName" => $dbteams[0]->clubName, "teams" => array(), "openRequests" => array());
+            $result["clubs"][0] = array("clubName" => $dbteams[0]->clubName, "teams" => array(), "openRequests" => array(),"openRequestsForOthers" => array());
             $teamCounter = -1;
             foreach($dbteams as $key => $team) {
                 $teamCounter++;
@@ -82,6 +107,11 @@ EOD;
             foreach($dbQueryMeetingsWithActionForThisClub as $key => $openRequest) {
                 $openRequestCounter++;
                 $result["clubs"][0]["openRequests"][$openRequestCounter] = array('hTeamName' => $openRequest->hTeamName,'oTeamName' => $openRequest->oTeamName,'date' => $openRequest->date,'actionFor' => $openRequest->actionFor);
+            }
+            $openRequestForOthersCounter = -1;
+            foreach($dbQueryMeetingsWithActionsForOthersInvolvingThisClub as $key => $openRequest) {
+                $openRequestForOthersCounter++;
+                $result["clubs"][0]["openRequestsForOthers"][$openRequestForOthersCounter] = array('hTeamName' => $openRequest->hTeamName,'oTeamName' => $openRequest->oTeamName,'date' => $openRequest->date,'actionFor' => $openRequest->actionFor);
             }
 
 

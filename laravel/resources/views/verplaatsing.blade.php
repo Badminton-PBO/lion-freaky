@@ -131,6 +131,27 @@
                     </table>
                 </div>
             </div>
+            <div data-bind="if:($root.chosenClub() && !($root.chosenTeam()) && $root.chosenClub().openRequestsForOthers.length > 0)">
+                <h2>Ontmoeting die actie vereisen van anderen</h2>
+                <div class="panel panel-default">
+                    <table class="table table-striped table-condensed" style="table-layout:fixed">
+                        <thead>
+                        <tr>
+                            <th>Ontmoeting</th>
+                            <th>Huidig tijdstip</th>
+                            <th>Actie bij</th>
+                        </tr>
+                        </thead>
+                        <tbody data-bind="foreach: $root.chosenClub().openRequestsForOthers">
+                        <tr>
+                            <td><a data-bind="click: $root.goToOpenRequest"><span data-bind="text:hTeamName"/></span>-<span data-bind="text:oTeamName"></span></a></td>
+                            <td><span data-bind="text: date"></span> </td>
+                            <td><span data-bind="text: actionFor"></span> </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
             <div data-bind="if: $root.chosenTeam()">
                 <div class="panel panel-default">
