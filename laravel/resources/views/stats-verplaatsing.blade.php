@@ -32,8 +32,8 @@
             </thead>
             <tbody data-bind="foreach: meetingsWithActionForPBO">
                 <tr>
-                    <td><span data-bind="text: oTeamName"></span></td>
                     <td><span data-bind="text: hTeamName"></span></td>
+                    <td><span data-bind="text: oTeamName"></span></td>
                     <td><span data-bind="text: date"></span></td>
                     <td><span data-bind="text: proposedDate"></span></td>
                 </tr>
@@ -55,8 +55,8 @@
             </thead>
             <tbody data-bind="foreach: meetingWithOpenRequest">
             <tr>
-                <td><span data-bind="text: oTeamName"></span></td>
                 <td><span data-bind="text: hTeamName"></span></td>
+                <td><span data-bind="text: oTeamName"></span></td>
                 <td><span data-bind="text: date"></span></td>
                 <td><span data-bind="text: max_requested_on"></span></td>
                 <td><span data-bind="text: actionFor"></span></td>
