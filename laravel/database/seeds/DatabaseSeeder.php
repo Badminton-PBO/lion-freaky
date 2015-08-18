@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder {
 	{
 		Model::unguard();
 
-        $this->call('UserTableSeeder');
+        //$this->call('UserTableSeeder');
+        $this->call('UserTableAddHocAdding');
         $this->command->info('User table seeded!');
 
 		// $this->call('UserTableSeeder');
@@ -64,6 +65,16 @@ class UserTableSeeder extends Seeder {
         User::create(['name' => 'SENTSE BADMINTON Club vzw', 'email' => 'info@sentsebadminton.be','club_id' => '30091','password'=>bcrypt('12345678')]);
         User::create(['name' => 'BC WAARSCHOOT', 'email' => 'bcwaarschoot@gmail.com','club_id' => '30095','password'=>bcrypt('12345678')]);
         User::create(['name' => 'BRAKEL BC', 'email' => 'marcbosman@telenet.be','club_id' => '30096','password'=>bcrypt('12345678')]);
+    }
+
+}
+
+class UserTableAddHocAdding extends Seeder {
+
+    public function run()
+    {
+        User::create(['name' => 'STEKENE BC', 'email' => 'toon.bouchier@telenet.be','club_id' => '30010','password'=>bcrypt('12345678')]);
+        User::create(['name' => 'CHALLENGE WETTEREN BC', 'email' => 'administrator@bcchallenge.be','club_id' => '30022','password'=>bcrypt('12345678')]);
     }
 
 }
