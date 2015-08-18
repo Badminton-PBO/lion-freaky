@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 use App\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder {
 
@@ -75,6 +75,7 @@ class UserTableAddHocAdding extends Seeder {
     {
         User::create(['name' => 'STEKENE BC', 'email' => 'toon.bouchier@telenet.be','club_id' => '30010','password'=>bcrypt('12345678')]);
         User::create(['name' => 'CHALLENGE WETTEREN BC', 'email' => 'administrator@bcchallenge.be','club_id' => '30022','password'=>bcrypt('12345678')]);
+        User::create(['name' => 'GENTSE BC', 'email' => 'thomas.dekeyser@gmail.com','club_id' => '30009','password'=>bcrypt('12345678')]);
     }
 
 }
