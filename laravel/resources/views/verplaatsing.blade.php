@@ -111,7 +111,7 @@
                                        optionsCaption: $root.selectTeamCaption()"></select>
             </p>
             <div data-bind="if:($root.chosenClub() && !($root.chosenTeam()) && $root.chosenClub().openRequests.length > 0)">
-                <h2>Ontmoeting die actie vereisen van <span data-bind="text: $root.chosenClub().clubName"></span></h2>
+                <h2>Ontmoetingen die actie vereisen van <span data-bind="text: $root.chosenClub().clubName"></span></h2>
                 <div class="panel panel-default">
                     <table class="table table-striped table-condensed" style="table-layout:fixed">
                         <thead>
@@ -132,7 +132,7 @@
                 </div>
             </div>
             <div data-bind="if:($root.chosenClub() && !($root.chosenTeam()) && $root.chosenClub().openRequestsForOthers.length > 0)">
-                <h2>Ontmoeting die actie vereisen van anderen</h2>
+                <h2>Ontmoetingen die actie vereisen van anderen</h2>
                 <div class="panel panel-default">
                     <table class="table table-striped table-condensed" style="table-layout:fixed">
                         <thead>
