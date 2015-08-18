@@ -115,15 +115,15 @@ EOD;
 
     function statisticsVerplaatsing($statType) {
         $queryMeetingsWithActionForPBO= <<<'EOD'
-select me.hTeamName,me.oTeamName,m.date,cr.proposedDate from lf_match_extra me
+select me.hTeamName,me.oTeamName,date_format(m.date,'%Y%m%d%H%i%S') as date,date_format(cr.proposedDate,'%Y%m%d%H%i%S') as proposedDate from lf_match_extra me
 join lf_match m on m.homeTeamName = me.hTeamName and m.outTeamName = me.oTeamName
 join lf_match_cr cr on cr.match_matchIdExtra = me.matchIdExtra and cr.finallyChosen=1
 where me.actionFor='PBO'
-order by me.matchIdExtra asc
+order by me.hTeamName asc
 EOD;
 
         $meetingWithOpenRequest= <<<'EOD'
-select me.hTeamName,me.oTeamName,m.date,me.actionFor,(select max(cr.requestedOn) from lf_match_cr cr where cr.match_matchIdExtra = me.matchIdExtra) as max_requested_on from lf_match_extra me
+select me.hTeamName,me.oTeamName,date_format(m.date,'%Y%m%d%H%i%S') as date,me.actionFor,date_format((select max(cr.requestedOn) from lf_match_cr cr where cr.match_matchIdExtra = me.matchIdExtra),'%Y%m%d%H%i%S') as max_requested_on from lf_match_extra me
 join lf_match m on m.homeTeamName = me.hTeamName and m.outTeamName = me.oTeamName
 where me.status='IN AANVRAAG'
 order by me.matchIdExtra asc

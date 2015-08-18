@@ -3,6 +3,7 @@
 @section('heads')
     <!-- Knockoutjs -->
     <script type="text/javascript" src="../libs/js/knockout-3.2.0.js"></script>
+    <script type="text/javascript" src="../libs/js/moment-with-locales.min.js"></script>
 
     <style>
 
@@ -34,8 +35,8 @@
                 <tr>
                     <td><span data-bind="text: hTeamName"></span></td>
                     <td><span data-bind="text: oTeamName"></span></td>
-                    <td><span data-bind="text: date"></span></td>
-                    <td><span data-bind="text: proposedDate"></span></td>
+                    <td><span data-bind="text: moment(date,'YYYYMMDDHHmm').format('ddd D-M-YYYY HH:mm')"></span></td>
+                    <td><span data-bind="text: moment(proposedDate,'YYYYMMDDHHmm').format('ddd D-M-YYYY HH:mm')"></span></td>
                 </tr>
             </tbody>
         </table>
@@ -57,8 +58,8 @@
             <tr>
                 <td><span data-bind="text: hTeamName"></span></td>
                 <td><span data-bind="text: oTeamName"></span></td>
-                <td><span data-bind="text: date"></span></td>
-                <td><span data-bind="text: max_requested_on"></span></td>
+                <td><span data-bind="text: moment(date,'YYYYMMDDHHmm').format('ddd D-M-YYYY HH:mm')"></span></td>
+                <td><span data-bind="text: moment(max_requested_on,'YYYYMMDDHHmm').format('ddd D-M-YYYY HH:mm')"></span></td>
                 <td><span data-bind="text: actionFor"></span></td>
             </tr>
             </tbody>

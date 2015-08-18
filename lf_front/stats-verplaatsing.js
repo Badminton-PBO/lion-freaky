@@ -2,6 +2,8 @@
 if (!window.console) window.console = {};
 if (!window.console.log) window.console.log = function () { };
 
+moment.locale("nl");
+
 (function(ko, $, undefined) {
 
 
