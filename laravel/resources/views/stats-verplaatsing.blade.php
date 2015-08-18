@@ -43,6 +43,26 @@
     </div>
 
     <div class="container">
+        <h2>Aantal aanvragen die nog actie vereisen van een bepaalde club</h2>
+        <table class="table table-bordered table-condensed">
+            <thead>
+            <tr>
+                <th>Club code</th>
+                <th>Club name</th>
+                <th>Aantal onbeantwoorde aanvragen.</th>
+            </tr>
+            </thead>
+            <tbody data-bind="foreach: meetingWithOpenRequestPerClub">
+            <tr>
+                <td><span data-bind="text: clubId"></span></td>
+                <td><span data-bind="text: clubName"></span></td>
+                <td><span data-bind="text: count"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
         <h2>Ontmoetingen waarvoor een verplaatsingaanvraag nog lopende is</h2>
         <table class="table table-bordered table-condensed">
             <thead>

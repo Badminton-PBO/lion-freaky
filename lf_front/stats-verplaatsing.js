@@ -11,11 +11,15 @@ moment.locale("nl");
 		var self = this;
 		self.meetingsWithActionForPBO = ko.observable();
         self.meetingWithOpenRequest = ko.observable();
+        self.meetingWithOpenRequestPerClub = ko.observable();
 		$.get("verplaatsing/meetingsWithActionForPBO", function(data) {
 			self.meetingsWithActionForPBO(data);
 		});
         $.get("verplaatsing/meetingWithOpenRequest", function(data) {
             self.meetingWithOpenRequest(data);
+        });
+        $.get("verplaatsing/meetingWithOpenRequestPerClub", function(data) {
+            self.meetingWithOpenRequestPerClub(data);
         });
 
 	}

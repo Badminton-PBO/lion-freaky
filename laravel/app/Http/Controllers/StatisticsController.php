@@ -128,12 +128,28 @@ join lf_match m on m.homeTeamName = me.hTeamName and m.outTeamName = me.oTeamNam
 where me.status='IN AANVRAAG'
 order by me.matchIdExtra asc
 EOD;
+        $meetingWithOpenRequestPerClub = <<<'EOD'
+select c.clubId as clubId ,max(c.clubName) as clubName,count(*) as count from lf_match_extra me
+join lf_match m on m.homeTeamName = me.hTeamName and m.outTeamName = me.oTeamName
+join lf_team t on t.teamName = me.actionFor
+join lf_club c on c.clubId = t.club_clubId
+where me.status='IN AANVRAAG'
+group by c.clubId
+order by c.clubId
+EOD;
+
+
+
+
         switch($statType) {
             case "meetingsWithActionForPBO":
                 $result = DB::select($queryMeetingsWithActionForPBO);
                 break;
             case "meetingWithOpenRequest":
                 $result = DB::select($meetingWithOpenRequest);
+                break;
+            case "meetingWithOpenRequestPerClub":
+                $result = DB::select($meetingWithOpenRequestPerClub);
                 break;
         }
         $response = Response::json($result);
