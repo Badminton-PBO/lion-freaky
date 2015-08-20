@@ -43,7 +43,7 @@ player_playerId,team_teamName
 ```
 
   * data/fixed/indexen\_spelers\_01052014.csv
-Zogenaamde vaste indexen van spelers aan begin van competitie-seizoen
+Zogenaamde vaste indexen van alle vlaamse spelers aan begin van competitie-seizoen. Omwille van transfers moeten dit alle vlaamse spelers zijn.
 ```
 Lidnummer;Klassement enkel;Klassement dubbel;Klassement gemengd
 50995006;D;D;D
