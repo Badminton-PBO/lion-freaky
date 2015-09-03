@@ -1,11 +1,9 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use DB;
-use Response;
-
 use Illuminate\Http\Request;
+use Response;
 
 class StatisticsController extends Controller {
 
@@ -138,6 +136,12 @@ group by c.clubId
 order by c.clubId
 EOD;
 
+        $queryMeetingsMovedPerMonth = <<<'EOD'
+select DATE_FORMAT(`when`, '%Y/%m') month,floor(count(*)/2) month_count from lf_event where
+eventType='v-moved'
+group by DATE_FORMAT(`when`, '%Y/%m')
+order by  DATE_FORMAT(`when`, '%Y/%m') asc
+EOD;
 
 
 
@@ -150,6 +154,9 @@ EOD;
                 break;
             case "meetingWithOpenRequestPerClub":
                 $result = DB::select($meetingWithOpenRequestPerClub);
+                break;
+            case "meetingsMovedPerMonth" :
+                $result = DB::select($queryMeetingsMovedPerMonth);
                 break;
         }
         $response = Response::json($result);

@@ -86,7 +86,23 @@
         </table>
     </div>
 
-
+    <div class="container">
+        <h2>Aantal verplaatste ontmoetingen welke volledig zijn verwerkt</h2>
+        <table class="table table-bordered table-condensed">
+            <thead>
+            <tr>
+                <th>Maand</th>
+                <th>Aantal</th>
+            </tr>
+            </thead>
+            <tbody data-bind="foreach: meetingsMovedPerMonth">
+            <tr>
+                <td><span data-bind="text: month"></span></td>
+                <td><span data-bind="text: month_count"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 @endsection
 
 @section('tailscripts')

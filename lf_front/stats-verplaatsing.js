@@ -12,6 +12,7 @@ moment.locale("nl");
 		self.meetingsWithActionForPBO = ko.observable();
         self.meetingWithOpenRequest = ko.observable();
         self.meetingWithOpenRequestPerClub = ko.observable();
+        self.meetingsMovedPerMonth = ko.observable();
 		$.get("verplaatsing/meetingsWithActionForPBO", function(data) {
 			self.meetingsWithActionForPBO(data);
 		});
@@ -20,6 +21,9 @@ moment.locale("nl");
         });
         $.get("verplaatsing/meetingWithOpenRequestPerClub", function(data) {
             self.meetingWithOpenRequestPerClub(data);
+        });
+        $.get("verplaatsing/meetingsMovedPerMonth", function(data) {
+            self.meetingsMovedPerMonth(data);
         });
 
 	}
