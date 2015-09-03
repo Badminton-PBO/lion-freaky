@@ -33,18 +33,10 @@
                     <div class="span6 offset3">
                     <h1 style="text-align: center">PBO apps</h1>
                     </div>
-                    <!--
                     <div class="row">
                         <div class="col-md-8">
                         <p><a class="btn btn-primary btn-lg" href="opstelling" role="button">Competitie opstellings formulier</a></p>
                         <p>Stel een geldige ploegopstelling samen</p>
-                        </div>
-                    </div>
-                    -->
-                    <div class="row">
-                        <div class="col-md-8">
-                            <p><a class="btn btn-primary btn-lg" href="" role="button">Competitie opstellings formulier</a></p>
-                            <p>Beschikbaar vanaf begin september.</p>
                         </div>
                     </div>
                     <div class="row">

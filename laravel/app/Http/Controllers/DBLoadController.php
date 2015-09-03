@@ -1,11 +1,9 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use DB;
-use Mail;
-
 use Illuminate\Http\Request;
+use Mail;
 
 class DBLoadController extends Controller {
 
@@ -32,9 +30,9 @@ class DBLoadController extends Controller {
         $PLAYERS_CSV_URL='https://toernooi.nl/organization/export/export_memberperroletypepergroup.aspx?id='.$PROV_ID.'&gid='.$PROV_GID.'&ft=1&glid=1';
         $MATCHES_CSV_URL='https://toernooi.nl/sport/admin/exportteammatches.aspx?id='.$PB_COMPETITIE_ID.'&ft=1&sd='.$PB_COMPETITIE_START_DAY.'000000&ed='.$PB_COMPETITIE_END_DAY.'000000';
 
-        $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/basisopstellingen.csv';
-        $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/indexen_spelers_01052014.csv';
-        $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/liga_basisopstelling_gemengd_20142015.csv';
+        $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/basisopstellingen2015-2016.csv';
+        $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/indexen_spelers_01052015.csv';
+        $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/liga_basisopstelling_gemengd_20152016.csv';
 
         // create curl resource
         $ch = curl_init();
@@ -269,11 +267,10 @@ EOD;
                 DBLoadController::loadCSV($clubCSV,'clubs');
                 DBLoadController::loadCSV($teamsCSV,'teams');
                 DBLoadController::loadCSV($matchesCSV,'matches');
-                //TDE 2015 /07 / 03
-                //DBLoadController::loadCSV($playersCSV,'players');
-                //DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
-                //DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
-                //DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+                DBLoadController::loadCSV($playersCSV,'players');
+                DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
+                DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
+                DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
                 EventController::logEvent('DBLOAD','SYSTEM');
                 $this->updateMatchCRAccordingNewData();
                 print("OK");
@@ -374,12 +371,12 @@ update lf_tmpdbload_teamscsv set year=2014;
 EOD;
         $insertLfGroup = <<<'EOD'
 INSERT INTO lf_group (tournament,`type`,event,devision,series)
-select `year`,'PROV',lf_dbload_eventcode(eventName),lf_dbload_devision(drawName),lf_dbload_serie(drawName) from lf_tmpdbload_teamscsv
-group by `year`,lf_dbload_eventcode(eventName),lf_dbload_devision(drawName),lf_dbload_serie(drawName);
+select `year`,'PROV',lf_dbload_eventcode(name),lf_dbload_devision(drawName),lf_dbload_serie(drawName) from lf_tmpdbload_teamscsv
+group by `year`,lf_dbload_eventcode(name),lf_dbload_devision(drawName),lf_dbload_serie(drawName);
 EOD;
         $insertLfTeam = <<<'EOD'
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId, captainName,email)
-select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.eventName) = lfg.event and  lf_dbload_devision(t.drawName) = lfg.devision and lf_dbload_serie(t.drawName) = lfg.series),t.captainName,t.email  from lf_tmpdbload_teamscsv t;
+select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.name) = lfg.event and  lf_dbload_devision(t.drawName) = lfg.devision and lf_dbload_serie(t.drawName) = lfg.series),t.captainName,t.email  from lf_tmpdbload_teamscsv t;
 EOD;
         $deleteLfTmpdbloadPlayers = <<<'EOD'
 delete from lf_tmpdbload_playerscsv
@@ -412,7 +409,7 @@ INSERT INTO lf_group (tournament,`type`,event,devision) values ('2014','LIGA','M
 EOD;
         $insertLfTeamLiga = <<<'EOD'
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId)
-select t.teamName,lf_dbload_teamSequenceNumber(t.teamName),c.clubId,(select groupId from lf_group where `type`='LIGA' and event=lf_dbload_eventcode(t.Discipline)) from lf_tmpdbload_basisopstellingliga t
+select t.teamName,lf_dbload_teamSequenceNumber(t.teamName),c.clubId,(select groupId from lf_group where `type`='LIGA' and event=lf_dbload_eventcode(t.teamName)) from lf_tmpdbload_basisopstellingliga t
 join lf_club c on c.clubName = t.clubName
 group by t.teamName,c.clubId;
 EOD;

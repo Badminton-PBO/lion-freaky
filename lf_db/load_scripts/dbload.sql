@@ -58,13 +58,13 @@ DELETE FROM lf_tmpdbload_basisopstellingliga;
 
 DROP FUNCTION IF EXISTS lf_dbload_eventcode;
 DELIMITER $$
-CREATE FUNCTION lf_dbload_eventcode(eventname TEXT)
+CREATE FUNCTION lf_dbload_eventcode(teamname TEXT)
   RETURNS TEXT
 BEGIN
-  CASE eventname
-	when 'Gemengde Competitie' then return 'MX';
-	when 'Heren Competitie' then return 'M';
-	when 'Dames Competitie' then return 'L';
+  CASE
+	when teamname like '%G' then return 'MX';
+	when teamname like '%H' then return 'M';
+	when teamname like '%D' then return 'L';
 	else
 		BEGIN
 			return '??';
