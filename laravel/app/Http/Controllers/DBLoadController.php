@@ -128,41 +128,41 @@ EOD;
             $matchesCSV .=$testMatches."\n";
 
             $testPlayers = <<<'EOD'
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000001;man1;;;man1;;;;;;;;M;;;;;;;;;;;;;A;A;A;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000002;man2;;;man2;;;;;;;;M;;;;;;;;;;;;;B1;B2;B1;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000003;man3;;;man3;;;;;;;;M;;;;;;;;;;;;;B2;B2;B2;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000004;man4;;;man4;;;;;;;;M;;;;;;;;;;;;;B1;B1;B1;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000005;man5;;;man5;;;;;;;;M;;;;;;;;;;;;;B2;B2;B2;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000006;man6;;;man6;;;;;;;;M;;;;;;;;;;;;;C1;C1;B1;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000007;man7;;;man7;;;;;;;;M;;;;;;;;;;;;;C2;C1;C2;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000008;man8;;;man8;;;;;;;;M;;;;;;;;;;;;;C2;C2;C2;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000009;man9;;;man9;;;;;;;;M;;;;;;;;;;;;;D;C2;C2;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000010;man10;;;man10;;;;;;;;M;;;;;;;;;;;;;C1;C1;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000011;man11;;;man11;;;;;;;;M;;;;;;;;;;;;;C2;D;C2;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000012;man12;;;man12;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000013;man13;;;man13;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000014;man14;;;man14;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000015;man15;;;man15;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000016;man16;;;man16;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000017;man17;;;man17;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000018;man18;;;man18;;;;;;;;M;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000019;vrouw1;;;vrouw1;;;;;;;;V;;;;;;;;;;;;;B1;B1;B1;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000020;vrouw2;;;vrouw2;;;;;;;;V;;;;;;;;;;;;;B1;B1;B1;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000021;vrouw3;;;vrouw3;;;;;;;;V;;;;;;;;;;;;;B1;B1;B1;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000022;vrouw4;;;vrouw4;;;;;;;;V;;;;;;;;;;;;;B2;B2;B2;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000023;vrouw5;;;vrouw5;;;;;;;;V;;;;;;;;;;;;;C1;C1;C1;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000024;vrouw6;;;vrouw6;;;;;;;;V;;;;;;;;;;;;;C1;C1;C1;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000025;vrouw7;;;vrouw7;;;;;;;;V;;;;;;;;;;;;;C2;B2;C1;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000026;vrouw8;;;vrouw8;;;;;;;;V;;;;;;;;;;;;;C2;C2;C2;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000027;vrouw9;;;vrouw9;;;;;;;;V;;;;;;;;;;;;;C2;D;C2;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000028;vrouw10;;;vrouw10;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000029;vrouw11;;;vrouw11;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000030;vrouw12;;;vrouw12;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000031;vrouw13;;;vrouw13;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000032;vrouw14;;;vrouw14;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000033;vrouw15;;;vrouw15;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000034;vrouw16;;;vrouw16;;;;;;;;V;;;;;;;;;;;;;D;D;D;Competitiespeler
-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000035;vrouw 17;;;vrouw 17;;;;;;;;V;;;;;;;;;;;;;D;D;D;Recreant
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000001;man1;;;man1;;;;;;;;M;;;;;;;;;;;;Speler;A;A;A;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000002;man2;;;man2;;;;;;;;M;;;;;;;;;;;;Speler;B1;B2;B1;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000003;man3;;;man3;;;;;;;;M;;;;;;;;;;;;Speler;B2;B2;B2;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000004;man4;;;man4;;;;;;;;M;;;;;;;;;;;;Speler;B1;B1;B1;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000005;man5;;;man5;;;;;;;;M;;;;;;;;;;;;Speler;B2;B2;B2;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000006;man6;;;man6;;;;;;;;M;;;;;;;;;;;;Speler;C1;C1;B1;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000007;man7;;;man7;;;;;;;;M;;;;;;;;;;;;Speler;C2;C1;C2;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000008;man8;;;man8;;;;;;;;M;;;;;;;;;;;;Speler;C2;C2;C2;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000009;man9;;;man9;;;;;;;;M;;;;;;;;;;;;Speler;D;C2;C2;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000010;man10;;;man10;;;;;;;;M;;;;;;;;;;;;Speler;C1;C1;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000011;man11;;;man11;;;;;;;;M;;;;;;;;;;;;Speler;C2;D;C2;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000012;man12;;;man12;;;;;;;;M;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000013;man13;;;man13;;;;;;;;M;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000014;man14;;;man14;;;;;;;;M;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000015;man15;;;man15;;;;;;;;M;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000016;man16;;;man16;;;;;;;;M;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000017;man17;;;man17;;;;;;;;M;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000018;man18;;;man18;;;;;;;;M;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000019;vrouw1;;;vrouw1;;;;;;;;V;;;;;;;;;;;;Speler;B1;B1;B1;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000020;vrouw2;;;vrouw2;;;;;;;;V;;;;;;;;;;;;Speler;B1;B1;B1;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000021;vrouw3;;;vrouw3;;;;;;;;V;;;;;;;;;;;;Speler;B1;B1;B1;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000022;vrouw4;;;vrouw4;;;;;;;;V;;;;;;;;;;;;Speler;B2;B2;B2;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000023;vrouw5;;;vrouw5;;;;;;;;V;;;;;;;;;;;;Speler;C1;C1;C1;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000024;vrouw6;;;vrouw6;;;;;;;;V;;;;;;;;;;;;Speler;C1;C1;C1;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000025;vrouw7;;;vrouw7;;;;;;;;V;;;;;;;;;;;;Speler;C2;B2;C1;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000026;vrouw8;;;vrouw8;;;;;;;;V;;;;;;;;;;;;Speler;C2;C2;C2;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000027;vrouw9;;;vrouw9;;;;;;;;V;;;;;;;;;;;;Speler;C2;D;C2;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000028;vrouw10;;;vrouw10;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000029;vrouw11;;;vrouw11;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000030;vrouw12;;;vrouw12;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000031;vrouw13;;;vrouw13;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000032;vrouw14;;;vrouw14;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000033;vrouw15;;;vrouw15;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000034;vrouw16;;;vrouw16;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
+XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000035;vrouw 17;;;vrouw 17;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Recreant
 EOD;
             $playersCSV .=$testPlayers."\n";
 
@@ -299,6 +299,7 @@ EOD;
         DB::statement('DELETE from lf_tmpdbload_teamscsv');
         DB::statement('DELETE from lf_tmpdbload_playersremoved');
         DB::statement('DELETE from lf_tmpdbload_playerscsv');
+        DB::statement('DELETE from lf_tmpdbload_playerscsv_noduplicates');
         DB::statement('DELETE FROM lf_tmpdbload_15mei');
         DB::statement('DELETE FROM lf_tmpdbload_basisopstellingliga');
     }
@@ -378,24 +379,33 @@ EOD;
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId, captainName,email)
 select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.name) = lfg.event and  lf_dbload_devision(t.drawName) = lfg.devision and lf_dbload_serie(t.drawName) = lfg.series),t.captainName,t.email  from lf_tmpdbload_teamscsv t;
 EOD;
-        $deleteLfTmpdbloadPlayers = <<<'EOD'
-delete from lf_tmpdbload_playerscsv
-where role != 'Uitgeleende speler'
-and memberId in (
-select c.memberId from (
-select memberId from lf_tmpdbload_playerscsv t
-group by memberId
-having count(*) >1) as c
-);
+        $insertLfTmpNonDuplicatePlayers = <<<'EOD'
+INSERT INTO lf_tmpdbload_playerscsv_noduplicates(memberId,firstName,lastName,gender,groupName,playerLevelSingle,playerLevelDouble,playerLevelMixed,typeName,role,groupCode)
+select t.memberId,
+max(t.firstName),
+max(t.lastName),
+max(gender),
+max(groupName),
+max(playerLevelSingle),
+max(playerLevelDouble),
+max(playerLevelMixed),
+max(typeName),
+max(role),
+max(groupCode)
+ from lf_tmpdbload_playerscsv t
+join (
+select memberId,min(lf_dbload_playerrolepriority(role)) minRole from lf_tmpdbload_playerscsv t
+group by memberId) m on m.memberId = t.memberId and m.minRole = lf_dbload_playerrolepriority(role)
+group  by t.memberId;
 EOD;
         $insertLfRanking = <<<'EOD'
 INSERT INTO lf_ranking (`date`,singles,doubles,mixed,player_playerId)
-select SYSDATE(),t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.memberId from lf_tmpdbload_playerscsv t
+select SYSDATE(),t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.memberId from lf_tmpdbload_playerscsv_noduplicates t
 join lf_club c on c.clubName=t.groupName;
 EOD;
         $insertLfPlayer = <<<'EOD'
 INSERT INTO lf_player (playerId,firstName,lastName,gender,club_clubId,type)
-select t.memberId,t.firstName,t.lastName, CASE when t.gender='V' then 'F' else t.gender END,c.clubId, case when t.typeName like 'Recreant%' then 'R' when t.typeName like 'Competitie%' then 'C' when t.typeName like 'Jeugd%' then 'J' END from lf_tmpdbload_playerscsv t
+select t.memberId,t.firstName,t.lastName, CASE when t.gender='V' then 'F' else t.gender END,c.clubId, case when t.typeName like 'Recreant%' then 'R' when t.typeName like 'Competitie%' then 'C' when t.typeName like 'Jeugd%' then 'J' END from lf_tmpdbload_playerscsv_noduplicates t
 join lf_club c on c.clubCode=t.groupCode;
 EOD;
         $insertLfRankingFixed = <<<'EOD'
@@ -467,7 +477,7 @@ EOD;
                 // When player is from O-Vl Club and rented to another O-Vl it will appear twice. However, we only want to keep the record with role='Speler'
                 // Some tricks needed to avoid mysql limitation: In MySQL, you can't modify the same table which you use in the SELECT part
                 // http://stackoverflow.com/questions/45494/mysql-error-1093-cant-specify-target-table-for-update-in-from-clause
-                DB::delete($deleteLfTmpdbloadPlayers);
+                DB::insert($insertLfTmpNonDuplicatePlayers);
 
                 //When must import players from type=Recreant too because they can be part of a baseTeam!
                 DB::insert($insertLfPlayer);

@@ -177,6 +177,22 @@ CREATE TABLE IF NOT EXISTS `lf_tmpdbload_playerscsv` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `lf_tmpdbload_playerscsv_noduplicates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `memberId` int(11) NOT NULL,
+  `firstName` varchar(45) NOT NULL,
+  `lastName` varchar(45) NOT NULL,
+  `gender` varchar(1) NOT NULL,
+  `groupName` varchar(45) NOT NULL,
+  `playerLevelSingle` varchar(2) NOT NULL,
+  `playerLevelDouble` varchar(2) NOT NULL,
+  `playerLevelMixed` varchar(2) NOT NULL,
+  `typeName` varchar(45) NOT NULL,
+  `role` varchar(45) NOT NULL,
+  `groupCode` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE IF NOT EXISTS `lf_tmpdbload_teamscsv` (
   `name` varchar(45) NOT NULL,
@@ -332,6 +348,24 @@ END;
 $$
 DELIMITER ;
 
+
+DROP FUNCTION IF EXISTS lf_dbload_playerrolepriority;
+DELIMITER $$
+CREATE FUNCTION lf_dbload_playerrolepriority(role TEXT)
+  RETURNS  INTEGER
+BEGIN
+  CASE
+  when role like 'Uitgeleende speler' then return 1;
+  when role like 'Speler%' then return 2;
+	when role like 'KYU%' then return 3;
+	else
+		BEGIN
+			return 4;
+		END;
+   END CASE;
+END;
+$$
+DELIMITER;
 
 DROP FUNCTION IF EXISTS lf_dbload_devision;
 DELIMITER $$
