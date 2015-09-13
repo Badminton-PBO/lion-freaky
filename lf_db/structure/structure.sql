@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `lf_match` (
   `outTeamName` varchar(45) NOT NULL,
   `date` datetime NOT NULL,
   `locationName` varchar(100) NOT NULL,
-  `locationId` int(11) NOT NULL,
+  `locationId` VARCHAR (45) NOT NULL,
   `matchId` int(11) NOT NULL COMMENT 'toernooinl matchid',
   UNIQUE KEY `matchId` (`matchId`),
   KEY `homeTeamName` (`homeTeamName`),
@@ -133,6 +133,14 @@ CREATE TABLE IF NOT EXISTS `lf_team` (
   KEY `fk_team_group1_idx` (`group_groupId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE IF NOT EXISTS `lf_location` (
+  `locationId` varchar(45) DEFAULT NULL,
+  `locationName` varchar(90) DEFAULT NULL,
+  `address` VARCHAR (45) DEFAULT NULL,
+  `postalCode` VARCHAR (10) DEFAULT NULL,
+  `city` VARCHAR (45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `lf_event`
@@ -365,7 +373,7 @@ BEGIN
    END CASE;
 END;
 $$
-DELIMITER;
+DELIMITER ;
 
 DROP FUNCTION IF EXISTS lf_dbload_devision;
 DELIMITER $$

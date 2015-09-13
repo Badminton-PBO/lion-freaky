@@ -29,6 +29,7 @@ class DBLoadController extends Controller {
         $TEAMS_CSV_URL='https://toernooi.nl/sport/admin/exportteams.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
         $PLAYERS_CSV_URL='https://toernooi.nl/organization/export/export_memberperroletypepergroup.aspx?id='.$PROV_ID.'&gid='.$PROV_GID.'&ft=1&glid=1';
         $MATCHES_CSV_URL='https://toernooi.nl/sport/admin/exportteammatches.aspx?id='.$PB_COMPETITIE_ID.'&ft=1&sd='.$PB_COMPETITIE_START_DAY.'000000&ed='.$PB_COMPETITIE_END_DAY.'000000';
+        $LOCATIONS_CSV_URL='https://toernooi.nl/sport/admin/exportlocations.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
 
         $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/basisopstellingen2015-2016.csv';
         $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/indexen_spelers_01052015.csv';
@@ -99,6 +100,10 @@ class DBLoadController extends Controller {
         //Download Liga BASISOPSTELLING CSV
         curl_setopt($ch, CURLOPT_URL, $LIGA_BASETEAM_CSV_URL);
         $ligaBaseTeamCSV = curl_exec($ch);
+
+        //Download locations CSV
+        curl_setopt($ch, CURLOPT_URL,$LOCATIONS_CSV_URL);
+        $locationsCSV = curl_exec($ch);
 
         // close curl resource to free up system resources
         curl_close($ch);
@@ -259,7 +264,9 @@ EOD;
                 or !DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid")
                 or !DBLoadController::isValidCSV($baseTeamCSV,"player_playerId,team_teamName")
                 or !DBLoadController::isValidCSV($fixedRankingCSV,"Lidnummer;Klassement enkel;Klassement dubbel;Klassement gemengd")
+                or !DBLoadController::isValidCSV($locationsCSV,"code;name;number;contact;address;postalcode")
                 or !DBLoadController::isValidCSV($ligaBaseTeamCSV,"Discipline,Teamnaam,Lidnummer,Voornaam,")) {
+
                 print("NOK: invalid CSV detected");
             } else {
                 DBLoadController::cleanDB();
@@ -271,6 +278,7 @@ EOD;
                 DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
                 DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
                 DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+                DBLoadController::loadCSV($locationsCSV,'locations');
                 EventController::logEvent('DBLOAD','SYSTEM');
                 $this->updateMatchCRAccordingNewData();
                 print("OK");
@@ -363,6 +371,12 @@ EOD;
                 DBLoadController::buildAndExecQuery($parsedCsv,
                     'INSERT INTO lf_tmpdbload_basisopstellingliga(playerId, teamName, discipline, clubName) VALUES',
                     array('Lidnummer','Teamnaam','Discipline','Club')
+                );
+                break;
+            case "locations":
+                DBLoadController::buildAndExecQuery($parsedCsv,
+                    'INSERT INTO lf_location(locationId, locationName, address,postalCode,city) VALUES',
+                    array('?code','name','address','postalcode','city')
                 );
                 break;
         }
