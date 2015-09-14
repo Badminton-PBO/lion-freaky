@@ -19,11 +19,16 @@ class CalendarSyncController extends Controller {
 	public function pboTeamMatches()
 	{
         $queryPboTeamMatches = <<<EOD
-select t.teamName,concat(m.homeTeamName,' - ',m.outTeamName) subject,date_format(m.date,'%d/%m/%Y') startDate,date_format(m.date,'%T') startTime,date_format(date_add(m.date, INTERVAL 179 MINUTE),'%T') endTime,concat(m.locationName,', ',l1.address,', ',l1.postalCode,', ',l1.city) locationName from lf_match m
+select t.teamName,concat(m.homeTeamName,' - ',m.outTeamName) subject,m.date,date_format(m.date,'%d/%m/%Y') startDate,date_format(m.date,'%T') startTime,date_format(date_add(m.date, INTERVAL 179 MINUTE),'%T') endTime,concat(m.locationName,', ',l1.address,', ',l1.postalCode,', ',l1.city) locationName from lf_match m
 join lf_team t on m.homeTeamName = t.teamName  or m.outTeamName =t.teamName
 left join lf_location l1 on l1.locationId = m.locationId
-where t.teamName in (select teamName from lf_team)
-order by t.teamName desc, m.date
+where t.teamName in (select teamName from lf_team) and m.locationId is not null and m.locationId != ''
+union
+select t.teamName,concat(m.homeTeamName,' - ',m.outTeamName) subject,m.date,date_format(m.date,'%d/%m/%Y') startDate,date_format(m.date,'%T') startTime,date_format(date_add(m.date, INTERVAL 179 MINUTE),'%T') endTime,concat(m.locationName,', ',l1.address,', ',l1.postalCode,', ',l1.city) locationName from lf_match m
+join lf_team t on m.homeTeamName = t.teamName  or m.outTeamName =t.teamName
+left join lf_location l1 on l1.locationName = m.locationName
+where t.teamName in (select teamName from lf_team) and (m.locationId is null or m.locationId = '')
+order by teamName asc, date
 EOD;
 
         $matches = DB::select($queryPboTeamMatches);
