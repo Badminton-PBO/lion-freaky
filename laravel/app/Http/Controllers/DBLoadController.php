@@ -31,9 +31,9 @@ class DBLoadController extends Controller {
         $MATCHES_CSV_URL='https://toernooi.nl/sport/admin/exportteammatches.aspx?id='.$PB_COMPETITIE_ID.'&ft=1&sd='.$PB_COMPETITIE_START_DAY.'000000&ed='.$PB_COMPETITIE_END_DAY.'000000';
         $LOCATIONS_CSV_URL='https://toernooi.nl/sport/admin/exportlocations.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
 
-        $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/basisopstellingen2015-2016.csv';
-        $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/indexen_spelers_01052015.csv';
-        $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/liga_basisopstelling_gemengd_20152016.csv';
+        $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2015-2016/basisopstellingen.csv';
+        $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2015-2016/indexen_spelers.csv';
+        $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2015-2016/liga_nationale_basisopstelling.csv';
 
         // create curl resource
         $ch = curl_init();
@@ -265,7 +265,7 @@ EOD;
                 or !DBLoadController::isValidCSV($baseTeamCSV,"player_playerId,team_teamName")
                 or !DBLoadController::isValidCSV($fixedRankingCSV,"Lidnummer;Klassement enkel;Klassement dubbel;Klassement gemengd")
                 or !DBLoadController::isValidCSV($locationsCSV,"code;name;number;contact;address;postalcode")
-                or !DBLoadController::isValidCSV($ligaBaseTeamCSV,"Discipline,Teamnaam,Lidnummer,Voornaam,")) {
+                or !DBLoadController::isValidCSV($ligaBaseTeamCSV,"player_playerId,team_teamName,club_clubName")) {
 
                 print("NOK: invalid CSV detected");
             } else {
@@ -369,8 +369,8 @@ EOD;
                 break;
             case "ligaBaseTeam":
                 DBLoadController::buildAndExecQuery($parsedCsv,
-                    'INSERT INTO lf_tmpdbload_basisopstellingliga(playerId, teamName, discipline, clubName) VALUES',
-                    array('Lidnummer','Teamnaam','Discipline','Club')
+                    'INSERT INTO lf_tmpdbload_basisopstellingliga(playerId, teamName, clubName) VALUES',
+                    array('player_playerId','team_teamName','club_clubName')
                 );
                 break;
             case "locations":
@@ -429,7 +429,7 @@ join lf_player p on t.playerId = p.playerId;
 EOD;
 
         $insertFakeLigaGroup = <<<'EOD'
-INSERT INTO lf_group (tournament,`type`,event,devision) values ('2014','LIGA','MX',0),('2014','LIGA','M',0),('2014','LIGA','L',0);
+INSERT INTO lf_group (tournament,`type`,event,devision) values ('2015','LIGA','MX',0),('2015','LIGA','M',0),('2015','LIGA','L',0);
 EOD;
         $insertLfTeamLiga = <<<'EOD'
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId)
