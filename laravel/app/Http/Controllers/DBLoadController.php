@@ -382,7 +382,7 @@ EOD;
         }
 
         $updateLfYear = <<<'EOD'
-update lf_tmpdbload_teamscsv set year=2014;
+update lf_tmpdbload_teamscsv set year=2015;
 EOD;
         $insertLfGroup = <<<'EOD'
 INSERT INTO lf_group (tournament,`type`,event,devision,series)
@@ -424,7 +424,7 @@ join lf_club c on c.clubCode=t.groupCode;
 EOD;
         $insertLfRankingFixed = <<<'EOD'
 insert into lf_ranking(date,singles,doubles,mixed,player_playerId)
-select '2014-05-15',t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.playerId from lf_tmpdbload_15mei t
+select '2015-05-15',t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.playerId from lf_tmpdbload_15mei t
 join lf_player p on t.playerId = p.playerId;
 EOD;
 
