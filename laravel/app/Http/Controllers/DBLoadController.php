@@ -298,6 +298,7 @@ EOD;
     static function cleanDB() {
         //print("Start cleaning");
         DB::statement('DELETE from lf_match');
+        DB::statement('DELETE from lf_location');
         DB::statement('DELETE from lf_ranking');
         DB::statement('DELETE from lf_player_has_team');
         DB::statement('DELETE from lf_player');
