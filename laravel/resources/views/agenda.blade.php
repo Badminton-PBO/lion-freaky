@@ -128,12 +128,10 @@
     <div class="alignleft"><strong>Synchroniseren via iCal (bv. Apple gebruikers zonder google account)</strong><br>
         Elke van bovenstaande agenda’s heeft een iCal-URL op https://www.google.com/calendar/ical/[agenda-code]/public/basic.ics waarbij je [agenda-code] wijzigt door één van bovenstaande. Bv. https://www.google.com/calendar/ical/3j72eskldk70t4pl5jiqv21oa0@group.calendar.google.com/public/basic.ics voor officiële tornooien. <br>Deze iCal-URL kan je bijvoorbeeld gebruiken in Apple iCal. Zie volgende <a href="http://www.googletutor.com/syncing-google-calendar-with-ical" target="_new">screenshots</a></div>
 
-    <!--
     <p>&nbsp;</p>
     <div class="alignleft"><strong>Synchroniseren via CalDAV (bv. Blackberry OS 10 gebruikers)</strong><br>
-        Elke van bovenstaande agenda’s heeft een CalDAV-URL op https://www.google.com/calendar/dav/[agenda-code]/events waarbij je [agenda-code] wijzigt door één van bovenstaande. Bv. https://www.google.com/calendar/dav/p4s51i11881rj5k4e198l6l3hk@group.calendar.google.com/events voor Gentse 6G tornooien. <br>Deze CalDAV-URL kan je bijvoorbeeld gebruiken in Blackberry OS 10. Zie volgende <a href="http://www.blackberryos.com/content/friday-tip-add-any-calendar-your-blackberry-10-4880/" target="_new"> handleiding vanaf step3.</a> Indien je over geen google-account beschikt kan je als gebruikersnaam <b>gentsebc.external@gmail.com</b>  en paswoord <b>DUqupre8</b> gebruiken.</div>
+        Elke van bovenstaande agenda’s heeft een CalDAV-URL op https://www.google.com/calendar/dav/[agenda-code]/events waarbij je [agenda-code] wijzigt door één van bovenstaande. Bv. https://www.google.com/calendar/dav/uhuo2djuuq2057dm72232cvhsk@group.calendar.google.com/events voor Gentse 6G tornooien. <br>Deze CalDAV-URL kan je bijvoorbeeld gebruiken in Blackberry OS 10. Zie volgende <a href="http://www.blackberryos.com/content/friday-tip-add-any-calendar-your-blackberry-10-4880/" target="_new"> handleiding vanaf step3.</a> </div>Hier heb je wel een google account voor nodig.
     </div>
-    -->
 </div>
 @endsection
 
