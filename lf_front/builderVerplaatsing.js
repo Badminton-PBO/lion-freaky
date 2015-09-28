@@ -60,7 +60,6 @@ moment.locale("nl");
 			var widget = $(element).parent().data("DateTimePicker");
 			//when the view model is updated, update the widget
 			var dateInKModel = window.ko.utils.unwrapObservable(valueAccessor()).toString();
-			//console.log("Changing date from '"+dateInKModel+"' to '"+moment(dateInKModel,"YYYYMMDDHHmm").toDate()+"'.");
 			widget.date(moment(dateInKModel,"YYYYMMDDHHmm").toDate());
 		}
 	};
@@ -193,7 +192,6 @@ moment.locale("nl");
     }
 
 
-    //new Meeting(self.chosenTeam().teamName,m.hTeam,m.oTeam,m.dateTime,m.locationName,m.matchIdExtra,m.status, m.actionFor, m.hTeamComment, m.oTeamComment)
 	var Meeting = function(chosenTeamName,hTeam,oTeam,dateTime,locationName,matchIdExtra,status,actionFor,hTeamComment, oTeamComment) {
 		var self= this;
 		this.chosenTeamName = chosenTeamName;
@@ -212,12 +210,9 @@ moment.locale("nl");
 		
 		this.proposedChanges = ko.observableArray();
 		this.comments = ko.observableArray();
-		//this.comments.push(new Comment("Gentse 3G","201502151930","apeoazeipazoeiopaziepazeopaopeiazpeipaziepazpazoieopazieopaziepoaz"));
-		//this.comments.push(new Comment("Pluimrukkers 1058G","201502151930","apeoazeipazoeiopaziepazeopaopeiazpeipaziepazpazoieopazieopaziepoaz"));
         this.dbStatus = ko.observable(dbStatusLayout(status));
 		this.dbActionFor = ko.observable(dbActionForLayout(actionFor));
 		this.status = ko.computed(function(){
-			//console.log(this.proposedChanges().filter(proposalAcceptedStateFilter('-')));
 			if(this.proposedChanges().filter(proposalAcceptedStateFilter('-')).length>0) {
 				return "IN AANVRAAG";
 			} else if(this.proposedChanges().filter(proposalAcceptedStateFilter('MOGELIJK')).length>0) {
@@ -309,8 +304,6 @@ moment.locale("nl");
 		self.lastSuccess = ko.observable();
 		self.selectedStatusses = ko.observableArray();
 		
-		//console.log("URL team:"+getUrlParameter("team"));
-		//console.log("URL cTeam:"+getUrlParameter("cTeam"));
 		self.requestedHomeTeamName = getUrlParameter("hteam");
 		self.requestedOutTeamName = getUrlParameter("oTeam");
 		
@@ -323,7 +316,6 @@ moment.locale("nl");
 				data.clubs.forEach(function(club) {//Should only contain one club
 					club.teams.forEach(function(team) {
 						if (team.teamName == self.requestedHomeTeamName || team.teamName == self.requestedOutTeamName) {
-							//console.log("Found requestedTeamName "+ team.teamName);
 							self.chosenClub(club);
 							self.chosenTeam(team);
 						}
@@ -335,7 +327,7 @@ moment.locale("nl");
 		});
 
 		self.resetForm = function() {
-			console.log("Resetting form...");
+			//console.log("Resetting form...");
 		};
 
 		self.chosenClub.subscribe(function(newClub) {
@@ -347,8 +339,6 @@ moment.locale("nl");
 			if (newTeam !== undefined && newTeam !== null) {
 				//LOAD EVENTS FOR THIS CLUB/TEAM
 				self.chosenMeeting(null);
-                //api/meetingAndMeetingChangeRequest
-                //verplaatsing/meetingAndMeetingChangeRequest
 				$.get("verplaatsing/meetingAndMeetingChangeRequest/"+encodeURIComponent(self.chosenClub().clubName)+"/"+encodeURIComponent(newTeam.teamName), function(data) {
 					var myMeetings = [];
 					$.each(data.meetings, function(index,m) {
@@ -363,7 +353,6 @@ moment.locale("nl");
 					self.availableMeetings(myMeetings);
 					
 					//Counterteam selected by URL
-
 					if (typeof self.requestedHomeTeamName !== 'undefined') {
 						self.availableMeetings().forEach(function(meeting) {
 							if (meeting.hTeam == self.requestedHomeTeamName && meeting.oTeam == self.requestedOutTeamName) {
@@ -381,13 +370,11 @@ moment.locale("nl");
 		});
 			
 		self.addNewProposal = function() {
-			console.log("Adding new proposal...");			
 			self.chosenMeeting().proposedChanges.push(giveNewProposedChange(self.chosenTeam().teamName,self.chosenTeam().teamName,self.chosenMeeting().hTeam,self.chosenMeeting().oTeam));
 		};
 		
 
 		self.addNewComment= function() {
-			console.log("Adding new comment...");
 			self.chosenMeeting().comments.push(giveNewComment(self.chosenTeam().teamName,moment().format("YYYYMMDDHHmm"),self.newCommentText()));
 			self.newCommentText("");
 		};
