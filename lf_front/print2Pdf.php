@@ -1,6 +1,8 @@
 <?php
 
 $output = json_decode($_POST["data"]);
+$findNewLine = array("\r\n", "\n", "\r");
+$replaceNewLine = '<br />';
 
 $html = '<style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;border-color:#bbb;}
@@ -56,7 +58,12 @@ foreach($output->games as $key => $game) {
 		}
 		$html .= '</tr>';
 	}
-}  
+}
+$html .='<tr>
+    <td colspan="2">invallers<br>commentaar</td>
+    <td colspan="4">'.str_replace($findNewLine,$replaceNewLine,$output->chosenMeeting->comment).'</td>
+</tr>
+';
 $html .='</tbody></table><br/><br/>';
 $html .='Ploegkapitein '. $output->chosenTeam->teamName.': '. $output->chosenTeam->captainName.'<br/>';
 $html .='Handtekening, <br>';

@@ -262,12 +262,12 @@
                         <!-- ko if: $root.chosenTeam().isFull() -->
                         <div id="print" class='label label-default' style='font-size:30px;margin-right:10px;'>
                             <a href="#" onclick="javascript:window.print()">
-                                        <span class="glyphicon glyphicon-print">
+                                        <span class="glyphicon glyphicon-print"></span>
                             </a>
                         </div>
                         <div id="print2pdf" class='label label-default' style='font-size:30px;margin-right:10px;'>
                             <a href="#" data-bind="click: print2pdf">
-                                        <span class="glyphicon glyphicon-floppy-save">
+                                        <span class="glyphicon glyphicon-floppy-save"></span>
                             </a>
                         </div>
                         <!-- /ko -->
@@ -313,32 +313,32 @@
                         </tr>
                         </thead>
                         <tbody data-bind="foreach: games">
-                        <tr>
-                            <td style="padding:0px">
-                                <div data-bind="css: gameTitleCss()">
-                                                <span class="label label-default" data-bind="text: id">
-                                </div>
-                            </td>
-                            <td style="padding:0px">
-                                <div data-bind="sortable: {data : playersInGame, allowDrop: allowMorePlayers, beforeMove: $root.verifyAssignments, afterMove: $root.verifyAssignmentsAfterMove}, css: gameCss()">
-                                    <div>
-                                        <span data-bind="text: fullName"></span>,
-                                        <span data-bind="text: vblId"></span>,
-                                        <span data-bind="text: ranking($parent.gameType)"></span>=<span data-bind="text: index($parent.gameType)"></span>
-                                        <div class="pull-right">
-                                            <a href="#" data-bind="click: $parent.removePlayer">
-                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                            </a>
+                            <tr>
+                                <td style="padding:0px">
+                                    <div data-bind="css: gameTitleCss()">
+                                                    <span class="label label-default" data-bind="text: id"></span>
+                                    </div>
+                                </td>
+                                <td style="padding:0px">
+                                    <div data-bind="sortable: {data : playersInGame, allowDrop: allowMorePlayers, beforeMove: $root.verifyAssignments, afterMove: $root.verifyAssignmentsAfterMove}, css: gameCss()">
+                                        <div>
+                                            <span data-bind="text: fullName"></span>,
+                                            <span data-bind="text: vblId"></span>,
+                                            <span data-bind="text: ranking($parent.gameType)"></span>=<span data-bind="text: index($parent.gameType)"></span>
+                                            <div class="pull-right">
+                                                <a href="#" data-bind="click: $parent.removePlayer">
+                                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <span data-bind="text: totalIndexWithLayout"></span>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span data-bind="text: totalIndexWithLayout"></span>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -442,8 +442,14 @@
                             </div>
                         </div>
                     </div>
-
-
+                </div>
+                <div class="row" data-bind="with: chosenMeeting">
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="well well-sm">
+                            Invallers (of andere opmerkingen)
+                            <textarea style="width:100%" data-bind="textInput: comment"></textarea>
+                        </div>
+                    </div>
                 </div>
                 <div class="row" data-bind="with: chosenTeam">
                     <div class="col-xs-12 col-sm-6">
@@ -512,33 +518,26 @@
                         </thead>
                         <tbody>
                         <!-- ko foreach: games -->
-                        <!-- ko foreach: playersInGame -->
-                        <tr>
-                            <!-- ko if: ($index() === 0) -->
-                            <td style="padding:0px" data-bind="attr:{rowspan: $parent.playersInGame().length}"><span data-bind="text: $parent.id"></td>
+                            <!-- ko foreach: playersInGame -->
+                            <tr>
+                                <!-- ko if: ($index() === 0) -->
+                                <td style="padding:0px" data-bind="attr:{rowspan: $parent.playersInGame().length}"><span data-bind="text: $parent.id"></td>
+                                <!-- /ko -->
+                                <td style="padding:0px"><span data-bind="text: lastName"></span></td>
+                                <td style="padding:0px"><span data-bind="text: firstName"></span></td>
+                                <td style="padding:0px"><span data-bind="text: vblId"></span></td>
+                                <td style="padding:0px"><span data-bind="text: ranking($parent.gameType)"></span></td>
+                                <!-- ko if: ($index() === 0) -->
+                                <td style="padding:0px" data-bind="attr:{rowspan: $parent.playersInGame().length}">&nbsp;</td>
+                                <!-- /ko -->
+                            </tr>
                             <!-- /ko -->
-                            <td style="padding:0px"><span data-bind="text: lastName"></span></td>
-                            <td style="padding:0px"><span data-bind="text: firstName"></span></td>
-                            <td style="padding:0px"><span data-bind="text: vblId"></span></td>
-                            <td style="padding:0px"><span data-bind="text: ranking($parent.gameType)"></span></td>
-                            <!-- ko if: ($index() === 0) -->
-                            <td style="padding:0px" data-bind="attr:{rowspan: $parent.playersInGame().length}">&nbsp;</td>
-                            <!-- /ko -->
-                        </tr>
-                        <!-- /ko -->
                         <!-- /ko -->
                         <tr>
-                            <td rowspan="2">invallers</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
+                            <td>invallers<br>commentaar</td>
+                            <td colspan="5" data-bind="with:$root.chosenMeeting">
+                                <span style="white-space: pre;" data-bind="text: comment"></span>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

@@ -118,7 +118,8 @@ if (!window.console.log) window.console.log = function () { };
 		this.oTeam = oTeam;
 		this.dateTime = dateTime;
 		this.locationName = locationName;
-		this.date = buildDateTime(dateTime);		
+		this.date = buildDateTime(dateTime);
+        this.comment = ko.observable("");
 		
 		this.fullMeetingLayout = formatDate(this.date) + " : " + this.hTeam + "-" + this.oTeam;
 		this.dateLayout = formatDate(this.date);
