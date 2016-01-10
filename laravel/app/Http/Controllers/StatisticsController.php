@@ -2,7 +2,6 @@
 
 use App\Http\Requests;
 use DB;
-use Illuminate\Http\Request;
 use Response;
 
 class StatisticsController extends Controller {
@@ -72,7 +71,7 @@ EOD;
 
 
         $query='';
-
+        DB::statement("SET SQL_BIG_SELECTS=1");
         switch($statType) {
             case "totalSelectAndPrintCmdPerTeam":
                 $result = DB::select($queryTotalSelectAndPrintCmdPerTeam);
