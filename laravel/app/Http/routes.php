@@ -24,10 +24,7 @@ Route::get('opstelling/clubAndTeams', 'OpstellingsController@clubAndTeams');
 
 Route::get('opstelling/teamAndClubPlayers/{teamName}', 'OpstellingsController@teamAndClubPlayers');
 
-
 Route::get('dbload/{doLoad}/{addTestClub}', 'DBLoadController@dbload');
-
-Route::get('dbloadFallback/{doLoad}/{addTestClub}', 'DBLoadControllerFallback@dbload');
 
 Route::get('/stats/opstelling/{statType}','StatisticsController@statisticsOpstelling');
 

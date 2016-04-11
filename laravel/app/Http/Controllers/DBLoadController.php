@@ -24,12 +24,13 @@ class DBLoadController extends Controller {
         //$LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=%2FwEPDwUJNjM0MDYzNDI3ZBgBBR5fX0NvbnRyb2xzUmVxdWlyZVBvc3RCYWNrS2V5X18WAgU9Y3RsMDAkY3RsMDAkY3RsMDAkY3BoUGFnZSRjcGhQYWdlJGNwaFBhZ2UkcG5sTG9naW4kUmVtZW1iZXJNZQVDY3RsMDAkY3RsMDAkY3RsMDAkY3BoUGFnZSRjcGhQYWdlJGNwaFBhZ2UkcG5sTG9naW4kTG9naW5JbWFnZUJ1dHRvbkDFcxzmupMNoFNI2833VjIpspSb&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=%2FwEdAAkkrxhVeFemLbIU82wv5PSCDc%2F5voaaGYfFlFBXi9EGFfyHSpCYj%2BAUNp9bXc20Z5f%2BOtme7httab8IViMP3HjzlRR%2BDpTMHdYiODpnuHxziR2B%2BiwIwJ5fF61AnAcX2%2BwvDdLMdOmJdT7lzlyuo8NCBjrAGg4uwJH4J35FqmwaB97lIlcv0kHWlCdwWozE4w6e5YuDNp%2F7v5Hoe%2Fq7l8Xai2IOSg%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='.$PROV_USERNAME.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='.$PROV_PWD.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
         //$LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=UUiMxwEx9hHvimyioyqnDsPeGHVhftVJBPzvMyBm5nWccdiBywv3QDxgEVHimBhZLfFxnqMgLpiBa8CEKKa3x6Uhn0LDZHrEMQdVDfhSGLlzrzVwQnCCMgjIrrff1w%2Fns2ZbUOIqxYB%2BuyKbAcZX1yj1sTbXns%2FWneHaUeug74iw2Xhl%2BXeX%2BPsSZFtEDRn6g50dG%2FMSqWd69WRYyhOEgAy6Yit%2FHOph0ZJ%2BbAW%2FxlZjn370gsyD0w0sPQYsKLtSUQAddNs449CLeUxVmAoz62w3z6FS0Wo3SxN3IeVJ7CR7bdS0&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=esjTYL6h5M6mOKWnx8EE9ZzO6FcwluwV6dQ6fO6I3XARrWQgvo3eJFvsbWtvibhiVdclIwNz85bH%2FmRomytK6rQZ%2F4eCGyogZvZIRGOi8SHThiDianeeT5xtK0p1F1Ohu%2FSzhOt6p11cJVZHV2qLM1c5iHs%2BYImLY2TMjUs%2FFGmUEreinSxoisZiGr5OgmYJOJOJrwDU8nPW4fEe%2FYsg%2B%2B2kT14i%2B56o4F7teXtsyQvIEBVrePxYhOncwTXw6XQf4962vg%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='.$PROV_USERNAME.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='.$PROV_PWD.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
         //$LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=bVJyNakpPV0f4usZzwuN0RFVXjxNPOBoGtK6FEtcdTPSG444DYCeMxjPP%2BiPDCaICHQ%2F1dZqZeZzeXeywJGGihN0%2Fp8gYzn6OTPl87P4FkPqL58X95uuuiVhxEQX4%2FJWFtdYbgx2D9OTVR0bC5jkB%2FVU116v4UcjRXIqUnmyLwgbSmnnBKWyv6ozI718LKmcj7rg3HPgGbq8Yikllj2288lkzCDxVAJuS9MP%2BbWpLQere1BO8qdTyI10Kh8xT%2FbYdW1DJ2PIKaKG08Hho%2F8ynCX1tyfPnrXkp%2BSY96qgh5749ag3&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=J835wQEgbd7lzA11VgzazffOVk1r%2BXIF%2Bmh7%2FskUlhLI18g6BjbRZrR39RELNs8I4ZS%2BV3Pg7rIB9%2FyiS%2FhudynPEygQu74u0hjhQja2FjJ5FoZPp6ItBWcVl4t4UY%2B88JU4j%2BXvrzja8NzwUIa%2BeUPiAsWG9G3pbdtKmEDVoxQnULUdmeGnRZeirmYN%2Fl7zAQ1jzO%2B73Z47Y%2BdZhP15McNE99cMoyoas8wCWpypwsyB%2F3nIghBD2sZQKVk5hKQUcR7PwQ%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='.$PROV_USERNAME.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='.$PROV_PWD.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
-        $LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=wTFLb60f92KsIViCa2ry9DwO%2Bwx6Kp7Irbh4DDBGZ41F349QLsIIz1FPViKI0Vo%2BVqWR6sM6UlAbGiP0JS60PqE9nKUCU%2FMAuiPrBA6oumnZ6AMJlrgAvtCGKXFH5jhMCtm01AysUwuvPATwg9niIzdQGzekzzjzkJqlENsTX8Q0ayGTlOmtAqe6ym9QxVwnqqI7gF%2BPrejfPQb6rLMce08vPRhshPxJdBOnYIxloXSgvrtUsZV0pCNyAeL%2FA8HxP%2FXqDe0Az1IrKUaPnU5SRHtaxua1HQuS5c91wQPqb8FodWUNGGGtfXFgeX65212rj%2FTKxRObLKB8sXMEHfUFD8AOGCmi7M%2FyQ6OHLtl7gDsKWEQu&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=JSBpr%2Fxi9aKoAvWe9GJdbhyJfdZFZ9Qpk6zicy7EO4bL3YLQ08yhBs2kSrwwEYaXDUD4TMDmbpnxKGtncySAc%2BNc%2BF%2BRVX8jDy9Gn1ZmnA7K822olyVrzz8IAPUFXn7VuCt3UWvJxm3JOkBKmlHK0oYnd8gu3Rx5ygbOttpYKBh3TDxqzV2UgS6BZw42QbxuEnjKxQD7QJCdR0CW0g2JB%2FLNlwM37LscGHegoSjVZIfx1W6IQeNbCeOX%2B%2BYIh1VTM%2FcuOA%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='.$PROV_USERNAME.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='.$PROV_PWD.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
-        $CLUBS_CSV_URL='https://toernooi.nl/organization/export/group_subgroups_export.aspx?id='.$PROV_ID.'&gid='.$PROV_GID.'&ft=1';
-        $TEAMS_CSV_URL='https://toernooi.nl/sport/admin/exportteams.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
-        $PLAYERS_CSV_URL='https://toernooi.nl/organization/export/export_memberperroletypepergroup.aspx?id='.$PROV_ID.'&gid='.$PROV_GID.'&ft=1&glid=1';
-        $MATCHES_CSV_URL='https://toernooi.nl/sport/admin/exportteammatches.aspx?id='.$PB_COMPETITIE_ID.'&ft=1&sd='.$PB_COMPETITIE_START_DAY.'000000&ed='.$PB_COMPETITIE_END_DAY.'000000';
-        $LOCATIONS_CSV_URL='https://toernooi.nl/sport/admin/exportlocations.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
+        //$LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=wTFLb60f92KsIViCa2ry9DwO%2Bwx6Kp7Irbh4DDBGZ41F349QLsIIz1FPViKI0Vo%2BVqWR6sM6UlAbGiP0JS60PqE9nKUCU%2FMAuiPrBA6oumnZ6AMJlrgAvtCGKXFH5jhMCtm01AysUwuvPATwg9niIzdQGzekzzjzkJqlENsTX8Q0ayGTlOmtAqe6ym9QxVwnqqI7gF%2BPrejfPQb6rLMce08vPRhshPxJdBOnYIxloXSgvrtUsZV0pCNyAeL%2FA8HxP%2FXqDe0Az1IrKUaPnU5SRHtaxua1HQuS5c91wQPqb8FodWUNGGGtfXFgeX65212rj%2FTKxRObLKB8sXMEHfUFD8AOGCmi7M%2FyQ6OHLtl7gDsKWEQu&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=JSBpr%2Fxi9aKoAvWe9GJdbhyJfdZFZ9Qpk6zicy7EO4bL3YLQ08yhBs2kSrwwEYaXDUD4TMDmbpnxKGtncySAc%2BNc%2BF%2BRVX8jDy9Gn1ZmnA7K822olyVrzz8IAPUFXn7VuCt3UWvJxm3JOkBKmlHK0oYnd8gu3Rx5ygbOttpYKBh3TDxqzV2UgS6BZw42QbxuEnjKxQD7QJCdR0CW0g2JB%2FLNlwM37LscGHegoSjVZIfx1W6IQeNbCeOX%2B%2BYIh1VTM%2FcuOA%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='.$PROV_USERNAME.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='.$PROV_PWD.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
+        $LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=fFOeUm3GO%2FP3HmG%2B6wDEKx%2BJjHmR%2Fe%2B777hXIxwWE8XADUStBETa%2FdJZvxXOzwqQ082wjyUPdnM2M7j%2FxMwxFgsBCMSRyldJ3%2FDany5SWaBG3eb6cPJ%2FH5AlH5zO3Wc06q9h3oX30465TAD6Mz%2F7MX0lPODX2abWB%2FkUNEhuh6psqLT5wNF3jFKJ0ldyGRjWvTP5KYIvSCAiGlmm3LN8dQP8pce1%2BxykmbH%2BGUMWzD1THWgEGC1A5lms7rsLlxQu30HsBCHkZjGmZovdbS230StheNPAjTUsZeJppYUdT2ldCncB%2BRG3TkGMeJYDK4Ke6VPgwkhpMM%2F0X%2BLRfEJ4f9nxQ4C9%2B3kJLhTjIQgcMgUNNbV%2B&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=DIEVYDQ3qhCtNktK5qVeyedQBuuht%2Bv1YFHJ1NEEOrfA8G80AX6%2B5sfTsRT4PdwzorA1h9znDIRFhfj1jYoKWy0k3O4zDC00YfhYyS87IwSMuj0cmXbbXX%2F26jpHy%2FF%2BhJpfgPbuHaMsJVrE8rHdlzrqQ0q7DOnDXPXLePGPLRPFHzCp70PDacAX%2B0%2B9k2viEwd9ynve1pYyJfmNJ1YsASalCuzYpjbdydQrz3PQIYLOeE9AT5%2BSBEZc3NLHoIV%2BdDLo6Q%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName=pbo&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password=Cb7BGgZ6YD&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
+        $CLUBS_CSV_URL='https://www.toernooi.nl/organization/export/group_subgroups_export.aspx?id='.$PROV_ID.'&gid='.$PROV_GID.'&ft=1';
+        $TEAMS_CSV_URL='https://www.toernooi.nl/sport/admin/exportteams.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
+        $PLAYERS_CSV_URL='https://www.toernooi.nl/organization/export/export_memberperroletypepergroup.aspx?id='.$PROV_ID.'&gid='.$PROV_GID.'&ft=1&glid=1';
+        $MATCHES_CSV_URL='https://www.toernooi.nl/sport/admin/exportteammatches.aspx?id='.$PB_COMPETITIE_ID.'&ft=1&sd='.$PB_COMPETITIE_START_DAY.'000000&ed='.$PB_COMPETITIE_END_DAY.'000000';
+        $LOCATIONS_CSV_URL='https://www.toernooi.nl/sport/admin/exportlocations.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
 
         $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2015-2016/basisopstellingen.csv';
         $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2015-2016/indexen_spelers.csv';
@@ -39,12 +40,27 @@ class DBLoadController extends Controller {
         $ch = curl_init();
 
         // set url
-        curl_setopt($ch, CURLOPT_URL, "https://toernooi.nl/member/login.aspx");
+        curl_setopt($ch, CURLOPT_URL, "https://www.toernooi.nl/member/login.aspx");
         curl_setopt($ch, CURLOPT_USERAGENT, $USER_AGENT);
-        //curl_setopt($ch, CURLOPT_POST, TRUE);
         if (PHP_VERSION_ID > 50500) {
             curl_setopt($ch, CURLOPT_SAFE_UPLOAD, TRUE);//PHP5.5 only option
-        }
+        };
+
+        // Retrieve session cookie
+        // return all http header and cookies
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        // return the transfer as a string
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $formPage= curl_exec($ch);
+        preg_match_all('|Set-Cookie: (.*);|U', $formPage, $results);
+
+
+        //Construct session cookie +  bypass "do you accept cookies" warning
+        $cookies = "st=c=1; ".implode(';', $results[1]);
+        curl_setopt($ch, CURLOPT_COOKIE, $cookies);
+
+        //Do form logon
+        //curl_setopt($ch, CURLOPT_POST, TRUE);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $LOGIN_STRING);
 
 
@@ -54,24 +70,18 @@ class DBLoadController extends Controller {
         //curl_setopt($ch, CURLOPT_COOKIEFILE, '/tmp/cookie.txt');
         //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 
-        //set cookie to bypass "do you accept cookies" warning
-        curl_setopt($ch, CURLOPT_COOKIE, "st=c=1");
-        //return all http header and cookies
-        curl_setopt($ch, CURLOPT_HEADER, 1);
-        //return the transfer as a string
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         // $output contains the output string
         $logonResponse = curl_exec($ch);
 
         //Parse the cookies out of the r
         preg_match_all('|Set-Cookie: (.*);|U', $logonResponse, $results);
-        $cookies = implode(';', $results[1]);
+        $cookies = "st=c=1; ".implode(';', $results[1]);
 
         //Ready to download csv files
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_POST, FALSE);
-        curl_setopt($ch, CURLOPT_COOKIE, "st=c=1; ".$cookies);
+        curl_setopt($ch, CURLOPT_COOKIE, $cookies);
 
         //Download CLUBS CSV
         curl_setopt($ch, CURLOPT_URL, $CLUBS_CSV_URL);
