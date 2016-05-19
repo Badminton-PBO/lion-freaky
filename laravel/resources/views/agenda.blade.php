@@ -118,12 +118,20 @@
 
 <div>
     <div class="alignleft"><strong>Android gebruikers (met google account)</strong><br>
-        Volg instructies op <a href="https://support.google.com/calendar/answer/37099?hl=nl&amp;ref_topic=1672445">Google : De agenda van een kennis toevoegen.</a><br>
-        Synchroniseer nu je google-account op smartphone/tablet (of wees geduldig tot synchronisatie vanzelf loopt.<br>
-        Afhankelijk van je gebruikte kalender applicatie (ik gebruik bv. <a href="https://play.google.com/store/apps/details?id=netgenius.bizcal&amp;hl=nl" target="_new">Business calendar</a>) kan je de geïmporteerde kalenders selecteren en bekijken</div>
+        1/ Volg instructies op <a href="https://support.google.com/calendar/answer/37099?hl=nl&amp;ref_topic=1672445">Google : De agenda van een kennis toevoegen.</a><br>
+        2/ Synchroniseer nu je google-account op smartphone/tablet (of wees geduldig tot synchronisatie vanzelf loopt.<br>
+        3/ Afhankelijk van je gebruikte kalender applicatie (ik gebruik bv. <a href="https://play.google.com/store/apps/details?id=netgenius.bizcal&amp;hl=nl" target="_new">Business calendar</a>) kan je de geïmporteerde kalenders selecteren en bekijken
+    </div>
     <p>&nbsp;</p>
     <div class="alignleft"><strong>Apple iOS (iphone,…) gebruikers met een google account:</strong><br>
-        Nog niet uitgeprobeerd maar kijk eens op <a href="https://support.google.com/calendar/answer/151674" target="_new">officiele info van google</a> of op <a href="http://www.howtogeek.com/97566/how-to-sync-your-shared-google-calendars-with-your-iphone/" target="_new">http://www.howtogeek.com/97566/how-to-sync-your-shared-google-calendars-with-your-iphone/</a></div>
+        <p>Bij gebruik van standaard kalendar app van iOS<br>
+        1/ Volg instructies op <a href="https://support.google.com/calendar/answer/37099?hl=nl&amp;ref_topic=1672445">Google : De agenda van een kennis toevoegen.</a><br>
+        2/ Activeer je google account op je iPhone/Ipad (indien dit nog niet het geval is). Zie <a href="https://support.google.com/calendar/answer/99358" target="_new">https://support.google.com/calendar/answer/99358  --> "Calendar app on your iPhone or IPad"</a><br>
+        3/ Activeer sync van extra kalendars (naast de hoofd kalender). Zie <a href="https://support.google.com/calendar/answer/99358" target="_new">https://support.google.com/calendar/answer/99358  --> "Sync other calendars"</a>
+        </p>
+
+        <p>Bij gebruik van andere app kan je misschien meer info krijgen op <a href="https://support.google.com/calendar/answer/151674" target="_new">https://support.google.com/calendar/answer/151674</a>
+    </div>
     <p>&nbsp;</p>
     <div class="alignleft"><strong>Synchroniseren via iCal (bv. Apple gebruikers zonder google account)</strong><br>
         Elke van bovenstaande agenda’s heeft een iCal-URL op https://www.google.com/calendar/ical/[agenda-code]/public/basic.ics waarbij je [agenda-code] wijzigt door één van bovenstaande. Bv. https://www.google.com/calendar/ical/3j72eskldk70t4pl5jiqv21oa0@group.calendar.google.com/public/basic.ics voor officiële tornooien. <br>Deze iCal-URL kan je bijvoorbeeld gebruiken in Apple iCal. Zie volgende <a href="http://www.googletutor.com/syncing-google-calendar-with-ical" target="_new">screenshots</a></div>
