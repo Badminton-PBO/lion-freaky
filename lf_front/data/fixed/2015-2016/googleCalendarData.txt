@@ -3,17 +3,13 @@
 4GHENT 2D competitie,09drps09855n9u3u5oc92a1r18@group.calendar.google.com
 4GHENT 2G competitie,091uo4h4un5vgl6r0be30949f0@group.calendar.google.com
 4GHENT 2H competitie,unlc9ff79b9nv06i86oiq81f3s@group.calendar.google.com
-4GHENT 3D competitie,1jdld4ne0narbltc1c3edbd8jk@group.calendar.google.com
 4GHENT 3G competitie,q28cbqfa7kqf8d93nr3hgo9up8@group.calendar.google.com
-4GHENT 3H competitie,il53f9597tvseoknisoqbejgn4@group.calendar.google.com
 4GHENT 4G competitie,lsvkneuco7amtei2d4feih5ado@group.calendar.google.com
 Aalsterse 1G competitie,0utko81qeo05jc3itv4bhg2af0@group.calendar.google.com
 Aalsterse 1H competitie,u7736g970n0hbrnokcsltod6i0@group.calendar.google.com
 Aalsterse 2H competitie,is7eekeboaqe0ddktrpscgd3hk@group.calendar.google.com
 Aalsterse 3H competitie,vkf1bi9djrv2aji10k838tl53g@group.calendar.google.com
-Aalsterse 4H competitie,n70j9ff73qrrjuo67cjrcjko00@group.calendar.google.com
 Beveren 1G competitie,93b3idrm0img7ejd7u1009idp8@group.calendar.google.com
-Beveren 1H competitie,3ipoqttmbkd8cp3ks2bejcijf4@group.calendar.google.com
 Beveren 2G competitie,f2a69gsmkebo3sappg5i6ns7hs@group.calendar.google.com
 Beveren 2H competitie,d3ocip7k0iofrbutmmvdi8d02s@group.calendar.google.com
 Beveren 3H competitie,e9ojkcfqitrf7bh5auvpbiabh8@group.calendar.google.com
@@ -26,12 +22,10 @@ Buggenhout 2G competitie,h44t47jfjom03m80eb9ijkqq3c@group.calendar.google.com
 Buggenhout 2H competitie,1p93j79u7qus3ljppq4b1lgtbc@group.calendar.google.com
 Buggenhout 3G competitie,lvqdmim6851565j1c7abmhv4c8@group.calendar.google.com
 Buggenhout 3H competitie,r7876bp39op7eepup2iber0hts@group.calendar.google.com
-Buggenhout 4H competitie,21tsfvhhdn0mrk198dt530j8g4@group.calendar.google.com
 Danlie 1G competitie,0sf8uo70b8168m4v2e3m07am4g@group.calendar.google.com
 Danlie 1H competitie,3a6u20cd4nneqt6b1fd51jihao@group.calendar.google.com
 Danlie 2G competitie,kqec68n0us7ov1me3nquhlnkkc@group.calendar.google.com
 Danlie 2H competitie,hl4v4i5gfp8nd94o0jm0025a0s@group.calendar.google.com
-Danlie 3H competitie,fae4e0udfhldv68ouae9pk2l88@group.calendar.google.com
 De Mintons 1H competitie,qmaqe1dehec77mukp2rg0fvego@group.calendar.google.com
 De Mintons 2D competitie,99av8icp23mm0opq70281l6e2o@group.calendar.google.com
 De Mintons 2G competitie,b81he0dmt1jaq4uvocljjes9k8@group.calendar.google.com
@@ -69,7 +63,6 @@ Drive 6G competitie,s27jvb09rrf6bdfkd7engvbsr4@group.calendar.google.com
 Drive 6H competitie,mo2fse8cia5bfec0o85t4n96hg@group.calendar.google.com
 Drive 7G competitie,kulsj1am2keotog9nbb1df6gpg@group.calendar.google.com
 Drive 7H competitie,2vjjfia3rgo04588o2vspbie54@group.calendar.google.com
-Drive 8G competitie,12h2leh4shmqs225dodrfuh3n4@group.calendar.google.com
 Eikenlo 2G competitie,tcc23rn56d2ft50mfnhk30sq6k@group.calendar.google.com
 Eikenlo 2H competitie,2gqpgdveid8flbc578qj6ruatk@group.calendar.google.com
 Eikenlo 3H competitie,lb9q0cl9ffm7n489o7t34otdhs@group.calendar.google.com
@@ -81,8 +74,6 @@ Flee Shuttle 1H competitie,2e5dmgf90niadhkmieopphvcdk@group.calendar.google.com
 Flee Shuttle 2H competitie,hg94ur0r82rmaqcksa19a1sdkc@group.calendar.google.com
 Gentse 1D competitie,5258frodbqmi535lshgsrr28t4@group.calendar.google.com
 Gentse 1G competitie,hj0pmlq2noaunh93r9fvcfftik@group.calendar.google.com
-Gentse 1H competitie,g5q527nffj0amf4upj7d7e3rs4@group.calendar.google.com
-Gentse 2D competitie,mh9ji22d6s16j0clkcr0s2l488@group.calendar.google.com
 Gentse 2G competitie,c798qikci0faviac1k2iume4ns@group.calendar.google.com
 Gentse 2H competitie,2ffq1mb6mmu7f1fevooae35u7s@group.calendar.google.com
 Gentse 3G competitie,cfq5k54rv0vtfuqkp4u51p5qdk@group.calendar.google.com
@@ -101,13 +92,11 @@ Hoge Wal 1H competitie,0kklli6j0vtkqeendhpfvpl830@group.calendar.google.com
 Landegem 1G competitie,q6vncvovj7jtp6lse6vj2rlsqo@group.calendar.google.com
 Landegem 1H competitie,djacqut2s5ouhc234enajhrqjo@group.calendar.google.com
 Landegem 2D competitie,no7oiqs4uhlb9f1buv06g8sbd4@group.calendar.google.com
-Landegem 2G competitie,n2ghhrrn5j4funl7sjcbochh48@group.calendar.google.com
 Landegem 2H competitie,22ognnub04ksp9fvjs21tenv7c@group.calendar.google.com
 Landegem 3G competitie,sbqb1mnejkd3133gaoem1qc4v0@group.calendar.google.com
 Landegem 3H competitie,pcchr2ipmdag6suro4qcebf4ac@group.calendar.google.com
 Landegem 4G competitie,jj38s4oor4hinfu49k6fp93bds@group.calendar.google.com
-Landegem 4H competitie,o3oterp278qob96cdtco9refq8@group.calendar.google.com
-Landegem2G competitie,55sp224lfj1e8oav191b7hnbu4@group.calendar.google.com
+Landegem 2G competitie,55sp224lfj1e8oav191b7hnbu4@group.calendar.google.com
 Latem - De Pinte 2D competitie,udqpjibgt91hdnb74kf2v2pi9c@group.calendar.google.com
 Latem - De Pinte 2G competitie,97vgfpk1nuamq2jt1i1ii4t5v0@group.calendar.google.com
 Latem - De Pinte 2H competitie,40cb0spoip6gibk8g73lf4n4oc@group.calendar.google.com
@@ -116,26 +105,14 @@ Latem - De Pinte 3H competitie,hi4nf1j3r6c00h50nft2mccea8@group.calendar.google.
 Latem - De Pinte 4G competitie,90am0srk0ajcqbejh6l4sq2hnk@group.calendar.google.com
 Latem - De Pinte 4H competitie,qv49r5rrvaf72akb368lgqrv04@group.calendar.google.com
 Latem - De Pinte 5H competitie,06k56jqnm887lv5v1al7v9mmn0@group.calendar.google.com
-Latem-De Pinte 2D competitie,jt2no5q27lkhuon6v22f10k4cc@group.calendar.google.com
-Latem-De Pinte 2G competitie,1o6upikbuu6tbsfl7da3osia1k@group.calendar.google.com
-Latem-De Pinte 2H competitie,gld2un6uti91rvq1rb3ueirbok@group.calendar.google.com
-Latem-De Pinte 3D competitie,68i24ncbe1e1d6jinfbmva7od8@group.calendar.google.com
-Latem-De Pinte 3G competitie,i9mtnq6m81ibrumuj805rnnsng@group.calendar.google.com
-Latem-De Pinte 3H competitie,ffaouj05phtvl5m6ggf96d6dok@group.calendar.google.com
-Latem-De Pinte 4G competitie,u0q5d9rsk997cl17a0md370lkg@group.calendar.google.com
-Latem-De Pinte 4H competitie,aeq3344d5jk1e4jdhu06r2cnj8@group.calendar.google.com
-Latem-De Pinte 5H competitie,7e00jjiiq5v3cbkp5pc2rkplak@group.calendar.google.com
-Lede 1 H competitie,frkkfge6u47oigfjo8gm1ee4oc@group.calendar.google.com
+Lede 1H competitie,frkkfge6u47oigfjo8gm1ee4oc@group.calendar.google.com
 Lede 1G competitie,tb5us7cqrqkdrci4h80ghrhad4@group.calendar.google.com
-Lede 1H competitie,p8gmdqfagh4ubad99bct8mb7f4@group.calendar.google.com
-Lede1G competitie,9bli29mm4rehrvmaiteg1go60s@group.calendar.google.com
 Lokerse 10H competitie,m2jtkcfnacpb8gk4l7tmdotjp0@group.calendar.google.com
 Lokerse 11H competitie,692q6mbvi6368c59namgvlm77g@group.calendar.google.com
 Lokerse 12H competitie,526m48d5lv2m7jgveqf7gppju8@group.calendar.google.com
 Lokerse 13H competitie,583bdags14q8ap4hmiis18faa0@group.calendar.google.com
 Lokerse 2D competitie,unvtdmpmktdi1raavljn47jheg@group.calendar.google.com
 Lokerse 3D competitie,sbur70s0jbiogcf064pg1idcek@group.calendar.google.com
-Lokerse 4D competitie,v86h2i7otpqjk7pe23hl5mofu8@group.calendar.google.com
 Lokerse 4G competitie,1kb3ldqf9nhdtb8s0liua3vp3o@group.calendar.google.com
 Lokerse 4H competitie,ck6r6pfvb3fln27mufs9flrf78@group.calendar.google.com
 Lokerse 5G competitie,uhuo2djuuq2057dm72232cvhsk@group.calendar.google.com
@@ -148,8 +125,7 @@ Lokerse 8G competitie,43h4kugjejjae3om6v4shhctcg@group.calendar.google.com
 Lokerse 8H competitie,mnaucpthd3u3p4lv8pe4akt2s0@group.calendar.google.com
 Lokerse 9G competitie,jnilcpimpb5h61ao3jsr77eetg@group.calendar.google.com
 Lokerse 9H competitie,l0refnqh28aro16ct0bb863a74@group.calendar.google.com
-NILSTON 1H competitie,kag16ebhudj3ppqjc1q4a6v8cg@group.calendar.google.com
-Oudegem 1D competitie,imj2rohk2l3b2ofc0o877ti1ig@group.calendar.google.com
+Nilston 1H competitie,kag16ebhudj3ppqjc1q4a6v8cg@group.calendar.google.com
 Oudegem 2D competitie,rmnt7hobdj4ia73q0ng3ctd400@group.calendar.google.com
 Oudegem 2G competitie,5puvr9a1pf3ir15v8kck396am8@group.calendar.google.com
 Oudegem 2H competitie,tt4c106a1g962s96kudtel19v0@group.calendar.google.com
@@ -163,7 +139,6 @@ Oudegem 5H competitie,3agq7un13s2uq3n8vo1lce1pfg@group.calendar.google.com
 Oudegem 6G competitie,n7ir23aa01ilci1l6jthpk95ts@group.calendar.google.com
 Pluimplukkers 2D competitie,vuvr1hie5pnuc8u2kmo58i0n4k@group.calendar.google.com
 Pluimplukkers 3D competitie,fmmbp28p0pj23nedqtt2n8t95c@group.calendar.google.com
-Pluimplukkers 4D competitie,bo2afg182mbmpdnhnt0akprsc0@group.calendar.google.com
 Pluimplukkers 4G competitie,ejf53rjuccvo5tskbfao7ov7p0@group.calendar.google.com
 Pluimplukkers 4H competitie,162c5nlgfu4v7vhv7jlslhlqu0@group.calendar.google.com
 Pluimplukkers 5G competitie,dhumrhl52nhuo2lifmfdn2qlu4@group.calendar.google.com
@@ -174,14 +149,12 @@ Pluimplukkers 7G competitie,qfer3e891i26o0dn7sf3mlv5r0@group.calendar.google.com
 Pluimplukkers 7H competitie,htanqhmim5ect3pc2fgdln3fbs@group.calendar.google.com
 Pluimplukkers 8G competitie,v06ckbdbf2lvqnlm7kmmhd5g3o@group.calendar.google.com
 Pluimplukkers 8H competitie,5aft1glommmoi6kt7jntkqrhhk@group.calendar.google.com
-Pluimplukkers 9G competitie,kn750557o82jupab473tfqehlg@group.calendar.google.com
 Sentse 1D competitie,d43ldpglrrj3psg19ekenps3qk@group.calendar.google.com
 Sentse 1G competitie,9r6le4r60641sqq0ft2nbnh2vk@group.calendar.google.com
 Sentse 1H competitie,h2prpqetklog9roj3ghvv569lk@group.calendar.google.com
 Sentse 2G competitie,j4m2lse3pplslh70gnvl6kri1c@group.calendar.google.com
 Sentse 2H competitie,m13v6ouql0uqu6h0ntme2d6564@group.calendar.google.com
 Shuttle Stars 1G competitie,9hc7pb77g8pipltn551c6v7j3c@group.calendar.google.com
-Shuttle Stars Puyenbroeck 1G competitie,54nm3gcfmos0dp4omvcvom6tms@group.calendar.google.com
 Smash For Fun 1D competitie,0bh9ailjfis7dbht7jm3fokb10@group.calendar.google.com
 Smash For Fun 1G competitie,u0mogm9jn5he9s72j4jsu2hkss@group.calendar.google.com
 Smash For Fun 1H competitie,nclegrmkrcb6b1hs35re9vr6d8@group.calendar.google.com
@@ -194,7 +167,6 @@ Stekene 1H competitie,4uasecsb5798uesov8t39gok7g@group.calendar.google.com
 Stekene 2G competitie,ks49tlhpg5ffdlolltu9b6ukdo@group.calendar.google.com
 Stekene 2H competitie,bl9j9rcufb8urt183h67htupm4@group.calendar.google.com
 Stekene 3G competitie,kbj11q3osm60m1021v0tcsijp8@group.calendar.google.com
-Stekene 3H competitie,d7r0t31qv9oneh1e449vdqlfmo@group.calendar.google.com
 Stekene 4G competitie,r71nka6c5usm792r5o80bjvj8c@group.calendar.google.com
 Temse 1G competitie,upjtv0dten7kmh3g35sgo1e0e8@group.calendar.google.com
 Temse 1H competitie,onu7hdimvcfan37okmmggdre8c@group.calendar.google.com
@@ -203,7 +175,6 @@ The Flying Shuttles 1G competitie,9svi65tb4qmhsmg2sr4beq1h0g@group.calendar.goog
 The Flying Shuttles 1H competitie,ikqn730mo6ka8k7ul81igup794@group.calendar.google.com
 The Flying Shuttles 2G competitie,bj1dq7rmfq0q0s7hs3l6ds2dgk@group.calendar.google.com
 The Flying Shuttles 2H competitie,estoud8bs9uqthn61dr8ft3gro@group.calendar.google.com
-The Flying Shyttles 1H competitie,q2v3m0qqtpcn6hm5rmlul295ok@group.calendar.google.com
 VLA-BAD 1D competitie,d5tf9an633j5pps47u39ib4qho@group.calendar.google.com
 VLA-BAD 1G competitie,7aoup3llfeu2udnnv9d6vkliq8@group.calendar.google.com
 VLA-BAD 1H competitie,164f7rld7lgg61ntoj0brofreo@group.calendar.google.com
@@ -228,10 +199,7 @@ Wetteren 4G competitie,7l4irvfcv4gaoj7eqamvoru2bk@group.calendar.google.com
 Wetteren 4H competitie,backke9l1g5dl8av94kqfgdugo@group.calendar.google.com
 Wetteren 5G competitie,kaabnll5h6a0lbeuhsoa521k6g@group.calendar.google.com
 Wetteren 5H competitie,3h5knap74i8l5frr4vaba4out4@group.calendar.google.com
-Wetteren 6H competitie,pakrnto8vd8iv50l957icukg8c@group.calendar.google.com
 Wit-Wit 2G competitie,0f5n03aum3vrsics87h0i3hi9c@group.calendar.google.com
 Wit-Wit 2H competitie,b0h38ld9r3rgmt2cui5sfeh5gs@group.calendar.google.com
-Wit-Wit 3G competitie,1akktdu8eipl7asug2id5he8i0@group.calendar.google.com
 Wit-Wit 3H competitie,ogd5u8pouhgi93b7b96hcuupnc@group.calendar.google.com
 Wit-Wit 4H competitie,i2r12shicmq96pvni1mc5q7t5o@group.calendar.google.com
-Wit-Wit 5H competitie,nbdbc5p360nnqk35fq70ntol0o@group.calendar.google.com
