@@ -33,7 +33,7 @@ De zogenaamde fixed-data staat onder folder "data/fixed" en is gelukkig niet pri
 
 Omdat deze data vanuit verschillende bronnen komt zijn headers & field seperators verschillend. Ze zijn echter cruciaal voor correct werking van de DB-load dus opletten geblazen.
 
-  * data/fixed/basisopstellingen.csv
+  * data/fixed/2016-2017/basisopstellingen.csv
 Basisopstelling van provenciale ploegen, dus NIET de liga ploegen
 Let op komma field-seperato!
 ```
@@ -42,14 +42,14 @@ player_playerId,team_teamName
 ...
 ```
 
-  * data/fixed/indexen\_spelers\_01052014.csv
+  * data/fixed/2016-2017/indexen\_spelers\_01052014.csv
 Zogenaamde vaste indexen van alle vlaamse spelers aan begin van competitie-seizoen. Omwille van transfers moeten dit alle vlaamse spelers zijn.
 ```
 Lidnummer;Klassement enkel;Klassement dubbel;Klassement gemengd
 50995006;D;D;D
 ...
 ```
-  * data/fixed/liga\_basisopstelling\_gemengd\_20142015.csv
+  * data/fixed/2016-2017/liga\_nationale\_basisopstelling.csv
 Basisopstelling van gemengde LIGA ploegen
 ```
 Club,Discipline,Teamnaam,Lidnummer,Voornaam,Achternaam,Geboortedatum,geslacht,Player level single,Player level double,Player level mixed,Positie
