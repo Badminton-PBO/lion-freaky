@@ -52,8 +52,8 @@ Lidnummer;Klassement enkel;Klassement dubbel;Klassement gemengd
   * data/fixed/2016-2017/liga\_nationale\_basisopstelling.csv
 Basisopstelling van gemengde LIGA ploegen
 ```
-Club,Discipline,Teamnaam,Lidnummer,Voornaam,Achternaam,Geboortedatum,geslacht,Player level single,Player level double,Player level mixed,Positie
-BC DE DIJLEVALLEI VZW,Gemengd,Dijlevallei 2G,50044584,Geert,Provoost,4/17/1980,M,B1,A,B1,40
+player_playerId,team_teamName,club_clubName
+50102716,4GHENT 1D,4GHENT BC
 ...
 ```
 
