@@ -226,7 +226,7 @@ if (!window.console.log) window.console.log = function () { };
         this.fixedId = fixedId;
         this.teamType = teamType;
         this.totalIndex = "TODO";
-
+        this.playersInTeam = ko.observableArray();
 
         this.teamNumber = ko.computed(function(){
             return vm.teams().filter(teamFilterOfTeamType(this.teamType)).filter(teamFilterHavingFixedIndexSmallerThan(this.fixedId)).length +1
@@ -235,6 +235,11 @@ if (!window.console.log) window.console.log = function () { };
         this.teamName = ko.computed(function(){
             return vm.teamBaseName()+" "+this.teamNumber()+this.teamType;
         },self);
+
+        this.removePlayer = function(p) {
+            self.playersInTeam.remove(p);
+        };
+
 
     }
 

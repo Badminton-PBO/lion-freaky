@@ -14,6 +14,17 @@
     </script>
 
     <style type="text/css">
+        .baseTeam {
+            border: solid 3px #666;
+            min-height: 100px;
+            background-color: #666;
+            margin: 5px;
+            padding: 2px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 2px #999;
+            color: #fff;
+            min-width:150px;
+        }
 
         .playerDetail {
             font-size:10px;
@@ -90,6 +101,17 @@
                             </div>
                         </td>
                         <td style="padding:0px">
+                            <div data-bind="sortable: {data : playersInTeam, allowDrop: true}" class="baseTeam">
+                                <div>
+                                    <span data-bind="text: fullName"></span>,
+                                    <span data-bind="text: vblId"></span>,
+                                    <div class="pull-right">
+                                        <a href="#" data-bind="click: $parent.removePlayer">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                         <td>
                             <div>
