@@ -105,6 +105,7 @@
                                 <div>
                                     <span data-bind="text: fullName"></span>,
                                     <span data-bind="text: vblId"></span>,
+                                    <span data-bind="text: fixedIndexInsideTeam($parent.teamType)"></span>
                                     <div class="pull-right">
                                         <a href="#" data-bind="click: $parent.removePlayer">
                                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
@@ -115,7 +116,7 @@
                         </td>
                         <td>
                             <div>
-                                <span data-bind="text: totalIndex"></span>
+                                <span data-bind="text: totalFixedIndexInsideTeam"></span>
                             </div>
                         </td>
                         <td>

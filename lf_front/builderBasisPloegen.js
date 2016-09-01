@@ -202,7 +202,7 @@ if (!window.console.log) window.console.log = function () { };
             this.devision = devision;
             this.series = series;
             this.baseTeamVblIds = baseTeamVblIds;
-            this.teamType = teamName.slice(-1);
+            this.gameType = teamName.slice(-1);
             this.teamNumber  = teamName.slice(-2,-1);
 
             this.playersInBaseTeam = ko.observableArray();
@@ -225,7 +225,6 @@ if (!window.console.log) window.console.log = function () { };
         var self=this;
         this.fixedId = fixedId;
         this.teamType = teamType;
-        this.totalIndex = "TODO";
         this.playersInTeam = ko.observableArray();
 
         this.teamNumber = ko.computed(function(){
@@ -239,6 +238,15 @@ if (!window.console.log) window.console.log = function () { };
         this.removePlayer = function(p) {
             self.playersInTeam.remove(p);
         };
+
+        this.totalFixedIndexInsideTeam = ko.computed(function() {
+            var totalI=0;
+            var myGameType= this.gameType;
+            $.each(this.playersInTeam(), function(index,player) {
+                totalI += player.fixedIndexInsideTeam(teamType);
+            });
+            return totalI;
+        },this);
 
 
     }
@@ -260,8 +268,8 @@ if (!window.console.log) window.console.log = function () { };
         });
 
         self.addTeam = function(teamType) {
-            debug("Adding team "+teamType);
             self.fixedIdTeamCounter++;
+            debug("Adding team "+teamType+ " "+self.fixedIdTeamCounter);
             switch (teamType) {
                 case "H":
                     return self.teams.push(new Team(self.fixedIdTeamCounter,"H",self));
