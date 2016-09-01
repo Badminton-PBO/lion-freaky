@@ -50,6 +50,11 @@ Route::get('api/calendarSync','CalendarSyncController@pboTeamMatches');
 
 Route::get('agenda','CalendarSyncController@index');
 
+Route::get('basisploegen','BasisPloegenController@index');
+
+Route::get('basisploegen/clubPlayers/{clubId}','BasisPloegenController@clubPlayers');
+
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

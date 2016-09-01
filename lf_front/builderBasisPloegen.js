@@ -1,0 +1,217 @@
+//Window.console.log not available in IE9 when developper tools are not activated
+if (!window.console) window.console = {};
+if (!window.console.log) window.console.log = function () { };
+
+(function(ko, $, undefined) {
+
+    ko.bindingHandlers.flash = {
+        init: function(element) {
+            $(element).hide();
+        },
+        update: function(element, valueAccessor) {
+            var value = ko.utils.unwrapObservable(valueAccessor());
+            if (value) {
+                $(element).stop().hide().text(value).fadeIn(function() {
+                    clearTimeout($(element).data("timeout"));
+                    $(element).data("timeout", setTimeout(function() {
+                        $(element).fadeOut();
+                        valueAccessor()(null);
+                    }, 30000));
+                });
+            }
+        },
+        timeout: null
+    };
+
+    debug = function (log_txt) {
+        if (typeof window.console != 'undefined') {
+            console.log(log_txt);
+        }
+    };
+
+    var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking,type) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.fullName = this.firstName  + ' ' + this.lastName;
+        this.vblId = vblId;
+        this.gender = gender;
+        this.fixedRanking  = fixedRanking;
+        this.ranking = ranking;
+        this.type = type;
+        this.sortingValue = ((this.gender == 'M') ? "A" : "B")+this.fullName;
+
+        this.rankingToIndex = function(ranking) {
+            switch(ranking) {
+                case "A":
+                    return 20;
+                case "B1":
+                    return 10;
+                case "B2":
+                    return 6;
+                case "C1":
+                    return 4;
+                case "C2":
+                    return 2;
+                case "D":
+                    return 1;
+            }
+        }
+
+        this.indexToRanking = function(index) {
+            switch(index) {
+                case 20:
+                    return "A";
+                case 10:
+                    return "B1";
+                case 6:
+                    return "B2";
+                case 4:
+                    return "C1";
+                case 2:
+                    return "C2";
+                case 1:
+                    return "D";
+            }
+        }
+        //Some definitions
+        this.fixedRankingSingle = fixedRanking[0].toUpperCase();
+        this.fixedRankingDouble = fixedRanking[1].toUpperCase();
+        this.fixedRankingMix = fixedRanking[2].toUpperCase();
+
+        this.rankingSingle = ranking[0].toUpperCase();
+        this.rankingDouble = ranking[1].toUpperCase();
+        this.rankingMix = ranking[2].toUpperCase();
+
+
+        this.rankingOrFixedRanking = function(gameType,isFixed) {
+            if(gameType == 'HE' || gameType == 'DE')
+                return isFixed ? this.fixedRankingSingle : this.rankingSingle;
+
+            if(gameType == 'HD' || gameType == 'DD')
+                return isFixed ? this.fixedRankingDouble : this.rankingDouble;
+
+            if(gameType == 'GD')
+                return isFixed ? this.fixedRankingMix : this.rankingMix;
+        }
+
+        this.ranking = function(gameType) {
+            return this.rankingOrFixedRanking(gameType,false);
+        }
+
+        this.fixedRanking = function(gameType) {
+            return this.rankingOrFixedRanking(gameType,true);
+        }
+
+        this.index = function(gameType) {
+            return this.rankingToIndex(this.ranking(gameType));
+        }
+
+        this.fixedIndex = function(gameType) {
+            return this.rankingToIndex(this.fixedRanking(gameType));
+        }
+
+        this.indexInsideTeam = function(teamType) {
+            switch(teamType) {
+                case "H":
+                    return this.index("HE") + this.index("HD");
+                case "D":
+                    return this.index("DE") + this.index("DD");
+                case "G":
+                    switch(this.gender) {
+                        case "M":
+                            return this.index("HE") + this.index("HD") + this.index("GD");
+                        case "F":
+                            return this.index("DE") + this.index("DD") + this.index("GD");
+                    }
+            }
+        }
+
+
+        this.fixedIndexInsideTeam = function(teamType) {
+            switch(teamType) {
+                case "H":
+                    return this.fixedIndex("HE") + this.fixedIndex("HD");
+                case "D":
+                    return this.fixedIndex("DE") + this.fixedIndex("DD");
+                case "G":
+                    switch(this.gender) {
+                        case "M":
+                            return this.fixedIndex("HE") + this.fixedIndex("HD") + this.fixedIndex("GD");
+                        case "F":
+                            return this.fixedIndex("DE") + this.fixedIndex("DD") + this.fixedIndex("GD");
+                    }
+            }
+        }
+
+        this.maxFixedRankingConvertedToIndexInsideTeam = function(teamType) {
+            //to support ART53.2
+            switch(teamType) {
+                case "H":
+                    return Math.max(this.fixedIndex("HE"),this.fixedIndex("HD"));
+                case "D":
+                    return Math.max(this.fixedIndex("DE"),this.fixedIndex("DD"));
+                case "G":
+                    switch(this.gender) {
+                        case "M":
+                            return Math.max(this.fixedIndex("HE"),this.fixedIndex("HD"),this.fixedIndex("GD"));
+                        case "F":
+                            return Math.max(this.fixedIndex("DE"),this.fixedIndex("DD"),this.fixedIndex("GD"));
+                    }
+            }
+        }
+
+        this.maxFixedRankingInsideTeam = function(teamType) {
+            return this.indexToRanking(this.maxFixedRankingConvertedToIndexInsideTeam(teamType));
+        }
+
+        this.myFixedIndex = this.fixedIndexInsideTeam("H");
+
+
+        this.fixedRankingLayout = function(teamType) {
+            switch (teamType) {
+                case "H":
+                    return this.fixedRankingSingle + ", " + this.fixedRankingDouble +" = "+this.fixedIndexInsideTeam(teamType) ;
+                case "D":
+                    return this.fixedRankingSingle + ", " + this.fixedRankingDouble +" = "+this.fixedIndexInsideTeam(teamType);
+                case "G":
+                    return this.fixedRankingSingle + ", " + this.fixedRankingDouble + ", " +this.fixedRankingMix +" = "+this.fixedIndexInsideTeam(teamType);
+            }
+        }
+
+        this.rankingLayout = function(teamType) {
+            switch (teamType) {
+                case "H":
+                    return this.rankingSingle + ", " + this.rankingDouble;
+                case "D":
+                    return this.rankingSingle + ", " + this.rankingDouble;
+                case "G":
+                    return this.rankingSingle + ", " + this.rankingDouble + ", " +this.rankingMix;
+            }
+        }
+
+        //Validation rules
+        this.isAllowedToPlayInTeamGameTypeBasedOnGender = function(teamType) {
+            return ((teamType == 'H' && this.gender == 'F') || (teamType == 'D' && this.gender == 'M')) ? false : true;
+        }
+
+    };
+
+    function myViewModel(games) {
+        var self = this;
+        self.availablePlayers = ko.observableArray();
+
+        //LOAD CLUBS/TEAMS
+        $.get("basisploegen/clubPlayers/30009", function(data) {
+            $.each(data.players, function(index,p) {
+                var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type);
+                self.availablePlayers.push(myPlayer);
+            });
+        });
+
+
+    };
+
+
+    var vm = new myViewModel();
+    ko.applyBindings(vm);
+})(ko, jQuery);
