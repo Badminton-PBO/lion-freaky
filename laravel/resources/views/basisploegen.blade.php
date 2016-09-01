@@ -46,6 +46,68 @@
                 </table>
             </div>
         </div>
+        <div class="col-md-7">
+            <div id="ploegopstelling">
+                <div class="row row-fluid">
+                    <div class="col-xs-12 col-sm-6">
+                        <h2>Basisploegen</h2>
+                    </div>
+                    <div class="col-xs-12 col-sm-6" style="padding-top:10px; padding-bottom:15px">
+                        <div id="addH" class='label label-default' style='font-size:30px;margin-right:10px;'>
+                            <a href="#" data-bind="click: function(data, event) { addTeam('H', data, event) }">
+                                    <span class="glyphicon glyphicon-plus"></span> H
+                            </a>
+                        </div>
+                        <div id="addD" class='label label-default' style='font-size:30px;margin-right:10px;'>
+                            <a href="#" data-bind="click: function(data, event) { addTeam('D', data, event) }">
+                                <span class="glyphicon glyphicon-plus"></span> D
+                            </a>
+                        </div>
+                        <div id="addG" class='label label-default' style='font-size:30px;margin-right:10px;'>
+                            <a href="#" data-bind="click: function(data, event) { addTeam('G', data, event) }">
+                                <span class="glyphicon glyphicon-plus"></span> G
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row hidden-xs hidden-sm">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="col-md-2">Team</th>
+                        <th class="col-md-7">Spelers</th>
+                        <th class="col-md-2">Totale index</th>
+                        <th class="col-md-1"></th>
+                    </tr>
+                    </thead>
+                    <tbody data-bind="foreach: teams">
+                    <tr>
+                        <td style="padding:0px">
+                            <div>
+                                <span class="label label-default" data-bind="text: teamName"></span>
+                            </div>
+                        </td>
+                        <td style="padding:0px">
+                        </td>
+                        <td>
+                            <div>
+                                <span data-bind="text: totalIndex"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="pull-right">
+                                <a href="#" data-bind="click: $root.removeTeam">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection
 

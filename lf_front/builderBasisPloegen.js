@@ -196,17 +196,80 @@ if (!window.console.log) window.console.log = function () { };
 
     };
 
+    var TeamX = function(teamName,event,devision,series,captainName,baseTeamVblIds) {
+            this.teamName = teamName;
+            this.event = event;
+            this.devision = devision;
+            this.series = series;
+            this.baseTeamVblIds = baseTeamVblIds;
+            this.teamType = teamName.slice(-1);
+            this.teamNumber  = teamName.slice(-2,-1);
+
+            this.playersInBaseTeam = ko.observableArray();
+            this.captainName = ko.observable(captainName);
+    }
+
+    function teamFilterOfTeamType(myTeamType) {
+        return function(a) {
+            return a.teamType == myTeamType;
+        }
+    }
+
+    function teamFilterHavingFixedIndexSmallerThan(myFixedIndex) {
+        return function(a) {
+            return a.fixedId < myFixedIndex;
+        }
+    }
+
+    var Team = function(fixedId,teamType,vm) {
+        var self=this;
+        this.fixedId = fixedId;
+        this.teamType = teamType;
+        this.totalIndex = "TODO";
+
+
+        this.teamNumber = ko.computed(function(){
+            return vm.teams().filter(teamFilterOfTeamType(this.teamType)).filter(teamFilterHavingFixedIndexSmallerThan(this.fixedId)).length +1
+        },self);
+
+        this.teamName = ko.computed(function(){
+            return vm.teamBaseName()+" "+this.teamNumber()+this.teamType;
+        },self);
+
+    }
+
+
     function myViewModel(games) {
         var self = this;
         self.availablePlayers = ko.observableArray();
+        self.teams=ko.observableArray();
+        self.teamBaseName = ko.observable("Gentse");
+        self.fixedIdTeamCounter = 0;
 
-        //LOAD CLUBS/TEAMS
+        //LOAD PLAYERS
         $.get("basisploegen/clubPlayers/30009", function(data) {
             $.each(data.players, function(index,p) {
                 var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type);
                 self.availablePlayers.push(myPlayer);
             });
         });
+
+        self.addTeam = function(teamType) {
+            debug("Adding team "+teamType);
+            self.fixedIdTeamCounter++;
+            switch (teamType) {
+                case "H":
+                    return self.teams.push(new Team(self.fixedIdTeamCounter,"H",self));
+                case "D":
+                    return self.teams.push(new Team(self.fixedIdTeamCounter,"D",self));
+                case "G":
+                    return self.teams.push(new Team(self.fixedIdTeamCounter,"G",self));
+            }
+        };
+
+        self.removeTeam = function(team){
+            self.teams.remove(team);
+        }
 
 
     };
