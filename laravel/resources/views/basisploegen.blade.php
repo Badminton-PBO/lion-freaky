@@ -135,7 +135,7 @@
                         </td>
                         <td>
                             <div>
-                                <span data-bind="text: totalFixedIndexInsideTeam"></span>
+                                <span data-bind="text: totalFixedIndexInsideTeamLayout"></span>
                             </div>
                         </td>
                         <td>

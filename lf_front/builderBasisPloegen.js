@@ -250,6 +250,15 @@ if (!window.console.log) window.console.log = function () { };
                 totalI += player.fixedIndexInsideTeam(teamType);
             });
             return totalI;
+        },self);
+
+
+        this.totalFixedIndexInsideTeamLayout = ko.computed(function() {
+            if (this.playersInTeam().length == 4) {
+                return this.totalFixedIndexInsideTeam();
+            } else {
+                return "("+this.totalFixedIndexInsideTeam()+")";
+            }
         },this);
 
         this.allowMorePlayers = ko.computed(function() {
@@ -300,6 +309,20 @@ if (!window.console.log) window.console.log = function () { };
             self.teams.remove(team);
         };
 
+        self.numberOfPlayersWithVblIdForTeamType = function(vblId,teamType) {
+            myResult=0;
+            self.teams().forEach(function(myTeam){
+                if (myTeam.teamType == teamType) {
+                    myTeam.playersInTeam().forEach(function(myPlayer){
+                        if (myPlayer.vblId == vblId) {
+                            myResult++;
+                        }
+                    })
+                }
+            })
+            return myResult;
+        }
+
         this.verifyAssignments = function(arg,event,ui) {
             var player = arg.item;
             var targetTeam = arg.targetParent.team;
@@ -336,6 +359,13 @@ if (!window.console.log) window.console.log = function () { };
                 logError("1 speler kan maar 1 maal in hetzelfde team ingevoerd worden",arg);
                 return;
             }
+
+            //PLAYERS MUST BE UNIQUE PER TEAMTYPE
+            if (self.numberOfPlayersWithVblIdForTeamType(player.vblId,teamType) == 1){
+                logError("1 speler kan maar 1 maal opsteld binnen dezelfde competitietype (H, D, G)",arg);
+                return;
+            }
+
 
         };
 
