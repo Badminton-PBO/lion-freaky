@@ -29,6 +29,24 @@ if (!window.console.log) window.console.log = function () { };
         }
     };
 
+    function teamFilterOfTeamType(myTeamType) {
+        return function(a) {
+            return a.teamType == myTeamType;
+        }
+    }
+
+    function teamFilterHavingFixedIndexSmallerThan(myFixedIndex) {
+        return function(a) {
+            return a.fixedId < myFixedIndex;
+        }
+    }
+
+    function playerGenderFilter(myGender) {
+        return function(a) {
+            return a.gender == myGender;
+        }
+    }
+
     var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking,type) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -196,30 +214,6 @@ if (!window.console.log) window.console.log = function () { };
 
     };
 
-    var TeamX = function(teamName,event,devision,series,captainName,baseTeamVblIds) {
-            this.teamName = teamName;
-            this.event = event;
-            this.devision = devision;
-            this.series = series;
-            this.baseTeamVblIds = baseTeamVblIds;
-            this.gameType = teamName.slice(-1);
-            this.teamNumber  = teamName.slice(-2,-1);
-
-            this.playersInBaseTeam = ko.observableArray();
-            this.captainName = ko.observable(captainName);
-    }
-
-    function teamFilterOfTeamType(myTeamType) {
-        return function(a) {
-            return a.teamType == myTeamType;
-        }
-    }
-
-    function teamFilterHavingFixedIndexSmallerThan(myFixedIndex) {
-        return function(a) {
-            return a.fixedId < myFixedIndex;
-        }
-    }
 
     var Team = function(fixedId,teamType,vm) {
         var self=this;
@@ -235,6 +229,10 @@ if (!window.console.log) window.console.log = function () { };
             return vm.teamBaseName()+" "+this.teamNumber()+this.teamType;
         },self);
 
+
+        //Duplicate some stuff to make validation easier
+        this.playersInTeam.team = this;
+
         this.removePlayer = function(p) {
             self.playersInTeam.remove(p);
         };
@@ -248,6 +246,13 @@ if (!window.console.log) window.console.log = function () { };
             return totalI;
         },this);
 
+        this.allowMorePlayers = ko.computed(function() {
+            return this.playersInTeam().length < 4;
+        },this);
+
+        this.numberOfPlayersOfGender = function(gender) {
+            return self.playersInTeam().filter(playerGenderFilter(gender)).length;
+        }
 
     }
 
@@ -258,6 +263,7 @@ if (!window.console.log) window.console.log = function () { };
         self.teams=ko.observableArray();
         self.teamBaseName = ko.observable("Gentse");
         self.fixedIdTeamCounter = 0;
+        self.lastError = ko.observable();
 
         //LOAD PLAYERS
         $.get("basisploegen/clubPlayers/30009", function(data) {
@@ -282,7 +288,40 @@ if (!window.console.log) window.console.log = function () { };
 
         self.removeTeam = function(team){
             self.teams.remove(team);
-        }
+        };
+
+        this.verifyAssignments = function(arg,event,ui) {
+            var player = arg.item;
+            var targetTeam = arg.targetParent.team;
+            var sourceTeamArray = arg.sourceParent;
+            var teamType = targetTeam.teamType;
+
+            console.log("Validating drop of "+player.fullName+" in team:"+targetTeam.teamName());
+
+            var logError = function(msg,arg) {
+                self.lastError(msg);
+                arg.cancelDrop = true;
+            };
+
+            //VALIDATE GENDER
+            if (teamType=="H" && player.gender !== "M") {
+                logError("Een herenploeg bestaat enkel uit mannen.",arg);
+                return;
+            }
+            if (teamType=="D" && player.gender !== "F") {
+                logError("Een damesploeg bestaat enkel uit dames.",arg);
+                return;
+            }
+            if (teamType=="G" && player.gender=='M' && targetTeam.numberOfPlayersOfGender("M") == 2) {
+                logError("Een basis opstelling voor een mixploeg bestaat uit maximaal 2 heren.",arg);
+                return;
+            }
+            if (teamType=="G" && player.gender=='F' && targetTeam.numberOfPlayersOfGender("F") == 2) {
+                logError("Een basis opstelling voor een mixploeg bestaat uit maximaal 2 dames.",arg);
+                return;
+            }
+
+        };
 
 
     };

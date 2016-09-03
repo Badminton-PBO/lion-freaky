@@ -30,6 +30,22 @@
             font-size:10px;
         }
 
+        #message, #error {
+            font-size: 1em;
+            margin-top: 10px;
+            background-color: orange;
+            color: #444;
+            padding: 2px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 2px 2px 2px #999;
+        }
+
+        #error {
+            background-color: #ff3333;
+            color: #ddd;
+        }
+
     </style>
 @endsection
 
@@ -83,6 +99,9 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-12" id="error" data-bind="flash: lastError"></div>
+            </div>
             <div class="row hidden-xs hidden-sm">
                 <table class="table table-condensed">
                     <thead>
@@ -101,7 +120,7 @@
                             </div>
                         </td>
                         <td style="padding:0px">
-                            <div data-bind="sortable: {data : playersInTeam, allowDrop: true}" class="baseTeam">
+                            <div data-bind="sortable: {data : playersInTeam, allowDrop: allowMorePlayers,beforeMove: $root.verifyAssignments}" class="baseTeam">
                                 <div>
                                     <span data-bind="text: fullName"></span>,
                                     <span data-bind="text: vblId"></span>,
