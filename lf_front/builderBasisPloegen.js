@@ -47,6 +47,12 @@ if (!window.console.log) window.console.log = function () { };
         }
     }
 
+    function playerVblIdFilter(vblId) {
+        return function(a) {
+            return a.vblId == vblId;
+        }
+    }
+
     var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking,type) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -254,6 +260,10 @@ if (!window.console.log) window.console.log = function () { };
             return self.playersInTeam().filter(playerGenderFilter(gender)).length;
         }
 
+        this.numberOfPlayersWithVblId = function(vblId) {
+            return self.playersInTeam().filter(playerVblIdFilter(vblId)).length;
+        }
+
     }
 
 
@@ -318,6 +328,12 @@ if (!window.console.log) window.console.log = function () { };
             }
             if (teamType=="G" && player.gender=='F' && targetTeam.numberOfPlayersOfGender("F") == 2) {
                 logError("Een basis opstelling voor een mixploeg bestaat uit maximaal 2 dames.",arg);
+                return;
+            }
+
+            //PLAYERS WITHIN A TEAM MUST BE UNIQUE
+            if (targetTeam.numberOfPlayersWithVblId(player.vblId)==1) {
+                logError("1 speler kan maar 1 maal in hetzelfde team ingevoerd worden",arg);
                 return;
             }
 
