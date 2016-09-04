@@ -46,6 +46,20 @@
             color: #ddd;
         }
 
+        @media(min-width:0px) {
+            #playerListId {
+                height:20vh;
+                overflow:auto;
+            }
+        }
+
+        @media(min-width:992px) {
+            #playerListId {
+                height:55vh;
+                overflow:auto;
+            }
+        }
+
     </style>
 @endsection
 
@@ -76,26 +90,23 @@
         <div class="col-md-7">
             <div id="ploegopstelling">
                 <div class="row row-fluid">
-                    <div class="col-xs-12 col-sm-6">
+                    <div class="col-xs-12 col-sm-12">
                         <h2>Basisploegen</h2>
-                    </div>
-                    <div class="col-xs-12 col-sm-6" style="padding-top:10px; padding-bottom:15px">
-                        <div id="addH" class='label label-default' style='font-size:30px;margin-right:10px;'>
-                            <a href="#" data-bind="click: function(data, event) { addTeam('H', data, event) }">
-                                    <span class="glyphicon glyphicon-plus"></span> H
-                            </a>
-                        </div>
-                        <div id="addD" class='label label-default' style='font-size:30px;margin-right:10px;'>
-                            <a href="#" data-bind="click: function(data, event) { addTeam('D', data, event) }">
-                                <span class="glyphicon glyphicon-plus"></span> D
-                            </a>
-                        </div>
-                        <div id="addG" class='label label-default' style='font-size:30px;margin-right:10px;'>
-                            <a href="#" data-bind="click: function(data, event) { addTeam('G', data, event) }">
-                                <span class="glyphicon glyphicon-plus"></span> G
-                            </a>
-                        </div>
-
+                        <ul class="nav nav-tabs nav-justified">
+                            <li class="active"><a  href="#H" data-bind="click: function(data, event) { showTeams('H', data, event) }">Heren (<span data-bind="text: $root.numberOfTeamsOfTeamType('H')"></span>)</a></li>
+                            <li><a href="#D" data-bind="click: function(data, event) { showTeams('D', data, event) }">Dames (<span data-bind="text: $root.numberOfTeamsOfTeamType('D')"></span>)</a></li>
+                            <li><a href="#G" data-bind="click: function(data, event) { showTeams('G', data, event) }">Gemengd (<span data-bind="text: $root.numberOfTeamsOfTeamType('G')"></span>)</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Acties<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>Ploeg toevoegen</li>
+                                    <li><a href="#" data-bind="click: function(data, event) { addTeam('H', data, event) }">Herenploeg</a></li>
+                                    <li><a href="#" data-bind="click: function(data, event) { addTeam('D', data, event) }">Damesploeg</a></li>
+                                    <li><a href="#" data-bind="click: function(data, event) { addTeam('G', data, event) }">Gemengde ploeg</a></li>
+                                    <li>Bewaar</li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -103,6 +114,7 @@
                 <div class="col-xs-12" id="error" data-bind="flash: lastError"></div>
             </div>
             <div class="row hidden-xs hidden-sm">
+                <!-- ko if: $root.filteredTeams().length != 0 -->
                 <table class="table table-condensed">
                     <thead>
                     <tr>
@@ -112,7 +124,7 @@
                         <th class="col-md-1"></th>
                     </tr>
                     </thead>
-                    <tbody data-bind="foreach: teams">
+                    <tbody data-bind="foreach: filteredTeams">
                     <tr>
                         <td style="padding:0px">
                             <div>
@@ -148,6 +160,13 @@
                     </tr>
                     </tbody>
                 </table>
+                <!-- /ko -->
+                <!-- ko if: $root.filteredTeams().length == 0 -->
+                <br>
+                <div class="well">
+                    <span data-bind="text: $root.noTeamsLayout"></span>
+                </div>
+                <!-- /ko -->
             </div>
         </div>
     </div>

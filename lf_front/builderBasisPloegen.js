@@ -293,6 +293,7 @@ if (!window.console.log) window.console.log = function () { };
         self.teamBaseName = ko.observable("Gentse");
         self.fixedIdTeamCounter = 0;
         self.lastError = ko.observable();
+        self.selectedTeamType=ko.observable("H");
 
         //LOAD PLAYERS
         $.get("basisploegen/clubPlayers/30009", function(data) {
@@ -305,6 +306,8 @@ if (!window.console.log) window.console.log = function () { };
         self.addTeam = function(teamType) {
             self.fixedIdTeamCounter++;
             debug("Adding team "+teamType+ " "+self.fixedIdTeamCounter);
+            $('.nav-tabs a[href="#'+teamType+'"]').tab('show');
+            self.showTeams(teamType);
             switch (teamType) {
                 case "H":
                     return self.teams.push(new Team(self.fixedIdTeamCounter,"H",self));
@@ -317,6 +320,41 @@ if (!window.console.log) window.console.log = function () { };
 
         self.removeTeam = function(team){
             self.teams.remove(team);
+        };
+
+        self.filteredTeams= ko.computed(function() {
+            return ko.utils.arrayFilter(self.teams(), function(team) {
+                return team.teamType == self.selectedTeamType();
+            });
+
+        },self);
+
+        self.showTeams = function(teamType) {
+            //Active tab
+            $('.nav-tabs a[href="#'+teamType+'"]').tab('show');
+
+            //filter teams
+            self.selectedTeamType(teamType);
+        };
+
+        self.noTeamsLayout = ko.computed(function() {
+            switch (self.selectedTeamType()) {
+                case "H":
+                    return "Geen herenploegen aangemaakt. Gebruik 'Acties > Herenploeg toevoegen' om een herenploeg toe te voegen.";
+                case "D":
+                    return "Geen damesploegen aangemaakt. Gebruik 'Acties > Damesploeg toevoegen' om een damessploeg toe te voegen.";
+                case "G":
+                    return "Geen gemengde ploegen aangemaakt. Gebruik 'Acties > Gemengde ploeg toevoegen' om een gemengde ploeg toe te voegen.";
+            }
+        },self);
+
+        self.numberOfTeamsOfTeamType = function(teamType) {
+            return ko.computed({
+                read:function() {
+                    return self.teams().filter(teamFilterOfTeamType(teamType)).length;
+                }
+
+            },this);
         };
 
 
@@ -377,7 +415,7 @@ if (!window.console.log) window.console.log = function () { };
             var sourceTeamPlayerArray = arg.sourceParent;
             var teamType = targetTeam.teamType;
 
-            console.log("Validating drop of "+player.fullName+" in team:"+targetTeam.teamName());
+            debug("Validating drop of "+player.fullName+" in team:"+targetTeam.teamName());
 
             var sourceTeamFixedId =  (sourceTeamPlayerArray && sourceTeamPlayerArray.team) ? sourceTeamPlayerArray.team.fixedId:  "xx";
 
