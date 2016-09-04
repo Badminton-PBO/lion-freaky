@@ -47,14 +47,15 @@
         }
 
         @media(min-width:0px) {
-            #playerListId {
+            #playerListId, #teamListId {
                 height:20vh;
                 overflow:auto;
             }
+
         }
 
         @media(min-width:992px) {
-            #playerListId {
+            #playerListId, #teamListId {
                 height:55vh;
                 overflow:auto;
             }
@@ -152,7 +153,7 @@
             <div class="row">
                 <div class="col-xs-12" id="error" data-bind="flash: lastError"></div>
             </div>
-            <div class="row hidden-xs hidden-sm">
+            <div id="teamListId" class="row hidden-xs hidden-sm">
                 <!-- ko if: $root.filteredTeams().length != 0 -->
                 <table class="table table-condensed">
                     <thead>
