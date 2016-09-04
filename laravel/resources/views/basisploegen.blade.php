@@ -71,7 +71,7 @@
     <div class="row hidden-print">
         <div class="col-md-5">
             <div class="well well-sm">
-                <div>Filter opstelbare spelers:  <span data-bind="text: $root.filteredPlayers().length"/></span>/<span data-bind="text: $root.availablePlayers().length"/></div>
+                <div>Filter beschikbare spelers:  <span data-bind="text: $root.filteredAndSortedPlayers().length"/></span>/<span data-bind="text: $root.availablePlayers().length"/></div>
                 <div class="row">
                     <div class="col-xs-5">
                         <!-- ko if: $root.selectedTeamTypeIsMultiSex() -->
@@ -95,11 +95,29 @@
                 <table class="table table-bordered table-condensed">
                     <thead>
                     <tr>
-                        <th>Speler</th>
-                        <th class="playerDetail"><span data-bind="text: $root.fixedRankingHeaderLayout($root.selectedTeamType())"></span></th>
+                        <th>
+                            <a href="#" data-bind="click: function(data, event) { $root.toggleSortPlayers('NAME') }">
+                                Speler
+                                <!-- ko if: $root.selectedPlayerSortType() =='NAME' -->
+                                <div class="pull-right">
+                                    <span class="glyphicon" data-bind="css: sortingDirectionGlyphicon"></span>
+                                </div>
+                                <!-- /ko -->
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" data-bind="click: function(data, event) { $root.toggleSortPlayers('FIXED-INDEX') }">
+                                <span data-bind="text: $root.fixedRankingHeaderLayout($root.selectedTeamType())"></span>
+                                <!-- ko if: $root.selectedPlayerSortType() =='FIXED-INDEX' -->
+                                <div class="pull-right">
+                                        <span class="glyphicon" data-bind="css: sortingDirectionGlyphicon"></span>
+                                </div>
+                                <!-- /ko -->
+                            </a>
+                        </th>
                     </tr>
                     </thead>
-                    <tbody data-bind="foreach: filteredPlayers">
+                    <tbody data-bind="foreach: filteredAndSortedPlayers">
                     <tr>
                         <td data-bind="draggable: $data"><span class="glyphicon glyphicon-user"></span> <span data-bind="text: fullName" style="color:#428bca"></span></td>
                         <td data-bind="text: fixedRankingLayout($root.selectedTeamType())" class="playerDetail"></td>

@@ -41,13 +41,36 @@ if (!window.console.log) window.console.log = function () { };
         }
     }
 
-    function playerComparatorBasedSortingValue() {
-        return function(a, b) {
-            if (a.sortingValue < b.sortingValue) return -1;
-            if (a.sortingValue > b.sortingValue) return 1;
-            return 0;
+    function playerComparatorBasedSortingValue(sortType,sortDirection,teamType) {
+        if (sortType=="NAME" && sortDirection == "DOWN") {
+            return function(a, b) {
+                if (a.sortingValue < b.sortingValue) return -1;
+                if (a.sortingValue > b.sortingValue) return 1;
+                return 0;
+            }
+        } else if (sortType=="NAME" && sortDirection == "UP") {
+            return function(a, b) {
+                if (a.sortingValue < b.sortingValue) return 1;
+                if (a.sortingValue > b.sortingValue) return -1;
+                return 0;
+            }
+        } else if (sortType=="FIXED-INDEX" && sortDirection == "DOWN") {
+            return function(a, b) {
+                if (a.fixedIndexInsideTeam(teamType) < b.fixedIndexInsideTeam(teamType)) return 1;
+                if (a.fixedIndexInsideTeam(teamType) > b.fixedIndexInsideTeam(teamType)) return -1;
+                return 0;
+            }
+        } else if (sortType=="FIXED-INDEX" && sortDirection == "UP") {
+            return function(a, b) {
+                if (a.fixedIndexInsideTeam(teamType) < b.fixedIndexInsideTeam(teamType)) return -1;
+                if (a.fixedIndexInsideTeam(teamType) > b.fixedIndexInsideTeam(teamType)) return 1;
+                return 0;
+            }
         }
+
     }
+
+
 
 
     function playerGenderFilter(myGender) {
@@ -326,6 +349,8 @@ if (!window.console.log) window.console.log = function () { };
         self.fixedIdTeamCounter = 0;
         self.lastError = ko.observable();
         self.selectedTeamType=ko.observable("H");
+        self.selectedPlayerSortType=ko.observable("NAME");
+        self.selectedPlayerSortDirection=ko.observable("DOWN");
 
         self.playerTypeButtons = ko.observableArray(initialPlayerTypeButtons());
         self.selectedPlayerTypeButton = ko.observable(self.playerTypeButtons()[1]);
@@ -351,6 +376,16 @@ if (!window.console.log) window.console.log = function () { };
             self.selectedGenderButton().selected(true);
         };
 
+        self.toggleSortPlayers = function(sortType) {
+            if (self.selectedPlayerSortType() == sortType) {
+                //We need to toggle
+                self.selectedPlayerSortDirection()=='DOWN'? self.selectedPlayerSortDirection("UP"):self.selectedPlayerSortDirection("DOWN");
+            } else {
+                self.selectedPlayerSortDirection("DOWN");//Back to default order
+                self.selectedPlayerSortType(sortType);
+            }
+        }
+
 
         //LOAD PLAYERS
         $.get("basisploegen/clubPlayers/30009", function(data) {
@@ -360,7 +395,7 @@ if (!window.console.log) window.console.log = function () { };
             });
 
             //Sort the arrays of players thtat are shown in UI
-            self.availablePlayers(self.availablePlayers().sort(playerComparatorBasedSortingValue()));
+            self.availablePlayers(self.availablePlayers().sort(playerComparatorBasedSortingValue("NAME","DOWN")));
 
         });
 
@@ -392,12 +427,19 @@ if (!window.console.log) window.console.log = function () { };
 
         },self);
 
-        self.filteredPlayers = ko.computed(function(){
-            return ko.utils.arrayFilter(self.availablePlayers(), function(player) {
+
+        self.filteredAndSortedPlayers = ko.computed(function(){
+            var filteredPlayers =  ko.utils.arrayFilter(self.availablePlayers(), function(player) {
                 return player.isAllowedToPlayInTeamGameTypeBasedOnGender(self.selectedTeamType()) &&
                     (self.selectedPlayerTypeButton().buttonValue() == 'ALL' || player.type == self.selectedPlayerTypeButton().buttonValue()) &&
                     (self.selectedGenderButton().buttonValue() == 'ALL' || player.gender == self.selectedGenderButton().buttonValue());
             });
+
+            return filteredPlayers.sort(playerComparatorBasedSortingValue(self.selectedPlayerSortType(),self.selectedPlayerSortDirection(),self.selectedTeamType()));
+        },self);
+
+        self.sortingDirectionGlyphicon = ko.computed(function(){
+            return self.selectedPlayerSortDirection() == "DOWN" ? "glyphicon-chevron-down":"glyphicon-chevron-up";
         },self);
 
 
