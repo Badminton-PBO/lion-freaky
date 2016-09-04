@@ -70,18 +70,39 @@
 @section('content')
     <div class="row hidden-print">
         <div class="col-md-5">
+            <div class="well well-sm">
+                <div>Filter opstelbare spelers:  <span data-bind="text: $root.filteredPlayers().length"/></span>/<span data-bind="text: $root.availablePlayers().length"/></div>
+                <div class="row">
+                    <div class="col-xs-5">
+                        <!-- ko if: $root.selectedTeamTypeIsMultiSex() -->
+                        <div class="btn-group" aria-label="b1" data-toggle="buttons" data-bind="foreach:$root.genderButtons">
+                            <label class="btn btn-primary" data-bind="css: {active: selected},click: $root.selectGenderButton">
+                                <input type="radio" name="playerGender"><span data-bind="text: name"></span></input>
+                            </label>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                    <div class="col-xs-7">
+                        <div class="btn-group" aria-label="b2" data-toggle="buttons" data-bind="foreach:$root.playerTypeButtons">
+                            <label class="btn btn-primary" data-bind="css: {active: selected}, click: $root.selectPlayerTypeButton">
+                                <input type="radio" name="playerType" ><span data-bind="text: name"></span></input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="playerListId" class="well well-sm" style="">
                 <table class="table table-bordered table-condensed">
                     <thead>
                     <tr>
                         <th>Speler</th>
-                        <th class="playerDetail">vast index E,D,G</th>
+                        <th class="playerDetail"><span data-bind="text: $root.fixedRankingHeaderLayout($root.selectedTeamType())"></span></th>
                     </tr>
                     </thead>
-                    <tbody data-bind="foreach: availablePlayers">
+                    <tbody data-bind="foreach: filteredPlayers">
                     <tr>
                         <td data-bind="draggable: $data"><span class="glyphicon glyphicon-user"></span> <span data-bind="text: fullName" style="color:#428bca"></span></td>
-                        <td data-bind="text: fixedRankingLayout('G')" class="playerDetail"></td>
+                        <td data-bind="text: fixedRankingLayout($root.selectedTeamType())" class="playerDetail"></td>
                     </tr>
                     </tbody>
                 </table>
