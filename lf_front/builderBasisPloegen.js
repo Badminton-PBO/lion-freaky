@@ -53,6 +53,12 @@ if (!window.console.log) window.console.log = function () { };
         }
     }
 
+    function teamIsFullFilter() {
+        return function(a) {
+            return a.isComplete() == true;
+        }
+    }
+
     var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking,type) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -273,6 +279,10 @@ if (!window.console.log) window.console.log = function () { };
             return self.playersInTeam().filter(playerVblIdFilter(vblId)).length;
         }
 
+        this.isFull = function() {
+            return self.playersInTeam().length==4;
+        }
+
     }
 
 
@@ -309,10 +319,16 @@ if (!window.console.log) window.console.log = function () { };
             self.teams.remove(team);
         };
 
-        self.numberOfPlayersWithVblIdForTeamType = function(vblId,teamType) {
+
+
+        //////////////////////////////////////////////////////
+        //BEGIN Validation utilities
+        //////////////////////////////////////////////////////
+
+        self.numberOfPlayersWithVblIdForTeamTypeAndIgnoreTeamY = function(vblId,teamType,teamYFixedId) {
             myResult=0;
             self.teams().forEach(function(myTeam){
-                if (myTeam.teamType == teamType) {
+                if (myTeam.teamType == teamType && myTeam.fixedId != teamYFixedId) {
                     myTeam.playersInTeam().forEach(function(myPlayer){
                         if (myPlayer.vblId == vblId) {
                             myResult++;
@@ -321,15 +337,49 @@ if (!window.console.log) window.console.log = function () { };
                 }
             })
             return myResult;
+        };
+
+
+        self.giveOrderedIndexOfFullTeamsPerTeamTypeAndAddPlayerToTeamXAndIgnoreTeamY = function(myTeamType,myPlayer,teamX,teamYFixedId) {
+            var result=[];
+            $.each(self.teams(), function(position,team) {
+                if (team.teamType == myTeamType ) {
+                    if (team.fixedId == teamX.fixedId && teamX.playersInTeam().length == 3) {//together with the given myPlayer, this will form a complete team
+                        result.push(teamX.totalFixedIndexInsideTeam() + myPlayer.fixedIndexInsideTeam(myTeamType));
+                    } else if ((team.fixedId !== teamYFixedId) && team.isFull()){
+                        result.push(team.totalFixedIndexInsideTeam());
+                    }
+                }
+            });
+            return result;
+        };
+
+        self.isOrderedIndexArray = function(subjectArray) {
+            // Sort the array in a new array and check if that sorted array is exactly the same as the original one
+            clonedSubjectArray = subjectArray.slice(0)
+            clonedSubjectArray.sort(function(a, b){return b-a});//sort descending
+
+            var result = true;
+            $.each(subjectArray,function(index,x) {
+                result = result && (x == clonedSubjectArray[index]);
+            });
+            return result;
+
         }
+
+        //////////////////////////////////////////////////////
+        //END Validation utilities
+        //////////////////////////////////////////////////////
 
         this.verifyAssignments = function(arg,event,ui) {
             var player = arg.item;
             var targetTeam = arg.targetParent.team;
-            var sourceTeamArray = arg.sourceParent;
+            var sourceTeamPlayerArray = arg.sourceParent;
             var teamType = targetTeam.teamType;
 
             console.log("Validating drop of "+player.fullName+" in team:"+targetTeam.teamName());
+
+            var sourceTeamFixedId =  (sourceTeamPlayerArray && sourceTeamPlayerArray.team) ? sourceTeamPlayerArray.team.fixedId:  "xx";
 
             var logError = function(msg,arg) {
                 self.lastError(msg);
@@ -361,14 +411,40 @@ if (!window.console.log) window.console.log = function () { };
             }
 
             //PLAYERS MUST BE UNIQUE PER TEAMTYPE
-            if (self.numberOfPlayersWithVblIdForTeamType(player.vblId,teamType) == 1){
+            if (self.numberOfPlayersWithVblIdForTeamTypeAndIgnoreTeamY(player.vblId,teamType,sourceTeamFixedId) == 1){
                 logError("1 speler kan maar 1 maal opsteld binnen dezelfde competitietype (H, D, G)",arg);
+                return;
+            }
+
+            //TEAMS (HAVING ALREADY 4 PLAYERS) MUST BE ORDERED FROM HIGHEST TO LOWEST TOTAL INDEX
+            var newOrder = self.giveOrderedIndexOfFullTeamsPerTeamTypeAndAddPlayerToTeamXAndIgnoreTeamY(teamType,player,targetTeam,sourceTeamFixedId);
+            debug(newOrder);
+            debug(teamType);
+            if(!(self.isOrderedIndexArray(newOrder))) {
+                debug(teamType);
+                switch (teamType) {
+                    case "H":
+                        logError("De heren teams moeten geordend zijn van hoogste naar laagste team index",arg);
+                        break;
+                    case "D":
+                        logError("De dames teams moeten geordend zijn van hoogste naar laagste team index",arg);
+                        break;
+                    case "G":
+                        logError("De gemengde teams moeten geordend zijn van hoogste naar laagste team index",arg);
+                        break;
+
+                }
                 return;
             }
 
 
         };
 
+        this.verifyAssignmentsAfterMove = function(arg,event,ui) {
+            //Reset error msg after a succesful drop
+            self.lastError("");
+            $("#error").hide();
+        }
 
     };
 

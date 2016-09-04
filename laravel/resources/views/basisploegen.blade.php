@@ -108,7 +108,7 @@
                     <tr>
                         <th class="col-md-2">Team</th>
                         <th class="col-md-7">Spelers</th>
-                        <th class="col-md-2">Totale index</th>
+                        <th class="col-md-2">Team index</th>
                         <th class="col-md-1"></th>
                     </tr>
                     </thead>
@@ -120,7 +120,7 @@
                             </div>
                         </td>
                         <td style="padding:0px">
-                            <div data-bind="sortable: {data : playersInTeam, allowDrop: allowMorePlayers,beforeMove: $root.verifyAssignments}" class="baseTeam">
+                            <div data-bind="sortable: {data : playersInTeam, allowDrop: allowMorePlayers,beforeMove: $root.verifyAssignments,afterMove: $root.verifyAssignmentsAfterMove}" class="baseTeam">
                                 <div>
                                     <span data-bind="text: fullName"></span>,
                                     <span data-bind="text: vblId"></span>,
