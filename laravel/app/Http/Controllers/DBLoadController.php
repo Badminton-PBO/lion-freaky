@@ -61,26 +61,18 @@ class DBLoadController extends Controller {
 
         //Do another call to logon page to retrieve REQUEST_VERIFICATION_TOKEN
         $formPage= curl_exec($ch);
-        //print($formPage);
         preg_match_all('|name=\"__RequestVerificationToken\".*value=\"(.*)\"|', $formPage, $resultsRequestVerificationToken);
         $REQUEST_VERIFICATION_TOKEN = $resultsRequestVerificationToken[1][0];
-        //print($formPage);
 
-        //Get RequestVerificationCookie
+
+        //Get RequestVerificationCookie but also contains other cookies
         preg_match_all('|Set-Cookie: (.*);|U', $formPage, $results);
-
-        $cookySet2=$results[1][1]."; ".$results[1][0];
-        $cookies=$cookySet1.'; '.$cookySet2;
-
+        $cookies=$cookySet1."; ".implode(';', $results[1]);
         curl_setopt($ch, CURLOPT_COOKIE, $cookies);
 
-
-        $LOGIN_STRING='__RequestVerificationToken='.$REQUEST_VERIFICATION_TOKEN.'&Login='.$PROV_USERNAME.'&Password='.$PROV_PWD.'&ReturnUrl=%2F&ReturnUrlUnauthorized=';
-
         //Do form logon
-        //curl_setopt($ch, CURLOPT_POST, TRUE);
+        $LOGIN_STRING='__RequestVerificationToken='.$REQUEST_VERIFICATION_TOKEN.'&Login='.$PROV_USERNAME.'&Password='.$PROV_PWD.'&ReturnUrl=%2F&ReturnUrlUnauthorized=';
         curl_setopt($ch, CURLOPT_POSTFIELDS, $LOGIN_STRING);
-
 
         //TDE 20141106: CURLOPT_COOKIEJAR, CURLOPT_COOKIEFILE not working on one.com
         // So we need to manually parse the cookie (ex. sessioncookie) from the header and put in the next request
@@ -92,7 +84,7 @@ class DBLoadController extends Controller {
         // $output contains the output string
         $logonResponse = curl_exec($ch);
 
-        //Parse the cookies out of the r
+        //Parse the cookies out of the response
         preg_match_all('|Set-Cookie: (.*);|U', $logonResponse, $results);
         $cookies = "st=c=1; ".implode(';', $results[1]);
 
