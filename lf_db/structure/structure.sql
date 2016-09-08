@@ -156,7 +156,11 @@ CREATE TABLE IF NOT EXISTS `lf_event` (
 
 -- TMP Table to faciliate load from CSV into the DB
 CREATE TABLE IF NOT EXISTS `lf_tmpdbload_15mei` (
+  `clubName` varchar(45) NOT NULL,
   `playerId` int(11) NOT NULL,
+  `firstName` varchar(45) NOT NULL,
+  `lastName` varchar(45) NOT NULL,
+  `gender` varchar(1) NOT NULL,
   `playerLevelSingle` varchar(2) NOT NULL,
   `playerLevelDouble` varchar(2) NOT NULL,
   `playerLevelMixed` varchar(2) NOT NULL
