@@ -222,41 +222,6 @@ EOD;
 
 
             $testFixedRankings = <<<'EOD'
-70000001;A;A;A
-70000002;B1;B1;B1
-70000003;B1;B1;B1
-70000004;B1;B1;B1
-70000005;B2;B2;B2
-70000006;C1;C1;B1
-70000007;C2;C2;C1
-70000008;C1;C2;D
-70000009;D;D;C1
-70000010;C2;C2;C2
-70000011;C2;D;C2
-70000012;D;D;D
-70000013;D;D;D
-70000014;D;D;D
-70000015;D;D;D
-70000016;D;D;D
-70000017;D;D;D
-70000018;D;D;D
-70000019;B1;B1;B1
-70000020;B1;B1;B1
-70000021;B1;B1;B1
-70000022;B2;B2;B2
-70000023;C1;C1;C1
-70000024;C1;C1;C1
-70000025;C2;B2;C1
-70000026;C2;C2;C2
-70000027;C2;D;C2
-70000028;D;D;D
-70000029;D;D;D
-70000030;D;D;D
-70000031;D;D;D
-70000032;D;D;D
-70000033;D;D;D
-70000034;D;D;D
-70000035;D;D;D
 EOD;
             $fixedRankingCSV .=$testFixedRankings."\n";
 
@@ -283,7 +248,7 @@ EOD;
                 or !DBLoadController::isValidCSV($matchesCSV,"matchid;eventid;eventcode")
                 or !DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid")
                 or !DBLoadController::isValidCSV($baseTeamCSV,"player_playerId,team_teamName")
-                or !DBLoadController::isValidCSV($fixedRankingCSV,"Lidnummer;Klassement enkel;Klassement dubbel;Klassement gemengd")
+                or !DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Voornaam;Achternaam;Geslacht;Klassement enkel;Klassement dubbel;Klassement gemengd")
                 or !DBLoadController::isValidCSV($locationsCSV,"code;name;number;contact;address;postalcode")
                 or !DBLoadController::isValidCSV($ligaBaseTeamCSV,"player_playerId,team_teamName,club_clubName")) {
 
@@ -293,7 +258,7 @@ EOD;
                 print("matchesCSV:".DBLoadController::isValidCSV($matchesCSV,"matchid;eventid;eventcode"));
                 print("playersCSV:".DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid"));
                 print("baseTeamCSV:".DBLoadController::isValidCSV($baseTeamCSV,"player_playerId,team_teamName"));
-                print("fixedRankingCSV:".DBLoadController::isValidCSV($fixedRankingCSV,"Lidnummer;Klassement enkel;Klassement dubbel;Klassement gemengd"));
+                print("fixedRankingCSV:".DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Voornaam;Achternaam;Geslacht;Klassement enkel;Klassement dubbel;Klassement gemengd"));
                 print("locationsCSV:".DBLoadController::isValidCSV($locationsCSV,"code;name;number;contact;address;postalcode"));
                 print("ligaBaseTeamCSV:".DBLoadController::isValidCSV($ligaBaseTeamCSV,"player_playerId,team_teamName,club_clubName"));
             } else {
@@ -392,8 +357,8 @@ EOD;
                 break;
             case "fixedRanking":
                 DBLoadController::buildAndExecQuery($parsedCsv,
-                    'INSERT INTO lf_tmpdbload_15mei(playerId, playerLevelSingle, playerLevelDouble, playerLevelMixed) VALUES ',
-                    array('Lidnummer','Klassement enkel','Klassement dubbel','Klassement gemengd')
+                    'INSERT INTO lf_tmpdbload_15mei(clubName,playerId, firstName,lastName,gender,playerLevelSingle, playerLevelDouble, playerLevelMixed) VALUES ',
+                    array('Club','Lidnummer','Voornaam','Achternaam','Geslacht','Klassement enkel','Klassement dubbel','Klassement gemengd')
                 );
                 break;
             case "ligaBaseTeam":
