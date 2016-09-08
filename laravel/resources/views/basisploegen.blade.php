@@ -56,7 +56,7 @@
 
         @media(min-width:992px) {
             #playerListId, #teamListId {
-                height:55vh;
+                height:63vh;
                 overflow:auto;
             }
         }
@@ -92,46 +92,84 @@
                     </div>
                 </div>
             </div>
-            <div id="playerListId" class="well well-sm" style="">
-                <table class="table table-bordered table-condensed">
-                    <thead>
-                    <tr>
-                        <th>
-                            <a href="#" data-bind="click: function(data, event) { $root.toggleSortPlayers('NAME') }">
-                                Speler
-                                <!-- ko if: $root.selectedPlayerSortType() =='NAME' -->
-                                <div class="pull-right">
-                                    <span class="glyphicon" data-bind="css: sortingDirectionGlyphicon"></span>
-                                </div>
-                                <!-- /ko -->
-                            </a>
-                        </th>
-                        <th>
-                            <a href="#" data-bind="click: function(data, event) { $root.toggleSortPlayers('FIXED-INDEX') }">
-                                <span data-bind="text: $root.fixedRankingHeaderLayout($root.selectedTeamType())"></span>
-                                <!-- ko if: $root.selectedPlayerSortType() =='FIXED-INDEX' -->
-                                <div class="pull-right">
+            <div>
+                <ul class="nav nav-tabs nav-justified">
+                    <li><a  href="#playerListId" data-toggle="tab">Gentse BC</a></li>
+                    <li class="active"><a href="#transfers" data-toggle="tab">Transfers</a></li>
+                    <li><a href="#notFound" data-toggle="tab">Niet gevonden</a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div id="playerListId" class="tab-pane well well-sm" style="">
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                        <tr>
+                            <th>
+                                <a href="#" data-bind="click: function(data, event) { $root.toggleSortPlayers('NAME') }">
+                                    Speler
+                                    <!-- ko if: $root.selectedPlayerSortType() =='NAME' -->
+                                    <div class="pull-right">
                                         <span class="glyphicon" data-bind="css: sortingDirectionGlyphicon"></span>
-                                </div>
-                                <!-- /ko -->
-                            </a>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody data-bind="foreach: filteredAndSortedPlayers">
-                    <tr>
-                        <td data-bind="draggable: $data"><span class="glyphicon glyphicon-user"></span> <span data-bind="text: fullName" style="color:#428bca"></span></td>
-                        <td data-bind="text: fixedRankingLayout($root.selectedTeamType())" class="playerDetail"></td>
-                    </tr>
-                    </tbody>
-                </table>
+                                    </div>
+                                    <!-- /ko -->
+                                </a>
+                            </th>
+                            <th>
+                                <a href="#" data-bind="click: function(data, event) { $root.toggleSortPlayers('FIXED-INDEX') }">
+                                    <span data-bind="text: $root.fixedRankingHeaderLayout($root.selectedTeamType())"></span>
+                                    <!-- ko if: $root.selectedPlayerSortType() =='FIXED-INDEX' -->
+                                    <div class="pull-right">
+                                        <span class="glyphicon" data-bind="css: sortingDirectionGlyphicon"></span>
+                                    </div>
+                                    <!-- /ko -->
+                                </a>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody data-bind="foreach: filteredAndSortedPlayers">
+                        <tr>
+                            <td data-bind="draggable: $data"><span class="glyphicon glyphicon-user"></span> <span data-bind="text: fullName" style="color:#428bca"></span></td>
+                            <td data-bind="text: fixedRankingLayout($root.selectedTeamType())" class="playerDetail"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="transfers" class="tab-pane active">
+                    Zoek een VBL speler obv. VBL nummer
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">VBL nummer</span>
+                        <input type="text" class="form-control" placeholder="500123456" aria-describedby="basic-addon1" data-bind="textInput: transferSearchVblId">
+                    </div>
+                    <input class="btn btn-default pull-right" type="submit" value="Zoek" data-bind="click: searchPlayersUsingVblId">
+                    <div id="transferPlayerListId" class="tab-pane well well-sm" style="">
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Speler</th>
+                                <th><span data-bind="text: $root.fixedRankingHeaderLayout($root.selectedTeamType())"></span></th>
+                            </tr>
+                            </thead>
+                            <tbody data-bind="foreach: foundTransferPlayer">
+                            <tr>
+                                <td data-bind="draggable: $data"><span class="glyphicon glyphicon-user"></span> <span data-bind="text: fullName" style="color:#428bca"></span></td>
+                                <td data-bind="text: fixedRankingLayout($root.selectedTeamType())" class="playerDetail"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+                <div id="notFound" class="tab-pane">
+                    Not found
+                </div>
             </div>
         </div>
         <div class="col-md-7">
             <div id="ploegopstelling">
                 <div class="row row-fluid">
                     <div class="col-xs-12 col-sm-12">
-                        <h2>Basisploegen</h2>
+                        <h2>Basisploegen GentseBC seizoen 2016-2017</h2>
                         <ul class="nav nav-tabs nav-justified">
                             <li class="active"><a  href="#H" data-bind="click: function(data, event) { showTeams('H', data, event) }">Heren (<span data-bind="text: $root.numberOfTeamsOfTeamType('H')"></span>)</a></li>
                             <li><a href="#D" data-bind="click: function(data, event) { showTeams('D', data, event) }">Dames (<span data-bind="text: $root.numberOfTeamsOfTeamType('D')"></span>)</a></li>

@@ -97,16 +97,15 @@ if (!window.console.log) window.console.log = function () { };
         this.selected = ko.observable(selected);
     }
 
-    var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking,type) {
+    var Player = function(firstName,lastName,vblId,gender,fixedRanking,type) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.fullName = this.firstName  + ' ' + this.lastName;
         this.vblId = vblId;
         this.gender = gender;
         this.fixedRanking  = fixedRanking;
-        this.ranking = ranking;
-        this.type = type;
         this.sortingValue = ((this.gender == 'M') ? "A" : "B")+this.fullName;
+        this.type = type;
 
         this.rankingToIndex = function(ranking) {
             switch(ranking) {
@@ -146,10 +145,6 @@ if (!window.console.log) window.console.log = function () { };
         this.fixedRankingDouble = fixedRanking[1].toUpperCase();
         this.fixedRankingMix = fixedRanking[2].toUpperCase();
 
-        this.rankingSingle = ranking[0].toUpperCase();
-        this.rankingDouble = ranking[1].toUpperCase();
-        this.rankingMix = ranking[2].toUpperCase();
-
 
         this.rankingOrFixedRanking = function(gameType,isFixed) {
             if(gameType == 'HE' || gameType == 'DE')
@@ -162,38 +157,14 @@ if (!window.console.log) window.console.log = function () { };
                 return isFixed ? this.fixedRankingMix : this.rankingMix;
         }
 
-        this.ranking = function(gameType) {
-            return this.rankingOrFixedRanking(gameType,false);
-        }
-
         this.fixedRanking = function(gameType) {
             return this.rankingOrFixedRanking(gameType,true);
         }
 
-        this.index = function(gameType) {
-            return this.rankingToIndex(this.ranking(gameType));
-        }
 
         this.fixedIndex = function(gameType) {
             return this.rankingToIndex(this.fixedRanking(gameType));
         }
-
-        this.indexInsideTeam = function(teamType) {
-            switch(teamType) {
-                case "H":
-                    return this.index("HE") + this.index("HD");
-                case "D":
-                    return this.index("DE") + this.index("DD");
-                case "G":
-                    switch(this.gender) {
-                        case "M":
-                            return this.index("HE") + this.index("HD") + this.index("GD");
-                        case "F":
-                            return this.index("DE") + this.index("DD") + this.index("GD");
-                    }
-            }
-        }
-
 
         this.fixedIndexInsideTeam = function(teamType) {
             switch(teamType) {
@@ -243,17 +214,6 @@ if (!window.console.log) window.console.log = function () { };
                     return this.fixedRankingSingle + ", " + this.fixedRankingDouble +" = "+this.fixedIndexInsideTeam(teamType);
                 case "G":
                     return this.fixedRankingSingle + ", " + this.fixedRankingDouble + ", " +this.fixedRankingMix +" = "+this.fixedIndexInsideTeam(teamType);
-            }
-        }
-
-        this.rankingLayout = function(teamType) {
-            switch (teamType) {
-                case "H":
-                    return this.rankingSingle + ", " + this.rankingDouble;
-                case "D":
-                    return this.rankingSingle + ", " + this.rankingDouble;
-                case "G":
-                    return this.rankingSingle + ", " + this.rankingDouble + ", " +this.rankingMix;
             }
         }
 
@@ -351,6 +311,8 @@ if (!window.console.log) window.console.log = function () { };
         self.selectedTeamType=ko.observable("H");
         self.selectedPlayerSortType=ko.observable("NAME");
         self.selectedPlayerSortDirection=ko.observable("DOWN");
+        self.transferSearchVblId = ko.observable("");
+        self.foundTransferPlayer = ko.observableArray();
 
         self.playerTypeButtons = ko.observableArray(initialPlayerTypeButtons());
         self.selectedPlayerTypeButton = ko.observable(self.playerTypeButtons()[1]);
@@ -390,7 +352,7 @@ if (!window.console.log) window.console.log = function () { };
         //LOAD PLAYERS
         $.get("basisploegen/clubPlayers/30009", function(data) {
             $.each(data.players, function(index,p) {
-                var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type);
+                var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.type);
                 self.availablePlayers.push(myPlayer);
             });
 
@@ -485,6 +447,17 @@ if (!window.console.log) window.console.log = function () { };
         this.selectedTeamTypeIsMultiSex = ko.computed(function() {
             return this.selectedTeamType() == 'G';
         },self);
+
+        this.searchPlayersUsingVblId = function() {
+            debug("Searching player with VblId: "+this.transferSearchVblId());
+            $.get("basisploegen/searchPlayer/"+this.transferSearchVblId()+"/30009", function(data) {
+                $.each(data.players, function(index,p) {
+                     var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,'','');
+                    self.foundTransferPlayer.push(myPlayer);
+                });
+
+            });
+        }
 
 
 

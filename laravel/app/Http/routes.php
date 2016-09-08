@@ -54,6 +54,8 @@ Route::get('basisploegen','BasisPloegenController@index');
 
 Route::get('basisploegen/clubPlayers/{clubId}','BasisPloegenController@clubPlayers');
 
+Route::get('basisploegen/searchPlayer/{vblId}/{clubId}','BasisPloegenController@searchPlayer');
+
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

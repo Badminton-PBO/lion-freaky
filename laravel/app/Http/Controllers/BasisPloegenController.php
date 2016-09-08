@@ -51,4 +51,33 @@ EOD;
         //echo "Reporting:".$teamName;
     }
 
+    public function searchPlayer($vblId,$clubId) {
+        $query = <<<EOD
+SELECT clubName,playerId,firstName,lastName,gender,playerLevelSingle fSingles,playerLevelDouble fDoubles,playerLevelMixed fMixed FROM lf_tmpdbload_15mei
+WHERE playerId=:playerId
+and playerId not in
+(
+select p.playerId from lf_club c
+join lf_player p on p.club_clubId = c.clubId
+and c.clubId=:clubId)
+EOD;
+        $players = DB::select($query, array('playerId' =>$vblId,'clubId'=>$clubId));
+        $result = array('players'=>array());
+
+        //Add clubplayer data
+        foreach($players as $key => $player) {
+            $correctGender = $player->gender == 'V'? "F": $player->gender;
+            array_push($result["players"],array('firstName' => $player->firstName ,'lastName' => $player->lastName, 'vblId' => $player->playerId, 'gender' => $correctGender, 'fixedRanking' => array($player->fSingles, $player->fDoubles,$player->fMixed)));
+        }
+
+        header("Content-Disposition: attachment; filename=json.data");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        //echo json_encode($result);//Somehow the  Content-type was always set to text/html
+        return response()->json($result);
+        //echo json_encode($players);
+        //echo "Reporting:".$teamName;
+    }
+
 }
