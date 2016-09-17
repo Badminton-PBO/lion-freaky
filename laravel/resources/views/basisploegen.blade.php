@@ -94,8 +94,8 @@
             </div>
             <div>
                 <ul class="nav nav-tabs nav-justified">
-                    <li><a  href="#playerListId" data-toggle="tab">Gentse BC</a></li>
-                    <li class="active"><a href="#transfers" data-toggle="tab">Transfers</a></li>
+                    <li><a  href="#playerListId" data-toggle="tab">Gentse BC spelers</a></li>
+                    <li class="active"><a href="#transfers" data-toggle="tab">Uit andere clubs</a></li>
                     <li><a href="#notFound" data-toggle="tab">Niet gevonden</a></li>
                 </ul>
             </div>
@@ -149,12 +149,21 @@
                                 <th><span data-bind="text: $root.fixedRankingHeaderLayout($root.selectedTeamType())"></span></th>
                             </tr>
                             </thead>
+                            <!-- ko if: $root.foundTransferPlayer().length > 0 -->
                             <tbody data-bind="foreach: foundTransferPlayer">
                             <tr>
-                                <td data-bind="draggable: $data"><span class="glyphicon glyphicon-user"></span> <span data-bind="text: fullName" style="color:#428bca"></span></td>
+                                <td data-bind="draggable: $data"><span class="glyphicon glyphicon-user"></span> <span data-bind="text: fullName" style="color:#428bca"></span> (<span data-bind="text: gender" style="color:#428bca"></span>)</td>
                                 <td data-bind="text: fixedRankingLayout($root.selectedTeamType())" class="playerDetail"></td>
                             </tr>
                             </tbody>
+                            <!-- /ko -->
+                            <!-- ko if: $root.foundTransferPlayer().length == 0 -->
+                            <tbody>
+                                <tr>
+                                    <td colspan="2">Geen speler gevonden.</td>
+                                </tr>
+                            </tbody>
+                            <!-- /ko -->
                         </table>
                     </div>
 
