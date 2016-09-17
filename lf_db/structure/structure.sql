@@ -154,6 +154,40 @@ CREATE TABLE IF NOT EXISTS `lf_event` (
   PRIMARY KEY (`eventId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
 
+
+--
+-- Table structure for basisploegen app
+--
+CREATE TABLE IF NOT EXISTS `lf_bp_team` (
+  `teamName` varchar(45) NOT NULL,
+  `sequenceNumber` int(11) DEFAULT NULL,
+  `club_clubId` int(11) NOT NULL,
+  PRIMARY KEY (`teamName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `lf_bp_player` (
+  `playerId` int(11) NOT NULL,
+  `club_clubId` int(11) NOT NULL,
+  `firstName` varchar(45) DEFAULT NULL,
+  `lastName` varchar(45) DEFAULT NULL,
+  `gender` varchar(1) DEFAULT NULL,
+  `singles` varchar(2) DEFAULT NULL,
+  `doubles` varchar(2) DEFAULT NULL,
+  `mixed` varchar(2) DEFAULT NULL,
+  PRIMARY KEY (`playerId`,`club_clubId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `lf_bp_player_has_team` (
+  `player_playerId` int(11) NOT NULL,
+  `team_teamName` varchar(45) NOT NULL,
+  PRIMARY KEY (`player_playerId`,`team_teamName`),
+  KEY `fk_bp_player_has_team_team1_idx` (`team_teamName`),
+  KEY `fk_bp_player_has_team_player1_idx` (`player_playerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 -- TMP Table to faciliate load from CSV into the DB
 CREATE TABLE IF NOT EXISTS `lf_tmpdbload_15mei` (
   `clubName` varchar(45) NOT NULL,
@@ -315,13 +349,13 @@ ALTER TABLE `lf_player`
 ALTER TABLE `lf_player_has_team`
   ADD CONSTRAINT `fk_player_has_team_team1` FOREIGN KEY (`team_teamName`) REFERENCES `lf_team` (`teamName`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
--- DISABLE, to many load problemss
---ALTER TABLE `lf_player_has_team`
+-- DISABLE, to many load problems
+-- ALTER TABLE `lf_player_has_team`
 --  ADD CONSTRAINT `fk_player_has_team_player1` FOREIGN KEY (`player_playerId`) REFERENCES `lf_player` (`playerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 
 
 --
--- Constraints for table `lf_ranking`
+-- sConstraints for table `lf_ranking`
 --
 ALTER TABLE `lf_ranking`
   ADD CONSTRAINT `fk_ranking_player1` FOREIGN KEY (`player_playerId`) REFERENCES `lf_player` (`playerId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -333,6 +367,13 @@ ALTER TABLE `lf_team`
   ADD CONSTRAINT `fk_team_club1` FOREIGN KEY (`club_clubId`) REFERENCES `lf_club` (`clubId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_team_group1` FOREIGN KEY (`group_groupId`) REFERENCES `lf_group` (`groupId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
+
+--
+-- Constraints for table `lf_bp_player_has_team`
+--
+ALTER TABLE `lf_bp_player_has_team`
+  ADD CONSTRAINT `fk_bp_player_has_team_team1` FOREIGN KEY (`team_teamName`) REFERENCES `lf_bp_team` (`teamName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_bp_player_has_team_player1` FOREIGN KEY (`player_playerId`) REFERENCES `lf_bp_player` (`playerId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 
 

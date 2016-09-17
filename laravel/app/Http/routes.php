@@ -56,6 +56,8 @@ Route::get('basisploegen/clubPlayers/{clubId}','BasisPloegenController@clubPlaye
 
 Route::get('basisploegen/searchPlayer/{vblId}/{clubId}','BasisPloegenController@searchPlayer');
 
+Route::post('basisploegen/saveTeams','BasisPloegenController@saveTeams');
+
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

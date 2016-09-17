@@ -2,7 +2,8 @@
 
 use App\Http\Requests;
 use DB;
-use Illuminate\Http\Request;
+use Request;
+use Response;
 
 class BasisPloegenController extends Controller {
 
@@ -78,6 +79,92 @@ EOD;
         return response()->json($result);
         //echo json_encode($players);
         //echo "Reporting:".$teamName;
+    }
+
+    public function saveTeams() {
+        $teams = Request::input("teams");
+        $clubId = Request::input("clubId");
+        //print_r($teams);
+
+        $deleteLinkPlayerTeam = <<<'EOD'
+delete from lf_bp_player_has_team where team_teamName in (select teamName from lf_bp_team t where t.club_clubId =:clubId);
+EOD;
+
+        $deletePlayers = <<<'EOD'
+delete from lf_bp_player where club_clubId =:clubId;
+EOD;
+
+        $deleteTeam = <<<'EOD'
+delete from lf_bp_team where club_clubId =:clubId;
+EOD;
+
+        DB::delete($deleteLinkPlayerTeam,
+            array(
+                'clubId' => $clubId
+            )
+        );
+
+        DB::delete($deletePlayers,
+            array(
+                'clubId' => $clubId
+            )
+        );
+        DB::delete($deleteTeam,
+            array(
+                'clubId' => $clubId
+            )
+        );
+
+        $insertTeam = <<<'EOD'
+insert into lf_bp_team (teamName, sequenceNumber, club_clubId)
+values(:teamName,lf_dbload_teamSequenceNumber(:teamName2),:clubId);
+EOD;
+
+        $insertPlayer = <<<'EOD'
+insert into lf_bp_player (playerId, club_clubId, firstName,lastName,gender,singles,doubles,mixed)
+values(:playerId,:clubId,:firstName,:lastName,:gender,:singles,:doubles,:mixed);
+EOD;
+
+        $insertPlayerInTeam = <<<'EOD'
+insert into lf_bp_player_has_team(player_playerId,team_teamName)
+values (:playerId,:teamName);
+EOD;
+
+        $insertedPlayerIds=[];
+        foreach ($teams as $key => $team) {
+            //print($team["teamName"]);
+            DB::insert($insertTeam,
+                array(
+                    ':teamName' => $team["teamName"],
+                    ':teamName2' => $team["teamName"],
+                    ':clubId' => $clubId
+                )
+            );
+            foreach ($team["playersInTeam"] as $key => $player) {
+                if (!(in_array($player["vblId"], $insertedPlayerIds))) {
+                    DB::insert($insertPlayer,
+                        array(
+                            ':playerId' => $player["vblId"],
+                            ':clubId' => $clubId,
+                            ':firstName' => $player["firstName"],
+                            ':lastName' => $player["lastName"],
+                            ':gender' => $player["gender"],
+                            ':singles' => $player["fixedRankingSingle"],
+                            ':doubles' => $player["fixedRankingDouble"],
+                            ':mixed' => $player["fixedRankingMix"]
+                        )
+                    );
+                }
+                array_push($insertedPlayerIds, $player["vblId"]);
+
+                DB::insert($insertPlayerInTeam,
+                    array(
+                        ':playerId' => $player["vblId"],
+                        ':teamName' => $team["teamName"]
+                    )
+                );
+            }
+        }
     }
 
 }

@@ -42,23 +42,15 @@
         }
 
         #error {
-            background-color: #ff3333;
-            color: #ddd;
+            background-color: #d9534f;
+            border-color: #d43f3a;
+            color: #fff;
         }
 
-        @media(min-width:0px) {
-            #playerListId, #teamListId {
-                height:20vh;
-                overflow:auto;
-            }
-
-        }
-
-        @media(min-width:992px) {
-            #playerListId, #teamListId {
-                height:63vh;
-                overflow:auto;
-            }
+        #success {
+            background-color: #5cb85c;
+            border-color: #4cae4c;
+            color: #fff;
         }
 
     </style>
@@ -190,7 +182,7 @@
                                     <li><a href="#" data-bind="click: function(data, event) { addTeam('H', data, event) }">Herenploeg</a></li>
                                     <li><a href="#" data-bind="click: function(data, event) { addTeam('D', data, event) }">Damesploeg</a></li>
                                     <li><a href="#" data-bind="click: function(data, event) { addTeam('G', data, event) }">Gemengde ploeg</a></li>
-                                    <li>Bewaar</li>
+                                    <li><a href="#" data-bind="click: $root.save">Bewaar</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -198,7 +190,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12" id="error" data-bind="flash: lastError"></div>
+                <div class="col-xs-12" id="error" data-bind="flash: $root.lastError"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12" id="success" data-bind="flash: $root.lastSuccess"></div>
             </div>
             <div id="teamListId" class="row hidden-xs hidden-sm">
                 <!-- ko if: $root.filteredTeams().length != 0 -->

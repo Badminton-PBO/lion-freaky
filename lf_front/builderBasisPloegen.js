@@ -308,11 +308,13 @@ if (!window.console.log) window.console.log = function () { };
         self.teamBaseName = ko.observable("Gentse");
         self.fixedIdTeamCounter = 0;
         self.lastError = ko.observable();
+        self.lastSuccess = ko.observable();
         self.selectedTeamType=ko.observable("H");
         self.selectedPlayerSortType=ko.observable("NAME");
         self.selectedPlayerSortDirection=ko.observable("DOWN");
         self.transferSearchVblId = ko.observable("");
         self.foundTransferPlayer = ko.observableArray();
+        self.clubId = ko.observable("30009");
 
         self.playerTypeButtons = ko.observableArray(initialPlayerTypeButtons());
         self.selectedPlayerTypeButton = ko.observable(self.playerTypeButtons()[1]);
@@ -350,7 +352,7 @@ if (!window.console.log) window.console.log = function () { };
 
 
         //LOAD PLAYERS
-        $.get("basisploegen/clubPlayers/30009", function(data) {
+        $.get("basisploegen/clubPlayers/"+self.clubId(), function(data) {
             $.each(data.players, function(index,p) {
                 var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.type);
                 self.availablePlayers.push(myPlayer);
@@ -585,6 +587,46 @@ if (!window.console.log) window.console.log = function () { };
             //Reset error msg after a succesful drop
             self.lastError("");
             $("#error").hide();
+        };
+
+
+
+        self.save = function() {
+            var vmjs = $.parseJSON(ko.toJSON(self));
+            var resultObject = {"teams": vmjs.teams,"clubId":vmjs.clubId};
+
+            $('#saveAndSend').button('loading');
+            var posting = $.ajax({
+                method:"POST",
+                url:"basisploegen/saveTeams",
+                data: JSON.stringify(resultObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers : {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            posting.done(function(data) {
+                $('#saveAndSend').button('reset');
+                if (data.processedSuccessfull) {
+                    $resultText = "Verplaatsings aanvraag bewaard en e-mail verzonden naar : " + data.mailTo ;
+                    //self.chosenMeeting().dbStatus(dbStatusLayout(data.status));
+                    //self.chosenMeeting().dbActionFor(dbActionForLayout(data.actionFor));
+                    self.lastSuccess($resultText);
+                    debug($resultText);
+                } else {
+                    self.lastError("Problemen bij het bewaren van deze verplaatsings aanvraag.");
+                    debug("saving failed")
+                }
+            });
+
+            posting.fail(function(data) {
+                $('#saveAndSend').button('reset');
+                //self.lastError("Problemen bij het bewaren van deze verplaatsings aanvraag.");
+                debug("saving failed")
+            });
+
         }
 
     };
