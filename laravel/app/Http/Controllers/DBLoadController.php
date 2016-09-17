@@ -303,6 +303,7 @@ EOD;
                 DBLoadController::loadCSV($teamsCSV,'teams');
                 DBLoadController::loadCSV($matchesCSV,'matches');
                 DBLoadController::loadCSV($playersCSV,'players');
+                DB::statement("set names utf8");//set to windows encoding
                 DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
                 DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
                 DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
