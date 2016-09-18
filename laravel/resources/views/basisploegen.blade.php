@@ -86,13 +86,13 @@
             </div>
             <div>
                 <ul class="nav nav-tabs nav-justified">
-                    <li><a  href="#playerListId" data-toggle="tab">Gentse BC spelers</a></li>
-                    <li class="active"><a href="#transfers" data-toggle="tab">Uit andere clubs</a></li>
+                    <li  class="active"><a  href="#playerListId" data-toggle="tab"><span data-bind="text: $root.clubName"/></span> spelers</a></li>
+                    <li><a href="#transfers" data-toggle="tab">Uit andere clubs</a></li>
                     <li><a href="#notFound" data-toggle="tab">Niet gevonden</a></li>
                 </ul>
             </div>
             <div class="tab-content">
-                <div id="playerListId" class="tab-pane well well-sm" style="">
+                <div id="playerListId" class="tab-pane active well well-sm" style="">
                     <table class="table table-bordered table-condensed">
                         <thead>
                         <tr>
@@ -126,7 +126,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div id="transfers" class="tab-pane active">
+                <div id="transfers" class="tab-pane">
                     Zoek een VBL speler obv. VBL nummer
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">VBL nummer</span>
@@ -170,7 +170,7 @@
             <div id="ploegopstelling">
                 <div class="row row-fluid">
                     <div class="col-xs-12 col-sm-12">
-                        <h2>Basisploegen GentseBC seizoen 2016-2017</h2>
+                        <h2>Basisploegen <span data-bind="text: $root.clubName"/></span> seizoen <span data-bind="text: $root.season"></span></h2>
                         <ul class="nav nav-tabs nav-justified">
                             <li class="active"><a  href="#H" data-bind="click: function(data, event) { showTeams('H', data, event) }">Heren (<span data-bind="text: $root.numberOfTeamsOfTeamType('H')"></span>)</a></li>
                             <li><a href="#D" data-bind="click: function(data, event) { showTeams('D', data, event) }">Dames (<span data-bind="text: $root.numberOfTeamsOfTeamType('D')"></span>)</a></li>

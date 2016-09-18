@@ -303,6 +303,8 @@ if (!window.console.log) window.console.log = function () { };
 
     function myViewModel(games) {
         var self = this;
+        self.clubName=ko.observable("");
+        self.season=ko.observable("2016-2017");
         self.availablePlayers = ko.observableArray();
         self.teams=ko.observableArray();
         self.teamBaseName = ko.observable("Gentse");
@@ -314,7 +316,6 @@ if (!window.console.log) window.console.log = function () { };
         self.selectedPlayerSortDirection=ko.observable("DOWN");
         self.transferSearchVblId = ko.observable("");
         self.foundTransferPlayer = ko.observableArray();
-        self.clubId = ko.observable("30009");
 
         self.playerTypeButtons = ko.observableArray(initialPlayerTypeButtons());
         self.selectedPlayerTypeButton = ko.observable(self.playerTypeButtons()[1]);
@@ -352,7 +353,7 @@ if (!window.console.log) window.console.log = function () { };
 
 
         //LOAD PLAYERS
-        $.get("basisploegen/clubPlayers/"+self.clubId(), function(data) {
+        $.get("basisploegen/clubPlayers", function(data) {
             $.each(data.players, function(index,p) {
                 var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.type);
                 self.availablePlayers.push(myPlayer);
@@ -360,6 +361,8 @@ if (!window.console.log) window.console.log = function () { };
 
             //Sort the arrays of players thtat are shown in UI
             self.availablePlayers(self.availablePlayers().sort(playerComparatorBasedSortingValue("NAME","DOWN")));
+
+            self.clubName(data.club.clubName);
 
         });
 
@@ -593,7 +596,7 @@ if (!window.console.log) window.console.log = function () { };
 
         self.save = function() {
             var vmjs = $.parseJSON(ko.toJSON(self));
-            var resultObject = {"teams": vmjs.teams,"clubId":vmjs.clubId};
+            var resultObject = {"teams": vmjs.teams};
 
             $('#saveAndSend').button('loading');
             var posting = $.ajax({

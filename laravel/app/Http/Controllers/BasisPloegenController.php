@@ -1,19 +1,31 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use Auth;
 use DB;
 use Request;
 use Response;
 
 class BasisPloegenController extends Controller {
 
-    public function index(Request $request)
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index()
     {
         return view("basisploegen");
     }
 
 
-    public function clubPlayers($clubId) {
+    public function clubPlayers() {
         $query = <<<EOD
 select c.clubName,p.playerId,p.firstName,p.lastName,p.gender,p.type, rF.singles fSingles,rF.doubles fDoubles,rF.mixed fMixed, rV.Singles vSingles,rV.doubles vDoubles,rV.mixed vMixed from lf_club c
 join lf_player p on p.club_clubId = c.clubId
@@ -33,8 +45,14 @@ where pp.playerId = p.playerId
 group by p.playerId)
 EOD;
 
-        $players = DB::select($query, array('clubId' =>$clubId));
+        $queryClub = <<<EOD
+        SELECT clubId,clubName FROM lf_club WHERE clubId =:clubId
+EOD;
+
+        $players = DB::select($query, array('clubId' =>Auth::user()->club_id));
+        $club = DB::select($queryClub, array('clubId' =>Auth::user()->club_id));
         $result = array('players'=>array());
+        $result['club'] = $club[0];
 
         //Add clubplayer data
         foreach($players as $key => $player) {
@@ -52,7 +70,7 @@ EOD;
         //echo "Reporting:".$teamName;
     }
 
-    public function searchPlayer($vblId,$clubId) {
+    public function searchPlayer($vblId) {
         $query = <<<EOD
 SELECT clubName,playerId,firstName,lastName,gender,playerLevelSingle fSingles,playerLevelDouble fDoubles,playerLevelMixed fMixed FROM lf_tmpdbload_15mei
 WHERE playerId=:playerId
@@ -62,7 +80,7 @@ select p.playerId from lf_club c
 join lf_player p on p.club_clubId = c.clubId
 and c.clubId=:clubId)
 EOD;
-        $players = DB::select($query, array('playerId' =>$vblId,'clubId'=>$clubId));
+        $players = DB::select($query, array('playerId' =>$vblId,'clubId'=>Auth::user()->club_id));
         $result = array('players'=>array());
 
         //Add clubplayer data
@@ -83,7 +101,7 @@ EOD;
 
     public function saveTeams() {
         $teams = Request::input("teams");
-        $clubId = Request::input("clubId");
+        $clubId = Auth::user()->club_id;
         //print_r($teams);
 
         $deleteLinkPlayerTeam = <<<'EOD'

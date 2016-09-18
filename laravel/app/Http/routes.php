@@ -52,9 +52,9 @@ Route::get('agenda','CalendarSyncController@index');
 
 Route::get('basisploegen','BasisPloegenController@index');
 
-Route::get('basisploegen/clubPlayers/{clubId}','BasisPloegenController@clubPlayers');
+Route::get('basisploegen/clubPlayers','BasisPloegenController@clubPlayers');
 
-Route::get('basisploegen/searchPlayer/{vblId}/{clubId}','BasisPloegenController@searchPlayer');
+Route::get('basisploegen/searchPlayer/{vblId}','BasisPloegenController@searchPlayer');
 
 Route::post('basisploegen/saveTeams','BasisPloegenController@saveTeams');
 
