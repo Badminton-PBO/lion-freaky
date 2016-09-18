@@ -99,6 +99,58 @@ EOD;
         //echo "Reporting:".$teamName;
     }
 
+
+    public function currentTeams() {
+        $clubId = Auth::user()->club_id;
+
+        //The ordering is very important as the teamNames will actually be calculated in the front
+        $queryTeamAndPlayers = <<<EOD
+SELECT t.teamName,lf_dbload_eventcode(t.teamName) as teamType,lf_dbload_teamSequenceNumber(t.teamName) as teamSequence,p.playerId,p.firstName,p.lastName,p.gender,p.singles,p.doubles,p.mixed FROM `lf_bp_team` t
+left outer join lf_bp_player_has_team tp on tp.team_teamName = t.teamName
+left outer join lf_bp_player p on p.playerId = tp.player_playerId
+where t.club_clubId=:clubId
+order by lf_dbload_eventcode(t.teamName),convert(lf_dbload_teamSequenceNumber(t.teamName),UNSIGNED INTEGER) asc
+EOD;
+
+        $teamPlayers = DB::select($queryTeamAndPlayers, array('clubId' =>$clubId));
+
+        $result = array('teams'=>array());
+        $team = array('teamName'=>'DUMMY');
+        foreach($teamPlayers as $key => $teamPlayer) {
+            //Create new team if previous teamName was different
+            if ($teamPlayer->teamName != $team["teamName"]) {
+                if ($team["teamName"]!='DUMMY') {
+                    array_push($result["teams"],$team);
+                }
+                $team = array('teamName'=>$teamPlayer->teamName,'teamType'=>$teamPlayer->teamType,'teamSequence' => $teamPlayer->teamSequence,"players"=>array());
+            }
+
+            //Add player to team
+            if (!empty($teamPlayer->playerId)) {
+                array_push($team["players"],array(
+                   "vblId" => $teamPlayer->playerId,
+                   "firstName" => $teamPlayer->firstName,
+                    "lastName" => $teamPlayer->lastName,
+                    "gender" => $teamPlayer->gender,
+                    'fixedRanking' => array($teamPlayer->singles, $teamPlayer->doubles,$teamPlayer->mixed)
+                ));
+            }
+        }
+        if (sizeof($teamPlayers) > 0) {
+            //Pushing last team
+            array_push($result["teams"],$team);
+        }
+
+        header("Content-type: application/json");
+        //header("Content-type: text/html");
+        header("Content-Disposition: attachment; filename=json.data");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        return response()->json($result);
+
+    }
+
     public function saveTeams() {
         $teams = Request::input("teams");
         $clubId = Auth::user()->club_id;

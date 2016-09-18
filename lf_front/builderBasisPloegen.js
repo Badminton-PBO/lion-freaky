@@ -168,11 +168,11 @@ if (!window.console.log) window.console.log = function () { };
 
         this.fixedIndexInsideTeam = function(teamType) {
             switch(teamType) {
-                case "H":
+                case "M":
                     return this.fixedIndex("HE") + this.fixedIndex("HD");
-                case "D":
+                case "L":
                     return this.fixedIndex("DE") + this.fixedIndex("DD");
-                case "G":
+                case "MX":
                     switch(this.gender) {
                         case "M":
                             return this.fixedIndex("HE") + this.fixedIndex("HD") + this.fixedIndex("GD");
@@ -185,11 +185,11 @@ if (!window.console.log) window.console.log = function () { };
         this.maxFixedRankingConvertedToIndexInsideTeam = function(teamType) {
             //to support ART53.2
             switch(teamType) {
-                case "H":
+                case "M":
                     return Math.max(this.fixedIndex("HE"),this.fixedIndex("HD"));
-                case "D":
+                case "L":
                     return Math.max(this.fixedIndex("DE"),this.fixedIndex("DD"));
-                case "G":
+                case "MX":
                     switch(this.gender) {
                         case "M":
                             return Math.max(this.fixedIndex("HE"),this.fixedIndex("HD"),this.fixedIndex("GD"));
@@ -208,18 +208,18 @@ if (!window.console.log) window.console.log = function () { };
 
         this.fixedRankingLayout = function(teamType) {
             switch (teamType) {
-                case "H":
+                case "M":
                     return this.fixedRankingSingle + ", " + this.fixedRankingDouble +" = "+this.fixedIndexInsideTeam(teamType) ;
-                case "D":
+                case "L":
                     return this.fixedRankingSingle + ", " + this.fixedRankingDouble +" = "+this.fixedIndexInsideTeam(teamType);
-                case "G":
+                case "MX":
                     return this.fixedRankingSingle + ", " + this.fixedRankingDouble + ", " +this.fixedRankingMix +" = "+this.fixedIndexInsideTeam(teamType);
             }
         }
 
         //Validation rules
         this.isAllowedToPlayInTeamGameTypeBasedOnGender = function(teamType) {
-            return ((teamType == 'H' && this.gender == 'F') || (teamType == 'D' && this.gender == 'M')) ? false : true;
+            return ((teamType == 'M' && this.gender == 'F') || (teamType == 'L' && this.gender == 'M')) ? false : true;
         }
 
     };
@@ -235,10 +235,20 @@ if (!window.console.log) window.console.log = function () { };
             return vm.teams().filter(teamFilterOfTeamType(this.teamType)).filter(teamFilterHavingFixedIndexSmallerThan(this.fixedId)).length +1
         },self);
 
-        this.teamName = ko.computed(function(){
-            return vm.teamBaseName()+" "+this.teamNumber()+this.teamType;
-        },self);
+        this.teamTypeToTeamNameSuffix = function(teamType) {
+            switch (teamType) {
+                case "M":
+                    return "H"
+                case "L":
+                    return "D";
+                case "MX":
+                    return "G";
+            }
+        };
 
+        this.teamName = ko.computed(function(){
+            return vm.teamBaseName()+" "+this.teamNumber()+this.teamTypeToTeamNameSuffix(this.teamType);
+        },self);
 
         //Duplicate some stuff to make validation easier
         this.playersInTeam.team = this;
@@ -366,6 +376,21 @@ if (!window.console.log) window.console.log = function () { };
 
         });
 
+        //Load existing teams
+        $.get("basisploegen/currentTeams", function(data) {
+            $.each(data.teams, function(index,t){
+                debug("Loading team:"+ t.teamName);
+                self.fixedIdTeamCounter++;
+                var newTeam = new Team(self.fixedIdTeamCounter, t.teamType,self);
+
+                $.each(t.players, function(index,p){
+                    newTeam.playersInTeam.push(new Player(p.firstName, p.lastName, p.vblId, p.gender, p.fixedRanking));
+                });
+                self.teams.push(newTeam);
+            });
+            self.showTeams('M');
+        });
+
 
 
         self.addTeam = function(teamType) {
@@ -374,12 +399,12 @@ if (!window.console.log) window.console.log = function () { };
             $('.nav-tabs a[href="#'+teamType+'"]').tab('show');
             self.showTeams(teamType);
             switch (teamType) {
-                case "H":
-                    return self.teams.push(new Team(self.fixedIdTeamCounter,"H",self));
-                case "D":
-                    return self.teams.push(new Team(self.fixedIdTeamCounter,"D",self));
-                case "G":
-                    return self.teams.push(new Team(self.fixedIdTeamCounter,"G",self));
+                case "M":
+                    return self.teams.push(new Team(self.fixedIdTeamCounter,"M",self));
+                case "L":
+                    return self.teams.push(new Team(self.fixedIdTeamCounter,"L",self));
+                case "MX":
+                    return self.teams.push(new Team(self.fixedIdTeamCounter,"MX",self));
             }
         };
 
@@ -420,11 +445,11 @@ if (!window.console.log) window.console.log = function () { };
 
         self.noTeamsLayout = ko.computed(function() {
             switch (self.selectedTeamType()) {
-                case "H":
+                case "M":
                     return "Geen herenploegen aangemaakt. Gebruik 'Acties > Herenploeg toevoegen' om een herenploeg toe te voegen.";
-                case "D":
+                case "L":
                     return "Geen damesploegen aangemaakt. Gebruik 'Acties > Damesploeg toevoegen' om een damessploeg toe te voegen.";
-                case "G":
+                case "MX":
                     return "Geen gemengde ploegen aangemaakt. Gebruik 'Acties > Gemengde ploeg toevoegen' om een gemengde ploeg toe te voegen.";
             }
         },self);
@@ -440,17 +465,17 @@ if (!window.console.log) window.console.log = function () { };
 
         this.fixedRankingHeaderLayout = function(teamType) {
             switch (teamType) {
-                case "H":
+                case "M":
                     return "vaste index E,D" ;
-                case "D":
+                case "L":
                     return "vaste index E,D";
-                case "G":
+                case "MX":
                     return "vast index E,D,G";
             }
         }
 
         this.selectedTeamTypeIsMultiSex = ko.computed(function() {
-            return this.selectedTeamType() == 'G';
+            return this.selectedTeamType() == 'MX';
         },self);
 
         this.searchPlayersUsingVblId = function() {
@@ -533,19 +558,19 @@ if (!window.console.log) window.console.log = function () { };
             };
 
             //VALIDATE GENDER
-            if (teamType=="H" && player.gender !== "M") {
+            if (teamType=="M" && player.gender !== "M") {
                 logError("Een herenploeg bestaat enkel uit mannen.",arg);
                 return;
             }
-            if (teamType=="D" && player.gender !== "F") {
+            if (teamType=="L" && player.gender !== "F") {
                 logError("Een damesploeg bestaat enkel uit dames.",arg);
                 return;
             }
-            if (teamType=="G" && player.gender=='M' && targetTeam.numberOfPlayersOfGender("M") == 2) {
+            if (teamType=="MX" && player.gender=='M' && targetTeam.numberOfPlayersOfGender("M") == 2) {
                 logError("Een basis opstelling voor een mixploeg bestaat uit maximaal 2 heren.",arg);
                 return;
             }
-            if (teamType=="G" && player.gender=='F' && targetTeam.numberOfPlayersOfGender("F") == 2) {
+            if (teamType=="MX" && player.gender=='F' && targetTeam.numberOfPlayersOfGender("F") == 2) {
                 logError("Een basis opstelling voor een mixploeg bestaat uit maximaal 2 dames.",arg);
                 return;
             }
@@ -569,13 +594,13 @@ if (!window.console.log) window.console.log = function () { };
             if(!(self.isOrderedIndexArray(newOrder))) {
                 debug(teamType);
                 switch (teamType) {
-                    case "H":
+                    case "M":
                         logError("De heren teams moeten geordend zijn van hoogste naar laagste team index",arg);
                         break;
-                    case "D":
+                    case "L":
                         logError("De dames teams moeten geordend zijn van hoogste naar laagste team index",arg);
                         break;
-                    case "G":
+                    case "MX":
                         logError("De gemengde teams moeten geordend zijn van hoogste naar laagste team index",arg);
                         break;
 

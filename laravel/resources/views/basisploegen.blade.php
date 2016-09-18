@@ -172,16 +172,16 @@
                     <div class="col-xs-12 col-sm-12">
                         <h2>Basisploegen <span data-bind="text: $root.clubName"/></span> seizoen <span data-bind="text: $root.season"></span></h2>
                         <ul class="nav nav-tabs nav-justified">
-                            <li class="active"><a  href="#H" data-bind="click: function(data, event) { showTeams('H', data, event) }">Heren (<span data-bind="text: $root.numberOfTeamsOfTeamType('H')"></span>)</a></li>
-                            <li><a href="#D" data-bind="click: function(data, event) { showTeams('D', data, event) }">Dames (<span data-bind="text: $root.numberOfTeamsOfTeamType('D')"></span>)</a></li>
-                            <li><a href="#G" data-bind="click: function(data, event) { showTeams('G', data, event) }">Gemengd (<span data-bind="text: $root.numberOfTeamsOfTeamType('G')"></span>)</a></li>
+                            <li class="active"><a  href="#H" data-bind="click: function(data, event) { showTeams('M', data, event) }">Heren (<span data-bind="text: $root.numberOfTeamsOfTeamType('M')"></span>)</a></li>
+                            <li><a href="#D" data-bind="click: function(data, event) { showTeams('L', data, event) }">Dames (<span data-bind="text: $root.numberOfTeamsOfTeamType('L')"></span>)</a></li>
+                            <li><a href="#G" data-bind="click: function(data, event) { showTeams('MX', data, event) }">Gemengd (<span data-bind="text: $root.numberOfTeamsOfTeamType('MX')"></span>)</a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Acties<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li>Ploeg toevoegen</li>
-                                    <li><a href="#" data-bind="click: function(data, event) { addTeam('H', data, event) }">Herenploeg</a></li>
-                                    <li><a href="#" data-bind="click: function(data, event) { addTeam('D', data, event) }">Damesploeg</a></li>
-                                    <li><a href="#" data-bind="click: function(data, event) { addTeam('G', data, event) }">Gemengde ploeg</a></li>
+                                    <li><a href="#" data-bind="click: function(data, event) { addTeam('M', data, event) }">Herenploeg</a></li>
+                                    <li><a href="#" data-bind="click: function(data, event) { addTeam('L', data, event) }">Damesploeg</a></li>
+                                    <li><a href="#" data-bind="click: function(data, event) { addTeam('MX', data, event) }">Gemengde ploeg</a></li>
                                     <li><a href="#" data-bind="click: $root.save">Bewaar</a></li>
                                 </ul>
                             </li>
