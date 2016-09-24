@@ -105,7 +105,7 @@ EOD;
 
         //The ordering is very important as the teamNames will actually be calculated in the front
         $queryTeamAndPlayers = <<<EOD
-SELECT t.teamName,lf_dbload_eventcode(t.teamName) as teamType,lf_dbload_teamSequenceNumber(t.teamName) as teamSequence,p.playerId,p.firstName,p.lastName,p.gender,p.singles,p.doubles,p.mixed FROM `lf_bp_team` t
+SELECT t.teamName,lf_dbload_eventcode(t.teamName) as teamType,lf_dbload_teamSequenceNumber(t.teamName) as teamSequence,p.playerId,tp.role,p.firstName,p.lastName,p.gender,p.singles,p.doubles,p.mixed FROM `lf_bp_team` t
 left outer join lf_bp_player_has_team tp on tp.team_teamName = t.teamName
 left outer join lf_bp_player p on p.playerId = tp.player_playerId
 where t.club_clubId=:clubId
@@ -132,6 +132,7 @@ EOD;
                    "firstName" => $teamPlayer->firstName,
                     "lastName" => $teamPlayer->lastName,
                     "gender" => $teamPlayer->gender,
+                    "role" => $teamPlayer->role,
                     'fixedRanking' => array($teamPlayer->singles, $teamPlayer->doubles,$teamPlayer->mixed)
                 ));
             }
@@ -196,8 +197,8 @@ values(:playerId,:clubId,:firstName,:lastName,:gender,:singles,:doubles,:mixed);
 EOD;
 
         $insertPlayerInTeam = <<<'EOD'
-insert into lf_bp_player_has_team(player_playerId,team_teamName)
-values (:playerId,:teamName);
+insert into lf_bp_player_has_team(player_playerId,team_teamName,role)
+values (:playerId,:teamName,:role);
 EOD;
 
         $insertedPlayerIds=[];
@@ -230,10 +231,39 @@ EOD;
                 DB::insert($insertPlayerInTeam,
                     array(
                         ':playerId' => $player["vblId"],
-                        ':teamName' => $team["teamName"]
+                        ':teamName' => $team["teamName"],
+                        ':role' => 'P',
                     )
                 );
             }
+
+            foreach ($team["realPlayersInTeam"] as $key => $player) {
+                if (!(in_array($player["vblId"], $insertedPlayerIds))) {
+                    DB::insert($insertPlayer,
+                        array(
+                            ':playerId' => $player["vblId"],
+                            ':clubId' => $clubId,
+                            ':firstName' => $player["firstName"],
+                            ':lastName' => $player["lastName"],
+                            ':gender' => $player["gender"],
+                            ':singles' => $player["fixedRankingSingle"],
+                            ':doubles' => $player["fixedRankingDouble"],
+                            ':mixed' => $player["fixedRankingMix"]
+                        )
+                    );
+                }
+                array_push($insertedPlayerIds, $player["vblId"]);
+
+                DB::insert($insertPlayerInTeam,
+                    array(
+                        ':playerId' => $player["vblId"],
+                        ':teamName' => $team["teamName"],
+                        ':role' => 'R',
+                    )
+                );
+            }
+
+
         }
     }
 

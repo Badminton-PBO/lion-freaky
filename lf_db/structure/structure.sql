@@ -181,11 +181,11 @@ CREATE TABLE IF NOT EXISTS `lf_bp_player` (
 CREATE TABLE IF NOT EXISTS `lf_bp_player_has_team` (
   `player_playerId` int(11) NOT NULL,
   `team_teamName` varchar(45) NOT NULL,
-  PRIMARY KEY (`player_playerId`,`team_teamName`),
+  `role` varchar(2) NOT NULL,
+  PRIMARY KEY (`player_playerId`,`team_teamName`,`role`),
   KEY `fk_bp_player_has_team_team1_idx` (`team_teamName`),
   KEY `fk_bp_player_has_team_player1_idx` (`player_playerId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 
 -- TMP Table to faciliate load from CSV into the DB

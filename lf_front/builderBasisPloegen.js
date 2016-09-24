@@ -438,12 +438,18 @@ if (!window.console.log) window.console.log = function () { };
         //Load existing teams
         $.get("basisploegen/currentTeams", function(data) {
             $.each(data.teams, function(index,t){
-                debug("Loading team:"+ t.teamName);
                 self.fixedIdTeamCounter++;
                 var newTeam = new Team(self.fixedIdTeamCounter, t.teamType,self);
 
                 $.each(t.players, function(index,p){
-                    newTeam.playersInTeam.push(new Player(p.firstName, p.lastName, p.vblId, p.gender, p.fixedRanking));
+                    switch (p.role) {
+                        case "P":
+                            newTeam.playersInTeam.push(new Player(p.firstName, p.lastName, p.vblId, p.gender, p.fixedRanking));
+                            break;
+                        case "R":
+                            newTeam.realPlayersInTeam.push(new Player(p.firstName, p.lastName, p.vblId, p.gender, p.fixedRanking));
+                            break;
+                    }
                 });
                 self.teams.push(newTeam);
             });
