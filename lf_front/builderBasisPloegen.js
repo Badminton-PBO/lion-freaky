@@ -263,6 +263,11 @@ if (!window.console.log) window.console.log = function () { };
             self.realPlayersInTeam.remove(p);
         };
 
+        this.isFull = function() {
+            return self.playersInTeam().length==4;
+        }
+
+
         this.totalFixedIndexInsideTeam = ko.computed(function() {
             var totalI=0;
             var myGameType= this.gameType;
@@ -289,11 +294,14 @@ if (!window.console.log) window.console.log = function () { };
             }
         },this);
 
-        this.totalFixedIndexInsideTeamForRealPlayersLayout = ko.computed(function() {
-            if (this.playersInTeam().length == 4) {
-                return this.totalFixedIndexInsideTeamForRealPlayers();
-            } else {
-                return "("+this.totalFixedIndexInsideTeamForRealPlayers()+")";
+
+        this.isRealPlayersTeamInWarningMode = ko.computed(function(){
+            return this.isFull() && (this.totalFixedIndexInsideTeamForRealPlayers() > this.totalFixedIndexInsideTeam())
+        },this);
+
+        this.realPlayerTeamWarningText = ko.computed(function(){
+            if (this.isFull() && (this.totalFixedIndexInsideTeamForRealPlayers() > this.totalFixedIndexInsideTeam())) {
+                return "Teamindex papieren ploeg moet groter of gelijke zijn dan Teamindex effectieve ploeg.";
             }
         },this);
 
@@ -306,6 +314,10 @@ if (!window.console.log) window.console.log = function () { };
             return self.playersInTeam().filter(playerGenderFilter(gender)).length;
         }
 
+        this.numberOfRealPlayersOfGender = function(gender) {
+            return self.realPlayersInTeam().filter(playerGenderFilter(gender)).length;
+        }
+
         this.numberOfPlayersWithVblId = function(vblId) {
             return self.playersInTeam().filter(playerVblIdFilter(vblId)).length;
         }
@@ -314,9 +326,27 @@ if (!window.console.log) window.console.log = function () { };
             return self.realPlayersInTeam().filter(playerVblIdFilter(vblId)).length;
         }
 
-        this.isFull = function() {
-            return self.playersInTeam().length==4;
-        }
+
+        this.isFullWithRealPlayers = function() {
+            switch (teamType) {
+                case "M":
+                    return self.realPlayersInTeam().length==4;
+                case "L":
+                    return self.realPlayersInTeam().length==4;
+                case "MX":
+                    return self.numberOfRealPlayersOfGender("F")>=2 && self.numberOfRealPlayersOfGender("M")>=2;
+            }
+            ;
+        };
+
+        this.totalFixedIndexInsideTeamForRealPlayersLayout = ko.computed(function() {
+            if (this.isFullWithRealPlayers()) {
+                return this.totalFixedIndexInsideTeamForRealPlayers();
+            } else {
+                return "("+this.totalFixedIndexInsideTeamForRealPlayers()+")";
+            }
+        },this);
+
 
     }
 

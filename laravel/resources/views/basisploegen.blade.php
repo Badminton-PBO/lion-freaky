@@ -223,11 +223,11 @@
                 <table class="table table-condensed">
                     <thead>
                     <tr>
-                        <th class="col-md-1">Team</th>
-                        <th class="col-md-4">Papieren ploeg</th>
-                        <th class="col-md-4">Effectieve ploeg (optioneel)</th>
-                        <th class="col-md-1">Teamindex papieren ploeg</th>
-                        <th class="col-md-1">Teamindex effectieve ploeg</th>
+                        <th class="col-md-1 text-center">Team</th>
+                        <th class="col-md-4 text-center">Papieren ploeg</th>
+                        <th class="col-md-4 text-center">Effectieve ploeg (optioneel)</th>
+                        <th class="col-md-1 text-center">Teamindex papieren ploeg</th>
+                        <th class="col-md-1 text-center">Teamindex effectieve ploeg</th>
                         <th class="col-md-1"></th>
                     </tr>
                     </thead>
@@ -264,15 +264,23 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <div>
+                        <td class="text-center">
+                            <div class="alert alert-success" style="padding: 5px">
                                 <span data-bind="text: totalFixedIndexInsideTeamLayout"></span>
                             </div>
                         </td>
-                        <td>
-                            <div>
+                        <td class="text-center">
+                            <!-- ko ifnot: isRealPlayersTeamInWarningMode() -->
+                            <div class="alert alert-success" style="padding: 5px">
                                 <span data-bind="text: totalFixedIndexInsideTeamForRealPlayersLayout"></span>
                             </div>
+                            <!-- /ko -->
+                            <!-- ko if: isRealPlayersTeamInWarningMode() -->
+                            <div class="alert alert-danger" style="padding: 5px">
+                                <span class="text-danger" data-bind="text: totalFixedIndexInsideTeamForRealPlayersLayout"></span>
+                                <span class="glyphicon glyphicon-question-sign" data-bind="attr: {title: realPlayerTeamWarningText}" aria-hidden="true"></span>
+                            </div>
+                            <!-- /ko -->
                         </td>
                         <td>
                             <div class="pull-right">
