@@ -30,7 +30,7 @@
             font-size:10px;
         }
 
-        #message, #error {
+        #message, #error, #warning {
             font-size: 1em;
             margin-top: 10px;
             background-color: orange;
@@ -47,10 +47,30 @@
             color: #fff;
         }
 
+        #warning {
+            background-color: #ff8c00;
+            border-color: #d43f3a;
+            color: #fff;
+        }
+
         #success {
             background-color: #5cb85c;
             border-color: #4cae4c;
             color: #fff;
+        }
+
+        @media(min-width:0px) {
+            #playerListId {
+                height:20vh;
+                overflow:auto;
+            }
+        }
+
+        @media(min-width:992px) {
+            #playerListId {
+                height:55vh;
+                overflow:auto;
+            }
         }
 
     </style>
@@ -193,6 +213,9 @@
                 <div class="col-xs-12" id="error" data-bind="flash: $root.lastError"></div>
             </div>
             <div class="row">
+                <div class="col-xs-12" id="warning" data-bind="flash: $root.lastWarning"></div>
+            </div>
+            <div class="row">
                 <div class="col-xs-12" id="success" data-bind="flash: $root.lastSuccess"></div>
             </div>
             <div id="teamListId" class="row hidden-xs hidden-sm">
@@ -200,9 +223,11 @@
                 <table class="table table-condensed">
                     <thead>
                     <tr>
-                        <th class="col-md-2">Team</th>
-                        <th class="col-md-7">Spelers</th>
-                        <th class="col-md-2">Team index</th>
+                        <th class="col-md-1">Team</th>
+                        <th class="col-md-4">Papieren ploeg</th>
+                        <th class="col-md-4">Effectieve ploeg (optioneel)</th>
+                        <th class="col-md-1">Teamindex papieren ploeg</th>
+                        <th class="col-md-1">Teamindex effectieve ploeg</th>
                         <th class="col-md-1"></th>
                     </tr>
                     </thead>
@@ -217,7 +242,6 @@
                             <div data-bind="sortable: {data : playersInTeam, allowDrop: allowMorePlayers,beforeMove: $root.verifyAssignments,afterMove: $root.verifyAssignmentsAfterMove}" class="baseTeam">
                                 <div>
                                     <span data-bind="text: fullName"></span>,
-                                    <span data-bind="text: vblId"></span>,
                                     <span data-bind="text: fixedIndexInsideTeam($parent.teamType)"></span>
                                     <div class="pull-right">
                                         <a href="#" data-bind="click: $parent.removePlayer">
@@ -227,9 +251,27 @@
                                 </div>
                             </div>
                         </td>
+                        <td style="padding:0px">
+                            <div data-bind="sortable: {data : realPlayersInTeam, allowDrop: true,beforeMove: $root.verifyAssignmentsRealPlayer, afterMove: $root.verifyAssignmentsAfterMove}" class="baseTeam">
+                                <div>
+                                    <span data-bind="text: fullName"></span>,
+                                    <span data-bind="text: fixedIndexInsideTeam($parent.teamType)"></span>
+                                    <div class="pull-right">
+                                        <a href="#" data-bind="click: $parent.removeRealPlayer">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                         <td>
                             <div>
                                 <span data-bind="text: totalFixedIndexInsideTeamLayout"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span data-bind="text: totalFixedIndexInsideTeamForRealPlayersLayout"></span>
                             </div>
                         </td>
                         <td>

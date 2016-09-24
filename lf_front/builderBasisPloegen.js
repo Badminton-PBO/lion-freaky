@@ -230,6 +230,7 @@ if (!window.console.log) window.console.log = function () { };
         this.fixedId = fixedId;
         this.teamType = teamType;
         this.playersInTeam = ko.observableArray();
+        this.realPlayersInTeam = ko.observableArray();
 
         this.teamNumber = ko.computed(function(){
             return vm.teams().filter(teamFilterOfTeamType(this.teamType)).filter(teamFilterHavingFixedIndexSmallerThan(this.fixedId)).length +1
@@ -252,9 +253,14 @@ if (!window.console.log) window.console.log = function () { };
 
         //Duplicate some stuff to make validation easier
         this.playersInTeam.team = this;
+        this.realPlayersInTeam.team = this;
 
         this.removePlayer = function(p) {
             self.playersInTeam.remove(p);
+        };
+
+        this.removeRealPlayer = function(p) {
+            self.realPlayersInTeam.remove(p);
         };
 
         this.totalFixedIndexInsideTeam = ko.computed(function() {
@@ -266,6 +272,14 @@ if (!window.console.log) window.console.log = function () { };
             return totalI;
         },self);
 
+        this.totalFixedIndexInsideTeamForRealPlayers = ko.computed(function() {
+            var totalI=0;
+            var myGameType= this.gameType;
+            $.each(this.realPlayersInTeam(), function(index,player) {
+                totalI += player.fixedIndexInsideTeam(teamType);
+            });
+            return totalI;
+        },self);
 
         this.totalFixedIndexInsideTeamLayout = ko.computed(function() {
             if (this.playersInTeam().length == 4) {
@@ -274,6 +288,15 @@ if (!window.console.log) window.console.log = function () { };
                 return "("+this.totalFixedIndexInsideTeam()+")";
             }
         },this);
+
+        this.totalFixedIndexInsideTeamForRealPlayersLayout = ko.computed(function() {
+            if (this.playersInTeam().length == 4) {
+                return this.totalFixedIndexInsideTeamForRealPlayers();
+            } else {
+                return "("+this.totalFixedIndexInsideTeamForRealPlayers()+")";
+            }
+        },this);
+
 
         this.allowMorePlayers = ko.computed(function() {
             return this.playersInTeam().length < 4;
@@ -285,6 +308,10 @@ if (!window.console.log) window.console.log = function () { };
 
         this.numberOfPlayersWithVblId = function(vblId) {
             return self.playersInTeam().filter(playerVblIdFilter(vblId)).length;
+        }
+
+        this.numberOfRealPlayersWithVblId = function(vblId) {
+            return self.realPlayersInTeam().filter(playerVblIdFilter(vblId)).length;
         }
 
         this.isFull = function() {
@@ -320,12 +347,14 @@ if (!window.console.log) window.console.log = function () { };
         self.teamBaseName = ko.observable("Gentse");
         self.fixedIdTeamCounter = 0;
         self.lastError = ko.observable();
+        self.lastWarning = ko.observable();
         self.lastSuccess = ko.observable();
         self.selectedTeamType=ko.observable("H");
         self.selectedPlayerSortType=ko.observable("NAME");
         self.selectedPlayerSortDirection=ko.observable("DOWN");
         self.transferSearchVblId = ko.observable("");
         self.foundTransferPlayer = ko.observableArray();
+        self.justDroppedWithWarning = ko.observable(false);
 
         self.playerTypeButtons = ko.observableArray(initialPlayerTypeButtons());
         self.selectedPlayerTypeButton = ko.observable(self.playerTypeButtons()[1]);
@@ -480,7 +509,7 @@ if (!window.console.log) window.console.log = function () { };
 
         this.searchPlayersUsingVblId = function() {
             debug("Searching player with VblId: "+this.transferSearchVblId());
-            $.get("basisploegen/searchPlayer/"+this.transferSearchVblId()+"/30009", function(data) {
+            $.get("basisploegen/searchPlayer/"+this.transferSearchVblId(), function(data) {
                 $.each(data.players, function(index,p) {
                      var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,'','');
                     self.foundTransferPlayer.push(myPlayer);
@@ -577,13 +606,13 @@ if (!window.console.log) window.console.log = function () { };
 
             //PLAYERS WITHIN A TEAM MUST BE UNIQUE
             if (targetTeam.numberOfPlayersWithVblId(player.vblId)==1) {
-                logError("1 speler kan maar 1 maal in hetzelfde team ingevoerd worden",arg);
+                logError("1 basis speler kan maar 1 maal in hetzelfde team ingevoerd worden",arg);
                 return;
             }
 
             //PLAYERS MUST BE UNIQUE PER TEAMTYPE
             if (self.numberOfPlayersWithVblIdForTeamTypeAndIgnoreTeamY(player.vblId,teamType,sourceTeamFixedId) == 1){
-                logError("1 speler kan maar 1 maal opsteld binnen dezelfde competitietype (H, D, G)",arg);
+                logError("1 basis speler kan maar 1 maal opsteld binnen dezelfde competitietype (H, D, G)",arg);
                 return;
             }
 
@@ -607,14 +636,62 @@ if (!window.console.log) window.console.log = function () { };
                 }
                 return;
             }
+        };
+
+        this.verifyAssignmentsRealPlayer = function(arg,event,ui) {
+            var player = arg.item;
+            var targetTeam = arg.targetParent.team;
+            var sourceTeamPlayerArray = arg.sourceParent;
+            var teamType = targetTeam.teamType;
+
+            debug("Validating drop of "+player.fullName+" in real team:"+targetTeam.teamName());
+
+            var logError = function(msg,arg) {
+                self.lastError(msg);
+                arg.cancelDrop = true;
+            };
+
+            var logWarning = function(msg,arg) {
+                self.lastWarning(msg);
+                arg.cancelDrop = false;
+                self.justDroppedWithWarning(true);
+            };
 
 
+            //VALIDATE GENDER
+            if (teamType=="M" && player.gender !== "M") {
+                logError("Een herenploeg bestaat enkel uit mannen.",arg);
+                return;
+            }
+            if (teamType=="L" && player.gender !== "F") {
+                logError("Een damesploeg bestaat enkel uit dames.",arg);
+                return;
+            }
+
+            //PLAYERS WITHIN A TEAM MUST BE UNIQUE
+            if (targetTeam.numberOfRealPlayersWithVblId(player.vblId)==1) {
+                logError("1 effectieve speler kan maar 1 maal in hetzelfde team ingevoerd worden",arg);
+                return;
+            }
+
+            //Ranking baseteam >= ranking realteam, only check when baseTeam if full
+            if (!targetTeam.allowMorePlayers()) {
+                if (targetTeam.totalFixedIndexInsideTeam() < (targetTeam.totalFixedIndexInsideTeamForRealPlayers() + player.fixedIndexInsideTeam(teamType))) {
+                    logWarning("Teamindex papieren ploeg moet groter of gelijke zijn dan Teamindex effectieve ploeg.",arg);
+                }
+            }
         };
 
         this.verifyAssignmentsAfterMove = function(arg,event,ui) {
             //Reset error msg after a succesful drop
-            self.lastError("");
-            $("#error").hide();
+            if (self.justDroppedWithWarning()) {
+                self.justDroppedWithWarning(false);
+            } else {
+                self.lastError("");
+                self.lastWarning("");
+                $("#error").hide();
+                $("#warning").hide();
+            }
         };
 
 
