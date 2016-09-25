@@ -247,6 +247,10 @@ if (!window.console.log) window.console.log = function () { };
             }
         };
 
+        this.teamHtmlId = ko.computed(function(){
+            return this.teamNumber()+this.teamTypeToTeamNameSuffix(this.teamType);
+        },self);
+
         this.teamName = ko.computed(function(){
             return vm.teamBaseName()+" "+this.teamNumber()+this.teamTypeToTeamNameSuffix(this.teamType);
         },self);
@@ -610,17 +614,29 @@ if (!window.console.log) window.console.log = function () { };
         this.verifyAssignments = function(arg,event,ui) {
             var player = arg.item;
             var targetTeam = arg.targetParent.team;
-            var sourceTeamPlayerArray = arg.sourceParent;
+            var sourceParentArray = arg.sourceParent;
+            var sourceParentNode = arg.sourceParentNode;
             var teamType = targetTeam.teamType;
 
             debug("Validating drop of "+player.fullName+" in team:"+targetTeam.teamName());
 
-            var sourceTeamFixedId =  (sourceTeamPlayerArray && sourceTeamPlayerArray.team) ? sourceTeamPlayerArray.team.fixedId:  "xx";
+            var isDropFromRealPlayerColumn = typeof arg.sourceParentNode !== 'undefined'  &&   typeof arg.sourceParentNode.context !== 'undefined' && typeof arg.sourceParentNode.context.id !== 'undefined' && arg.sourceParentNode.context.id.startsWith("r_");
+
+            var sourceTeamFixedId =  (!isDropFromRealPlayerColumn && sourceParentArray && sourceParentArray.team) ? sourceParentArray.team.fixedId:  "xx";
 
             var logError = function(msg,arg) {
                 self.lastError(msg);
                 arg.cancelDrop = true;
             };
+
+            //Sorting inside same box is allowed.
+            if (sourceParentArray && typeof sourceParentArray !== 'undefined' ) {
+                //Item is coming from a sortable, not a draggable! So player from Papieren of Effectieve ploeg
+                if (typeof sourceParentNode.id !== 'undefined') {//sourceParentNode.id is only available when dragging/dropping inside same array
+                    arg.cancelDrop = false;
+                    return;
+                }
+            }
 
             //VALIDATE GENDER
             if (teamType=="M" && player.gender !== "M") {
@@ -654,8 +670,6 @@ if (!window.console.log) window.console.log = function () { };
 
             //TEAMS (HAVING ALREADY 4 PLAYERS) MUST BE ORDERED FROM HIGHEST TO LOWEST TOTAL INDEX
             var newOrder = self.giveOrderedIndexOfFullTeamsPerTeamTypeAndAddPlayerToTeamXAndIgnoreTeamY(teamType,player,targetTeam,sourceTeamFixedId);
-            debug(newOrder);
-            debug(teamType);
             if(!(self.isOrderedIndexArray(newOrder))) {
                 debug(teamType);
                 switch (teamType) {
@@ -677,7 +691,8 @@ if (!window.console.log) window.console.log = function () { };
         this.verifyAssignmentsRealPlayer = function(arg,event,ui) {
             var player = arg.item;
             var targetTeam = arg.targetParent.team;
-            var sourceTeamPlayerArray = arg.sourceParent;
+            var sourceParentArray = arg.sourceParent;
+            var sourceParentNode = arg.sourceParentNode;
             var teamType = targetTeam.teamType;
 
             debug("Validating drop of "+player.fullName+" in real team:"+targetTeam.teamName());
@@ -693,6 +708,15 @@ if (!window.console.log) window.console.log = function () { };
                 self.justDroppedWithWarning(true);
             };
 
+
+            //Sorting inside same box is allowed.
+            if (sourceParentArray && typeof sourceParentArray !== 'undefined' ) {
+                //Item is coming from a sortable, not a draggable! So player from Papieren of Effectieve ploeg
+                if (typeof sourceParentNode.id !== 'undefined') {//sourceParentNode.id is only available when dragging/dropping inside same array
+                    arg.cancelDrop = false;
+                    return;
+                }
+            }
 
             //VALIDATE GENDER
             if (teamType=="M" && player.gender !== "M") {

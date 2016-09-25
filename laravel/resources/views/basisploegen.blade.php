@@ -239,7 +239,7 @@
                             </div>
                         </td>
                         <td style="padding:0px">
-                            <div data-bind="sortable: {data : playersInTeam, allowDrop: allowMorePlayers,beforeMove: $root.verifyAssignments,afterMove: $root.verifyAssignmentsAfterMove}" class="baseTeam">
+                            <div data-bind="sortable: {data : playersInTeam, allowDrop: allowMorePlayers,beforeMove: $root.verifyAssignments,afterMove: $root.verifyAssignmentsAfterMove},attr:{id: 'b_'+teamHtmlId()}" class="baseTeam">
                                 <div>
                                     <span data-bind="text: fullName"></span>,
                                     <span data-bind="text: fixedIndexInsideTeam($parent.teamType)"></span>
@@ -252,7 +252,7 @@
                             </div>
                         </td>
                         <td style="padding:0px">
-                            <div data-bind="sortable: {data : realPlayersInTeam, allowDrop: true,beforeMove: $root.verifyAssignmentsRealPlayer, afterMove: $root.verifyAssignmentsAfterMove}" class="baseTeam">
+                            <div data-bind="sortable: {data : realPlayersInTeam, allowDrop: true,beforeMove: $root.verifyAssignmentsRealPlayer, afterMove: $root.verifyAssignmentsAfterMove},attr:{id: 'r_'+teamHtmlId()}" class="baseTeam">
                                 <div>
                                     <span data-bind="text: fullName"></span>,
                                     <span data-bind="text: fixedIndexInsideTeam($parent.teamType)"></span>
