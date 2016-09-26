@@ -378,7 +378,7 @@ if (!window.console.log) window.console.log = function () { };
         self.season=ko.observable("2016-2017");
         self.availablePlayers = ko.observableArray();
         self.teams=ko.observableArray();
-        self.teamBaseName = ko.observable("Gentse");
+        self.teamBaseName = ko.observable("");
         self.fixedIdTeamCounter = 0;
         self.lastError = ko.observable();
         self.lastWarning = ko.observable();
@@ -436,6 +436,7 @@ if (!window.console.log) window.console.log = function () { };
             self.availablePlayers(self.availablePlayers().sort(playerComparatorBasedSortingValue("NAME","DOWN")));
 
             self.clubName(data.club.clubName);
+            self.teamBaseName(data.club.teamNamePrefix);
 
         });
 

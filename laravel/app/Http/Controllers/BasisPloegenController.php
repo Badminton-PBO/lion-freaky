@@ -46,7 +46,7 @@ group by p.playerId)
 EOD;
 
         $queryClub = <<<EOD
-        SELECT clubId,clubName FROM lf_club WHERE clubId =:clubId
+        SELECT clubId,clubName,teamNamePrefix FROM lf_club WHERE clubId =:clubId
 EOD;
 
         $players = DB::select($query, array('clubId' =>Auth::user()->club_id));

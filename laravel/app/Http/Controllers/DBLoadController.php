@@ -423,6 +423,12 @@ EOD;
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId, captainName,email)
 select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.name) = lfg.event and  lf_dbload_devision(t.drawName) = lfg.devision and lf_dbload_serie(t.drawName) = lfg.series),t.captainName,t.email  from lf_tmpdbload_teamscsv t;
 EOD;
+        $insertLfTeamNamePrefix = <<<'EOD'
+update lf_club c
+set c.teamNamePrefix = (select substr(teamName,1,length(teamName)-INSTR(REVERSE(teamName),' ')) from lf_team t where t.club_clubId = c.clubId group by t.club_clubId)
+EOD;
+
+
         $insertLfTmpNonDuplicatePlayers = <<<'EOD'
 INSERT INTO lf_tmpdbload_playerscsv_noduplicates(memberId,firstName,lastName,gender,groupName,playerLevelSingle,playerLevelDouble,playerLevelMixed,typeName,role,groupCode)
 select t.memberId,
@@ -516,6 +522,7 @@ EOD;
                 DB::update($updateLfYear);
                 DB::insert($insertLfGroup);
                 DB::insert($insertLfTeam);
+                DB::update($insertLfTeamNamePrefix);
                 break;
             case "players":
                 // When player is from O-Vl Club and rented to another O-Vl it will appear twice. However, we only want to keep the record with role='Speler'

@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `lf_club` (
   `clubName` varchar(45) DEFAULT NULL,
   `clubCode` varchar(45) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
+  `teamNamePrefix` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`clubId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
