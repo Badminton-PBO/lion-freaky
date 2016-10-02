@@ -1,9 +1,8 @@
 <?php namespace App\Providers;
 
-use App\User;
 use App\Http\Controllers\Auth\ToernooiNlUserProvider;
+use App\User;
 use Illuminate\Support\ServiceProvider;
-use PhpParser\Node\Expr\Cast\String;
 
 class ToernooiNlAuthProvider extends ServiceProvider {
 
