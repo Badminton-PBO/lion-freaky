@@ -19,8 +19,8 @@ class StatisticsController extends Controller {
         $queryTotalSelectAndPrintCmdPerTeam = <<<'EOD'
 select c.clubName,
 t.teamName,
-(select count(*) from lf_event e where e.who = t.teamName and e.eventType='teamselect' and e.when > str_to_date('2015-09-01','%Y-%m-%d')) as 'select',
-(select count(*) from lf_event e where e.who = t.teamName and e.eventType in ('print','print2pdf') and e.when > str_to_date('2015-09-01','%Y-%m-%d')) as 'print'
+(select count(*) from lf_event e where e.who = t.teamName and e.eventType='teamselect' and e.when > str_to_date('2016-09-01','%Y-%m-%d')) as 'select',
+(select count(*) from lf_event e where e.who = t.teamName and e.eventType in ('print','print2pdf') and e.when > str_to_date('2016-09-01','%Y-%m-%d')) as 'print'
 from lf_club c
 join lf_team t on t.club_clubId = c.clubId
 join lf_group g on g.groupId = t.group_groupId
@@ -41,7 +41,7 @@ select q1.week,
 		count(*) count
 	from lf_event e
 		where e.when >= DATE(NOW()) - INTERVAL 51 WEEK
-		and e.when > str_to_date('2015-09-01','%Y-%m-%d')
+		and e.when > str_to_date('2016-09-01','%Y-%m-%d')
 		and e.eventType in ('teamSelect','print','print2pdf')
 	group by week(e.when,5),
 		  case when eventType in ('print','print2pdf') then 'print'
@@ -56,7 +56,7 @@ select e.who, date_format(e.when,'%Y%m%d') date,max(e.when) ,max(ep.when) from l
 join lf_event ep on ep.eventType in ('print2pdf','print') and e.who = ep.who and ep.when > e.when and ep.when < date_add(e.when, INTERVAL 30 MINUTE)
 where e.eventType='teamselect'
 and e.when >= DATE(NOW()) - INTERVAL 51 WEEK
-and e.when > str_to_date('2015-09-01','%Y-%m-%d')
+and e.when > str_to_date('2016-09-01','%Y-%m-%d')
 group by e.who, date_format(e.when,'%Y%m%d')
 order by date_format(e.when,'%Y%m%d') desc
 ) q
