@@ -40,7 +40,7 @@ class DBLoadController extends Controller {
         $ch = curl_init();
 
         // set url
-        curl_setopt($ch, CURLOPT_URL, "https://www.toernooi.nl/User/Login");
+        curl_setopt($ch, CURLOPT_URL, "https://www.toernooi.nl/CookieWall/AcceptCookie?ReturnURL=%2FUser%2FLogin");
         curl_setopt($ch, CURLOPT_USERAGENT, $USER_AGENT);
         if (PHP_VERSION_ID > 50500) {
             curl_setopt($ch, CURLOPT_SAFE_UPLOAD, TRUE);//PHP5.5 only option
@@ -56,10 +56,12 @@ class DBLoadController extends Controller {
 
         //Construct session cookie +  bypass "do you accept cookies" warning
         $cookySet1=implode(';', $results[1]);
-        $cookies = "st=c=1; ".$cookySet1;
+        $cookies  = $cookySet1;
+
         curl_setopt($ch, CURLOPT_COOKIE, $cookies);
 
         //Do another call to logon page to retrieve REQUEST_VERIFICATION_TOKEN
+        curl_setopt($ch, CURLOPT_URL, "https://www.toernooi.nl/User/Login");
         $formPage= curl_exec($ch);
         preg_match_all('|name=\"__RequestVerificationToken\".*value=\"(.*)\"|', $formPage, $resultsRequestVerificationToken);
         $REQUEST_VERIFICATION_TOKEN = $resultsRequestVerificationToken[1][0];
@@ -299,6 +301,8 @@ EOD;
             } else {
                 DBLoadController::cleanDB();
                 DB::statement("set names latin1");//set to windows encoding
+                DB::statement("SET sql_mode = ''");// disable sql_mode=only_full_group_by as of mysql5.7, $insertLfTeamNamePrefix
+
                 DBLoadController::loadCSV($clubCSV,'clubs');
                 DBLoadController::loadCSV($teamsCSV,'teams');
                 DBLoadController::loadCSV($matchesCSV,'matches');
