@@ -1,0 +1,11 @@
+OPTIMIZE TABLE lf_club;
+OPTIMIZE TABLE lf_event;
+OPTIMIZE TABLE lf_group;
+OPTIMIZE TABLE lf_location;
+OPTIMIZE TABLE lf_match;
+OPTIMIZE TABLE lf_match_cr;
+OPTIMIZE TABLE lf_match_extra;
+OPTIMIZE TABLE lf_player;
+OPTIMIZE TABLE lf_player_has_team;
+OPTIMIZE TABLE lf_ranking;
+OPTIMIZE TABLE lf_team;

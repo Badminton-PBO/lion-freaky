@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+    mariadb:
+        image: mariadb:10.1
+        volumes:    
+        - db_data:/var/lib/mysql
+        - /home/thomas/projects/lion-freaky/lf_db/structure:/docker-entrypoint-initdb.d
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpwd
+            MYSQL_DATABASE: lionfreaky
+            MYSQL_USER: lionfreaky
+            MYSQL_PASSWORD: lf-maridb-pwd
+
+    apache:
+        depends_on:
+        - mariadb
+        build: ./docker/Apache/
+        image: lionfreaky-apache:latest
+        ports:
+        - "8080:80"
+        volumes:
+        - /home/thomas/projects/lion-freaky:/var/www/html
+    
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest
+        depends_on:
+        - mariadb 
+        ports:
+        - "8081:80"              
+        environment:
+            PMA_HOST: mariadb       
+volumes:
+    db_data:
+
+        
