@@ -1,12 +1,11 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use DB;
 use Auth;
+use DB;
+use Mail;
 use Request;
 use Response;
-use Mail;
 
 class VerplaatsingsController extends Controller
 {
@@ -307,7 +306,7 @@ EOD;
         $receiverTeamEmail = $dbTeam[0]->email;
 
 
-        $link = env('SITE_ROOT', '') . '/verplaatsing?hteam=' . rawurlencode($chosenMeeting['hTeam']) . '&oTeam=' . rawurlencode($chosenMeeting['oTeam']);
+        $link = env('SITE_ROOT_PUBLIC', '') . '/verplaatsing?hteam=' . rawurlencode($chosenMeeting['hTeam']) . '&oTeam=' . rawurlencode($chosenMeeting['oTeam']);
         $subject = 'Verplaatsingsaanvraag ' . $chosenMeeting['hTeam'] . ' - ' . $chosenMeeting['oTeam'];
 
         $data = array('mailToReceiver' => $receiverTeamEmail,

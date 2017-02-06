@@ -6,6 +6,7 @@ RUN apt-get update \
 libapache2-mod-php5 \
 php5-mysql \
 php5-mcrypt \
+php5-curl \
 phpsysinfo \
 less \
 vim \
