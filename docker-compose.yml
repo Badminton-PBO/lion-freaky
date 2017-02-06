@@ -5,32 +5,37 @@ services:
         image: mariadb:10.1
         volumes:    
         - db_data:/var/lib/mysql
-        - /home/thomas/projects/lion-freaky/lf_db/structure:/docker-entrypoint-initdb.d
+        - ./lf_db/structure:/docker-entrypoint-initdb.d
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: rootpwd
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DATABASE: lionfreaky
             MYSQL_USER: lionfreaky
-            MYSQL_PASSWORD: lf-maridb-pwd
-
+            MYSQL_PASSWORD: ${MYSQL_LIONFREAKY_PASSWORD}
     apache:
         depends_on:
         - mariadb
+        - php-composer
         build: ./docker/Apache/
         image: lionfreaky-apache:latest
         ports:
-        - "8080:80"
+        - "${APACHE_PORT}:80"
         volumes:
-        - /home/thomas/projects/lion-freaky:/var/www/html
+        - .:/var/www/html
     
     phpmyadmin:
         image: phpmyadmin/phpmyadmin:latest
         depends_on:
         - mariadb 
         ports:
-        - "8081:80"              
+        - "${PHPMYADMIN_PORT}:80"              
         environment:
-            PMA_HOST: mariadb       
+            PMA_HOST: mariadb  
+    php-composer:
+        image: composer/composer:1.1-alpine
+        volumes:
+        - ./laravel:/app
+        command: install
 volumes:
     db_data:
 
