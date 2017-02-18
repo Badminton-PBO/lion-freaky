@@ -62,8 +62,9 @@ EOD;
         header("Content-type: application/json");
         //header("Content-type: text/html");
         header("Content-Disposition: attachment; filename=json.data");
-        header("Pragma: no-cache");
-        header("Expires: 0");
+        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        header("Pragma: no-cache");// HTTP 1.0.
+        header("Expires: 0");// Proxies.
 
         echo json_encode($result);
         //echo json_encode($players);
@@ -90,8 +91,9 @@ EOD;
         }
 
         header("Content-Disposition: attachment; filename=json.data");
-        header("Pragma: no-cache");
-        header("Expires: 0");
+        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        header("Pragma: no-cache");// HTTP 1.0.
+        header("Expires: 0");// Proxies.
 
         //echo json_encode($result);//Somehow the  Content-type was always set to text/html
         return response()->json($result);
@@ -145,8 +147,9 @@ EOD;
         header("Content-type: application/json");
         //header("Content-type: text/html");
         header("Content-Disposition: attachment; filename=json.data");
-        header("Pragma: no-cache");
-        header("Expires: 0");
+        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        header("Pragma: no-cache");// HTTP 1.0.
+        header("Expires: 0");// Proxies.
 
         return response()->json($result);
 

@@ -107,8 +107,9 @@ EOD;
         header("Content-type: application/json");
         //header("Content-type: text/html");
         header("Content-Disposition: attachment; filename=json.data");
-        header("Pragma: no-cache");
-        header("Expires: 0");
+        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        header("Pragma: no-cache");// HTTP 1.0.
+        header("Expires: 0");// Proxies.
         echo json_encode($result);
     }
 
@@ -161,8 +162,9 @@ EOD;
                 break;
         }
         $response = Response::json($result);
-        $response->header('Pragma', 'no-cache');
-        $response->header('Expires', '0');
+        $response->header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        $response->header("Pragma: no-cache");// HTTP 1.0.
+        $response->header("Expires: 0");// Proxies.
         return $response;
     }
 }

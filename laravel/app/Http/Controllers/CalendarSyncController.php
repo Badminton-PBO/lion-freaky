@@ -2,7 +2,6 @@
 
 use App\Http\Requests;
 use DB;
-use Illuminate\Http\Request;
 use Response;
 
 class CalendarSyncController extends Controller {
@@ -57,8 +56,9 @@ EOD;
 
         header("Content-type: application/xml");
         header("Content-Disposition: attachment; filename=data.xml");
-        header("Pragma: no-cache");
-        header("Expires: 0");
+        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        header("Pragma: no-cache");// HTTP 1.0.
+        header("Expires: 0");// Proxies.
         print $xmlRoot->asXML();
 	}
 }
