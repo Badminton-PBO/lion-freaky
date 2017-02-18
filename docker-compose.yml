@@ -12,6 +12,8 @@ services:
             MYSQL_DATABASE: lionfreaky
             MYSQL_USER: lionfreaky
             MYSQL_PASSWORD: ${MYSQL_LIONFREAKY_PASSWORD}
+        ports:
+        - "3406:3306"
     apache:
         depends_on:
         - mariadb

@@ -8,8 +8,9 @@ Both EC2 instance linked to Elastic IP
 sudo su -
 
 # Install docker
-yum install vim docker.x86_64 git
+yum -y install vim docker.x86_64 git
 chkconfig --add docker
+service docker start
 
 # Make sure ec2-user is part of the docker group so we don't have to run as root
 usermod -a -G docker ec2-user

@@ -1,0 +1,15 @@
+version: '2'
+
+# Visualise database layout using SchemaSpy
+# Results will be available in /tmp/schemaspy-result-lionfreaky
+services:
+    schemaspy:
+        image: tlvu/schemaspy
+        volumes:
+        - /tmp:/home/user/workdir
+        networks:
+        - lionfreaky_default
+        command: "-t mysql -o schemaspy-result-lionfreaky -host mariadb:3306 -db lionfreaky -u lionfreaky -p ${MYSQL_LIONFREAKY_PASSWORD} -dp ../pkg/mysql-conn.jar"
+networks:
+  lionfreaky_default:
+    external: true
