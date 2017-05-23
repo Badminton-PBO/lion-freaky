@@ -335,9 +335,9 @@ if (!window.console.log) window.console.log = function () { };
         this.isFullWithRealPlayers = function() {
             switch (teamType) {
                 case "M":
-                    return self.realPlayersInTeam().length==4;
+                    return self.realPlayersInTeam().length>=4;
                 case "L":
-                    return self.realPlayersInTeam().length==4;
+                    return self.realPlayersInTeam().length>=4;
                 case "MX":
                     return self.numberOfRealPlayersOfGender("F")>=2 && self.numberOfRealPlayersOfGender("M")>=2;
             }
