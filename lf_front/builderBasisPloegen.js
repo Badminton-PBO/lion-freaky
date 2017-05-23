@@ -274,7 +274,6 @@ if (!window.console.log) window.console.log = function () { };
 
         this.totalFixedIndexInsideTeam = ko.computed(function() {
             var totalI=0;
-            var myGameType= this.gameType;
             $.each(this.playersInTeam(), function(index,player) {
                 totalI += player.fixedIndexInsideTeam(teamType);
             });
@@ -283,9 +282,11 @@ if (!window.console.log) window.console.log = function () { };
 
         this.totalFixedIndexInsideTeamForRealPlayers = ko.computed(function() {
             var totalI=0;
-            var myGameType= this.gameType;
-            $.each(this.realPlayersInTeam(), function(index,player) {
-                totalI += player.fixedIndexInsideTeam(teamType);
+            var sortedPlayers = this.realPlayersInTeam().sort(playerComparatorBasedSortingValue("FIXED-INDEX","DOWN",this.teamType));
+            $.each(sortedPlayers, function(index,player) {
+                if (index<4) {
+                    totalI += player.fixedIndexInsideTeam(teamType);
+                }
             });
             return totalI;
         },self);
@@ -428,7 +429,9 @@ if (!window.console.log) window.console.log = function () { };
         //LOAD PLAYERS
         $.get("basisploegen/clubPlayers", function(data) {
             $.each(data.players, function(index,p) {
-                var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.type);
+                //TODO: change to fixed ranking !!!! But currently not available so testing with current ranking
+                // var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.type);
+                var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.ranking,p.type);
                 self.availablePlayers.push(myPlayer);
             });
 
@@ -659,13 +662,13 @@ if (!window.console.log) window.console.log = function () { };
 
             //PLAYERS WITHIN A TEAM MUST BE UNIQUE
             if (targetTeam.numberOfPlayersWithVblId(player.vblId)==1) {
-                logError("1 basis speler kan maar 1 maal in hetzelfde team ingevoerd worden",arg);
+                logError("1 basis speler kan maar 1 maal in hetzelfde team worden opgesteld",arg);
                 return;
             }
 
             //PLAYERS MUST BE UNIQUE PER TEAMTYPE
             if (self.numberOfPlayersWithVblIdForTeamTypeAndIgnoreTeamY(player.vblId,teamType,sourceTeamFixedId) == 1){
-                logError("1 basis speler kan maar 1 maal opsteld binnen dezelfde competitietype (H, D, G)",arg);
+                logError("1 basis speler kan maar 1 maal binnen dezelfde competitietype (H, D, G) worden opgesteld",arg);
                 return;
             }
 
