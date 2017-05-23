@@ -282,7 +282,7 @@ if (!window.console.log) window.console.log = function () { };
 
         this.totalFixedIndexInsideTeamForRealPlayers = ko.computed(function() {
             var totalI=0;
-            var sortedPlayers = this.realPlayersInTeam().sort(playerComparatorBasedSortingValue("FIXED-INDEX","DOWN",this.teamType));
+            var sortedPlayers = this.realPlayersInTeam().concat().sort(playerComparatorBasedSortingValue("FIXED-INDEX","DOWN",this.teamType));
             $.each(sortedPlayers, function(index,player) {
                 if (index<4) {
                     totalI += player.fixedIndexInsideTeam(teamType);
