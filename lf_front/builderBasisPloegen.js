@@ -104,7 +104,7 @@ if (!window.console.log) window.console.log = function () { };
         this.vblId = vblId;
         this.gender = gender;
         this.fixedRanking  = fixedRanking;
-        this.sortingValue = ((this.gender == 'M') ? "A" : "B")+this.fullName;
+        this.sortingValue = this.fullName;
         this.type = type;
 
         this.rankingToIndex = function(ranking) {
