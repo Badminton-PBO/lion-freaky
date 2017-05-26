@@ -299,14 +299,19 @@ if (!window.console.log) window.console.log = function () { };
             }
         },this);
 
-
-        this.isRealPlayersTeamInWarningMode = ko.computed(function(){
-            return this.isFull() && (this.totalFixedIndexInsideTeamForRealPlayers() > this.totalFixedIndexInsideTeam())
+        this.isRealPlayerIndexInWarningComparedToFixedIndex = ko.computed(function(){
+            return this.isFull() && this.teamNumber() != 1 && (this.totalFixedIndexInsideTeamForRealPlayers() > this.totalFixedIndexInsideTeam())
         },this);
 
+
+        this.isRealPlayersTeamInWarningMode = ko.computed(function(){
+            return this.isRealPlayerIndexInWarningComparedToFixedIndex()
+        },this);
+
+
         this.realPlayerTeamWarningText = ko.computed(function(){
-            if (this.isFull() && (this.totalFixedIndexInsideTeamForRealPlayers() > this.totalFixedIndexInsideTeam())) {
-                return "Teamindex papieren ploeg moet groter of gelijke zijn dan Teamindex effectieve ploeg.";
+            if (this.isRealPlayerIndexInWarningComparedToFixedIndex()) {
+                return "Opgelet: Teamindex papieren ploeg is kleiner dan Teamindex effectieve ploeg. De effectieve ploeg kan dus niet op volle sterkte ingezet worden.";
             }
         },this);
 
@@ -740,8 +745,8 @@ if (!window.console.log) window.console.log = function () { };
 
             //Ranking baseteam >= ranking realteam, only check when baseTeam if full
             if (!targetTeam.allowMorePlayers()) {
-                if (targetTeam.totalFixedIndexInsideTeam() < (targetTeam.totalFixedIndexInsideTeamForRealPlayers() + player.fixedIndexInsideTeam(teamType))) {
-                    logWarning("Teamindex papieren ploeg moet groter of gelijke zijn dan Teamindex effectieve ploeg.",arg);
+                if (targetTeam.teamNumber()!=1 && targetTeam.totalFixedIndexInsideTeam() < (targetTeam.totalFixedIndexInsideTeamForRealPlayers() + player.fixedIndexInsideTeam(teamType))) {
+                    logWarning("Opgelet: Teamindex papieren ploeg is kleiner dan Teamindex effectieve ploeg. De effectieve ploeg kan dus niet op volle sterkte ingezet worden.",arg);
                 }
             }
         };
