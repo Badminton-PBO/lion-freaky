@@ -59,16 +59,11 @@ EOD;
             array_push($result["players"],array('firstName' => $player->firstName ,'lastName' => $player->lastName, 'vblId' => $player->playerId, 'gender' => $player->gender, 'type' => $player->type, 'fixedRanking' => array($player->fSingles, $player->fDoubles,$player->fMixed), 'ranking' => array($player->vSingles, $player->vDoubles,$player->vMixed)));
         }
 
-        header("Content-type: application/json");
-        //header("Content-type: text/html");
-        header("Content-Disposition: attachment; filename=json.data");
-        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        header("Pragma: no-cache");// HTTP 1.0.
-        header("Expires: 0");// Proxies.
-
-        echo json_encode($result);
-        //echo json_encode($players);
-        //echo "Reporting:".$teamName;
+        $response = Response::json($result);
+        $response->header("Cache-Control","no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        $response->header("Pragma","no-cache");// HTTP 1.0.
+        $response->header("Expires","0");// Proxies.
+        return $response;
     }
 
     public function searchPlayer($vblId) {
@@ -90,15 +85,11 @@ EOD;
             array_push($result["players"],array('firstName' => $player->firstName ,'lastName' => $player->lastName, 'vblId' => $player->playerId, 'gender' => $correctGender, 'fixedRanking' => array($player->fSingles, $player->fDoubles,$player->fMixed)));
         }
 
-        header("Content-Disposition: attachment; filename=json.data");
-        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        header("Pragma: no-cache");// HTTP 1.0.
-        header("Expires: 0");// Proxies.
-
-        //echo json_encode($result);//Somehow the  Content-type was always set to text/html
-        return response()->json($result);
-        //echo json_encode($players);
-        //echo "Reporting:".$teamName;
+        $response = Response::json($result);
+        $response->header("Cache-Control","no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        $response->header("Pragma","no-cache");// HTTP 1.0.
+        $response->header("Expires","0");// Proxies.
+        return $response;
     }
 
 
@@ -144,15 +135,11 @@ EOD;
             array_push($result["teams"],$team);
         }
 
-        header("Content-type: application/json");
-        //header("Content-type: text/html");
-        header("Content-Disposition: attachment; filename=json.data");
-        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        header("Pragma: no-cache");// HTTP 1.0.
-        header("Expires: 0");// Proxies.
-
-        return response()->json($result);
-
+        $response = Response::json($result);
+        $response->header("Cache-Control","no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        $response->header("Pragma","no-cache");// HTTP 1.0.
+        $response->header("Expires","0");// Proxies.
+        return $response;
     }
 
     public function saveTeams() {

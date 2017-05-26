@@ -208,9 +208,9 @@ EOD;
 
 
         $response = Response::json($result);
-        $response->header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        $response->header("Pragma: no-cache"); // HTTP 1.0.
-        $response->header("Expires: 0"); // Proxies.
+        $response->header("Cache-Control","no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        $response->header("Pragma","no-cache"); // HTTP 1.0.
+        $response->header("Expires","0"); // Proxies.
         return $response;
 
     }
@@ -279,9 +279,9 @@ EOD;
         $chosenMeeting["processedSuccessfull"]= $processedSuccessfull;
 
         $response = Response::json($chosenMeeting);
-        $response->header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        $response->header("Pragma: no-cache"); // HTTP 1.0.
-        $response->header("Expires: 0"); // Proxies.
+        $response->header("Cache-Control","no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        $response->header("Pragma","no-cache"); // HTTP 1.0.
+        $response->header("Expires","0"); // Proxies.
         return $response;
 
     }

@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use DB;
 use Illuminate\Http\Request;
+use Response;
 
 class OpstellingsController extends Controller {
 
@@ -53,13 +54,11 @@ EOD;
         $result['DBLOAD'] = $dbloads;
 
 
-        header("Content-type: application/json");
-        //header("Content-type: text/html");
-        header("Content-Disposition: attachment; filename=json.data");
-        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        header("Pragma: no-cache");// HTTP 1.0.
-        header("Expires: 0");// Proxies.
-        echo json_encode($result);
+        $response = Response::json($result);
+        $response->header("Cache-Control","no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        $response->header("Pragma","no-cache");// HTTP 1.0.
+        $response->header("Expires","0");// Proxies.
+        return $response;
     }
 
     public function  teamAndClubPlayers($teamName) {
@@ -115,15 +114,11 @@ EOD;
         //Create event for this request
         EventController::logEvent('teamselect',$teamName);
 
-        header("Content-type: application/json");
-        //header("Content-type: text/html");
-        header("Content-Disposition: attachment; filename=json.data");
-        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        header("Pragma: no-cache");// HTTP 1.0.
-        header("Expires: 0");// Proxies.
 
-        echo json_encode($result);
-        //echo json_encode($players);
-        //echo "Reporting:".$teamName;
+        $response = Response::json($result);
+        $response->header("Cache-Control","no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        $response->header("Pragma","no-cache");// HTTP 1.0.
+        $response->header("Expires","0");// Proxies.
+        return $response;
     }
 }
