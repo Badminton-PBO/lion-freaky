@@ -30,7 +30,7 @@
             font-size:10px;
         }
 
-        #message, #error, #warning {
+        #message, #error, #warning, #success {
             font-size: 1em;
             margin-top: 10px;
             background-color: orange;

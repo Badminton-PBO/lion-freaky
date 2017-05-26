@@ -784,13 +784,13 @@ if (!window.console.log) window.console.log = function () { };
             posting.done(function(data) {
                 $('#saveAndSend').button('reset');
                 if (data.processedSuccessfull) {
-                    $resultText = "Verplaatsings aanvraag bewaard en e-mail verzonden naar : " + data.mailTo ;
+                    $resultText = "Basisploegen bewaard." ;
                     //self.chosenMeeting().dbStatus(dbStatusLayout(data.status));
                     //self.chosenMeeting().dbActionFor(dbActionForLayout(data.actionFor));
                     self.lastSuccess($resultText);
                     debug($resultText);
                 } else {
-                    self.lastError("Problemen bij het bewaren van deze verplaatsings aanvraag.");
+                    self.lastError("Problemen bij het bewaren van de basisploegen.");
                     debug("saving failed")
                 }
             });
