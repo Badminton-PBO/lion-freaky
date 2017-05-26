@@ -192,9 +192,9 @@
                     <div class="col-xs-12 col-sm-12">
                         <h2>Basisploegen <span data-bind="text: $root.clubName"/></span> seizoen <span data-bind="text: $root.season"></span></h2>
                         <ul class="nav nav-tabs nav-justified">
-                            <li class="active"><a  href="#H" data-toggle="tab" data-bind="click: function(data, event) { showTeams('M', data, event) }">Heren (<span data-bind="text: $root.numberOfTeamsOfTeamType('M')"></span>)</a></li>
-                            <li><a href="#D" data-toggle="tab" data-bind="click: function(data, event) { showTeams('L', data, event) }">Dames (<span data-bind="text: $root.numberOfTeamsOfTeamType('L')"></span>)</a></li>
-                            <li><a href="#G" data-toggle="tab" data-bind="click: function(data, event) { showTeams('MX', data, event) }">Gemengd (<span data-bind="text: $root.numberOfTeamsOfTeamType('MX')"></span>)</a></li>
+                            <li class="active"><a  href="#M" data-toggle="tab" data-bind="click: function(data, event) { showTeams('M', data, event) }">Heren (<span data-bind="text: $root.numberOfTeamsOfTeamType('M')"></span>)</a></li>
+                            <li><a href="#L" data-toggle="tab" data-bind="click: function(data, event) { showTeams('L', data, event) }">Dames (<span data-bind="text: $root.numberOfTeamsOfTeamType('L')"></span>)</a></li>
+                            <li><a href="#MX" data-toggle="tab" data-bind="click: function(data, event) { showTeams('MX', data, event) }">Gemengd (<span data-bind="text: $root.numberOfTeamsOfTeamType('MX')"></span>)</a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Acties<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
