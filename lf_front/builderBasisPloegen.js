@@ -374,7 +374,7 @@ if (!window.console.log) window.console.log = function () { };
         this.groupEvent = groupEvent;
         this.groupDevision = groupDevision;
 
-        this.groupLayout = this.groupType + " "+ this.groupEvent + " "+this.groupDevision;
+        this.groupLayout = this.groupDevision == "1" ? "1ste "+ this.groupType : this.groupDevision+"de "+this.groupType;
 
     };
 
