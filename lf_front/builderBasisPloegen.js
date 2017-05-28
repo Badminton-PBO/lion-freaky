@@ -237,7 +237,7 @@ if (!window.console.log) window.console.log = function () { };
         this.teamType = teamType;
         this.playersInTeam = ko.observableArray();
         this.realPlayersInTeam = ko.observableArray();
-        self.chosenGroup = ko.observable();
+        self.chosenGroupId = ko.observable();
 
         this.teamNumber = ko.computed(function(){
             return vm.teams().filter(teamFilterOfTeamType(this.teamType)).filter(teamFilterHavingFixedIndexSmallerThan(this.fixedId)).length +1
@@ -367,8 +367,9 @@ if (!window.console.log) window.console.log = function () { };
 
     }
 
-    var Group = function(groupType, groupEvent, groupDevision) {
+    var Group = function(groupId,groupType, groupEvent, groupDevision) {
         var self=this;
+        this.groupId = groupId;
         this.groupType = groupType;
         this.groupEvent = groupEvent;
         this.groupDevision = groupDevision;
@@ -393,36 +394,6 @@ if (!window.console.log) window.console.log = function () { };
             new Button('Jeugd','J',false)
         ];
     };
-
-    function initialGroups() {
-        return [
-            new Group("LIGA","M",1),
-            new Group("LIGA","M",2),
-            new Group("LIGA","M",3),
-
-            new Group("LIGA","L",1),
-            new Group("LIGA","L",2),
-
-            new Group("LIGA","MX",1),
-            new Group("LIGA","MX",2),
-
-            new Group("PROV","M",1),
-            new Group("PROV","M",2),
-            new Group("PROV","M",3),
-            new Group("PROV","M",4),
-            new Group("PROV","M",5),
-
-            new Group("PROV","L",1),
-            new Group("PROV","L",2),
-            new Group("PROV","L",3),
-
-            new Group("PROV","MX",1),
-            new Group("PROV","MX",2),
-            new Group("PROV","MX",3),
-            new Group("PROV","MX",4)
-        ];
-    }
-
 
     function myViewModel(games) {
         var self = this;
@@ -476,7 +447,7 @@ if (!window.console.log) window.console.log = function () { };
             }
         }
 
-        self.groups = ko.observableArray(initialGroups());
+        self.groups = ko.observableArray();
 
         //LOAD PLAYERS
         $.get("basisploegen/clubPlayers", function(data) {
@@ -497,6 +468,10 @@ if (!window.console.log) window.console.log = function () { };
 
         //Load existing teams
         $.get("basisploegen/currentTeams", function(data) {
+            $.each(data.groups, function(index,g){
+              var newGroup = new Group(g.groupId, g.type, g.event, g.devision);
+              self.groups.push(newGroup);
+            });
             $.each(data.teams, function(index,t){
                 self.fixedIdTeamCounter++;
                 var newTeam = new Team(self.fixedIdTeamCounter, t.teamType,self);
@@ -511,8 +486,8 @@ if (!window.console.log) window.console.log = function () { };
                             break;
                     }
                 });
-                if (t.groupType != null) {
-                    newTeam.chosenGroup(self.groups().filter(groupFilter(t.groupType, t.groupEvent, t.groupDevision))[0])   ;
+                if (t.groupId != null) {
+                    newTeam.chosenGroupId(t.groupId);
                 }
                 self.teams.push(newTeam);
             });
@@ -548,6 +523,12 @@ if (!window.console.log) window.console.log = function () { };
         },self);
 
 
+        self.filteredGroups= ko.computed(function() {
+            return ko.utils.arrayFilter(self.groups(), function(group) {
+                return group.groupEvent == self.selectedTeamType();
+            });
+        },self);
+
         self.filteredAndSortedPlayers = ko.computed(function(){
             var filteredPlayers =  ko.utils.arrayFilter(self.availablePlayers(), function(player) {
                 return player.isAllowedToPlayInTeamGameTypeBasedOnGender(self.selectedTeamType()) &&
@@ -569,6 +550,7 @@ if (!window.console.log) window.console.log = function () { };
 
             //filter teams
             self.selectedTeamType(teamType);
+
         };
 
         self.noTeamsLayout = ko.computed(function() {

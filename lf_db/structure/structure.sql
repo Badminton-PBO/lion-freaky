@@ -164,11 +164,18 @@ CREATE TABLE IF NOT EXISTS `lf_bp_team` (
   `teamName` varchar(45) NOT NULL,
   `sequenceNumber` int(11) DEFAULT NULL,
   `club_clubId` int(11) NOT NULL,
-  `groupType` varchar(4) DEFAULT NULL,
-  `groupEvent` varchar(2) DEFAULT NULL,
-  `groupDevision` int(11) DEFAULT NULL,
+  `groupId` int(11) DEFAULT NULL,
   PRIMARY KEY (`teamName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `lf_bp_group` (
+  `groupId` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(4) NOT NULL,
+  `event` varchar(2) NOT NULL,
+  `devision` int(11) NOT NULL,
+  PRIMARY KEY (`groupId`),
+  UNIQUE KEY `group_bp_unique` (`type`,event,devision)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE IF NOT EXISTS `lf_bp_player` (

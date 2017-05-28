@@ -224,6 +224,7 @@
                     <thead>
                     <tr>
                         <th class="col-md-1 text-center">Team</th>
+                        <th class="col-md-1 text-center">Afdeling</th>
                         <th class="col-md-4 text-center">Papieren ploeg</th>
                         <th class="col-md-4 text-center">Effectieve ploeg (optioneel)</th>
                         <th class="col-md-1 text-center">Teamindex papieren ploeg</th>
@@ -236,17 +237,20 @@
                         <td style="padding:0px">
                             <div>
                                 <span class="label label-default" data-bind="text: teamName"></span>
+
+                            </div>
+                        </td>
+                        <td style="padding:0px">
+                            <div>
                                 <span>
-                                       <select data-bind="options: $root.groups,
+                                       <select data-bind="options: $root.filteredGroups,
                                        optionsText:'groupLayout',
-                                       value: chosenGroup,
+                                       optionsValue:'groupId',
+                                       value: chosenGroupId,
+                                       valueAllowUnset: true,
                                        optionsCaption: 'Afdeling ...'"></select>
                                 </span>
                             </div>
-                            <div>
-
-                            </div>
-
                         </td>
                         <td style="padding:0px">
                             <div data-bind="sortable: {data : playersInTeam, allowDrop: allowMorePlayers,beforeMove: $root.verifyAssignments,afterMove: $root.verifyAssignmentsAfterMove},attr:{id: 'b_'+teamHtmlId()}" class="baseTeam">
