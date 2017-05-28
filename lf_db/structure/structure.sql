@@ -44,11 +44,12 @@ CREATE TABLE IF NOT EXISTS `lf_club` (
 CREATE TABLE IF NOT EXISTS `lf_group` (
   `groupId` int(11) NOT NULL AUTO_INCREMENT,
   `tournament` year(4) DEFAULT NULL,
-  `type` varchar(4) DEFAULT NULL,  
-  `event` varchar(2) DEFAULT NULL,
-  `devision` int(11) DEFAULT NULL,
-  `series` varchar(1) DEFAULT NULL,
-  PRIMARY KEY (`groupId`)
+  `type` varchar(4) NOT NULL,
+  `event` varchar(2) NOT NULL,
+  `devision` int(11) NOT NULL,
+  `series` varchar(1) NOT NULL,
+  PRIMARY KEY (`groupId`),
+  UNIQUE KEY `group_unique` (`tournament`,`type`,devision,series)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
 
 -- --------------------------------------------------------
@@ -163,6 +164,9 @@ CREATE TABLE IF NOT EXISTS `lf_bp_team` (
   `teamName` varchar(45) NOT NULL,
   `sequenceNumber` int(11) DEFAULT NULL,
   `club_clubId` int(11) NOT NULL,
+  `groupType` varchar(4) DEFAULT NULL,
+  `groupEvent` varchar(2) DEFAULT NULL,
+  `groupDevision` int(11) DEFAULT NULL,
   PRIMARY KEY (`teamName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -191,11 +195,11 @@ CREATE TABLE IF NOT EXISTS `lf_bp_player_has_team` (
 
 -- TMP Table to faciliate load from CSV into the DB
 CREATE TABLE IF NOT EXISTS `lf_tmpdbload_15mei` (
-  `clubName` varchar(45) NOT NULL,
+  `clubName` varchar(45) DEFAULT NULL,
   `playerId` int(11) NOT NULL,
-  `firstName` varchar(45) NOT NULL,
-  `lastName` varchar(45) NOT NULL,
-  `gender` varchar(1) NOT NULL,
+  `firstName` varchar(45) DEFAULT NULL,
+  `lastName` varchar(45) DEFAULT NULL,
+  `gender` varchar(1) DEFAULT NULL,
   `playerLevelSingle` varchar(2) NOT NULL,
   `playerLevelDouble` varchar(2) NOT NULL,
   `playerLevelMixed` varchar(2) NOT NULL

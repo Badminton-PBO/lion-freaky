@@ -236,7 +236,17 @@
                         <td style="padding:0px">
                             <div>
                                 <span class="label label-default" data-bind="text: teamName"></span>
+                                <span>
+                                       <select data-bind="options: $root.groups,
+                                       optionsText:'groupLayout',
+                                       value: chosenGroup,
+                                       optionsCaption: 'Afdeling ...'"></select>
+                                </span>
                             </div>
+                            <div>
+
+                            </div>
+
                         </td>
                         <td style="padding:0px">
                             <div data-bind="sortable: {data : playersInTeam, allowDrop: allowMorePlayers,beforeMove: $root.verifyAssignments,afterMove: $root.verifyAssignmentsAfterMove},attr:{id: 'b_'+teamHtmlId()}" class="baseTeam">

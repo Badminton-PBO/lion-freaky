@@ -91,6 +91,12 @@ if (!window.console.log) window.console.log = function () { };
         }
     }
 
+    function groupFilter(myGroupType,myGroupEvent,myGroupDevision) {
+        return function(a) {
+            return a.groupType == myGroupType && a.groupEvent == myGroupEvent && a.groupDevision == myGroupDevision;
+        }
+    }
+
     var Button = function(name,value,selected) {
         this.name = name;
         this.buttonValue =  ko.observable(value);
@@ -231,6 +237,7 @@ if (!window.console.log) window.console.log = function () { };
         this.teamType = teamType;
         this.playersInTeam = ko.observableArray();
         this.realPlayersInTeam = ko.observableArray();
+        self.chosenGroup = ko.observable();
 
         this.teamNumber = ko.computed(function(){
             return vm.teams().filter(teamFilterOfTeamType(this.teamType)).filter(teamFilterHavingFixedIndexSmallerThan(this.fixedId)).length +1
@@ -360,6 +367,16 @@ if (!window.console.log) window.console.log = function () { };
 
     }
 
+    var Group = function(groupType, groupEvent, groupDevision) {
+        var self=this;
+        this.groupType = groupType;
+        this.groupEvent = groupEvent;
+        this.groupDevision = groupDevision;
+
+        this.groupLayout = this.groupType + " "+ this.groupEvent + " "+this.groupDevision;
+
+    };
+
     function initialGenderButtons() {
         return [
             new Button('Man/Vrouw','ALL',true),
@@ -376,6 +393,35 @@ if (!window.console.log) window.console.log = function () { };
             new Button('Jeugd','J',false)
         ];
     };
+
+    function initialGroups() {
+        return [
+            new Group("LIGA","M",1),
+            new Group("LIGA","M",2),
+            new Group("LIGA","M",3),
+
+            new Group("LIGA","L",1),
+            new Group("LIGA","L",2),
+
+            new Group("LIGA","MX",1),
+            new Group("LIGA","MX",2),
+
+            new Group("PROV","M",1),
+            new Group("PROV","M",2),
+            new Group("PROV","M",3),
+            new Group("PROV","M",4),
+            new Group("PROV","M",5),
+
+            new Group("PROV","L",1),
+            new Group("PROV","L",2),
+            new Group("PROV","L",3),
+
+            new Group("PROV","MX",1),
+            new Group("PROV","MX",2),
+            new Group("PROV","MX",3),
+            new Group("PROV","MX",4)
+        ];
+    }
 
 
     function myViewModel(games) {
@@ -430,6 +476,7 @@ if (!window.console.log) window.console.log = function () { };
             }
         }
 
+        self.groups = ko.observableArray(initialGroups());
 
         //LOAD PLAYERS
         $.get("basisploegen/clubPlayers", function(data) {
@@ -464,6 +511,9 @@ if (!window.console.log) window.console.log = function () { };
                             break;
                     }
                 });
+                if (t.groupType != null) {
+                    newTeam.chosenGroup(self.groups().filter(groupFilter(t.groupType, t.groupEvent, t.groupDevision))[0])   ;
+                }
                 self.teams.push(newTeam);
             });
             self.showTeams('M');

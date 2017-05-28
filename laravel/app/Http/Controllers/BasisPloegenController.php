@@ -98,7 +98,7 @@ EOD;
 
         //The ordering is very important as the teamNames will actually be calculated in the front
         $queryTeamAndPlayers = <<<EOD
-SELECT t.teamName,lf_dbload_eventcode(t.teamName) as teamType,lf_dbload_teamSequenceNumber(t.teamName) as teamSequence,p.playerId,tp.role,p.firstName,p.lastName,p.gender,p.singles,p.doubles,p.mixed FROM `lf_bp_team` t
+SELECT t.teamName,t.groupType,t.groupEvent,t.groupDevision,lf_dbload_eventcode(t.teamName) as teamType,lf_dbload_teamSequenceNumber(t.teamName) as teamSequence,p.playerId,tp.role,p.firstName,p.lastName,p.gender,p.singles,p.doubles,p.mixed FROM `lf_bp_team` t
 left outer join lf_bp_player_has_team tp on tp.team_teamName = t.teamName
 left outer join lf_bp_player p on p.playerId = tp.player_playerId
 where t.club_clubId=:clubId
@@ -115,7 +115,13 @@ EOD;
                 if ($team["teamName"]!='DUMMY') {
                     array_push($result["teams"],$team);
                 }
-                $team = array('teamName'=>$teamPlayer->teamName,'teamType'=>$teamPlayer->teamType,'teamSequence' => $teamPlayer->teamSequence,"players"=>array());
+                $team = array('teamName'=>$teamPlayer->teamName,
+                    'teamType'=>$teamPlayer->teamType,
+                    'teamSequence' => $teamPlayer->teamSequence,
+                    'groupType' => $teamPlayer->groupType,
+                    'groupEvent' => $teamPlayer->groupEvent,
+                    'groupDevision' => $teamPlayer->groupDevision,
+                    "players"=>array());
             }
 
             //Add player to team
@@ -177,8 +183,8 @@ EOD;
         );
 
         $insertTeam = <<<'EOD'
-insert into lf_bp_team (teamName, sequenceNumber, club_clubId)
-values(:teamName,lf_dbload_teamSequenceNumber(:teamName2),:clubId);
+insert into lf_bp_team (teamName, sequenceNumber, club_clubId, groupType,groupEvent,groupDevision)
+values(:teamName,lf_dbload_teamSequenceNumber(:teamName2),:clubId, :groupType, :groupEvent,:groupDevision);
 EOD;
 
         $insertPlayer = <<<'EOD'
@@ -194,11 +200,16 @@ EOD;
         $insertedPlayerIds=[];
         foreach ($teams as $key => $team) {
             //print($team["teamName"]);
+            //print_r($team["chosenGroup"]["groupType"]);
+            //return;
             DB::insert($insertTeam,
                 array(
                     ':teamName' => $team["teamName"],
                     ':teamName2' => $team["teamName"],
-                    ':clubId' => $clubId
+                    ':clubId' => $clubId,
+                    ':groupType' => array_key_exists("chosenGroup",$team) ? $team["chosenGroup"]["groupType"] : null,
+                    ':groupEvent' => array_key_exists("chosenGroup",$team) ? $team["chosenGroup"]["groupEvent"] : null,
+                    ':groupDevision' => array_key_exists("chosenGroup",$team) ? $team["chosenGroup"]["groupDevision"] : null
                 )
             );
             foreach ($team["playersInTeam"] as $key => $player) {
