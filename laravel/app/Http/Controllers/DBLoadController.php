@@ -132,15 +132,16 @@ class DBLoadController extends Controller {
 
         if($addTestClub == 'true' ){
             $clubCSV .= 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;40001;TESTCLUB BC;;;;;;;;;;;;;;;'."\n";
+            $clubCSV .= 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXY;0;TEAMS_WITH_INVALID_CLUB;;;;;;;;;;;;;;;'."\n";
 
 
             $testTeams = <<<'EOD'
-113198;16;;;TESTCLUB 1H;Kap 1H;;;;;;;;;;;;;;;;40001;;Heren Competitie;;1e provinciale;
-113198;16;;;TESTCLUB 2H;Kap 2H;;;;;;;;;;;;;;;;40001;;Heren Competitie;;2e provinciale A;
-113198;16;;;TESTCLUB 3H;Kap 3H;;;;;;;;;;;;;;;;40001;;Heren Competitie;;2e provinciale B;
-113198;16;;;TESTCLUB 2G;Kap 2G;;;;;;;;;;;;;;;;40001;;Gemengde Competitie;;1e provinciale;
-113198;16;;;TESTCLUB 2D;Kap 2D;;;;;;;;;;;;;;;;40001;;Dames Competitie;;1e provinciale;
-113198;16;;;TESTCLUB 3D;Kap 3D;;;;;;;;;;;;;;;;40001;;Dames Competitie;;2e provinciale;
+113198;16;;;TESTCLUB 1H;Kap 1H;;;;;;;;;;;;;;;;40001;;1e provinciale;;;
+113198;16;;;TESTCLUB 2H;Kap 2H;;;;;;;;;;;;;;;;40001;;2e provinciale A;;A;
+113198;16;;;TESTCLUB 3H;Kap 3H;;;;;;;;;;;;;;;;40001;;2e provinciale B;;B;
+113198;16;;;TESTCLUB 2G;Kap 2G;;;;;;;;;;;;;;;;40001;;1e provinciale;;;
+113198;16;;;TESTCLUB 2D;Kap 2D;;;;;;;;;;;;;;;;40001;;1e provinciale;;;
+113198;16;;;TESTCLUB 3D;Kap 3D;;;;;;;;;;;;;;;;40001;;2e provinciale;;;
 EOD;
             $teamsCSV .=$testTeams."\n";
 
@@ -308,10 +309,11 @@ EOD;
                 DBLoadController::loadCSV($matchesCSV,'matches');
                 DBLoadController::loadCSV($playersCSV,'players');
                 DB::statement("set names utf8");//set to windows encoding
-                DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
-                DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
-                DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
-                DBLoadController::loadCSV($locationsCSV,'locations');
+                //TDE 2017/07/0 temporaly disable opstelling-app because no data yet
+                //DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
+                //DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
+                //DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+                //DBLoadController::loadCSV($locationsCSV,'locations');
                 EventController::logEvent('DBLOAD','SYSTEM');
                 $this->updateMatchCRAccordingNewData();
                 print("OK");
@@ -416,16 +418,16 @@ EOD;
         }
 
         $updateLfYear = <<<'EOD'
-update lf_tmpdbload_teamscsv set year=2016;
+update lf_tmpdbload_teamscsv set year=2017;
 EOD;
         $insertLfGroup = <<<'EOD'
 INSERT INTO lf_group (tournament,`type`,event,devision,series)
-select `year`,'PROV',lf_dbload_eventcode(name),lf_dbload_devision(drawName),lf_dbload_serie(drawName) from lf_tmpdbload_teamscsv
-group by `year`,lf_dbload_eventcode(name),lf_dbload_devision(drawName),lf_dbload_serie(drawName);
+select `year`,'PROV',lf_dbload_eventcode(name),lf_dbload_devision(eventName),drawName from lf_tmpdbload_teamscsv
+group by `year`,lf_dbload_eventcode(name),lf_dbload_devision(eventName),drawName;
 EOD;
         $insertLfTeam = <<<'EOD'
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId, captainName,email)
-select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.name) = lfg.event and  lf_dbload_devision(t.drawName) = lfg.devision and lf_dbload_serie(t.drawName) = lfg.series),t.captainName,t.email  from lf_tmpdbload_teamscsv t;
+select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.name) = lfg.event and  lf_dbload_devision(t.eventName) = lfg.devision and t.drawName = lfg.series),t.captainName,t.email  from lf_tmpdbload_teamscsv t;
 EOD;
         $insertLfTeamNamePrefix = <<<'EOD'
 update lf_club c
@@ -464,12 +466,12 @@ join lf_club c on c.clubCode=t.groupCode;
 EOD;
         $insertLfRankingFixed = <<<'EOD'
 insert into lf_ranking(date,singles,doubles,mixed,player_playerId)
-select '2015-05-15',t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.playerId from lf_tmpdbload_15mei t
+select '2017-05-15',t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.playerId from lf_tmpdbload_15mei t
 join lf_player p on t.playerId = p.playerId;
 EOD;
 
         $insertFakeLigaGroup = <<<'EOD'
-INSERT INTO lf_group (tournament,`type`,event,devision) values ('2015','LIGA','MX',0),('2015','LIGA','M',0),('2015','LIGA','L',0);
+INSERT INTO lf_group (tournament,`type`,event,devision) values ('2017','LIGA','MX',0),('2017','LIGA','M',0),('2017','LIGA','L',0);
 EOD;
         $insertLfTeamLiga = <<<'EOD'
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId)
