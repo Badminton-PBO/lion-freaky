@@ -1,6 +1,5 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use DB;
 use Response;
 
@@ -18,12 +17,12 @@ class CalendarSyncController extends Controller {
 	public function pboTeamMatches()
 	{
         $queryPboTeamMatches = <<<EOD
-select t.teamName,concat(m.homeTeamName,' - ',m.outTeamName) subject,m.date,date_format(m.date,'%d/%m/%Y') startDate,date_format(m.date,'%T') startTime,date_format(date_add(m.date, INTERVAL 179 MINUTE),'%T') endTime,concat(m.locationName,', ',l1.address,', ',l1.postalCode,', ',l1.city) locationName from lf_match m
+select t.teamName,concat(m.homeTeamName,' - ',m.outTeamName) subject,m.date,date_format(m.date,'%d/%m/%Y %T') startDateTime,date_format(date_add(m.date, INTERVAL 180 MINUTE),'%d/%m/%Y %T') endDateTime,concat(m.locationName,', ',l1.address,', ',l1.postalCode,', ',l1.city) locationName from lf_match m
 join lf_team t on m.homeTeamName = t.teamName  or m.outTeamName =t.teamName
 left join lf_location l1 on l1.locationId = m.locationId
 where t.teamName in (select teamName from lf_team) and m.locationId is not null and m.locationId != ''
 union
-select t.teamName,concat(m.homeTeamName,' - ',m.outTeamName) subject,m.date,date_format(m.date,'%d/%m/%Y') startDate,date_format(m.date,'%T') startTime,date_format(date_add(m.date, INTERVAL 179 MINUTE),'%T') endTime,concat(m.locationName,', ',l1.address,', ',l1.postalCode,', ',l1.city) locationName from lf_match m
+select t.teamName,concat(m.homeTeamName,' - ',m.outTeamName) subject,m.date,date_format(m.date,'%d/%m/%Y %T') startDate,date_format(date_add(m.date, INTERVAL 180 MINUTE),'%d/%m/%Y %T') endDateTime,concat(m.locationName,', ',l1.address,', ',l1.postalCode,', ',l1.city) locationName from lf_match m
 join lf_team t on m.homeTeamName = t.teamName  or m.outTeamName =t.teamName
 left join lf_location l1 on l1.locationName = m.locationName
 where t.teamName in (select teamName from lf_team) and (m.locationId is null or m.locationId = '')
@@ -46,9 +45,8 @@ EOD;
             $currentEvent = $currentXmlTeam->addChild('event');
             $currentEvent->addChild('subject',$match->subject);
             $currentEvent->addChild('location',$match->locationName);
-            $currentEvent->addChild('startDate',$match->startDate);
-            $currentEvent->addChild('startTime',$match->startTime);
-            $currentEvent->addChild('endTime',$match->endTime);
+            $currentEvent->addChild('startDateTime',$match->startDateTime);
+            $currentEvent->addChild('endDateTime',$match->endDateTime);
 
             //array_push($result["teams"][$teamCounter]["matches"],array('subject' => $match->subject ,'location' => $match->locationName,'startDate' => $match->startDate,'startTime' => $match->startTime,'endDate' => $match->endDate,'endTime' => $match->endTime));
         }
