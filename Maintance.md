@@ -45,8 +45,9 @@ player_playerId,team_teamName
   * data/fixed/2016-2017/indexen\_spelers\_01052014.csv
 Zogenaamde vaste indexen van alle vlaamse spelers aan begin van competitie-seizoen. Omwille van transfers moeten dit alle vlaamse spelers zijn.
 ```
-Lidnummer;Klassement enkel;Klassement dubbel;Klassement gemengd
-50995006;D;D;D
+Club;Lidnummer;Voornaam;Achternaam;Geslacht;Klassement enkel;Klassement dubbel;Klassement gemengd
+"Gentse BC";"50108678";"Peter";"Ennogiets";"M";"D";"D";"D"
+"Gentse BC";"50051706";"Elke";"Van Kwallie";"M";"D";"D";"D"
 ...
 ```
   * data/fixed/2016-2017/liga\_nationale\_basisopstelling.csv
