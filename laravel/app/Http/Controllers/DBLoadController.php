@@ -33,7 +33,7 @@ class DBLoadController extends Controller {
 
         $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2017-2018/basisopstellingen.csv';
         $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2017-2018/indexen_spelers.csv';
-        $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2016-2017/liga_nationale_basisopstelling.csv';
+        $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2017-2018/liga_nationale_basisopstelling.csv';
 
         // create curl resource
         $ch = curl_init();
@@ -311,7 +311,7 @@ EOD;
                 //TDE 2017/07/0 temporaly disable opstelling-app because no data yet
                 DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
                 DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
-                //DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+                DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
                 DBLoadController::loadCSV($locationsCSV,'locations');
                 EventController::logEvent('DBLOAD','SYSTEM');
                 $this->updateMatchCRAccordingNewData();
