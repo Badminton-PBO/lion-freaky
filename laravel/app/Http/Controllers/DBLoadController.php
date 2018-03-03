@@ -190,6 +190,7 @@ XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000032;vrouw14;;;vrouw14;;;;
 XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000033;vrouw15;;;vrouw15;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
 XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000034;vrouw16;;;vrouw16;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
 XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000035;vrouw 17;;;vrouw 17;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Recreant
+DD28395F-92B5-428C-B7B0-D63EB8CB9030;DE WALLABIES BRAKEL;;50105112;Temmerman;;;Andreas;;;;;;;;M;;;;;;;;;;;;Speler;C2;C2;D;Competitiespeler
 EOD;
             $playersCSV .=$testPlayers."\n";
 
