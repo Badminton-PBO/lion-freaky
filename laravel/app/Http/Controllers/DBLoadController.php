@@ -190,7 +190,6 @@ XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000032;vrouw14;;;vrouw14;;;;
 XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000033;vrouw15;;;vrouw15;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
 XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000034;vrouw16;;;vrouw16;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
 XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000035;vrouw 17;;;vrouw 17;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Recreant
-DD28395F-92B5-428C-B7B0-D63EB8CB9030;DE WALLABIES BRAKEL;;50105112;Temmerman;;;Andreas;;;;;;;;M;;;;;;;;;;;;Speler;C2;C2;D;Competitiespeler
 EOD;
             $playersCSV .=$testPlayers."\n";
 
@@ -309,10 +308,10 @@ EOD;
                 DBLoadController::loadCSV($matchesCSV,'matches');
                 DBLoadController::loadCSV($playersCSV,'players');
                 DB::statement("set names utf8");//set to windows encoding
-                //TDE 2017/07/0 temporaly disable opstelling-app because no data yet
-                DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
-                DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
-                DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+                //TDE 2018/06/21 temporaly disable opstelling-app because no data yet
+                //DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
+                //DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
+                //DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
                 DBLoadController::loadCSV($locationsCSV,'locations');
                 EventController::logEvent('DBLOAD','SYSTEM');
                 $this->updateMatchCRAccordingNewData();
