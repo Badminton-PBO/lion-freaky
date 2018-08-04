@@ -54,7 +54,7 @@
         $(document).ready(function(){
             $.ajax({
                 type: "GET",
-                url: "data/fixed/2018-2018/googleCalendarData.txt",
+                url: "data/fixed/2018-2019/googleCalendarData.txt",
                 dataType: "text",
                 success: function(data) {processData(data);}
             });
