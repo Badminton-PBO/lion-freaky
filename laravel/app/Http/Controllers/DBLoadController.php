@@ -295,7 +295,7 @@ EOD;
                 print("matchesCSV:".DBLoadController::isValidCSV($matchesCSV,"matchid;eventid;eventcode"));
                 print("playersCSV:".DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid"));
                 print("baseTeamCSV:".DBLoadController::isValidCSV($baseTeamCSV,"player_playerId,team_teamName"));
-                print("fixedRankingCSV:".DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Voornaam;Achternaam;Geslacht;Klassement enkel;Klassement dubbel;Klassement gemengd"));
+                print("fixedRankingCSV:".DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Achternaam;Voornaam;Geslacht;Klassement enkel;Klassement dubbel;Klassement gemengd"));
                 print("locationsCSV:".DBLoadController::isValidCSV($locationsCSV,"code;name;number;contact;address;postalcode"));
                 print("ligaBaseTeamCSV:".DBLoadController::isValidCSV($ligaBaseTeamCSV,"player_playerId,team_teamName,club_clubName"));
             } else {
@@ -465,12 +465,12 @@ join lf_club c on c.clubCode=t.groupCode;
 EOD;
         $insertLfRankingFixed = <<<'EOD'
 insert into lf_ranking(date,singles,doubles,mixed,player_playerId)
-select '2017-05-15',t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.playerId from lf_tmpdbload_15mei t
+select '2018-05-15',t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.playerId from lf_tmpdbload_15mei t
 join lf_player p on t.playerId = p.playerId;
 EOD;
 
         $insertFakeLigaGroup = <<<'EOD'
-INSERT INTO lf_group (tournament,`type`,event,devision) values ('2017','LIGA','MX',0),('2017','LIGA','M',0),('2017','LIGA','L',0);
+INSERT INTO lf_group (tournament,`type`,event,devision) values ('2018','LIGA','MX',0),('2018','LIGA','M',0),('2018','LIGA','L',0);
 EOD;
         $insertLfTeamLiga = <<<'EOD'
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId)
