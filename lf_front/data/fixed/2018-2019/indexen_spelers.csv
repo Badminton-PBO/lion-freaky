@@ -1,4 +1,4 @@
-"Club";"Lidnummer";"Achternaam";"Voornaam";"Geslacht";"Klassement enkel";"Klassement dubbel";"Klassement gemengd"
+Club;Lidnummer;Voornaam;Achternaam;Geslacht;Klassement enkel;Klassement dubbel;Klassement gemengd
 "3A Badminton VZW";"50853023";"Anil";"Agarwal";"M";"D";"D";"D"
 "3A Badminton VZW";"50184377";"Swapnil";"Bhansali";"M";"D";"D";"D"
 "3A Badminton VZW";"50342002";"Manan";"Devani";"M";"D";"D";"D"
@@ -214,7 +214,6 @@
 "AALSTERSE BC";"50378678";"Elke";"Houttekier";"V";"D";"D";"D"
 "AALSTERSE BC";"50115644";"Tina";"Jacob";"V";"C2";"C2";"C2"
 "AALSTERSE BC";"50618407";"Marijke";"Janssens";"V";"D";"D";"D"
-"AALSTERSE BC";"0";"Inge";"Janssens";"V";"D";"D";"D"
 "AALSTERSE BC";"50085229";"Bart";"Kinoo";"M";"D";"D";"D"
 "AALSTERSE BC";"50380753";"Silke";"Koops";"V";"D";"D";"D"
 "AALSTERSE BC";"50318586";"Niels";"Koops";"M";"D";"D";"D"
@@ -9041,7 +9040,6 @@
 "DROPSHOT BC";"50692593";"Daan";"Ramaekers";"M";"D";"D";"D"
 "DROPSHOT BC";"50000867";"Christian";"Reynders";"M";"D";"C2";"D"
 "DROPSHOT BC";"50005736";"Peter";"Scevenels";"M";"C2";"C1";"C2"
-"DROPSHOT BC";"0";"Martijn";"Schils";"M";"D";"D";"D"
 "DROPSHOT BC";"50472119";"Bram";"Schils";"M";"D";"D";"D"
 "DROPSHOT BC";"50057840";"Wim";"Serru";"M";"B2";"B2";"C1"
 "DROPSHOT BC";"50431269";"Lowie";"Stanssens";"M";"D";"D";"D"

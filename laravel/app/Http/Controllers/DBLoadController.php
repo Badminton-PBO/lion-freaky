@@ -31,9 +31,9 @@ class DBLoadController extends Controller {
         $MATCHES_CSV_URL='https://www.toernooi.nl/sport/admin/exportteammatches.aspx?id='.$PB_COMPETITIE_ID.'&ft=1&sd='.$PB_COMPETITIE_START_DAY.'000000&ed='.$PB_COMPETITIE_END_DAY.'000000';
         $LOCATIONS_CSV_URL='https://www.toernooi.nl/sport/admin/exportlocations.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
 
-        $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2017-2018/basisopstellingen.csv';
-        $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2017-2018/indexen_spelers.csv';
-        $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2017-2018/liga_nationale_basisopstelling.csv';
+        $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2018-2019/basisopstellingen.csv';
+        $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2018-2019/indexen_spelers.csv';
+        $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2018-2019/liga_nationale_basisopstelling.csv';
 
         // create curl resource
         $ch = curl_init();
@@ -308,10 +308,9 @@ EOD;
                 DBLoadController::loadCSV($matchesCSV,'matches');
                 DBLoadController::loadCSV($playersCSV,'players');
                 DB::statement("set names utf8");//set to windows encoding
-                //TDE 2018/06/21 temporaly disable opstelling-app because no data yet
-                //DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
-                //DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
-                //DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+                DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
+                DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
+                DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
                 DBLoadController::loadCSV($locationsCSV,'locations');
                 EventController::logEvent('DBLOAD','SYSTEM');
                 $this->updateMatchCRAccordingNewData();
