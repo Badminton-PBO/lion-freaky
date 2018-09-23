@@ -492,7 +492,7 @@
                 <div class="row">
                     <div class="col-md-3" data-bind="with:$root.chosenTeam"><span data-bind="text: teamTypeLayout()"></span>, Provenciaal</div>
                     <div class="col-md-3" data-bind="with:$root.chosenTeam">Afdeling: <span data-bind="text: devision"></span> / Reeks: <span data-bind="text: series"></span></div>
-                    <div class="col-md-3" data-bind="with:$root.chosenMeeting">Locatie: <input data-bind="textInput: locationName" /></div>
+                    <div class="col-md-3" data-bind="with:$root.chosenMeeting">Locatie: <span data-bind="text: locationName"></span></div>
                     <div class="col-md-3" data-bind="with:$root.chosenMeeting">Datum/Uur: <span data-bind="text: dateLayout"></span>  <span data-bind="text: hourLayout"></span></div>
                 </div>
                 <div class="row">

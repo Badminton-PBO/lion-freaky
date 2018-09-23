@@ -117,7 +117,7 @@ if (!window.console.log) window.console.log = function () { };
 		this.hTeam = hTeam;
 		this.oTeam = oTeam;
 		this.dateTime = dateTime;
-		this.locationName = locationName;
+		this.locationName = ko.observable(locationName);
 		this.date = buildDateTime(dateTime);
         this.comment = ko.observable("");
 		
