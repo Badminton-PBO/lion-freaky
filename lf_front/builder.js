@@ -529,6 +529,10 @@ if (!window.console.log) window.console.log = function () { };
 		]),
 		new Game("DD",  2, [
 		]),
+		new Game("GD1", 2, [
+		]),
+		new Game("GD2", 2, [
+		]),
 		new Game("HE1", 1, [
 		]),
 		new Game("HE2", 1, [
@@ -536,10 +540,6 @@ if (!window.console.log) window.console.log = function () { };
 		new Game("DE1", 1, [
 		]),
 		new Game("DE2", 1, [
-		]),
-		new Game("GD1", 2, [
-		]),
-		new Game("GD2", 2, [
 		])
 		];
 	}
