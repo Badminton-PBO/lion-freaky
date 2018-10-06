@@ -134,7 +134,7 @@ if (!window.console.log) window.console.log = function () { };
 	}
 	
 	
-	var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking,type) {
+	var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking,type, teamType) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.fullName = this.firstName  + ' ' + this.lastName;
@@ -143,6 +143,7 @@ if (!window.console.log) window.console.log = function () { };
 		this.fixedRanking  = fixedRanking;
 		this.ranking = ranking;
 		this.type = type;
+		this.teamType = teamType;
 		this.sortingValue = ((this.gender == 'M') ? "A" : "B")+this.fullName;
 		
 		this.rankingToIndex = function(ranking) {
@@ -231,6 +232,7 @@ if (!window.console.log) window.console.log = function () { };
 			}
 		}
 
+        this.indexInsideTeamValue = this.indexInsideTeam(this.teamType);
 		
 		this.fixedIndexInsideTeam = function(teamType) {
 			switch(teamType) {
@@ -247,6 +249,8 @@ if (!window.console.log) window.console.log = function () { };
 					}
 			}
 		}
+
+        this.fixedIndexInsideTeamValue = this.fixedIndexInsideTeam(this.teamType);
 		
 		this.maxFixedRankingConvertedToIndexInsideTeam = function(teamType) {
 			//to support ART53.2
@@ -268,9 +272,7 @@ if (!window.console.log) window.console.log = function () { };
 		this.maxFixedRankingInsideTeam = function(teamType) {
 			return this.indexToRanking(this.maxFixedRankingConvertedToIndexInsideTeam(teamType));
 		}
-		
-		this.myFixedIndex = this.fixedIndexInsideTeam("H");
-		
+
 		
 		this.fixedRankingLayout = function(teamType) {
 			switch (teamType) {
@@ -293,11 +295,12 @@ if (!window.console.log) window.console.log = function () { };
 					return this.rankingSingle + ", " + this.rankingDouble + ", " +this.rankingMix;					
 			}
 		}
-		
+
 		//Validation rules
 		this.isAllowedToPlayInTeamGameTypeBasedOnGender = function(teamType) {
 			return ((teamType == 'H' && this.gender == 'F') || (teamType == 'D' && this.gender == 'M')) ? false : true;
-		}				
+		}
+
 
 	};
 	
@@ -475,7 +478,7 @@ if (!window.console.log) window.console.log = function () { };
 			return v;			
 			
 		},this);
-		
+
 		this.isFull = ko.computed(function() {
 			var isFull =  true;
 			$.each(this.games(), function(i,game) {
@@ -777,7 +780,7 @@ if (!window.console.log) window.console.log = function () { };
 				$.get("opstelling/teamAndClubPlayers/"+encodeURIComponent(newTeam.teamName), function(data) {
 					//First set the base team because it has an influence if players are allowed or not
 					$.each(data.players, function(index,p) {
-						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type);						
+						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type, self.chosenTeam().teamType);
 						//Set baseteam players
 						if (self.chosenTeam().baseTeamVblIds.indexOf(p.vblId) >=0) {
 							console.log("Adding "+myPlayer.fullName+" as a baseTeamPlayer of team "+self.chosenTeam().teamName);
@@ -787,7 +790,7 @@ if (!window.console.log) window.console.log = function () { };
 
 					//Load players and check if they can play in this team
 					$.each(data.players, function(index,p) {
-						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type);						
+						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type, self.chosenTeam().teamType);
 						if (myPlayer.isAllowedToPlayInTeamGameTypeBasedOnGender(self.chosenTeam().teamType)) {
 							
 							if (self.chosenTeam().isAllowedToPlayBasedOnBaseTeamSubscribtion(self.chosenClub(),myPlayer)) {								

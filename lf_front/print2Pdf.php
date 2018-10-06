@@ -59,6 +59,69 @@ foreach($output->games as $key => $game) {
 		$html .= '</tr>';
 	}
 }
+$html .='</tbody></table><br/><br/>';
+
+$html .='<h2>Teamindex papieren basisploeg: '.$output->chosenTeam->baseTeamIndex.'</h2>';
+$html .='<br>Spelers op papier: <br>
+	<table class="tg">
+	  <thead>
+		  <tr>
+			<th width="20%" style="font-size:9px;">Naam</th>
+			<th width="20%" style="font-size:9px">Voornaam</th>
+			<th width="14%" style="font-size:9px">Lidnummer</th>
+			<th width="22%" style="font-size:9px; text-align: center">Klassementen (E,D,G)</th>
+			<th width="14%" style="font-size:9px; text-align: center">Index in ploeg</th>
+		  </tr>
+	  </thead>	
+	<tbody>';
+foreach ($output->chosenTeam->playersInBaseTeam as $key => $player) {
+    $klassement=$player->fixedRankingSingle.','.$player->fixedRankingDouble.','.$player->fixedRankingMix;
+
+	$html .= '<tr>';
+    $html .='<td width="20%">'.$player->lastName.'</td>
+				<td width="20%">'.$player->firstName.'</td>
+				<td width="14%">'.$player->vblId.'</td>							
+				<td width="22%" style="text-align: center">'.$klassement.'</td>
+				<td width="14%" style="text-align: center">'.$player->fixedIndexInsideTeamValue.'</td>';
+	$html .= '</tr>';
+	
+}
+$html .='</tbody></table><br/>';
+
+
+
+$html .='<h2>Teamindex effectieve ploeg: '.$output->chosenTeam->effectiveTeamIndex.'</h2>';
+$html .='<br>Effectieve spelers: <br>
+	<table class="tg">
+	  <thead>
+		  <tr>
+			<th width="20%" style="font-size:9px;">Naam</th>
+			<th width="20%" style="font-size:9px">Voornaam</th>
+			<th width="14%" style="font-size:9px">Lidnummer</th>
+			<th width="22%" style="font-size:9px; text-align: center">Klassementen (E,D,G)</th>
+			<th width="14%" style="font-size:9px; text-align: center">Index in ploeg</th>
+		  </tr>
+	  </thead>	
+	<tbody>';
+foreach ($output->chosenTeam->effectivePlayersInTeam as $key => $player) {
+    $klassement=$player->fixedRankingSingle.','.$player->fixedRankingDouble.','.$player->fixedRankingMix;
+
+    $html .= '<tr>';
+    $html .='<td width="20%">'.$player->lastName.'</td>
+				<td width="20%">'.$player->firstName.'</td>
+				<td width="14%">'.$player->vblId.'</td>							
+				<td width="22%" style="text-align: center">'.$klassement.'</td>
+				<td width="14%" style="text-align: center">'.$player->indexInsideTeamValue.'</td>';
+    $html .= '</tr>';
+
+}
+$html .='</tbody></table><br/>';
+
+
+
+
+
+$html .='<br><table><tbody>';
 $html .='<tr>
     <td colspan="2">invallers<br>commentaar</td>
     <td colspan="4">'.str_replace($findNewLine,$replaceNewLine,$output->chosenMeeting->comment).'</td>
