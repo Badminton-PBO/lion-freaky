@@ -62,7 +62,7 @@ class DBLoadController extends Controller {
         //Do another call to logon page to retrieve REQUEST_VERIFICATION_TOKEN
         curl_setopt($ch, CURLOPT_URL, "https://www.toernooi.nl/User/Login");
         $formPage= curl_exec($ch);
-        preg_match_all('|name=\"__RequestVerificationToken\".*value=\"(.*)\"|', $formPage, $resultsRequestVerificationToken);
+        preg_match_all('|name=\"__RequestVerificationToken\".*?value=\"(.*?)\"|', $formPage, $resultsRequestVerificationToken);
         $REQUEST_VERIFICATION_TOKEN = $resultsRequestVerificationToken[1][0];
 
 
@@ -145,12 +145,12 @@ EOD;
             $teamsCSV .=$testTeams."\n";
 
             $testMatches = <<<'EOD'
-113198;7000001;;;;;;;;TESTCLUB 1H;;TESTCLUB 1H;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;;;;;;;false;false;false;false;false;false;false
-113198;7000002;;;;;;;;TESTCLUB 2H;;TESTCLUB 2H;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;;;;;;;false;false;false;false;false;false;false
-113198;7000003;;;;;;;;TESTCLUB 3H;;TESTCLUB 3H;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;;;;;;;false;false;false;false;false;false;false
-113198;7000004;;;;;;;;TESTCLUB 2G;;TESTCLUB 2G;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;;;;;;;false;false;false;false;false;false;false
-113198;7000005;;;;;;;;TESTCLUB 2D;;TESTCLUB 2D;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;;;;;;;false;false;false;false;false;false;false
-113198;7000006;;;;;;;;TESTCLUB 3D;;TESTCLUB 3D;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;;;;;;;false;false;false;false;false;false;false
+113198;7000001;;;;;;;;;;TESTCLUB 1H;;TESTCLUB 1H;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
+113198;7000002;;;;;;;;;;TESTCLUB 2H;;TESTCLUB 2H;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
+113198;7000003;;;;;;;;;;TESTCLUB 3H;;TESTCLUB 3H;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
+113198;7000004;;;;;;;;;;TESTCLUB 2G;;TESTCLUB 2G;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
+113198;7000005;;;;;;;;;;TESTCLUB 2D;;TESTCLUB 2D;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
+113198;7000006;;;;;;;;;;TESTCLUB 3D;;TESTCLUB 3D;;10-5-2020 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
 EOD;
             $matchesCSV .=$testMatches."\n";
 
@@ -282,7 +282,7 @@ EOD;
         if($doLoad == 'true') {
             if (!DBLoadController::isValidCSV($clubCSV,"Code;Nummer;Naam;")
                 or !DBLoadController::isValidCSV($teamsCSV,"clubcode;clubname;eventname")
-                or !DBLoadController::isValidCSV($matchesCSV,"matchid;eventid;eventcode")
+                or !DBLoadController::isValidCSV($matchesCSV,"tournamentid;matchid;LeagueTypeID;LeagueTypeName;eventid;eventcode;eventname")
                 or !DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid")
                 or !DBLoadController::isValidCSV($baseTeamCSV,"player_playerId,team_teamName")
                 or !DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Voornaam;Achternaam;Geslacht;Klassement enkel;Klassement dubbel;Klassement gemengd")
@@ -290,14 +290,14 @@ EOD;
                 or !DBLoadController::isValidCSV($ligaBaseTeamCSV,"player_playerId,team_teamName,club_clubName")) {
 
                 print("NOK: invalid CSV detected");
-                print("clubCSV:".DBLoadController::isValidCSV($clubCSV,"Code;Nummer;Naam;"));
-                print("teamsCSV:".DBLoadController::isValidCSV($teamsCSV,"clubcode;clubname;eventname"));
-                print("matchesCSV:".DBLoadController::isValidCSV($matchesCSV,"matchid;eventid;eventcode"));
-                print("playersCSV:".DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid"));
-                print("baseTeamCSV:".DBLoadController::isValidCSV($baseTeamCSV,"player_playerId,team_teamName"));
-                print("fixedRankingCSV:".DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Achternaam;Voornaam;Geslacht;Klassement enkel;Klassement dubbel;Klassement gemengd"));
-                print("locationsCSV:".DBLoadController::isValidCSV($locationsCSV,"code;name;number;contact;address;postalcode"));
-                print("ligaBaseTeamCSV:".DBLoadController::isValidCSV($ligaBaseTeamCSV,"player_playerId,team_teamName,club_clubName"));
+                print("clubCSV:".json_encode(DBLoadController::isValidCSV($clubCSV,"Code;Nummer;Naam;")));
+                print("teamsCSV:".json_encode(DBLoadController::isValidCSV($teamsCSV,"clubcode;clubname;eventname")));
+                print("matchesCSV:".json_encode(DBLoadController::isValidCSV($matchesCSV,"tournamentid;matchid;LeagueTypeID;LeagueTypeName;eventid;eventcode;eventname")));
+                print("playersCSV:".json_encode(DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid")));
+                print("baseTeamCSV:".json_encode(DBLoadController::isValidCSV($baseTeamCSV,"player_playerId,team_teamName")));
+                print("fixedRankingCSV:".json_encode(DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Voornaam;Achternaam;Geslacht;Klassement enkel;Klassement dubbel;Klassement gemengd")));
+                print("locationsCSV:".json_encode(DBLoadController::isValidCSV($locationsCSV,"code;name;number;contact;address;postalcode")));
+                print("ligaBaseTeamCSV:".json_encode(DBLoadController::isValidCSV($ligaBaseTeamCSV,"player_playerId,team_teamName,club_clubName")));
             } else {
                 DBLoadController::cleanDB();
                 DB::statement("set names latin1");//set to windows encoding
