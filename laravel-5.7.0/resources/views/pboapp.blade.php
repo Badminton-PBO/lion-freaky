@@ -35,11 +35,16 @@
 
             <div class="col-xs-2" style="padding-top: 10px">
                 @if (!(Auth::guest()))
-                        <a class="btn btn-primary" href="{{url('auth/logout')}}" role="button">
+                        <a class="btn btn-primary" href="{{ route('logout') }}web" role="button" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
                             <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
                         </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                 @else
-                        <a class="btn btn-primary" href="{{route('home')}}" role="button">
+                        <a class="btn btn-primary" href="{{route('home')}}" role="button" >
                             <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                         </a>
                 @endif

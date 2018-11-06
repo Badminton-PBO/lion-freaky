@@ -10,6 +10,14 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'lf_users';
+
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -26,4 +34,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new Notifications\MailResetPasswordNotification($token));
+    }
 }

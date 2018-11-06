@@ -6,6 +6,7 @@ RUN apt-get update \
 libapache2-mod-php7.2 \
 php7.2-mysql \
 php7.2-curl \
+php7.2-xml \
 less \
 vim \
 && apt-get clean

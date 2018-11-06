@@ -1,0 +1,1 @@
+Test mailgun {{ $link }}

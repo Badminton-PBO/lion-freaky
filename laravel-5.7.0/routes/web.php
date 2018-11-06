@@ -59,3 +59,5 @@ Route::get('basisploegen/searchPlayer/{vblId}','BasisPloegenController@searchPla
 Route::post('basisploegen/saveTeams','BasisPloegenController@saveTeams');
 
 Route::get('basisploegen/currentTeams','BasisPloegenController@currentTeams');
+
+Auth::routes();
