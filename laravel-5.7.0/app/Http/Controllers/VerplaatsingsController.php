@@ -137,7 +137,7 @@ EOD;
 
 
         $queryMatchCRPerTeam = <<<EOD
-select e.matchIdExtra,cr.acceptedState, cr.finallyChosen, e.hTeamName,e.oTeamName,cr.matchCRId,date_format(cr.proposedDate,'%Y%m%d%H%i') proposedDate,cr.requestedByTeam,date_format(cr.requestedOn,'%Y%m%d%H%i%S') requestedOn  from lf_match_cr cr
+select e.matchIdExtra,cr.acceptedState, cr.finallyChosen, e.hTeamName,e.oTeamName,cr.matchCRId,date_format(cr.proposedDate,'%Y%m%d%H%i') proposedDate,cr.requestedByTeam,date_format(cr.requestedOn,'%Y%m%d%H%i') requestedOn  from lf_match_cr cr
 join lf_match_extra e on e.matchIdExtra = cr.match_matchIdExtra
 where (e.hTeamName = :team1 or e.oTeamName = :team2)
 order by cr.proposedDate asc;
@@ -154,7 +154,7 @@ order by m.date asc;
 EOD;
 //and m.date >= now()
         $queryMatchCRPerClub = <<<EOD
-select e.matchIdExtra,cr.acceptedState, cr.finallyChosen, e.hTeamName,e.oTeamName,cr.matchCRId,date_format(cr.proposedDate,'%Y%m%d%H%i') proposedDate,cr.requestedByTeam,date_format(cr.requestedOn,'%Y%m%d%H%i%S') requestedOn  from lf_match_cr cr
+select e.matchIdExtra,cr.acceptedState, cr.finallyChosen, e.hTeamName,e.oTeamName,cr.matchCRId,date_format(cr.proposedDate,'%Y%m%d%H%i') proposedDate,cr.requestedByTeam,date_format(cr.requestedOn,'%Y%m%d%H%i') requestedOn  from lf_match_cr cr
 join lf_match_extra e on e.matchIdExtra = cr.match_matchIdExtra
 join lf_match m on e.hTeamName = m.homeTeamName and e.oTeamName = m.outTeamName
 join lf_team t on t.teamName = m.homeTeamName or t.teamName = m.outTeamName
