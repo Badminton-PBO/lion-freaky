@@ -22,12 +22,12 @@ $html .= '
 <table class="tg">
   <thead>
 	  <tr>
-		<th width="10%" style="font-size:9px">Discipline</th>
-		<th width="20%" style="font-size:9px;">Naam</th>
-		<th width="20%" style="font-size:9px">Voornaam</th>
+		<th width="7%" style="font-size:9px">Disc.</th>
+		<th width="29%" style="font-size:9px;">Naam</th>
+		<th width="28%" style="font-size:9px">Voornaam</th>
 		<th width="14%" style="font-size:9px">Lidnummer</th>
-		<th width="14%" style="font-size:9px; ">Klassement</th>
-		<th width="22%" style="font-size:9px; text-align: center">Uitslagen</th>
+		<th width="5%" style="font-size:9px; ">Kl.</th>
+		<th width="17%" style="font-size:9px; text-align: center">Uitslagen</th>
 	  </tr>
   </thead>
   <tbody>';
@@ -47,30 +47,29 @@ foreach($output->games as $key => $game) {
 		
 		$html .= '<tr>';
 		if ($playerCount==1) {
-			$html .='<td width="10%" rowspan="'.$game->involvedNumberOfPlayers.'">'.$game->id.'</td>';
+			$html .='<td width="7%" rowspan="'.$game->involvedNumberOfPlayers.'">'.$game->id.'</td>';
 		}
-		$html .='<td width="20%">'.$player->lastName.'</td>
-				<td width="20%">'.$player->firstName.'</td>
+		$html .='<td width="29%">'.$player->lastName.'</td>
+				<td width="28%">'.$player->firstName.'</td>
 				<td width="14%">'.$player->vblId.'</td>							
-				<td width="14%" style="text-align: center">'.$klassement.'</td>';
+				<td width="5%" style="text-align: center">'.$klassement.'</td>';
 		if ($playerCount==1) {
-			$html .='<td width="22%" rowspan="'.$game->involvedNumberOfPlayers.'">&nbsp;</td>';
+			$html .='<td width="17%" rowspan="'.$game->involvedNumberOfPlayers.'">&nbsp;</td>';
 		}
 		$html .= '</tr>';
 	}
 }
 $html .='</tbody></table><br/><br/>';
 
-$html .='<h2>Teamindex papieren basisploeg: '.$output->chosenTeam->baseTeamIndex.'</h2>';
-$html .='<br>Spelers op papier: <br>
-	<table class="tg">
+$html .='<h2>Papieren basisploeg: teamindex = '.$output->chosenTeam->baseTeamIndex.'</h2>';
+$html .='<table class="tg">
 	  <thead>
 		  <tr>
-			<th width="20%" style="font-size:9px;">Naam</th>
-			<th width="20%" style="font-size:9px">Voornaam</th>
+			<th width="28%" style="font-size:9px;">Naam</th>
+			<th width="28%" style="font-size:9px">Voornaam</th>
 			<th width="14%" style="font-size:9px">Lidnummer</th>
-			<th width="22%" style="font-size:9px; text-align: center">Klassementen (E,D,G)</th>
-			<th width="14%" style="font-size:9px; text-align: center">Index in ploeg</th>
+			<th width="14%" style="font-size:9px; text-align: center">Kl. (E,D,G)</th>
+			<th width="16%" style="font-size:9px; text-align: center">Index in ploeg</th>
 		  </tr>
 	  </thead>	
 	<tbody>';
@@ -78,11 +77,11 @@ foreach ($output->chosenTeam->playersInBaseTeam as $key => $player) {
     $klassement=$player->fixedRankingSingle.','.$player->fixedRankingDouble.','.$player->fixedRankingMix;
 
 	$html .= '<tr>';
-    $html .='<td width="20%">'.$player->lastName.'</td>
-				<td width="20%">'.$player->firstName.'</td>
+    $html .='<td width="28%">'.$player->lastName.'</td>
+				<td width="28%">'.$player->firstName.'</td>
 				<td width="14%">'.$player->vblId.'</td>							
-				<td width="22%" style="text-align: center">'.$klassement.'</td>
-				<td width="14%" style="text-align: center">'.$player->fixedIndexInsideTeamValue.'</td>';
+				<td width="14%" style="text-align: center">'.$klassement.'</td>
+				<td width="16%" style="text-align: center">'.$player->fixedIndexInsideTeamValue.'</td>';
 	$html .= '</tr>';
 	
 }
@@ -90,16 +89,15 @@ $html .='</tbody></table><br/>';
 
 
 
-$html .='<h2>Teamindex effectieve ploeg: '.$output->chosenTeam->effectiveTeamIndex.'</h2>';
-$html .='<br>Effectieve spelers: <br>
-	<table class="tg">
+$html .='<h2>Effectieve ploeg: teamindex = '.$output->chosenTeam->effectiveTeamIndex.'</h2>';
+$html .='<table class="tg">
 	  <thead>
 		  <tr>
-			<th width="20%" style="font-size:9px;">Naam</th>
-			<th width="20%" style="font-size:9px">Voornaam</th>
+			<th width="28%" style="font-size:9px;">Naam</th>
+			<th width="28%" style="font-size:9px">Voornaam</th>
 			<th width="14%" style="font-size:9px">Lidnummer</th>
-			<th width="22%" style="font-size:9px; text-align: center">Klassementen (E,D,G)</th>
-			<th width="14%" style="font-size:9px; text-align: center">Index in ploeg</th>
+			<th width="14%" style="font-size:9px; text-align: center">Kl. (E,D,G)</th>
+			<th width="16%" style="font-size:9px; text-align: center">Index in ploeg</th>
 		  </tr>
 	  </thead>	
 	<tbody>';
@@ -107,11 +105,11 @@ foreach ($output->chosenTeam->effectivePlayersInTeam as $key => $player) {
     $klassement=$player->fixedRankingSingle.','.$player->fixedRankingDouble.','.$player->fixedRankingMix;
 
     $html .= '<tr>';
-    $html .='<td width="20%">'.$player->lastName.'</td>
-				<td width="20%">'.$player->firstName.'</td>
+    $html .='<td width="28%">'.$player->lastName.'</td>
+				<td width="28%">'.$player->firstName.'</td>
 				<td width="14%">'.$player->vblId.'</td>							
-				<td width="22%" style="text-align: center">'.$klassement.'</td>
-				<td width="14%" style="text-align: center">'.$player->indexInsideTeamValue.'</td>';
+				<td width="14%" style="text-align: center">'.$klassement.'</td>
+				<td width="16%" style="text-align: center">'.$player->indexInsideTeamValue.'</td>';
     $html .= '</tr>';
 
 }
