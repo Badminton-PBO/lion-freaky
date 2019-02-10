@@ -109,7 +109,7 @@ foreach ($output->chosenTeam->effectivePlayersInTeam as $key => $player) {
 				<td width="28%">'.$player->firstName.'</td>
 				<td width="14%">'.$player->vblId.'</td>							
 				<td width="14%" style="text-align: center">'.$klassement.'</td>
-				<td width="16%" style="text-align: center">'.$player->indexInsideTeamValue.'</td>';
+				<td width="16%" style="text-align: center">'.$player->fixedIndexInsideTeamValue.'</td>';
     $html .= '</tr>';
 
 }
