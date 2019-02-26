@@ -190,6 +190,7 @@ XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000032;vrouw14;;;vrouw14;;;;
 XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000033;vrouw15;;;vrouw15;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
 XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000034;vrouw16;;;vrouw16;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Competitiespeler
 XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;TESTCLUB BC;;70000035;vrouw 17;;;vrouw 17;;;;;;;;V;;;;;;;;;;;;Speler;D;D;D;Recreant
+256185DE-BE62-4A9C-940E-D84323FC89B7;BADMINTON BUGGENHOUT VZW;;50100351;Smet;;;Jens;;;;;;;;M;;;;;;;;;;;;Uitgeleende speler;B1;B2;B2;Competitiespeler
 EOD;
             $playersCSV .=$testPlayers."\n";
 
