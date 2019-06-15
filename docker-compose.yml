@@ -38,6 +38,7 @@ services:
         volumes:
         - ./laravel-5.7.0:/app
         command: install
+        #command: update
 volumes:
     db_data:
 
