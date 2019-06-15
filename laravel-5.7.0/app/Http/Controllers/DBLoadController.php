@@ -309,9 +309,10 @@ EOD;
                 DBLoadController::loadCSV($matchesCSV,'matches');
                 DBLoadController::loadCSV($playersCSV,'players');
                 DB::statement("set names utf8");//set to windows encoding
-                DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
-                DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
-                DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+                //TDE 2018/06/21 temporaly disable opstelling-app because no data yet
+                //DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
+                //DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
+                //DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
                 DBLoadController::loadCSV($locationsCSV,'locations');
                 EventController::logEvent('DBLOAD','SYSTEM');
                 $this->updateMatchCRAccordingNewData();
