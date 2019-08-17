@@ -51,10 +51,20 @@ PB_COMPETITIE_END_DAY=20200731
 ``` 
 Opgelet: deze configuratie file zit bewust NIET in git omwille van pwd (en public git repo)
 
+* Via phpmyadmin, volgende tabellen leeg maken
+``` 
+delete from lf_match_cr;c
+delete FROM `lf_match_extra`;
+``` 
 * Committen, pushen.
 * SSH naar PBO machine bij one.com
     *  xxx.sh script uitvoeren
     * "laravel-5.7.0/.env" via vim aanpassen
+* data sync manueel starten
+```
+http://http://competitie.badminton-pbo.be/dbload/true/true
+```    
+   
     
 ## 2. Google competitie agenda
 Wanneer? : begin juli
@@ -88,7 +98,7 @@ Maw. sorteren & manueel overlopen en ploeglijnen verwijderen die niet nodig zijn
 * Committen, pushen
 * SSH naar PBO machine bij one.com
     *  xxx.sh script uitvoeren
-    
+   
     
 ## 3. Opstellings app
 Wanneer? eind augustus
