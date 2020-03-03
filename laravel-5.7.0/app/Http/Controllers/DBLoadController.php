@@ -35,11 +35,13 @@ class DBLoadController extends Controller {
         $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2019-2020/indexen_spelers.csv';
         $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2019-2020/liga_nationale_basisopstelling.csv';
 
+        $TOERNOOINL_ACCEPT_COOKIES="st=c=1; ";
+
         // create curl resource
         $ch = curl_init();
 
         // set url
-        curl_setopt($ch, CURLOPT_URL, "https://www.toernooi.nl/CookieWall/AcceptCookie?ReturnURL=%2FUser%2FLogin");
+        curl_setopt($ch, CURLOPT_URL, "https://www.toernooi.nl//cookiewall/?returnurl=%2FUser%2FLogin");
         curl_setopt($ch, CURLOPT_USERAGENT, $USER_AGENT);
         if (PHP_VERSION_ID > 50500) {
             curl_setopt($ch, CURLOPT_SAFE_UPLOAD, TRUE);//PHP5.5 only option
@@ -55,12 +57,12 @@ class DBLoadController extends Controller {
 
         //Construct session cookie +  bypass "do you accept cookies" warning
         $cookySet1=implode(';', $results[1]);
-        $cookies  = $cookySet1;
+        $cookies  = $TOERNOOINL_ACCEPT_COOKIES . $cookySet1;
 
         curl_setopt($ch, CURLOPT_COOKIE, $cookies);
 
         //Do another call to logon page to retrieve REQUEST_VERIFICATION_TOKEN
-        curl_setopt($ch, CURLOPT_URL, "https://www.toernooi.nl/User/Login");
+        curl_setopt($ch, CURLOPT_URL, "https://www.toernooi.nl/user?returnUrl=%2F");
         $formPage= curl_exec($ch);
         preg_match_all('|name=\"__RequestVerificationToken\".*?value=\"(.*?)\"|', $formPage, $resultsRequestVerificationToken);
         $REQUEST_VERIFICATION_TOKEN = $resultsRequestVerificationToken[1][0];
@@ -68,7 +70,7 @@ class DBLoadController extends Controller {
 
         //Get RequestVerificationCookie but also contains other cookies
         preg_match_all('|Set-Cookie: (.*);|U', $formPage, $results);
-        $cookies=$cookySet1."; ".implode(';', $results[1]);
+        $cookies=$cookies."; " . implode(';', $results[1]);
         curl_setopt($ch, CURLOPT_COOKIE, $cookies);
 
         //Do form logon
@@ -87,7 +89,7 @@ class DBLoadController extends Controller {
 
         //Parse the cookies out of the response
         preg_match_all('|Set-Cookie: (.*);|U', $logonResponse, $results);
-        $cookies = "st=c=1; ".implode(';', $results[1]);
+        $cookies = $TOERNOOINL_ACCEPT_COOKIES . implode(';', $results[1]);
 
         //Ready to download csv files
         curl_setopt($ch, CURLOPT_HEADER, 0);
