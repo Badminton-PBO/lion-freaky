@@ -26,6 +26,8 @@ Route::get('opstelling/teamAndClubPlayers/{teamName}', 'OpstellingsController@te
 
 Route::get('dbload/{doLoad}/{addTestClub}', 'DBLoadController@dbload');
 
+Route::get('dbfreshness', 'DBLoadController@dbfreshness');
+
 Route::get('/stats/opstelling/{statType}','StatisticsController@statisticsOpstelling');
 
 Route::get('/stats/opstelling','StatisticsController@opstelling');

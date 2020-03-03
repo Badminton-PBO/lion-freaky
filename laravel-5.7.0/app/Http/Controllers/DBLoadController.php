@@ -2,8 +2,25 @@
 
 use DB;
 use Mail;
+use Response;
 
 class DBLoadController extends Controller {
+
+    public function dbfreshness() {
+        $dbloadFreshnessInDays = <<<EOD
+SELECT  DATEDIFF(now(), max(`when`)) days FROM `lf_event`
+where eventType='DBLOAD'
+EOD;
+
+        $dbloads = DB::select($dbloadFreshnessInDays);
+        $result['DBLOAD'] = $dbloads;
+
+        $response = Response::json($result);
+        $response->header("Cache-Control","no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        $response->header("Pragma","no-cache");// HTTP 1.0.
+        $response->header("Expires","0");// Proxies.
+        return $response;
+    }
 
     public function dbload($doLoad = 'true',$addTestClub = 'false') {
         ini_set('memory_limit', '256M');
