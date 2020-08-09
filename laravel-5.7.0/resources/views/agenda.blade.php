@@ -54,7 +54,7 @@
         $(document).ready(function(){
             $.ajax({
                 type: "GET",
-                url: "data/fixed/2019-2020/googleCalendarData.txt",
+                url: "data/fixed/2020-2021/googleCalendarData.txt",
                 dataType: "text",
                 success: function(data) {processData(data);}
             });
