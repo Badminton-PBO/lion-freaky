@@ -25,8 +25,8 @@ curl \
     --output '../data/tmp/login1.html' \
     'https://www.toernooi.nl/User/Login'
 
-REQUEST_VERIFICATION_TOKEN=$(grep "<input name=\"__RequestVerificationToken" ../data/tmp/login1.html | sed -n 's/^.*value="\(.*\)".*$/\1/p')
-echo $REQUEST_VERIFICATION_TOKEN
+REQUEST_VERIFICATION_TOKEN=$(grep -o "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"[^\"]*" ../data/tmp/login1.html | cut -f6 -d\")
+echo REQUEST_VERIFICATION_TOKEN: $REQUEST_VERIFICATION_TOKEN
 
 curl \
     --location \
