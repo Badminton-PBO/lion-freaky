@@ -31,7 +31,7 @@ if (!window.console.log) window.console.log = function () { };
 
 	function playerComparatorIndexInsideTeam(teamType) {
 		return function(a, b) {
-			return b.indexInsideTeam(teamType) - a.indexInsideTeam(teamType);
+			return b.fixedIndexInsideTeam(teamType) - a.fixedIndexInsideTeam(teamType);
 		}
 	}
 
@@ -134,7 +134,7 @@ if (!window.console.log) window.console.log = function () { };
 	}
 	
 	
-	var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking,type, teamType) {
+	var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking,rankingR,type, teamType) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.fullName = this.firstName  + ' ' + this.lastName;
@@ -142,10 +142,11 @@ if (!window.console.log) window.console.log = function () { };
 		this.gender = gender;
 		this.fixedRanking  = fixedRanking;
 		this.ranking = ranking;
+		this.rankingR = rankingR;
 		this.type = type;
 		this.teamType = teamType;
 		this.sortingValue = ((this.gender == 'M') ? "A" : "B")+this.fullName;
-		
+
 		this.rankingToIndex = function(ranking) {
 			switch(ranking) {
 				case "A": 
@@ -188,16 +189,20 @@ if (!window.console.log) window.console.log = function () { };
 		this.rankingDouble = ranking[1].toUpperCase();
 		this.rankingMix = ranking[2].toUpperCase();
 
+        this.rankingRSingle = rankingR[0];
+        this.rankingRDouble = rankingR[1];
+        this.rankingRMix = rankingR[2];
+
 
 		this.rankingOrFixedRanking = function(gameType,isFixed) {
 			if(gameType == 'HE' || gameType == 'DE')
-				return isFixed ? this.fixedRankingSingle : this.rankingSingle;			
+				return isFixed ? this.fixedRankingSingle : this.rankingRSingle;
 
 			if(gameType == 'HD' || gameType == 'DD')
-				return isFixed ? this.fixedRankingDouble : this.rankingDouble;			
+				return isFixed ? this.fixedRankingDouble : this.rankingRDouble;
 
 			if(gameType == 'GD')
-				return isFixed ? this.fixedRankingMix : this.rankingMix;						
+				return isFixed ? this.fixedRankingMix : this.rankingRMix;
 		}
 
 		this.ranking = function(gameType) {
@@ -209,7 +214,7 @@ if (!window.console.log) window.console.log = function () { };
 		}
 		
 		this.index = function(gameType) {
-			return this.rankingToIndex(this.ranking(gameType));
+			return this.ranking(gameType);
 		}
 
 		this.fixedIndex = function(gameType) {
@@ -288,11 +293,11 @@ if (!window.console.log) window.console.log = function () { };
 		this.rankingLayout = function(teamType) {
 			switch (teamType) {
 				case "H": 
-					return this.rankingSingle + ", " + this.rankingDouble;
+					return this.rankingRSingle + ", " + this.rankingRDouble;
 				case "D":
-					return this.rankingSingle + ", " + this.rankingDouble;					
+					return this.rankingRSingle + ", " + this.rankingRDouble;
 				case "G": 
-					return this.rankingSingle + ", " + this.rankingDouble + ", " +this.rankingMix;					
+					return this.rankingRSingle + ", " + this.rankingRDouble + ", " +this.rankingRMix;
 			}
 		}
 
@@ -780,7 +785,7 @@ if (!window.console.log) window.console.log = function () { };
 				$.get("opstelling/teamAndClubPlayers/"+encodeURIComponent(newTeam.teamName), function(data) {
 					//First set the base team because it has an influence if players are allowed or not
 					$.each(data.players, function(index,p) {
-						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type, self.chosenTeam().teamType);
+						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.rankingR,p.type, self.chosenTeam().teamType);
 						//Set baseteam players
 						if (self.chosenTeam().baseTeamVblIds.indexOf(p.vblId) >=0) {
 							console.log("Adding "+myPlayer.fullName+" as a baseTeamPlayer of team "+self.chosenTeam().teamName);
@@ -790,7 +795,7 @@ if (!window.console.log) window.console.log = function () { };
 
 					//Load players and check if they can play in this team
 					$.each(data.players, function(index,p) {
-						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.type, self.chosenTeam().teamType);
+						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.rankingR,p.type, self.chosenTeam().teamType);
 						if (myPlayer.isAllowedToPlayInTeamGameTypeBasedOnGender(self.chosenTeam().teamType)) {
 							
 							if (self.chosenTeam().isAllowedToPlayBasedOnBaseTeamSubscribtion(self.chosenClub(),myPlayer)) {								
@@ -866,7 +871,7 @@ if (!window.console.log) window.console.log = function () { };
 		self.isOrderedIndexArray = function(subjectArray) {			
 			// Sort the array in a new array and check if that sorted array is exactly the same as the original one
 			clonedSubjectArray = subjectArray.slice(0)
-			clonedSubjectArray.sort(function(a, b){return b-a});//sort descending
+			clonedSubjectArray.sort(function(a, b){return a-b});//sort ascending
 			
 			var result = true;
 			$.each(subjectArray,function(index,x) {
@@ -945,15 +950,15 @@ if (!window.console.log) window.console.log = function () { };
 				}
 			}
 						
-			//GAMES MUST BE ORDERED FROM HIGHEST TO LOWEST INDEX
+			//GAMES MUST BE ORDERED FROM LOWEST TO HIGHEST INDEX
 			var newOrder = self.giveOrderedIndexOfDefinedGamesPerGameTypeAndAddPlayerOnPositionXAndIgnoreGameY(gameType,player,gameTypeIndex,sourceGameTypeIndex);			
 			if(!(self.isOrderedIndexArray(newOrder))) {
 				if ((gameType=="HE" || gameType == "DE")) {
-					logError("De titularissen voor de enkelwedstrijden "+gameType+" moeten gerangschikt staan van hoogste naar laagste enkel-index (C320 art. 52.8)",arg);
+					logError("De titularissen voor de enkelwedstrijden "+gameType+" moeten gerangschikt staan van laagste naar hoogste (nieuwe ranking 2020) enkel-index (C320 art. 52.8)",arg);
 				} else if ((gameType=="HD" || gameType == "DD")) { 
-					logError("De titularissen voor de dubbelwedstrijden "+gameType+" moeten gerangschikt staan van hoogste naar laagste samengestelde dubbel-index (C320 art. 52.11)",arg);
+					logError("De titularissen voor de dubbelwedstrijden "+gameType+" moeten gerangschikt staan van laagste naar hoogste samengestelde (nieuwe ranking 2020) dubbel-index (C320 art. 52.11)",arg);
 				} else {
-					logError("De titularissen voor de gemengde wedstrijden "+gameType+" moeten gerangschikt staan van hoogste naar laagste samengestelde mix-index (C320 art. 52.11)",arg);
+					logError("De titularissen voor de gemengde wedstrijden "+gameType+" moeten gerangschikt staan van laagste naar hoogste samengestelde (nieuwe ranking 2020) mix-index (C320 art. 52.11)",arg);
 				}
 				return;														
 			}

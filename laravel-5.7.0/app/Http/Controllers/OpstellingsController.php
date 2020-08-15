@@ -62,7 +62,7 @@ EOD;
 
     public function  teamAndClubPlayers($teamName) {
     $query = <<<EOD
-select c.clubName,p.playerId,p.firstName,p.lastName,p.gender,p.type, rF.singles fSingles,rF.doubles fDoubles,rF.mixed fMixed, rV.Singles vSingles,rV.doubles vDoubles,rV.mixed vMixed from lf_club c
+select c.clubName,p.playerId,p.firstName,p.lastName,p.gender,p.type, rF.singles fSingles,rF.doubles fDoubles,rF.mixed fMixed, rV.Singles vSingles,rV.doubles vDoubles,rV.mixed vMixed, rV.Singles_r vSinglesR,rV.doubles_r vDoublesR,rV.mixed_r vMixedR from lf_club c
 join lf_player p on p.club_clubId = c.clubId
 join lf_ranking rF on rF.player_playerId = p.playerId
 join lf_ranking rV on rV.player_playerId = p.playerId
@@ -107,7 +107,7 @@ EOD;
 
         //Add clubplayer data
         foreach($players as $key => $player) {
-            array_push($result["players"],array('firstName' => $player->firstName ,'lastName' => $player->lastName, 'vblId' => $player->playerId, 'gender' => $player->gender, 'type' => $player->type, 'fixedRanking' => array($player->fSingles, $player->fDoubles,$player->fMixed), 'ranking' => array($player->vSingles, $player->vDoubles,$player->vMixed)));
+            array_push($result["players"],array('firstName' => $player->firstName ,'lastName' => $player->lastName, 'vblId' => $player->playerId, 'gender' => $player->gender, 'type' => $player->type, 'fixedRanking' => array($player->fSingles, $player->fDoubles,$player->fMixed),  'ranking' => array($player->vSingles, $player->vDoubles,$player->vMixed), 'rankingR' => array($player->vSinglesR, $player->vDoublesR,$player->vMixedR)));
         }
 
         //Create event for this request

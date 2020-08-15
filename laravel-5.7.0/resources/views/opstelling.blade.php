@@ -217,8 +217,8 @@
                         <thead>
                         <tr>
                             <th>Speler</th>
-                            <th class="playerDetail">vast index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></th>
-                            <th class="playerDetail">var. index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></th>
+                            <th class="playerDetail">vaste index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span> (oude ranking)</th>
+                            <th class="playerDetail">var. index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span> (nieuwe ranking)</th>
                         </tr>
                         </thead>
                         <tbody data-bind="foreach: filteredAvailablePlayers">
@@ -324,7 +324,7 @@
                                         <div>
                                             <span data-bind="text: fullName"></span>,
                                             <span data-bind="text: vblId"></span>,
-                                            <span data-bind="text: ranking($parent.gameType)"></span>=<span data-bind="text: index($parent.gameType)"></span>
+                                            index=<span data-bind="text: index($parent.gameType)"></span>
                                             <div class="pull-right">
                                                 <a href="#" data-bind="click: $parent.removePlayer">
                                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
@@ -422,8 +422,8 @@
                                             <thead>
                                             <tr>
                                                 <th>Speler</th>
-                                                <th class="playerDetail">vast index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></th>
-                                                <th class="playerDetail">var. index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></th>
+                                                <th class="playerDetail">vaste index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span> (oude ranking)</th>
+                                                <th class="playerDetail">var. index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span> (nieuwe ranking)</th>
                                                 <td>&nbsp;</td>
                                             </tr>
                                             </thead>
@@ -454,7 +454,7 @@
                 <div class="row" data-bind="with: chosenTeam">
                     <div class="col-xs-12 col-sm-6">
                         <div class="well well-sm">
-                            Teamindex papieren ploeg: <span data-bind="text: baseTeamIndex"></span>
+                            Teamindex (oude ranking) papieren ploeg: <span data-bind="text: baseTeamIndex"></span>
                             <br>Spelers op papier:
                             <ul data-bind="foreach: playersInBaseTeam">
                                 <li>
@@ -466,7 +466,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <div class="well well-sm">
-                            Teamindex effectieve ploeg: <span data-bind="text: effectiveTeamIndex"></span>
+                            Teamindex (oude ranking) effectieve ploeg: <span data-bind="text: effectiveTeamIndex"></span>
                             <br>Effectieve spelers:
                             <ul data-bind="foreach: effectivePlayersInTeam">
                                 <li>

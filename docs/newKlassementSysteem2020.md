@@ -85,4 +85,24 @@ gem =  -------------------------------------------------------------------------
     * klassementen adhv. nieuw systeem -> opstelling op blad
     
         
-  competitie@4ghent.be  
+## Opstellingsapp
+Q: Wat indien speler geen vaste ranking eind mei heeft gekregen?
+Vroeger bepaalde de opstellingsapp dat fixedRanking gelijk werd gezet als variableRanking indien fixedRanking ontbrak.
+In seizoen 20-21 (overgangsjaar), kan je zoiets echter niet doen omdat er geen exacte omvorming mogelijk is nieuw-naar-oude ranking
+
+Q: Teamindex van de effectieve ploeg mag de teamindex van papieren ploeg niet overschrijden (C320 art. 53.2)
+* Teamindex van de effectieve ploeg: obv. nieuwe ranking systeem
+* Teamindex papieren ploeg: obv. oud ranking system
+Die twee kunnen toch zomaar niet met elkaar vergeleken worden?
+A: Teamindex effectieve ploeg wordt bepaald obv. fixedIndexes
+
+
+
+TODO
+* check "Teamindex effectieve ploeg" : done, fixed
+* check specific small-device functionality: done, checked on Nokia
+
+vorig seizoen
+PBO_COMPETITIE_ID='DB2CA04D-D29F-4538-B46C-92A24A83B68B'
+PBO_COMPETITIE_START_DAY='20200801'
+PBO_COMPETITIE_END_DAY='20210731'
