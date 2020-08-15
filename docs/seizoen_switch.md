@@ -53,7 +53,7 @@ Opgelet: deze configuratie file zit bewust NIET in git omwille van pwd (en publi
 
 * Via phpmyadmin, volgende tabellen leeg maken
 ``` 
-delete from lf_match_cr;c
+delete from lf_match_cr;
 delete FROM `lf_match_extra`;
 ``` 
 * Committen, pushen.
@@ -62,7 +62,7 @@ delete FROM `lf_match_extra`;
     * "laravel-5.7.0/.env" via vim aanpassen
 * data sync manueel starten
 ```
-http://http://competitie.badminton-pbo.be/dbload/true/true
+http://competitie.badminton-pbo.be/dbload/true/true
 ```    
    
     
