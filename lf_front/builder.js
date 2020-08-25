@@ -185,10 +185,6 @@ if (!window.console.log) window.console.log = function () { };
 		this.fixedRankingDouble = fixedRanking[1].toUpperCase();
 		this.fixedRankingMix = fixedRanking[2].toUpperCase();
 
-		this.rankingSingle = ranking[0].toUpperCase();
-		this.rankingDouble = ranking[1].toUpperCase();
-		this.rankingMix = ranking[2].toUpperCase();
-
         this.rankingRSingle = rankingR[0];
         this.rankingRDouble = rankingR[1];
         this.rankingRMix = rankingR[2];
