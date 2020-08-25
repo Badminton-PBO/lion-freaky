@@ -476,7 +476,11 @@ group  by t.memberId;
 EOD;
         $insertLfRanking = <<<'EOD'
 INSERT INTO lf_ranking (`date`,singles_r,doubles_r,mixed_r,player_playerId)
-select SYSDATE(),t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.memberId from lf_tmpdbload_playerscsv_noduplicates t
+select SYSDATE(),
+CASE WHEN t.playerLevelSingle='' THEN NULL ELSE t.playerLevelSingle END,
+CASE WHEN t.playerLevelDouble='' THEN NULL ELSE t.playerLevelDouble END,
+CASE WHEN t.playerLevelMixed='' THEN NULL ELSE t.playerLevelMixed END,
+t.memberId from lf_tmpdbload_playerscsv_noduplicates t
 join lf_club c on c.clubName=t.groupName;
 EOD;
         $insertLfPlayer = <<<'EOD'

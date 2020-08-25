@@ -108,7 +108,7 @@ EOD;
         //Add clubplayer data
         foreach($players as $key => $player) {
             //Only add the player if a fixed ranking is available
-            if (! is_null($player->fSingles)) {
+            if (! is_null($player->fSingles) && ! is_null($player->vSinglesR)) {
                 array_push($result["players"],array(
                     'firstName' => $player->firstName ,
                     'lastName' => $player->lastName,
