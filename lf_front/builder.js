@@ -950,11 +950,11 @@ if (!window.console.log) window.console.log = function () { };
 			var newOrder = self.giveOrderedIndexOfDefinedGamesPerGameTypeAndAddPlayerOnPositionXAndIgnoreGameY(gameType,player,gameTypeIndex,sourceGameTypeIndex);			
 			if(!(self.isOrderedIndexArray(newOrder))) {
 				if ((gameType=="HE" || gameType == "DE")) {
-					logError("De titularissen voor de enkelwedstrijden "+gameType+" moeten gerangschikt staan van laagste naar hoogste (nieuwe ranking 2020) enkel-index (C320 art. 52.8)",arg);
+					logError("De titularissen voor de enkelwedstrijden "+gameType+" moeten gerangschikt staan van hoogste klassement(1) naar laagste klassement(12) (update C320 art. 52.10 25/08/2020)",arg);
 				} else if ((gameType=="HD" || gameType == "DD")) { 
-					logError("De titularissen voor de dubbelwedstrijden "+gameType+" moeten gerangschikt staan van laagste naar hoogste samengestelde (nieuwe ranking 2020) dubbel-index (C320 art. 52.11)",arg);
+					logError("De titularissen voor de dubbelwedstrijden "+gameType+" moeten gerangschikt staan van hoogst samengestelde dubbel klassement(2) naar laagst samengestelde dubbel klassement(24) (update C320 art. 52.10 25/08/2020)",arg);
 				} else {
-					logError("De titularissen voor de gemengde wedstrijden "+gameType+" moeten gerangschikt staan van laagste naar hoogste samengestelde (nieuwe ranking 2020) mix-index (C320 art. 52.11)",arg);
+					logError("De titularissen voor de gemengde wedstrijden "+gameType+" moeten gerangschikt staan van hoogst samengestelde mix klassement(2) naar laagst samengestelde mix klassement(24) (update C320 art. 52.10 25/08/2020)",arg);
 				}
 				return;														
 			}
