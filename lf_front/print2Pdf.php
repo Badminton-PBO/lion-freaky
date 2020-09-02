@@ -38,11 +38,11 @@ foreach($output->games as $key => $game) {
 		$playerCount++;		
 		$klassement="";
 		switch($game->gameType) {
-			case "HD": $klassement = $player->rankingDouble;break;
-			case "DD": $klassement = $player->rankingDouble;break;
-			case "GD": $klassement = $player->rankingMix;break;
-			case "HE": $klassement = $player->rankingSingle;break;
-			case "DE": $klassement = $player->rankingSingle;break;				
+			case "HD": $klassement = $player->rankingRDouble;break;
+			case "DD": $klassement = $player->rankingRDouble;break;
+			case "GD": $klassement = $player->rankingRMix;break;
+			case "HE": $klassement = $player->rankingRSingle;break;
+			case "DE": $klassement = $player->rankingRSingle;break;
 		}
 		
 		$html .= '<tr>';
