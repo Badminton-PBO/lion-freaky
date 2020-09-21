@@ -119,6 +119,7 @@ EOD;
 
         //Download TEAMS CSV
         curl_setopt($ch, CURLOPT_URL, $TEAMS_CSV_URL);
+        curl_exec($ch); // For some reason, this first call is sometimes returning an empty CSV
         $teamsCSV = curl_exec($ch);
 
         //Download PLAYERS CSV
