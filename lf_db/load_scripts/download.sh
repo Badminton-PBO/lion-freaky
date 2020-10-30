@@ -35,7 +35,7 @@ curl \
     --cookie-jar "$COOKIES_PATH" \
     --data '__RequestVerificationToken='"$REQUEST_VERIFICATION_TOKEN"'&Login='"$PBO_USERNAME"'&Password='"$PBO_PWD"'&ReturnUrl=%2F&ReturnUrlUnauthorized=' \
     --output '../data/tmp/login2.html' \
-    'https://www.toernooi.nl/User/Login'
+    'https://www.toernooi.nl/user'
 
 curl \
     --silent \
