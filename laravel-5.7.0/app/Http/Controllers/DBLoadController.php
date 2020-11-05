@@ -24,7 +24,7 @@ EOD;
 
     public function dbload($doLoad = 'true',$addTestClub = 'false') {
         ini_set('memory_limit', '256M');
-        set_time_limit(120);
+        //set_time_limit(120);
         $PB_COMPETITIE_ID=env('PB_COMPETITIE_ID', '');
         $PB_COMPETITIE_START_DAY=env('PB_COMPETITIE_START_DAY','');
         $PB_COMPETITIE_END_DAY=env('PB_COMPETITIE_END_DAY','');
@@ -58,6 +58,7 @@ EOD;
         $ch = curl_init();
 
         // set url
+        curl_setopt($ch,  CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLOPT_URL, "https://www.toernooi.nl//cookiewall/?returnurl=%2FUser%2FLogin");
         curl_setopt($ch, CURLOPT_USERAGENT, $USER_AGENT);
         if (PHP_VERSION_ID > 50500) {
