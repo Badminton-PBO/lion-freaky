@@ -62,7 +62,7 @@ EOD;
 
     public function  teamAndClubPlayers($teamName) {
     $query = <<<EOD
-select c.clubName,p.playerId,p.firstName,p.lastName,p.gender,p.type, rF.singles fSingles,rF.doubles fDoubles,rF.mixed fMixed, rV.Singles vSingles,rV.doubles vDoubles,rV.mixed vMixed, rV.Singles_r vSinglesR,rV.doubles_r vDoublesR,rV.mixed_r vMixedR from lf_club c
+select c.clubName,p.playerId,p.firstName,p.lastName,p.gender,p.type, rF.singles_r fSinglesR,rF.doubles_r fDoublesR,rF.mixed_r fMixedR, rV.Singles_r vSinglesR,rV.doubles_r vDoublesR,rV.mixed_r vMixedR from lf_club c
 join lf_player p on p.club_clubId = c.clubId
 join lf_ranking rF on rF.player_playerId = p.playerId
 join lf_ranking rV on rV.player_playerId = p.playerId
@@ -74,13 +74,13 @@ where c.clubName = (
 and rV.date = (
 select max(rr.date) from lf_player pp
 join lf_ranking rr on rr.player_playerId = pp.playerId
-where pp.playerId = p.playerId
+where pp.playerId = p.playerId and rr.singles_r is not null
 group by p.playerId
 )
 and rF.date = (
 select min(rr.date) from lf_player pp
 join lf_ranking rr on rr.player_playerId = pp.playerId
-where pp.playerId = p.playerId
+where pp.playerId = p.playerId and rr.singles_r is not null
 group by p.playerId)
 EOD;
 
@@ -108,15 +108,14 @@ EOD;
         //Add clubplayer data
         foreach($players as $key => $player) {
             //Only add the player if a fixed ranking is available
-            if (! is_null($player->fSingles) && ! is_null($player->vSinglesR)) {
+            if (! is_null($player->fSinglesR) && ! is_null($player->vSinglesR)) {
                 array_push($result["players"],array(
                     'firstName' => $player->firstName ,
                     'lastName' => $player->lastName,
                     'vblId' => $player->playerId,
                     'gender' => $player->gender,
                     'type' => $player->type,
-                    'fixedRanking' => array($player->fSingles, $player->fDoubles,$player->fMixed),
-                    'ranking' => array($player->vSingles, $player->vDoubles,$player->vMixed),
+                    'fixedRankingR' => array($player->fSinglesR, $player->fDoublesR,$player->fMixedR),
                     'rankingR' => array($player->vSinglesR, $player->vDoublesR,$player->vMixedR)));
             }
         }

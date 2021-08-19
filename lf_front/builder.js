@@ -16,7 +16,7 @@ if (!window.console.log) window.console.log = function () { };
 					$(element).data("timeout", setTimeout(function() {
 						$(element).fadeOut();
 						valueAccessor()(null);
-					}, 30000));
+					}, 60000));
 				});
 			}
 		},
@@ -31,16 +31,10 @@ if (!window.console.log) window.console.log = function () { };
 
 	function playerComparatorIndexInsideTeam(teamType) {
 		return function(a, b) {
-			return b.fixedIndexInsideTeam(teamType) - a.fixedIndexInsideTeam(teamType);
+			return a.fixedIndexInsideTeam(teamType) - b.fixedIndexInsideTeam(teamType);
 		}
 	}
 
-
-	function playerComparatorMaxFixedRankingConvertedToIndexInsideTeam(teamType) {
-		return function(a, b) {
-			return b.maxFixedRankingConvertedToIndexInsideTeam(teamType) - a.maxFixedRankingConvertedToIndexInsideTeam(teamType);
-		}
-	}
 
 
 	function playerComparatorBasedSortingValue() {
@@ -132,21 +126,48 @@ if (!window.console.log) window.console.log = function () { };
 	  this.buttonValue =  ko.observable(value);
 	  this.selected = ko.observable(selected);
 	}
+
+	// Following data is valid voor Oost-Vlaanderen 2021-2022
+	// From C320, bijlage 1
+	var strongestAllowedRankingPerGameTypePerDevision = new Map([
+		['H', new Map([
+			[1, 3],
+			[2, 4],
+			[3, 6],
+			[4, 7],
+			[5, 9]
+		])
+		],
+		['D', new Map([
+			[1, 5],
+			[2, 7],
+			[3, 9]
+		])
+		],
+		['G', new Map([
+			[1, 4],
+			[2, 5],
+			[3, 6],
+			[4, 7],
+			[5, 9]
+		])
+		]
+	]);
 	
 	
-	var Player = function(firstName,lastName,vblId,gender,fixedRanking,ranking,rankingR,type, teamType) {
+	var Player = function(firstName,lastName,vblId,gender,fixedRankingR,rankingR,type, teamType) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.fullName = this.firstName  + ' ' + this.lastName;
 		this.vblId = vblId;
 		this.gender = gender;
-		this.fixedRanking  = fixedRanking;
-		this.ranking = ranking;
+		this.fixedRankingR  = fixedRankingR;
 		this.rankingR = rankingR;
 		this.type = type;
 		this.teamType = teamType;
 		this.sortingValue = ((this.gender == 'M') ? "A" : "B")+this.fullName;
 
+		//TODO: remove
 		this.rankingToIndex = function(ranking) {
 			switch(ranking) {
 				case "A": 
@@ -163,7 +184,7 @@ if (!window.console.log) window.console.log = function () { };
 					return 1;				
 			}			
 		}
-
+		//TODO: remove
 		this.indexToRanking = function(index) {
 			switch(index) {
 				case 20: 
@@ -181,9 +202,9 @@ if (!window.console.log) window.console.log = function () { };
 			}			
 		}		
 		//Some definitions			
-		this.fixedRankingSingle = fixedRanking[0].toUpperCase();
-		this.fixedRankingDouble = fixedRanking[1].toUpperCase();
-		this.fixedRankingMix = fixedRanking[2].toUpperCase();
+		this.fixedRankingRSingle = fixedRankingR[0];
+		this.fixedRankingRDouble = fixedRankingR[1];
+		this.fixedRankingRMix = fixedRankingR[2];
 
         this.rankingRSingle = rankingR[0];
         this.rankingRDouble = rankingR[1];
@@ -192,13 +213,13 @@ if (!window.console.log) window.console.log = function () { };
 
 		this.rankingOrFixedRanking = function(gameType,isFixed) {
 			if(gameType == 'HE' || gameType == 'DE')
-				return isFixed ? this.fixedRankingSingle : this.rankingRSingle;
+				return isFixed ? this.fixedRankingRSingle : this.rankingRSingle;
 
 			if(gameType == 'HD' || gameType == 'DD')
-				return isFixed ? this.fixedRankingDouble : this.rankingRDouble;
+				return isFixed ? this.fixedRankingRDouble : this.rankingRDouble;
 
 			if(gameType == 'GD')
-				return isFixed ? this.fixedRankingMix : this.rankingRMix;
+				return isFixed ? this.fixedRankingRMix : this.rankingRMix;
 		}
 
 		this.ranking = function(gameType) {
@@ -214,7 +235,7 @@ if (!window.console.log) window.console.log = function () { };
 		}
 
 		this.fixedIndex = function(gameType) {
-			return this.rankingToIndex(this.fixedRanking(gameType));
+			return this.fixedRanking(gameType);
 		}
 		
 		this.indexInsideTeam = function(teamType) {
@@ -253,36 +274,32 @@ if (!window.console.log) window.console.log = function () { };
 
         this.fixedIndexInsideTeamValue = this.fixedIndexInsideTeam(this.teamType);
 		
-		this.maxFixedRankingConvertedToIndexInsideTeam = function(teamType) {
-			//to support ART53.2
+		this.strongestFixedIndexInsideTeam = function(teamType) {
+			//to support ART51.6
 			switch(teamType) {
 				case "H":
-					return Math.max(this.fixedIndex("HE"),this.fixedIndex("HD"));
+					return Math.min(this.fixedIndex("HE"),this.fixedIndex("HD"));
 				case "D":
-					return Math.max(this.fixedIndex("DE"),this.fixedIndex("DD"));
+					return Math.min(this.fixedIndex("DE"),this.fixedIndex("DD"));
 				case "G":
 					switch(this.gender) {
 						case "M":
-							return Math.max(this.fixedIndex("HE"),this.fixedIndex("HD"),this.fixedIndex("GD"));
+							return Math.min(this.fixedIndex("HE"),this.fixedIndex("HD"),this.fixedIndex("GD"));
 						case "F":
-							return Math.max(this.fixedIndex("DE"),this.fixedIndex("DD"),this.fixedIndex("GD"));
+							return Math.min(this.fixedIndex("DE"),this.fixedIndex("DD"),this.fixedIndex("GD"));
 					}
 			}			
-		}
-		
-		this.maxFixedRankingInsideTeam = function(teamType) {
-			return this.indexToRanking(this.maxFixedRankingConvertedToIndexInsideTeam(teamType));
 		}
 
 		
 		this.fixedRankingLayout = function(teamType) {
 			switch (teamType) {
 				case "H": 
-					return this.fixedRankingSingle + ", " + this.fixedRankingDouble +" = "+this.fixedIndexInsideTeam(teamType) ;
+					return this.fixedRankingRSingle + ", " + this.fixedRankingRDouble +" = "+this.fixedIndexInsideTeam(teamType) ;
 				case "D":
-					return this.fixedRankingSingle + ", " + this.fixedRankingDouble +" = "+this.fixedIndexInsideTeam(teamType);					
+					return this.fixedRankingRSingle + ", " + this.fixedRankingRDouble +" = "+this.fixedIndexInsideTeam(teamType);
 				case "G": 
-					return this.fixedRankingSingle + ", " + this.fixedRankingDouble + ", " +this.fixedRankingMix +" = "+this.fixedIndexInsideTeam(teamType);					
+					return this.fixedRankingRSingle + ", " + this.fixedRankingRDouble + ", " +this.fixedRankingRMix +" = "+this.fixedIndexInsideTeam(teamType);
 			}
 		}
 
@@ -385,7 +402,7 @@ if (!window.console.log) window.console.log = function () { };
 		this.games = ko.observableArray();
 		this.meetings = ko.observableArray();
 		this.captainName = ko.observable(captainName);
-			
+
 		this.setGames = function(games) {
 			this.games(games);
 		}
@@ -441,12 +458,10 @@ if (!window.console.log) window.console.log = function () { };
 		this.isAllowedToPlayBasedOnBaseTeamSubscribtion = function(chosenClub,myPlayer) {
 			//console.log("Checking if player "+myPlayer.fullName+" is allowed to play in "+this.teamName+" (devision:"+this.devision +",series:"+this.series+",teamnumber:"+this.teamNumber+")");
 			
-			//ART51.4 : If the club has only 1 team in competition for this event, all players of this club can play in this team
+			//ART51.6 : If the club has only 1 team in competition for this event, all players of this club can play in this team
 			if (this.teamNumber == 1)// all players from the club can play in the first team
 				return true;
-			
-			//TODO ART51.5
-			
+
 			//STEP1: filter teams from same event G,H,D
 			//STEP2: filter teams with equal higher devision
 			//STEP3: filter teams where baseTeam contains myPlayer.vblId
@@ -460,15 +475,13 @@ if (!window.console.log) window.console.log = function () { };
 				
 			return 	!(foundTeams.length>0 && foundTeams[0].teamName != this.teamName);				
 		}
-		
-		this.isAllowedToPlayBasedOnBaseMaxPlayerIndex = function(myPlayer) {
+
+
+		this.isAllowedToPlayBasedOnStrongestAllowedIndexInDevision = function(myPlayer) {
 			if (this.teamNumber == 1)// all players from the club can play in the first team
-				return true;			
-			var sortedBasePlayerWithSameGender = this.playersInBaseTeam().filter(playerGenderFilter(myPlayer.gender)).sort(playerComparatorMaxFixedRankingConvertedToIndexInsideTeam(this.teamType));
-			//console.log("Checking isAllowedToPlayBasedOnBaseMaxPlayerIndex for "+myPlayer.fullName);
-			return myPlayer.maxFixedRankingConvertedToIndexInsideTeam(this.teamType) <= sortedBasePlayerWithSameGender[0].maxFixedRankingConvertedToIndexInsideTeam(this.teamType);
+				return true;
+			return myPlayer.strongestFixedIndexInsideTeam(this.teamType) >= strongestAllowedRankingPerGameTypePerDevision.get(this.teamType).get(this.devision);
 		}
-		
 
 		this.baseTeamIndex = ko.computed(function() {
 			var v=0;
@@ -622,7 +635,7 @@ if (!window.console.log) window.console.log = function () { };
 		
 		self.availablePlayers = ko.observableArray();
 		self.notAllowedPlayersOtherBaseTeam = ko.observableArray();
-		self.notAllowedPlayersMaxPlayerRanking = ko.observableArray();
+		self.notAllowedPlayersStrongestPlayerRanking = ko.observableArray();
 		self.lastError = ko.observable();
 		
 		self.trash = ko.observableArray([]);
@@ -722,7 +735,7 @@ if (!window.console.log) window.console.log = function () { };
 			self.chosenTeamName(null);
 			self.availablePlayers.removeAll();
 			self.notAllowedPlayersOtherBaseTeam.removeAll();
-			self.notAllowedPlayersMaxPlayerRanking.removeAll();
+			self.notAllowedPlayersStrongestPlayerRanking.removeAll();
 			self.chosenTeam(null);										
 		});
 		
@@ -774,14 +787,14 @@ if (!window.console.log) window.console.log = function () { };
 				
 				self.availablePlayers.removeAll();				
 				self.notAllowedPlayersOtherBaseTeam.removeAll();
-				self.notAllowedPlayersMaxPlayerRanking.removeAll();
+				self.notAllowedPlayersStrongestPlayerRanking.removeAll();
 				
 				
 				//LOAD PLAYERS FOR THIS CLUB/TEAM
 				$.get("opstelling/teamAndClubPlayers/"+encodeURIComponent(newTeam.teamName), function(data) {
 					//First set the base team because it has an influence if players are allowed or not
 					$.each(data.players, function(index,p) {
-						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.rankingR,p.type, self.chosenTeam().teamType);
+						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRankingR,p.rankingR,p.type, self.chosenTeam().teamType);
 						//Set baseteam players
 						if (self.chosenTeam().baseTeamVblIds.indexOf(p.vblId) >=0) {
 							console.log("Adding "+myPlayer.fullName+" as a baseTeamPlayer of team "+self.chosenTeam().teamName);
@@ -791,14 +804,14 @@ if (!window.console.log) window.console.log = function () { };
 
 					//Load players and check if they can play in this team
 					$.each(data.players, function(index,p) {
-						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRanking,p.ranking,p.rankingR,p.type, self.chosenTeam().teamType);
+						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRankingR,p.rankingR,p.type, self.chosenTeam().teamType);
 						if (myPlayer.isAllowedToPlayInTeamGameTypeBasedOnGender(self.chosenTeam().teamType)) {
 							
 							if (self.chosenTeam().isAllowedToPlayBasedOnBaseTeamSubscribtion(self.chosenClub(),myPlayer)) {								
-								if(self.chosenTeam().isAllowedToPlayBasedOnBaseMaxPlayerIndex(myPlayer)) {
+								if(self.chosenTeam().isAllowedToPlayBasedOnStrongestAllowedIndexInDevision(myPlayer)) {
 									self.availablePlayers.push(myPlayer);
 								} else {
-									self.notAllowedPlayersMaxPlayerRanking.push(myPlayer);
+									self.notAllowedPlayersStrongestPlayerRanking.push(myPlayer);
 								}								
 							} else {
 								self.notAllowedPlayersOtherBaseTeam.push(myPlayer);
@@ -812,11 +825,11 @@ if (!window.console.log) window.console.log = function () { };
 						self.chosenTeam().meetings.push(new Meeting(m.hTeam,m.oTeam,m.dateTime,m.locationName));						
 					});						
 										
-					//Sort the arrays of players thtat are shown in UI
+					//Sort the arrays of players that are shown in UI
 					self.chosenTeam().playersInBaseTeam(self.chosenTeam().playersInBaseTeam().sort(playerComparatorBasedSortingValue()));
 					self.availablePlayers(self.availablePlayers().sort(playerComparatorBasedSortingValue()));
 					self.notAllowedPlayersOtherBaseTeam(self.notAllowedPlayersOtherBaseTeam().sort(playerComparatorBasedSortingValue()));
-					self.notAllowedPlayersMaxPlayerRanking(self.notAllowedPlayersMaxPlayerRanking().sort(playerComparatorBasedSortingValue()));
+					self.notAllowedPlayersStrongestPlayerRanking(self.notAllowedPlayersStrongestPlayerRanking().sort(playerComparatorBasedSortingValue()));
 					
 					//self.chosenTeam().calculateAndSetBaseTeamIndex();
 				},'json');										
@@ -846,15 +859,15 @@ if (!window.console.log) window.console.log = function () { };
 				if (game.gameType == myGameType ) {					
 					 if (game.gameTypeIndex == indexPositionX) {						 						
 						if(myGameType == 'HE' || myGameType == 'DE') {
-							result.push(myPlayer.index(myGameType));
+							result.push([myPlayer.index(myGameType), undefined]);
 						} else if (game.playersInGame().length == 1){ // toghether with the given myPlayer this will form a double-couple
-							result.push(myPlayer.index(myGameType) + game.playersInGame()[0].index(myGameType));
+							result.push([myPlayer.index(myGameType) + game.playersInGame()[0].index(myGameType), Math.min(myPlayer.index(myGameType), game.playersInGame()[0].index(myGameType)) ]);
 						}						
 					 } else if ((game.gameTypeIndex !== indexPositionY) && game.isFull()){
 						if(myGameType == 'HE' || myGameType == 'DE') { 
-							result.push(game.playersInGame()[0].index(myGameType));
+							result.push([game.playersInGame()[0].index(myGameType), undefined]);
 						} else {
-							result.push(game.playersInGame()[0].index(myGameType) + game.playersInGame()[1].index(myGameType));
+							result.push([game.playersInGame()[0].index(myGameType) + game.playersInGame()[1].index(myGameType), Math.min(game.playersInGame()[0].index(myGameType), game.playersInGame()[1].index(myGameType))]);
 						}
 					 }					
 				}
@@ -863,7 +876,7 @@ if (!window.console.log) window.console.log = function () { };
 		}
 
 
-		
+		// TODO: remove
 		self.isOrderedIndexArray = function(subjectArray) {			
 			// Sort the array in a new array and check if that sorted array is exactly the same as the original one
 			clonedSubjectArray = subjectArray.slice(0)
@@ -876,7 +889,19 @@ if (!window.console.log) window.console.log = function () { };
 			return result;
 			
 		}
-		
+
+		self.isOrderedIndexArrayWithStrongestIndividual = function(subjectArray) {
+			// Sort the array in a new array and check if that sorted array is exactly the same as the original one
+			clonedSubjectArray = subjectArray.slice(0)
+			clonedSubjectArray.sort(function(a, b){return a[0] == b[0] ? a[1]- b[1] : a[0] - b[0]});//sort ascending
+
+			var result = true;
+			$.each(subjectArray,function(index,x) {
+				result = result && (x == clonedSubjectArray[index]);
+			});
+			return result;
+
+		}
 		//////////////////////////////////////////////////////
 		//END Validation utilities
 		//////////////////////////////////////////////////////
@@ -933,7 +958,7 @@ if (!window.console.log) window.console.log = function () { };
 			//SAME PLAYER CAN ONLY PLAY TWO DOUBLE GAMES
 			if ((gameType=="HD" || gameType == "DD") && (gameType != sourceGameType))  {				
 				if (self.numberOfGamesPerPlayerPerGameType(player,gameType) == 2) {
-					logError("Eénzelfde titularis kan slechts 2 dubbelwedstrijden spelen (C320 art.52.7)",arg);
+					logError("Eénzelfde titularis kan slechts 2 dubbelwedstrijden spelen (C320 art.52.6)",arg);
 					return;									
 				}
 			}
@@ -941,20 +966,21 @@ if (!window.console.log) window.console.log = function () { };
 			//SAME PLAYER CAN ONLY PLAY ONE SINGLE OR ONE MIX GAME
 			if ((gameType=="HE" || gameType == "DE" || gameType == "GD") && (gameType != sourceGameType))  {				
 				if (self.numberOfGamesPerPlayerPerGameType(player,gameType) == 1) {
-					logError("Eénzelfde speler/titularis kan slechts 1 "+gameType+" spelen (C320 art.52.7)",arg);
+					logError("Eénzelfde speler/titularis kan slechts 1 "+gameType+" spelen (C320 art.52.6)",arg);
 					return;									
 				}
 			}
 						
-			//GAMES MUST BE ORDERED FROM LOWEST TO HIGHEST INDEX
+			// GAMES MUST BE ORDERED FROM LOWEST TO HIGHEST INDEX
+			// IF INDEX IS EQUAL, LOWEST INDIVIDUAL INDEX SHOULD COME FIRST
 			var newOrder = self.giveOrderedIndexOfDefinedGamesPerGameTypeAndAddPlayerOnPositionXAndIgnoreGameY(gameType,player,gameTypeIndex,sourceGameTypeIndex);			
-			if(!(self.isOrderedIndexArray(newOrder))) {
+			if(!(self.isOrderedIndexArrayWithStrongestIndividual(newOrder))) {
 				if ((gameType=="HE" || gameType == "DE")) {
-					logError("De titularissen voor de enkelwedstrijden "+gameType+" moeten gerangschikt staan van hoogste klassement(1) naar laagste klassement(12) (update C320 art. 52.10 25/08/2020)",arg);
+					logError("De titularissen voor de enkelwedstrijden "+gameType+" moeten gerangschikt staan in volgorde van oplopende opstellings index van enkel klassement. (C320 art. 52.7)",arg);
 				} else if ((gameType=="HD" || gameType == "DD")) { 
-					logError("De titularissen voor de dubbelwedstrijden "+gameType+" moeten gerangschikt staan van hoogst samengestelde dubbel klassement(2) naar laagst samengestelde dubbel klassement(24) (update C320 art. 52.10 25/08/2020)",arg);
+					logError("De titularissen voor de dubbelwedstrijden "+gameType+" moeten gerangschikt staan in volgorde van oplopende opstellingsindex van het paar (C320 art. 52.8). Bij paren met zelfde opstellingsindex moet het paar met de speler met sterkst individueel klassment eerst worden opgesteld (C320 art 52.9)",arg);
 				} else {
-					logError("De titularissen voor de gemengde wedstrijden "+gameType+" moeten gerangschikt staan van hoogst samengestelde mix klassement(2) naar laagst samengestelde mix klassement(24) (update C320 art. 52.10 25/08/2020)",arg);
+					logError("De titularissen voor de gemengde wedstrijden "+gameType+" moeten gerangschikt staan in volgorde van oplopende opstellingsindex van het paar (C320 art. 52.8). Bij paren met zelfde opstellingsindex moet het paar met de speler met sterkst individueel klassment eerst worden opgesteld (C320 art 52.9)",arg);
 				}
 				return;														
 			}
@@ -973,9 +999,9 @@ if (!window.console.log) window.console.log = function () { };
 				self.lastError(msg);
 			};
 
-			// BASE-TEAM-INDEX >= EFFECTIVE-TEAM-INDEX  (exception: ART51.4 everybody can play in first team)
-			if (self.chosenTeam().teamNumber != 1 && self.chosenTeam().effectiveTeamIndex() > self.chosenTeam().baseTeamIndex()) {
-				logError("Teamindex van de effectieve ploeg mag de teamindex van papieren ploeg niet overschrijden (C320 art. 53.2)",arg);
+			// BASE-TEAM-INDEX <= EFFECTIVE-TEAM-INDEX  (exception: ART51.6 everybody can play in first team)
+			if (self.chosenTeam().teamNumber != 1 && self.chosenTeam().effectivePlayersInTeam().length == 4 && self.chosenTeam().effectiveTeamIndex() < self.chosenTeam().baseTeamIndex()) {
+				logError("De ploegindex van titularissen mag ploegindex van basisspelers niet overschrijden (C320 art. 51.6)",arg);
 				arg.targetParent.remove(arg.item);
 				return;
 			}

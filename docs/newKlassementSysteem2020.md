@@ -6,10 +6,18 @@
 # Klassement: 
 * 1 (hoogste)-12(laagst)
     * geen 1-1 convertie tussen oud & nieuw
-    1 = top A
+    1 = A
     2 = A
-    3 = A / top B1
+    3 = B1
     4 = B1
+    5 = B2
+    6 = B2
+    7 = C1
+    8 = C1
+    9 = C2
+    10 = C2
+    11 = D
+    12 = D
 
 * enkel belgische toenooien & interclubs voor volwassenen tellen mee
 

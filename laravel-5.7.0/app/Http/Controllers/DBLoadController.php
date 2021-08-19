@@ -48,9 +48,9 @@ EOD;
         $MATCHES_CSV_URL='https://www.toernooi.nl/sport/admin/exportteammatches.aspx?id='.$PB_COMPETITIE_ID.'&ft=1&sd='.$PB_COMPETITIE_START_DAY.'000000&ed='.$PB_COMPETITIE_END_DAY.'000000';
         $LOCATIONS_CSV_URL='https://www.toernooi.nl/sport/admin/exportlocations.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
 
-        $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2020-2021/basisopstellingen.csv';
-        $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2020-2021/indexen_spelers.csv';
-        $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2020-2021/liga_nationale_basisopstelling.csv';
+        $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2021-2022/basisopstellingen.csv';
+        $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2021-2022/indexen_spelers.csv';
+        $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2021-2022/liga_nationale_basisopstelling.csv';
 
         $TOERNOOINL_ACCEPT_COOKIES="st=c=1; ";
 
@@ -246,41 +246,41 @@ EOD;
 
 
             $testFixedRankings = <<<'EOD'
-"Testclub";"70000001";"VN";"AN";"M";"A";"A";"A"
-"Testclub";"70000002";"VN";"AN";"M";"B1";"B1";"B1"
-"Testclub";"70000003";"VN";"AN";"M";"B1";"B1";"B1"
-"Testclub";"70000004";"VN";"AN";"M";"B1";"B1";"B1"
-"Testclub";"70000005";"VN";"AN";"M";"B2";"B2";"B2"
-"Testclub";"70000006";"VN";"AN";"M";"C1";"C1";"B1"
-"Testclub";"70000007";"VN";"AN";"M";"C2";"C2";"C1"
-"Testclub";"70000008";"VN";"AN";"M";"C1";"C2";"D"
-"Testclub";"70000009";"VN";"AN";"M";"D";"D";"C1"
-"Testclub";"70000010";"VN";"AN";"M";"C2";"C2";"C2"
-"Testclub";"70000011";"VN";"AN";"M";"C2";"D";"C2"
-"Testclub";"70000012";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000013";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000014";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000015";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000016";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000017";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000018";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000019";"VN";"AN";"M";"B1";"B1";"B1"
-"Testclub";"70000020";"VN";"AN";"M";"B1";"B1";"B1"
-"Testclub";"70000021";"VN";"AN";"M";"B1";"B1";"B1"
-"Testclub";"70000022";"VN";"AN";"M";"B2";"B2";"B2"
-"Testclub";"70000023";"VN";"AN";"M";"C1";"C1";"C1"
-"Testclub";"70000024";"VN";"AN";"M";"C1";"C1";"C1"
-"Testclub";"70000025";"VN";"AN";"M";"C2";"B2";"C1"
-"Testclub";"70000026";"VN";"AN";"M";"C2";"C2";"C2"
-"Testclub";"70000027";"VN";"AN";"M";"C2";"D";"C2"
-"Testclub";"70000028";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000029";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000030";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000031";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000032";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000033";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000034";"VN";"AN";"M";"D";"D";"D"
-"Testclub";"70000035";"VN";"AN";"M";"D";"D";"D"
+"Testclub";"70000001";"VN";"AN";"M";"1";"1";"1"
+"Testclub";"70000002";"VN";"AN";"M";"3";"3";"3"
+"Testclub";"70000003";"VN";"AN";"M";"3";"3";"3"
+"Testclub";"70000004";"VN";"AN";"M";"3";"3";"3"
+"Testclub";"70000005";"VN";"AN";"M";"5";"5";"5"
+"Testclub";"70000006";"VN";"AN";"M";"7";"7";"4"
+"Testclub";"70000007";"VN";"AN";"M";"9";"9";"7"
+"Testclub";"70000008";"VN";"AN";"M";"7";"9";"11"
+"Testclub";"70000009";"VN";"AN";"M";"11";"11";"7"
+"Testclub";"70000010";"VN";"AN";"M";"9";"9";"9"
+"Testclub";"70000011";"VN";"AN";"M";"9";"11";"9"
+"Testclub";"70000012";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000013";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000014";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000015";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000016";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000017";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000018";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000019";"VN";"AN";"M";"4";"4";"4"
+"Testclub";"70000020";"VN";"AN";"M";"4";"4";"4"
+"Testclub";"70000021";"VN";"AN";"M";"4";"4";"4"
+"Testclub";"70000022";"VN";"AN";"M";"6";"6";"6"
+"Testclub";"70000023";"VN";"AN";"M";"7";"7";"7"
+"Testclub";"70000024";"VN";"AN";"M";"7";"7";"7"
+"Testclub";"70000025";"VN";"AN";"M";"9";"5";"7"
+"Testclub";"70000026";"VN";"AN";"M";"9";"9";"9"
+"Testclub";"70000027";"VN";"AN";"M";"9";"11";"9"
+"Testclub";"70000028";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000029";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000030";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000031";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000032";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000033";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000034";"VN";"AN";"M";"11";"11";"11"
+"Testclub";"70000035";"VN";"AN";"M";"11";"11";"11"
 EOD;
             $fixedRankingCSV .=$testFixedRankings."\n";
 
@@ -307,7 +307,7 @@ EOD;
                 or !DBLoadController::isValidCSV($matchesCSV,"tournamentid;matchid;LeagueTypeID;LeagueTypeName;eventid;eventcode;eventname")
                 or !DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid")
                 or !DBLoadController::isValidCSV($baseTeamCSV,"player_playerId,team_teamName")
-                or !DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Voornaam;Achternaam;Geslacht;Klassement enkel;Klassement dubbel;Klassement gemengd")
+                or !DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Voornaam;Achternaam;Geslacht;Discipline index enkel;Discipline index dubbel;Discipline index gemengd")
                 or !DBLoadController::isValidCSV($locationsCSV,"code;name;number;contact;address;postalcode")
                 or !DBLoadController::isValidCSV($ligaBaseTeamCSV,"player_playerId,team_teamName,club_clubName")) {
 
@@ -317,7 +317,7 @@ EOD;
                 print("matchesCSV:".json_encode(DBLoadController::isValidCSV($matchesCSV,"tournamentid;matchid;LeagueTypeID;LeagueTypeName;eventid;eventcode;eventname")));
                 print("playersCSV:".json_encode(DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid")));
                 print("baseTeamCSV:".json_encode(DBLoadController::isValidCSV($baseTeamCSV,"player_playerId,team_teamName")));
-                print("fixedRankingCSV:".json_encode(DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Voornaam;Achternaam;Geslacht;Klassement enkel;Klassement dubbel;Klassement gemengd")));
+                print("fixedRankingCSV:".json_encode(DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Voornaam;Achternaam;Geslacht;Discipline index enkel;Discipline index dubbel;Discipline index gemengd")));
                 print("locationsCSV:".json_encode(DBLoadController::isValidCSV($locationsCSV,"code;name;number;contact;address;postalcode")));
                 print("ligaBaseTeamCSV:".json_encode(DBLoadController::isValidCSV($ligaBaseTeamCSV,"player_playerId,team_teamName,club_clubName")));
             } else {
@@ -325,7 +325,7 @@ EOD;
                 DB::statement("set names latin1");//set to windows encoding
                 DB::statement("SET sql_mode = ''");// disable sql_mode=only_full_group_by as of mysql5.7, $insertLfTeamNamePrefix
                 //WARNING TMP disabling foreign key checks: ONLY USE THIS WHEN TESTING NEW DATA
-                //DB::statement("SET FOREIGN_KEY_CHECKS=0");
+                DB::statement("SET FOREIGN_KEY_CHECKS=0");
 
                 DBLoadController::loadCSV($clubCSV,'clubs');
                 DBLoadController::loadCSV($teamsCSV,'teams');
@@ -333,9 +333,9 @@ EOD;
                 DBLoadController::loadCSV($playersCSV,'players');
                 DB::statement("set names utf8");//set to windows encoding
                 //TDE 2018/06/21 temporaly disable opstelling-app because no data yet
-                //DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
-                //DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
-                //DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+                DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
+                DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
+                DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
                 DBLoadController::loadCSV($locationsCSV,'locations');
                 EventController::logEvent('DBLOAD','SYSTEM');
                 $this->updateMatchCRAccordingNewData();
@@ -423,7 +423,7 @@ EOD;
             case "fixedRanking":
                 DBLoadController::buildAndExecQuery($parsedCsv,
                     'INSERT INTO lf_tmpdbload_15mei(clubName,playerId, firstName,lastName,gender,playerLevelSingle, playerLevelDouble, playerLevelMixed) VALUES ',
-                    array('Club','Lidnummer','Voornaam','Achternaam','Geslacht','Klassement enkel','Klassement dubbel','Klassement gemengd')
+                    array('Club','Lidnummer','Voornaam','Achternaam','Geslacht','Discipline index enkel','Discipline index dubbel','Discipline index gemengd')
                 );
                 break;
             case "ligaBaseTeam":
@@ -492,8 +492,8 @@ select t.memberId,t.firstName,t.lastName, CASE when t.gender='V' then 'F' else t
 join lf_club c on c.clubCode=t.groupCode;
 EOD;
         $insertLfRankingFixed = <<<'EOD'
-insert into lf_ranking(date,singles,doubles,mixed,player_playerId)
-select '2020-05-15',t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.playerId from lf_tmpdbload_15mei t
+insert into lf_ranking(date,singles_r,doubles_r,mixed_r,player_playerId)
+select '2021-05-15',t.playerLevelSingle,t.playerLevelDouble,t.playerLevelMixed,t.playerId from lf_tmpdbload_15mei t
 join lf_player p on t.playerId = p.playerId;
 EOD;
 
