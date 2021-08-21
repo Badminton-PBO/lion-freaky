@@ -144,7 +144,7 @@
                             <!-- iframe-scr will be set upon modal load to avoid unnecessary loadings when help button is not used-->
                             <iframe width="800" height="600" src="" frameborder="0"></iframe>
 
-                            <p>Gelieve problemen met deze tool te melden via <a href="mailto:competitie@badminton-pbo.be?SUBJECT=Online%20Competitieformulier">competitie[at]badminton-pbo.be</a></p>
+                            <p>Gelieve problemen met deze tool te melden via <a href="mailto:competitie@badminton-pbo.be?SUBJECT=Online%20Ploegopstellingsformulier">competitie[at]badminton-pbo.be</a></p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Sluiten</button>
@@ -217,8 +217,8 @@
                         <thead>
                         <tr>
                             <th>Speler</th>
-                            <th class="playerDetail">vaste index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span> (oude ranking)</th>
-                            <th class="playerDetail">var. index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span> (nieuwe ranking)</th>
+                            <th class="playerDetail">Discipline-index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></th>
+                            <th class="playerDetail">Opstellingsindex <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></th>
                         </tr>
                         </thead>
                         <tbody data-bind="foreach: filteredAvailablePlayers">
@@ -230,7 +230,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div data-bind="if: ($root.chosenMeeting()  && ($root.notAllowedPlayersOtherBaseTeam().length > 0 || $root.notAllowedPlayersMaxPlayerRanking().length > 0))" class="hidden-xs hidden-sm">
+                <div data-bind="if: ($root.chosenMeeting()  && ($root.notAllowedPlayersOtherBaseTeam().length > 0 || $root.notAllowedPlayersStrongestPlayerRanking().length > 0))" class="hidden-xs hidden-sm">
                     <button id="nonplayersbutton" type="button" class="btn btn-primary" onclick="togglePlayers();">Niet opstelbare spelers &raquo;</button>
                     <div id="nonplayerstable" class="well well-sm" style="display:none">
                         <table class="table table-bordered table-condensed">
@@ -240,9 +240,9 @@
                                 <td data-bind="text: fullName"></td>
                             </tr>
                             <!-- /ko -->
-                            <!-- ko foreach: notAllowedPlayersMaxPlayerRanking -->
-                            <tr data-toggle="tooltip" data-placement="right" title="De titularis mag geen hoger klassement hebben dan het hoogste klassement van een basisspler van hetzelfde geslacht.">
-                                <td><span data-bind="text: fullName"></span> (max=<span data-bind="text: maxFixedRankingInsideTeam($root.chosenTeam().teamType)"></span>)</td>
+                            <!-- ko foreach: notAllowedPlayersStrongestPlayerRanking -->
+                            <tr data-toggle="tooltip" data-placement="right" title="Het sterkste individueel klassement in relevant disciplines mag niet sterker zijn dan toegelaten in deze devisie .">
+                                <td><span data-bind="text: fullName"></span> (sterkste individueel klassement=<span data-bind="text: strongestFixedIndexInsideTeam($root.chosenTeam().teamType)"></span>)</td>
                             </tr>
                             <!-- /ko -->
                             </tbody>
@@ -260,11 +260,6 @@
                     <div class="col-xs-12 col-sm-6" style="padding-top:10px; padding-bottom:15px">
                         <!-- ko if: $root.chosenMeeting() -->
                         <!-- ko if: $root.chosenTeam().isFull() -->
-                        <div id="print" class='label label-default' style='font-size:30px;margin-right:10px;'>
-                            <a href="#" onclick="javascript:window.print()">
-                                        <span class="glyphicon glyphicon-print"></span>
-                            </a>
-                        </div>
                         <div id="print2pdf" class='label label-default' style='font-size:30px;margin-right:10px;'>
                             <a href="#" data-bind="click: print2pdf">
                                         <span class="glyphicon glyphicon-floppy-save"></span>
@@ -272,9 +267,6 @@
                         </div>
                         <!-- /ko -->
                         <!-- ko ifnot: $root.chosenTeam().isFull() -->
-                        <div id="print" class='label label-default' style='font-size:30px;margin-right:10px;'>
-                            <span class="glyphicon glyphicon-print"></span>
-                        </div>
                         <div id="print2pdf" class='label label-default' style='font-size:30px;margin-right:10px;'>
                             <span class="glyphicon glyphicon-floppy-save"></span>
                         </div>
@@ -309,7 +301,7 @@
                         <tr>
                             <th class="col-md-2">Discipline</th>
                             <th class="col-md-8">Spelers</th>
-                            <th class="col-md-2">Index</th>
+                            <th class="col-md-2">Opstellingsindex</th>
                         </tr>
                         </thead>
                         <tbody data-bind="foreach: games">
@@ -350,7 +342,7 @@
                             <th class="col-md-2">Discipline</th>
                             <th class="col-md-6">Spelers</th>
                             <th class="col-md-2">&nbsp;</th>
-                            <th class="col-md-2">Index</th>
+                            <th class="col-md-2">Opstellingsindex</th>
                         </tr>
                         </thead>
                         <tbody data-bind="foreach: games">
@@ -422,8 +414,8 @@
                                             <thead>
                                             <tr>
                                                 <th>Speler</th>
-                                                <th class="playerDetail">vaste index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span> (oude ranking)</th>
-                                                <th class="playerDetail">var. index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span> (nieuwe ranking)</th>
+                                                <th class="playerDetail">discipline index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></th>
+                                                <th class="playerDetail">opstellings index <span data-bind="text: $root.chosenTeam().rankingLayout()"></span></th>
                                                 <td>&nbsp;</td>
                                             </tr>
                                             </thead>
@@ -454,8 +446,7 @@
                 <div class="row" data-bind="with: chosenTeam">
                     <div class="col-xs-12 col-sm-6">
                         <div class="well well-sm">
-                            Teamindex (oude ranking) papieren ploeg: <span data-bind="text: baseTeamIndex"></span>
-                            <br>Spelers op papier:
+                            Basisspelers: ploegindex=<span data-bind="text: baseTeamIndex"></span>
                             <ul data-bind="foreach: playersInBaseTeam">
                                 <li>
                                     <span data-bind="text: fullName"></span>,
@@ -466,8 +457,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <div class="well well-sm">
-                            Teamindex (oude ranking) effectieve ploeg: <span data-bind="text: effectiveTeamIndex"></span>
-                            <br>Effectieve spelers:
+                            Titularissen: ploegindex=<span data-bind="text: effectiveTeamIndex"></span>
                             <ul data-bind="foreach: effectivePlayersInTeam">
                                 <li>
                                     <span data-bind="text: fullName"></span>,
@@ -482,112 +472,6 @@
     </div>
 
 
-@endsection
-
-@section('printable')
-    <div class="container">
-        <div id="printhtml" class="row visible-print-block">
-            <h1 class="text-center">Ploeguitwisselingsformulier interclub competitie</h1>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3" data-bind="with:$root.chosenTeam"><span data-bind="text: teamTypeLayout()"></span>, Provenciaal</div>
-                    <div class="col-md-3" data-bind="with:$root.chosenTeam">Afdeling: <span data-bind="text: devision"></span> / Reeks: <span data-bind="text: series"></span></div>
-                    <div class="col-md-3" data-bind="with:$root.chosenMeeting">Locatie: <span data-bind="text: locationName"></span></div>
-                    <div class="col-md-3" data-bind="with:$root.chosenMeeting">Datum/Uur: <span data-bind="text: dateLayout"></span>  <span data-bind="text: hourLayout"></span></div>
-                </div>
-                <div class="row">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td><h3>Wedstrijd</h3></td>
-                            <td class="text-center" data-bind="with:$root.chosenMeeting"><h3><span data-bind="text: hTeam"></span></h3></td>
-                            <td class="text-center" data-bind="with:$root.chosenMeeting"><h3><span data-bind="text: oTeam"></span></h3></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="row" data-bind="if: $root.chosenMeeting()">
-                    <table class="table table-condensed table-bordered">
-                        <thead>
-                        <tr>
-                            <th width="10%">Discipline</th>
-                            <th width="25%">Naam</th>
-                            <th width="25%">Voornaam</th>
-                            <th width="10%">Lidnummer</th>
-                            <th width="10%">Klassement</th>
-                            <th width="20%" style="text-align: center">Uitslagen</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <!-- ko foreach: games -->
-                            <!-- ko foreach: playersInGame -->
-                            <tr>
-                                <!-- ko if: ($index() === 0) -->
-                                <td style="padding:0px" data-bind="attr:{rowspan: $parent.playersInGame().length}"><span data-bind="text: $parent.id"></td>
-                                <!-- /ko -->
-                                <td style="padding:0px"><span data-bind="text: lastName"></span></td>
-                                <td style="padding:0px"><span data-bind="text: firstName"></span></td>
-                                <td style="padding:0px"><span data-bind="text: vblId"></span></td>
-                                <td style="padding:0px"><span data-bind="text: ranking($parent.gameType)"></span></td>
-                                <!-- ko if: ($index() === 0) -->
-                                <td style="padding:0px" data-bind="attr:{rowspan: $parent.playersInGame().length}">&nbsp;</td>
-                                <!-- /ko -->
-                            </tr>
-                            <!-- /ko -->
-                        <!-- /ko -->
-                        </tbody>
-                    </table>
-
-                    <div class="row" data-bind="with: chosenTeam">
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="well well-sm">
-                                Teamindex papieren ploeg: <span data-bind="text: baseTeamIndex"></span>
-                                <br>Spelers op papier:
-                                <ul data-bind="foreach: playersInBaseTeam">
-                                    <li>
-                                        <span data-bind="text: fullName"></span>,
-                                        <span data-bind="text: fixedIndexInsideTeam($root.chosenTeam().teamType)"></span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="well well-sm">
-                                Teamindex effectieve ploeg: <span data-bind="text: effectiveTeamIndex"></span>
-                                <br>Effectieve spelers:
-                                <ul data-bind="foreach: effectivePlayersInTeam">
-                                    <li>
-                                        <span data-bind="text: fullName"></span>,
-                                        <span data-bind="text: fixedIndexInsideTeam($root.chosenTeam().teamType)"></span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <table class="table table-condensed table-bordered">
-                        <tr>
-                            <td>invallers<br>commentaar</td>
-                            <td colspan="5" data-bind="with:$root.chosenMeeting">
-                                <span style="white-space: pre;" data-bind="text: comment"></span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-
-
-                </div>
-                <div class="row">
-                    <div class="col-md-6" data-bind="with:$root.chosenTeam">Ploegkapitein <span data-bind="text: teamName"></span>: <span data-bind="text: captainName"></span></div>
-                    <div class="col-md-2">Handtekening</div>
-                    <div class="col-md-4"><table border="1px" width="200px"><tr><td height="50px">&nbsp;</td></tr></table></div>
-                </div>
-            </div>
-        </div>
-        <div id="printframe" style="display:none">
-            <iframe src="" id="iPrint" style="display:none" frameborder="0">
-            </iframe>
-        </div>
-    </div>
 @endsection
 
 @section('tailscripts')
