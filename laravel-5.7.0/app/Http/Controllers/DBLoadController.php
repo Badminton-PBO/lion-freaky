@@ -166,12 +166,12 @@ EOD;
             $teamsCSV .=$testTeams."\n";
 
             $testMatches = <<<'EOD'
-113198;7000001;;;;;;;;;;TESTCLUB 1H;;TESTCLUB 1H;;;10-5-2021 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
-113198;7000002;;;;;;;;;;TESTCLUB 2H;;TESTCLUB 2H;;;10-5-2021 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
-113198;7000003;;;;;;;;;;TESTCLUB 3H;;TESTCLUB 3H;;;10-5-2021 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
-113198;7000004;;;;;;;;;;TESTCLUB 2G;;TESTCLUB 2G;;;10-5-2021 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
-113198;7000005;;;;;;;;;;TESTCLUB 2D;;TESTCLUB 2D;;;10-5-2021 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
-113198;7000006;;;;;;;;;;TESTCLUB 3D;;TESTCLUB 3D;;;10-5-2021 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
+113198;7000001;;;;;;;;;;TESTCLUB 1H;;TESTCLUB 1H;;;10-10-2021 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
+113198;7000002;;;;;;;;;;TESTCLUB 2H;;TESTCLUB 2H;;;10-10-2021 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
+113198;7000003;;;;;;;;;;TESTCLUB 3H;;TESTCLUB 3H;;;10-10-2021 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
+113198;7000004;;;;;;;;;;TESTCLUB 2G;;TESTCLUB 2G;;;10-10-2021 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
+113198;7000005;;;;;;;;;;TESTCLUB 2D;;TESTCLUB 2D;;;10-10-2021 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
+113198;7000006;;;;;;;;;;TESTCLUB 3D;;TESTCLUB 3D;;;10-10-2021 19:45:00;;666;Sporthal TestClub;0;0;0;0;0;0;0;0;False;;;;;;;false;false;false;false;false;false;false
 EOD;
             $matchesCSV .=$testMatches."\n";
 
