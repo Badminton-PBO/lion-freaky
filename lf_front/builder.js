@@ -113,7 +113,6 @@ if (!window.console.log) window.console.log = function () { };
 		this.dateTime = dateTime;
 		this.locationName = ko.observable(locationName);
 		this.date = buildDateTime(dateTime);
-        this.comment = ko.observable("");
 		
 		this.fullMeetingLayout = formatDate(this.date) + " : " + this.hTeam + "-" + this.oTeam;
 		this.dateLayout = formatDate(this.date);

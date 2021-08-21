@@ -241,7 +241,7 @@
                             </tr>
                             <!-- /ko -->
                             <!-- ko foreach: notAllowedPlayersStrongestPlayerRanking -->
-                            <tr data-toggle="tooltip" data-placement="right" title="Het sterkste individueel klassement in relevant disciplines mag niet sterker zijn dan toegelaten in deze devisie .">
+                            <tr data-toggle="tooltip" data-placement="right" title="Het sterkste individueel klassement in relevant disciplines mag niet sterker zijn dan toegelaten in deze afdeling.">
                                 <td><span data-bind="text: fullName"></span> (sterkste individueel klassement=<span data-bind="text: strongestFixedIndexInsideTeam($root.chosenTeam().teamType)"></span>)</td>
                             </tr>
                             <!-- /ko -->
@@ -435,14 +435,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" data-bind="with: chosenMeeting">
-                    <div class="col-xs-12 col-sm-12">
-                        <div class="well well-sm">
-                            Invallers (of andere opmerkingen)
-                            <textarea style="width:100%" data-bind="textInput: comment"></textarea>
-                        </div>
-                    </div>
-                </div>
                 <div class="row" data-bind="with: chosenTeam">
                     <div class="col-xs-12 col-sm-6">
                         <div class="well well-sm">
@@ -472,6 +464,15 @@
     </div>
 
 
+@endsection
+
+@section('printable')
+    <div class="container">
+        <div id="printframe" style="display:none">
+            <iframe src="" id="iPrint" style="display:none" frameborder="0">
+            </iframe>
+        </div>
+    </div>
 @endsection
 
 @section('tailscripts')
