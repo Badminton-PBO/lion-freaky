@@ -291,6 +291,8 @@ if (!window.console.log) window.console.log = function () { };
 			}			
 		}
 
+		this.strongestFixedIndexInsideTeamValue = this.strongestFixedIndexInsideTeam(this.teamType);
+
 		
 		this.fixedRankingLayout = function(teamType) {
 			switch (teamType) {
