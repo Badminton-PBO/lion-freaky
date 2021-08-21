@@ -325,7 +325,7 @@ EOD;
                 DB::statement("set names latin1");//set to windows encoding
                 DB::statement("SET sql_mode = ''");// disable sql_mode=only_full_group_by as of mysql5.7, $insertLfTeamNamePrefix
                 //WARNING TMP disabling foreign key checks: ONLY USE THIS WHEN TESTING NEW DATA
-                DB::statement("SET FOREIGN_KEY_CHECKS=0");
+                //DB::statement("SET FOREIGN_KEY_CHECKS=0");
 
                 DBLoadController::loadCSV($clubCSV,'clubs');
                 DBLoadController::loadCSV($teamsCSV,'teams');

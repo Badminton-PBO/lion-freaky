@@ -19,10 +19,6 @@ player_playerId,team_teamName
 50071957,4Ghent 2H
 50746618,4Ghent 2H
 50104913,4Ghent 2H
-50609696,4Ghent 3D
-50067687,4Ghent 3D
-50032467,4Ghent 3D
-50099001,4Ghent 3D
 50630415,4Ghent 3G
 50099001,4Ghent 3G
 50026856,4Ghent 3G
@@ -39,10 +35,6 @@ player_playerId,team_teamName
 50082173,4Ghent 4H
 50026856,4Ghent 4H
 50062572,4Ghent 4H
-50609696,4Ghent 5G
-50086354,4Ghent 5G
-50066094,4Ghent 5G
-50099815,4Ghent 5G
 50043178,Aalsterse 1G
 50297317,Aalsterse 1G
 50109960,Aalsterse 1G
@@ -51,10 +43,6 @@ player_playerId,team_teamName
 50043178,Aalsterse 1H
 50064247,Aalsterse 1H
 50105411,Aalsterse 1H
-50478672,Aalsterse 2G
-50378678,Aalsterse 2G
-50115644,Aalsterse 2G
-50112827,Aalsterse 2G
 50478672,Aalsterse 2H
 50074718,Aalsterse 2H
 50959352,Aalsterse 2H
@@ -63,10 +51,6 @@ player_playerId,team_teamName
 50014444,Aalsterse 3H
 50113825,Aalsterse 3H
 50306936,Aalsterse 3H
-50553984,Aalsterse 4H
-50463853,Aalsterse 4H
-50503103,Aalsterse 4H
-50059828,Aalsterse 4H
 50016240,Beveren 2G
 50075424,Beveren 2G
 50012544,Beveren 2G
@@ -79,10 +63,6 @@ player_playerId,team_teamName
 50052158,Beveren 3H
 50089448,Beveren 3H
 50054939,Beveren 3H
-50061319,Buggenhout 2G
-50080535,Buggenhout 2G
-50065123,Buggenhout 2G
-50082870,Buggenhout 2G
 50113960,Buggenhout 2H
 50071766,Buggenhout 2H
 50017352,Buggenhout 2H
@@ -103,14 +83,6 @@ player_playerId,team_teamName
 50026196,Danlie 1H
 50078262,Danlie 1H
 50028812,Danlie 1H
-50048560,Danlie 2H
-50111386,Danlie 2H
-50115202,Danlie 2H
-50448994,Danlie 2H
-50034255,De Mintons 1D
-50047793,De Mintons 1D
-50062957,De Mintons 1D
-50081119,De Mintons 1D
 50047802,De Mintons 2D
 50095655,De Mintons 2D
 50064492,De Mintons 2D
@@ -171,26 +143,14 @@ player_playerId,team_teamName
 50112006,Denderleeuw 1G
 50103381,Denderleeuw 1G
 50096965,Denderleeuw 1G
-50854798,Denderleeuw 2G
-50390430,Denderleeuw 2G
-50117483,Denderleeuw 2G
-50096965,Denderleeuw 2G
 50063179,Denderleeuw 2H
 50067133,Denderleeuw 2H
 50088130,Denderleeuw 2H
 50117483,Denderleeuw 2H
-50037115,Denderleeuw 3H
-50050550,Denderleeuw 3H
-50069613,Denderleeuw 3H
-50107169,Denderleeuw 3H
 50081200,Dendermondse 10H
 50025674,Dendermondse 10H
 50074549,Dendermondse 10H
 50066972,Dendermondse 10H
-50063192,Dendermondse 11H
-50069038,Dendermondse 11H
-50027559,Dendermondse 11H
-50035657,Dendermondse 11H
 50125451,Dendermondse 1D
 50073907,Dendermondse 1D
 50083929,Dendermondse 1D
@@ -299,10 +259,6 @@ player_playerId,team_teamName
 50025957,Flee Shuttle 1H
 50027391,Flee Shuttle 1H
 50030794,Flee Shuttle 1H
-50080311,Flee Shuttle 2H
-50073196,Flee Shuttle 2H
-50057584,Flee Shuttle 2H
-50851063,Flee Shuttle 2H
 50085479,Gentse 1D
 50056000,Gentse 1D
 50095072,Gentse 1D
@@ -359,18 +315,10 @@ player_playerId,team_teamName
 50470981,Gentse 6G
 50046838,Gentse 6G
 50289799,Gentse 6G
-50334506,Gentse 6H
-50977121,Gentse 6H
-50102149,Gentse 6H
-50959980,Gentse 6H
 50280589,Gentse 7G
 50265113,Gentse 7G
 50977121,Gentse 7G
 50959980,Gentse 7G
-50672916,Gentse 7H
-50072197,Gentse 7H
-50162241,Gentse 7H
-51709279,Gentse 7H
 50275224,Geraardsbergen 1G
 50338986,Geraardsbergen 1G
 50078649,Geraardsbergen 1G
@@ -383,10 +331,6 @@ player_playerId,team_teamName
 50105236,Geraardsbergen 2H
 50078648,Geraardsbergen 2H
 50054394,Geraardsbergen 2H
-50999842,Hoge Wal 1D
-50085590,Hoge Wal 1D
-50860119,Hoge Wal 1D
-50251708,Hoge Wal 1D
 50999842,Hoge Wal 1G
 50085592,Hoge Wal 1G
 50251708,Hoge Wal 1G
@@ -499,11 +443,6 @@ player_playerId,team_teamName
 50074104,Lokerse 12H
 50100574,Lokerse 12H
 50095104,Lokerse 12H
-50100762,Lokerse 13H
-50112654,Lokerse 13H
-50041440,Lokerse 13H
-50079567,Lokerse 13H
-
 50093831,Lokerse 3H
 50110450,Lokerse 3H
 50083976,Lokerse 3H
@@ -532,10 +471,6 @@ player_playerId,team_teamName
 50081431,Lokerse 5H
 50020421,Lokerse 5H
 50074112,Lokerse 5H
-50608878,Lokerse 6D
-50093347,Lokerse 6D
-50039426,Lokerse 6D
-50101288,Lokerse 6D
 50063998,Lokerse 6G
 50095469,Lokerse 6G
 50074112,Lokerse 6G
@@ -580,22 +515,10 @@ player_playerId,team_teamName
 50082279,Pluimplukkers 11H
 50104658,Pluimplukkers 11H
 50099469,Pluimplukkers 11H
-50039000,Pluimplukkers 12G
-50041292,Pluimplukkers 12G
-50679228,Pluimplukkers 12G
-50103787,Pluimplukkers 12G
 50070134,Pluimplukkers 12H
 50112681,Pluimplukkers 12H
 50437623,Pluimplukkers 12H
 50589393,Pluimplukkers 12H
-50027112,Pluimplukkers 13H
-50095367,Pluimplukkers 13H
-50794744,Pluimplukkers 13H
-50095369,Pluimplukkers 13H
-50096910,Pluimplukkers 3D
-50056504,Pluimplukkers 3D
-50104831,Pluimplukkers 3D
-50086842,Pluimplukkers 3D
 50010840,Pluimplukkers 4D
 50091583,Pluimplukkers 4D
 50091505,Pluimplukkers 4D
@@ -680,14 +603,6 @@ player_playerId,team_teamName
 50635875,Smash For Fun 3H
 50839632,Smash For Fun 3H
 50077523,Smash For Fun 3H
-50113861,Smash For Fun 4G
-50070864,Smash For Fun 4G
-50070859,Smash For Fun 4G
-50112880,Smash For Fun 4G
-50021771,Smash For Fun 4H
-50086038,Smash For Fun 4H
-50104197,Smash For Fun 4H
-50112449,Smash For Fun 4H
 50935623,Stekene 1D
 50088826,Stekene 1D
 50952722,Stekene 1D
@@ -712,18 +627,10 @@ player_playerId,team_teamName
 50079728,Stekene 3G
 50108960,Stekene 3G
 50044075,Stekene 3G
-50099705,Stekene 4G
-50935623,Stekene 4G
-50070612,Stekene 4G
-50007754,Stekene 4G
 50233068,Temse 1H
 50005693,Temse 1H
 50027708,Temse 1H
 50002025,Temse 1H
-50051413,The Flying Shuttles 1G
-50084908,The Flying Shuttles 1G
-50099477,The Flying Shuttles 1G
-50057144,The Flying Shuttles 1G
 50084910,The Flying Shuttles 1H
 50051413,The Flying Shuttles 1H
 50084908,The Flying Shuttles 1H
@@ -732,26 +639,6 @@ player_playerId,team_teamName
 50084680,The Flying Shuttles 2H
 50002725,The Flying Shuttles 2H
 50088458,The Flying Shuttles 2H
-50176692,The Flying Shuttles 3H
-50165062,The Flying Shuttles 3H
-50111203,The Flying Shuttles 3H
-50075248,The Flying Shuttles 3H
-50074881,Vlabad 1D
-50629018,Vlabad 1D
-50222538,Vlabad 1D
-50068742,Vlabad 1D
-50099698,Vlabad 1G
-50068747,Vlabad 1G
-50629018,Vlabad 1G
-50222538,Vlabad 1G
-50099698,Vlabad 1H
-50024000,Vlabad 1H
-50068747,Vlabad 1H
-50068737,Vlabad 1H
-50050641,Vlabad 2H
-50080661,Vlabad 2H
-50046880,Vlabad 2H
-50053253,Vlabad 2H
 50109101,Waarschoot 1G
 50109336,Waarschoot 1G
 50175572,Waarschoot 1G
@@ -776,10 +663,6 @@ player_playerId,team_teamName
 50094761,Wetteren 2D
 50110722,Wetteren 2D
 50529374,Wetteren 2D
-50072192,Wetteren 2G
-50110722,Wetteren 2G
-50094130,Wetteren 2G
-50179616,Wetteren 2G
 50560751,Wetteren 2H
 50094130,Wetteren 2H
 50179616,Wetteren 2H
@@ -796,14 +679,6 @@ player_playerId,team_teamName
 50054552,Wetteren 5H
 50113486,Wetteren 5H
 50523597,Wetteren 5H
-50252607,Wit-Wit 2G
-50107189,Wit-Wit 2G
-50923374,Wit-Wit 2G
-50100887,Wit-Wit 2G
-50091937,Wit-Wit 2H
-50107189,Wit-Wit 2H
-50077187,Wit-Wit 2H
-50100887,Wit-Wit 2H
 50109794,Wit-Wit 3H
 50107188,Wit-Wit 3H
 50473662,Wit-Wit 3H
