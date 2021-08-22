@@ -21,6 +21,20 @@ class MYPDF extends TCPDF
 		$this->MultiCell(19, 5, ($isPloegIndex ? 'X':''), 1, 'C', 1, 0, '', '', true,0,false,true,5,'M');
 		$this->MultiCell(17, 5, ($isBasisSpeler ? 'X':''), 1, 'C', 1, 1, '', '', true,0,false,true,5,'M');
 	}
+
+	public function reserverPlayerLine() {
+		$this->MultiCell(44, 5, '', 1, 'C', 1, 0, '75', '', true,0,false,true,5,'M');
+		$this->MultiCell(39, 5, '', 1, 'C', 1, 0, '', '', true,0,false,true,5,'M');
+		$this->MultiCell(8, 5, '', 1, 'C', 1, 0, '', '', true,0,false,true,5,'M');
+		$this->MultiCell(8, 5, '', 1, 'C', 1, 0, '', '', true,0,false,true,5,'M');
+		$this->MultiCell(8, 5, '', 1, 'C', 1, 0, '', '', true,0,false,true,5,'M');
+		$this->MultiCell(21, 5, '', 1, 'C', 1, 0, '', '', true,0,false,true,5,'M');
+		$this->MultiCell(17, 5, '', 1, 'C', 1, 0, '', '', true,0,false,true,5,'M');
+		$this->MultiCell(19, 5, '', 1, 'C', 1, 0, '', '', true,0,false,true,5,'M');
+		$this->MultiCell(19, 5, '', 1, 'C', 1, 0, '', '', true,0,false,true,5,'M');
+		$this->MultiCell(17, 5, '', 1, 'C', 1, 1, '', '', true,0,false,true,5,'M');
+
+	}
 }
 
 // create new PDF document
@@ -249,10 +263,10 @@ $pdf->MultiCell(8, 5, 'G', 1, 'C', 1, 1, '', '', true,0,false,true,5,'B');
 $startInvallers = $pdf->GetY();
 $pdf->MultiCell(44, 20, 'Invallers', 1, 'C', 1, 1, '25', '', true,0,false,true,20,'M');
 $pdf->SetY($startInvallers);
-$pdf->playerLine();
-$pdf->playerLine();
-$pdf->playerLine();
-$pdf->playerLine();
+$pdf->reserverPlayerLine();
+$pdf->reserverPlayerLine();
+$pdf->reserverPlayerLine();
+$pdf->reserverPlayerLine();
 
 $pdf->SetY($pdf->GetY()+0.5);
 $pdf->SetFont('dejavusans', '', 8, '', true);
