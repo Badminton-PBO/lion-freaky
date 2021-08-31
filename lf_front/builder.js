@@ -454,7 +454,9 @@ if (!window.console.log) window.console.log = function () { };
 			return result.sort(playerComparatorBasedSortingValue());
 		},this);	
 		
-		
+		this.isPartOfBaseTeam = function(myPlayer) {
+			return this.baseTeamVblIds.indexOf(myPlayer.vblId) !== -1;
+		}
 		
 		this.isAllowedToPlayBasedOnBaseTeamSubscribtion = function(chosenClub,myPlayer) {
 			//console.log("Checking if player "+myPlayer.fullName+" is allowed to play in "+this.teamName+" (devision:"+this.devision +",series:"+this.series+",teamnumber:"+this.teamNumber+")");
@@ -807,8 +809,11 @@ if (!window.console.log) window.console.log = function () { };
 					$.each(data.players, function(index,p) {
 						var myPlayer = new Player(p.firstName,p.lastName,p.vblId,p.gender,p.fixedRankingR,p.rankingR,p.type, self.chosenTeam().teamType);
 						if (myPlayer.isAllowedToPlayInTeamGameTypeBasedOnGender(self.chosenTeam().teamType)) {
-							
-							if (self.chosenTeam().isAllowedToPlayBasedOnBaseTeamSubscribtion(self.chosenClub(),myPlayer)) {								
+							if (self.chosenTeam().isPartOfBaseTeam(myPlayer)) {
+								// To support exceptions when baseTeamPlayer has a stronger index than allowed in devision.
+								// In general we can say that all baseTeamPlayer should selectable
+								self.availablePlayers.push(myPlayer)
+							} else if (self.chosenTeam().isAllowedToPlayBasedOnBaseTeamSubscribtion(self.chosenClub(),myPlayer)) {
 								if(self.chosenTeam().isAllowedToPlayBasedOnStrongestAllowedIndexInDevision(myPlayer)) {
 									self.availablePlayers.push(myPlayer);
 								} else {
