@@ -114,6 +114,9 @@ CREATE TABLE IF NOT EXISTS `lf_ranking` (
   `singles` varchar(2) DEFAULT NULL,
   `doubles` varchar(2) DEFAULT NULL,
   `mixed` varchar(2) DEFAULT NULL,
+  `singles_r` TINYINT UNSIGNED DEFAULT NULL,
+  `doubles_r` TINYINT UNSIGNED DEFAULT NULL,
+  `mixed_r` TINYINT UNSIGNED DEFAULT NULL,
   `player_playerId` int(11) NOT NULL,
   PRIMARY KEY (`date`,`player_playerId`),
   KEY `fk_ranking_player1_idx` (`player_playerId`)
