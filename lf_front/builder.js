@@ -460,16 +460,14 @@ if (!window.console.log) window.console.log = function () { };
 		
 		this.isAllowedToPlayBasedOnBaseTeamSubscribtion = function(chosenClub,myPlayer) {
 			//console.log("Checking if player "+myPlayer.fullName+" is allowed to play in "+this.teamName+" (devision:"+this.devision +",series:"+this.series+",teamnumber:"+this.teamNumber+")");
-			
-			//ART51.6 : If the club has only 1 team in competition for this event, all players of this club can play in this team
-			if (this.teamNumber == 1)// all players from the club can play in the first team
-				return true;
 
 			//STEP1: filter teams from same event G,H,D
 			//STEP2: filter teams with equal higher devision
 			//STEP3: filter teams where baseTeam contains myPlayer.vblId
-			// If such a team is found that is NOT equal to this team, myPlayer is NOT allowed to play	
-			
+			// If such a team is found that is NOT equal to this team, myPlayer is NOT allowed to play
+
+			//ART51.6: Also players in first team (ex. 1D) should not be part of baseTeamPlayer of a possible other team that is in the same devision.
+
 			var foundTeams = chosenClub.teams
 							.filter(teamEventFilterIncludingLiga(this.event))
 							.filter(teamDevisionEqualOrHigherFilter(this.devision))
