@@ -405,7 +405,7 @@ EOD;
                 DBLoadController::buildAndExecQuery($parsedCsv,
                     'INSERT INTO lf_match(homeTeamName, outTeamName, locationId, locationName, matchId, date) VALUES ',
                     array('team1name','team2name','locationid','locationname','matchid','plannedtime'),
-                    '(?, ?, ?, ?, ?, str_to_date(?, \'%e-%c-%Y %H:%i:%S\'))'
+                    '(lf_dbload_teamname(?), lf_dbload_teamname(?), ?, ?, ?, str_to_date(?, \'%e-%c-%Y %H:%i:%S\'))'
                 );
                 break;
             case "players":
