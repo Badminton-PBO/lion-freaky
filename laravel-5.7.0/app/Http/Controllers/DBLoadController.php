@@ -441,7 +441,7 @@ EOD;
         }
 
         $updateLfYear = <<<'EOD'
-update lf_tmpdbload_teamscsv set year=2017;
+update lf_tmpdbload_teamscsv set year=2017, name=lf_dbload_teamname(name);
 EOD;
         $insertLfGroup = <<<'EOD'
 INSERT INTO lf_group (tournament,`type`,event,devision,series)
