@@ -7,7 +7,7 @@ on:
 
 jobs:
   dbload:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: trigger
         run: wget -S --no-check-certificate https://competitie.badminton-pbo.be/dbload/true/true
