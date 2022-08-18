@@ -488,3 +488,22 @@ where t.teamName=teamName and p.gender=gender);
 END;
 $$
 DELIMITER ;
+
+
+DROP FUNCTION IF EXISTS lf_dbload_teamname;
+DELIMITER $$
+CREATE FUNCTION lf_dbload_teamname(name TEXT)
+  RETURNS TEXT
+  NOT DETERMINISTIC
+BEGIN
+	CASE
+	when instr(name,'(') then return trim(substring_index(name,'(',1));
+	else
+		begin
+			return name;
+		end;
+	END CASE;
+END;
+$$
+DELIMITER ;
+
