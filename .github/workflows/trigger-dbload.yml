@@ -3,6 +3,8 @@ name: Trigger DBLOAD
 on:
   schedule:
     - cron:  '30 3 * * *'
+  workflow_dispatch:
+
 jobs:
   deploy:
     runs-on: mwendler/wget:latest
