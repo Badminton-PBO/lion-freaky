@@ -1,0 +1,11 @@
+name: Trigger DBLOAD
+
+on:
+  schedule:
+    - cron:  '30 3 * * *'
+jobs:
+  deploy:
+    runs-on: mwendler/wget:latest
+    steps:
+      - name: trigger
+        run: wget -S --no-check-certificate https://competitie.badminton-pbo.be/dbload/true/true
