@@ -498,7 +498,7 @@ join lf_player p on t.playerId = p.playerId;
 EOD;
 
         $insertFakeLigaGroup = <<<'EOD'
-INSERT INTO lf_group (tournament,`type`,event,devision) values ('2019','LIGA','MX',0),('2019','LIGA','M',0),('2019','LIGA','L',0);
+INSERT INTO lf_group (tournament,`type`,event,devision) values ('2022','LIGA','MX',0),('2022','LIGA','M',0),('2022','LIGA','L',0);
 EOD;
         $insertLfTeamLiga = <<<'EOD'
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId)
