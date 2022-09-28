@@ -456,7 +456,10 @@ EOD;
 update lf_club c
 set c.teamNamePrefix = (select substr(teamName,1,length(teamName)-INSTR(REVERSE(teamName),' ')) from lf_team t where t.club_clubId = c.clubId group by t.club_clubId)
 EOD;
-
+        // Getransfereerde speler niet correct geregistreerd
+        $manualFixLfPlayers= <<<'EOD'
+update lf_tmpdbload_playerscsv set groupName='PLUIMPLUKKERS BC', groupCode='4DDEDBC8-C99D-48D0-8D1C-4492A6AE794C' where memberid='50936638'; 
+EOD;
 
         $insertLfTmpNonDuplicatePlayers = <<<'EOD'
 INSERT INTO lf_tmpdbload_playerscsv_noduplicates(memberId,firstName,lastName,gender,groupName,playerLevelSingle,playerLevelDouble,playerLevelMixed,typeName,role,groupCode)
@@ -561,6 +564,7 @@ EOD;
                 // When player is from O-Vl Club and rented to another O-Vl it will appear twice. However, we only want to keep the record with role='Speler'
                 // Some tricks needed to avoid mysql limitation: In MySQL, you can't modify the same table which you use in the SELECT part
                 // http://stackoverflow.com/questions/45494/mysql-error-1093-cant-specify-target-table-for-update-in-from-clause
+                DB::update($manualFixLfPlayers);
                 DB::insert($insertLfTmpNonDuplicatePlayers);
 
                 //When must import players from type=Recreant too because they can be part of a baseTeam!
