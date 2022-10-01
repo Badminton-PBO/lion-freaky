@@ -1,0 +1,59 @@
+2017/05/23
+    * gebaseerd op fixed ranking van seizoen 2016 / 2017 -> welke evaluatieperiode is van toepassing?  (opnieuw vraag naar draaiboek)
+    * spelers lijst club/andere club is obv. huidige PBO spelerslijst in toernooi.nl  , zie geval "Yohrind  Naidu" hieronder
+    
+    * momenteel geen mogelijkheid tot ingave welke reeks
+    * zoeken uit ander clubs enkel obv. VblId
+    * spelers "uit andere clubs" niet speciaal aangeduid in lf_bp_player, ook niet UI, wel via query te herkennen omdat ze verschillend clubID hebben
+    
+    * missing validaties: papieren speler mag niet opgesteld worden in gelijke of lagere reeks = papieren speler mag niet in effectieve ploeg zitten van gelijke of lagere reeks
+    
+    huidige beschikbare validates
+        Voor basisploegen
+        * Een basisploeg heeft max 4 spelers (dragdrop wordt zelf niet toegelaten)
+        * Een herenploeg bestaat enkel uit mannen
+        * Een damesploeg bestaat enkel uit dames.
+        * Een basis opstelling voor een mixploeg bestaat uit maximaal 2 heren.
+        * Een basis opstelling voor een mixploeg bestaat uit maximaal 2 dames
+        * 1 basis speler kan maar 1 maal in hetzelfde team worden opgesteld
+        * 1 basis speler kan maar 1 maal binnen dezelfde competitietype (H, D, G) worden opgesteld
+        * De heren teams moeten geordend zijn van hoogste naar laagste team index
+        * De dames teams moeten geordend zijn van hoogste naar laagste team index
+        * De gemengde teams moeten geordend zijn van hoogste naar laagste team index
+        
+        Voor effectieve ploegen
+        * Een herenploeg bestaat enkel uit mannen
+        * Een damesploeg bestaat enkel uit dames.
+        * 1 effectieve speler kan maar 1 maal in hetzelfde team ingevoerd worden
+        * Opgelet: Teamindex papieren ploeg is kleiner dan Teamindex effectieve ploeg. De effectieve ploeg kan dus niet op volle sterkte ingezet worden.
+
+
+Effectieve ploeg
+    5H, Bram Remue      --> niet in fixed of PBO, ook niet op toernooi.nl
+    6H, Yohrind  Naidu  --> niet in spelerslijst PBO huidige competitie, ook niet op toernooi.nl, wel in fixed index!
+    6H, Steve Bonte     --> via andere club, OK
+    6H, Tijl Vandamme   --> niet in fixed of PBO, ook niet op toernooi.nl
+    3G, Evi Weymaere    --> via andere club, OK
+    2D, Evi Weymaere    --> via andere club, OK
+
+
+thomas@cpl666 ~/projects/vblload/src/main/resources/data/fixed/2016-2017 $ grep -i "Naidu" indexen_spelers.csv 
+"GENTSE BC";"50861972";"Yohrind";"Ramesh Naidu";"M";"D";"D";"D
+
+select * from lf_club c join lf_player p on p.club_clubId = c.clubId WHERE c.clubId=30009 and p.playerId=50861972 
+
+
+
+Fixed
+    * BUG: warning teamindex papierenploeg >= teamindex effectief ploeg --> geld niet voor eerste ploeg want daar mag iedereen invallen
+    * BUG: ploeg toevoegen -> tabselectie veranderd niet
+    * geen feedback na save
+    * mix spelers gesorteerd op geslacht... waarom? --> aangepast
+
+
+
+
+INITITAL LOAD
+insert into lf_bp_group (type,event,devision)
+select type,event,devision from lf_group
+group by type,event,devision;

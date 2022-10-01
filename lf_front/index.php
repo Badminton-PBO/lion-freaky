@@ -21,7 +21,7 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-require __DIR__.'/../laravel-5.7.0/vendor/autoload.php';
+require __DIR__.'/../laravel-9.x/vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ require __DIR__.'/../laravel-5.7.0/vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__.'/../laravel-5.7.0/bootstrap/app.php';
+$app = require_once __DIR__.'/../laravel-9.x/bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------

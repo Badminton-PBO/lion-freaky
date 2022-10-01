@@ -1,0 +1,25 @@
+FROM amazonlinux:2016.09
+MAINTAINER Thomas Dekeyser <cthomas.dekeyser@gmail.com>
+
+#iputils (dependency of php56) is currently failing to install via yum -> workaround via exit 0
+RUN yum update -y && yum install -y \
+less vim  \
+php56.x86_64 \
+p56-common.x86_64 \
+php56-mcrypt.x86_64 \
+php56-pdo.x86_64 \
+httpd24.x86_64 \
+mod24_ssl.x86_64 \
+epel-release \
+&& yum clean all && exit 0;
+
+#RUN yum-config-manager --enable epel && yum -y install phpmyadmin && yum clean all
+
+ADD server-config.sh /tmp/server-config.sh
+
+RUN /bin/bash /tmp/server-config.sh && \
+rm /tmp/server-config.sh
+
+EXPOSE 80
+
+CMD /usr/bin/env bash start-servers;sleep infinity
