@@ -4,3 +4,6 @@ lf_db/data/tmp/*
 lf_db/data/tmp.*/*
 lf_db/backup/*
 thomasdekeyser.pem
+lf_db/load_scripts/secret.cfg.gentse
+lf_db/load_scripts/secret.cfg.pbo
+phpinfo.php

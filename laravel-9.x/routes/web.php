@@ -8,6 +8,7 @@ use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CalendarSyncController;
 use App\Http\Controllers\BasisPloegenController;
+use App\Http\Controllers\VerplaatsingsController;
 
 /*
 |--------------------------------------------------------------------------

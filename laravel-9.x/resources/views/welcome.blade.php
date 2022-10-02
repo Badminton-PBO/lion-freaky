@@ -39,7 +39,7 @@
                         <p>Stel een geldige ploegopstelling samen</p>
                         </div>
                     </div>
-                    <div class="row" style="display:none;">
+                    <div class="row">
                         <div class="col-md-8">
                         <br><br>
                         <p><a class="btn btn-primary btn-lg" href="verplaatsing" role="button">Verplaatsing competitie match</a></p>

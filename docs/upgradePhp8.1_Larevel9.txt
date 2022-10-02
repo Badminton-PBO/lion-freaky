@@ -1,0 +1,14 @@
+* Dockerfile aangepast voor php8.1
+* init laravel 9
+    docker run --rm -it -v /home/thomas/projects/lion-freaky/laravel-9.x:/app composer:2.4.2 /bin/bash
+    cd /app
+    composer create-project laravel/laravel /app/.
+    composer require laravel/uic
+    composer require symfony/mailgun-mailer symfony/http-client
+
+* filepermissions
+    chmod -R thomas:thomas laravel-9.x
+    chmod "g+w" laravel-9.x/storage/logs
+* PBO specifics in laravel
+    * routes/web.php
+    * cp views
