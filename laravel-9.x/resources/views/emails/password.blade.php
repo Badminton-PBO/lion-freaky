@@ -6,7 +6,7 @@
 
 @section('content')
     Gebruik volgende link om je wachtwoord te resetten.<br/>
-    <a href="{{ url('password/reset/'.$token) }}">{{ url('password/reset/'.$token) }}</a>
+    <a href="{{ $url }}">{{ $url }}</a>
 
     Negeer deze email indien u geen aanvraag heeft gedaan om je wachtwoord te resetten.
 @endsection
