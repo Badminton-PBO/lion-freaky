@@ -9,6 +9,12 @@
 * filepermissions
     chmod -R thomas:thomas laravel-9.x
     chmod "g+w" laravel-9.x/storage/logs
+
 * PBO specifics in laravel
     * routes/web.php
-    * cp views
+    * cp resources/views/*.php
+    * cp resources/views/emails/*
+    * cp resources/views/auth/*
+    
+
+    * laravel-9.x/vendor/laravel/framework/src/Illuminate/Auth/Notifications/ResetPassword.php
