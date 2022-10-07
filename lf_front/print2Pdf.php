@@ -46,7 +46,7 @@ $pdf->setPrintFooter(false);
 
 // set document information
 //$pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor($output->Home_Team);
+$pdf->SetAuthor($meeting->hTeam);
 $pdf->SetTitle('Ontmoeting: ' . $meeting->hTeam . ' - ' . $meeting->oTeam);
 $pdf->SetSubject('Ploegopstellingsformulier');
 $pdf->SetKeywords('Badminton vlaanderen PBO competitie ploegopstellingsformulier');
