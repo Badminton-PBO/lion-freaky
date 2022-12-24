@@ -395,7 +395,7 @@ if (!window.console.log) window.console.log = function () { };
 		this.series = series;
 		this.baseTeamVblIds = baseTeamVblIds;
 		this.teamType = teamName.slice(-1);
-		this.teamNumber  = teamName.slice(-2,-1);
+		this.teamNumber  = teamName.trim().slice(-3,-1).trim();
 		
 		this.playersInBaseTeam = ko.observableArray();
 		this.playersInTeam = ko.observableArray();
