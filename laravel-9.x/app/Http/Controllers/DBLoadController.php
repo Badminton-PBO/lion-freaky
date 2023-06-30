@@ -333,10 +333,10 @@ EOD;
                 DBLoadController::loadCSV($playersCSV,'players');
                 DB::statement("set names utf8");//set to windows encoding
                 //TDE 2018/06/21 temporaly disable opstelling-app because no data yet
-                DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
-                DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
-                DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
-                DBLoadController::loadCSV($locationsCSV,'locations');
+                //DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
+                //DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
+                //DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+                //DBLoadController::loadCSV($locationsCSV,'locations');
                 EventController::logEvent('DBLOAD','SYSTEM');
                 $this->updateMatchCRAccordingNewData();
                 print("OK");
@@ -458,7 +458,7 @@ set c.teamNamePrefix = (select substr(teamName,1,length(teamName)-INSTR(REVERSE(
 EOD;
         // Getransfereerde speler niet correct geregistreerd
         $manualFixLfPlayers= <<<'EOD'
-update lf_tmpdbload_playerscsv set groupName='PLUIMPLUKKERS BC', groupCode='4DDEDBC8-C99D-48D0-8D1C-4492A6AE794C' where memberid='50936638'; 
+update lf_tmpdbload_playerscsv set groupName='PLUIMPLUKKERS BC', groupCode='4DDEDBC8-C99D-48D0-8D1C-4492A6AE794C' where memberid='50936638';
 EOD;
 
         $insertLfTmpNonDuplicatePlayers = <<<'EOD'

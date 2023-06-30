@@ -43,7 +43,7 @@ PBO_COMPETITIE_START_DAY='20190801'
 PBO_COMPETITIE_END_DAY='20200731'
 ``` 
 
-* In `laravel-5.7.0/.env`, volgende zaken aanpassen
+* In `laravel-9.x/.env`, volgende zaken aanpassen
 ``` 
 PB_COMPETITIE_ID=CDACB157-6AA4-4B4C-B4F8-A207D9D43190
 PB_COMPETITIE_START_DAY=20190801
@@ -51,7 +51,7 @@ PB_COMPETITIE_END_DAY=20200731
 ``` 
 Opgelet: deze configuratie file zit bewust NIET in git omwille van pwd (en public git repo)
 
-* Via phpmyadmin, volgende tabellen leeg maken
+* Via phpmyadmin https://dbadmin.one.com, volgende tabellen leeg maken
 ``` 
 delete from lf_match_cr;
 delete FROM `lf_match_extra`;
@@ -59,7 +59,7 @@ delete FROM `lf_match_extra`;
 * Committen, pushen.
 * SSH naar PBO machine bij one.com
     *  xxx.sh script uitvoeren
-    * "laravel-5.7.0/.env" via vim aanpassen
+    * "laravel-9.x/.env" via vim aanpassen
 * data sync manueel starten
 ```
 http://competitie.badminton-pbo.be/dbload/true/true
