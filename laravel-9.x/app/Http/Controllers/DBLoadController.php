@@ -336,7 +336,7 @@ EOD;
                 //DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
                 //DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
                 //DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
-                //DBLoadController::loadCSV($locationsCSV,'locations');
+                DBLoadController::loadCSV($locationsCSV,'locations');
                 EventController::logEvent('DBLOAD','SYSTEM');
                 $this->updateMatchCRAccordingNewData();
                 print("OK");
