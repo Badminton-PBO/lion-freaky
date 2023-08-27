@@ -56,6 +56,16 @@ DELETE from lf_tmpdbload_playerscsv;
 DELETE FROM lf_tmpdbload_15mei;
 DELETE FROM lf_tmpdbload_basisopstellingliga;
 
+DROP FUNCTION IF EXISTS lf_dbload_real_teamname;
+DELIMITER $$
+CREATE FUNCTION lf_dbload_real_teamname(teamname TEXT)
+    RETURNS TEXT
+BEGIN
+   return trim(SUBSTRING_INDEX(teamname,"(",1));
+END;
+$$
+DELIMITER ;
+
 DROP FUNCTION IF EXISTS lf_dbload_eventcode;
 DELIMITER $$
 CREATE FUNCTION lf_dbload_eventcode(teamname TEXT)

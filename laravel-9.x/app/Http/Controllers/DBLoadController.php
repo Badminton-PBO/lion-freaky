@@ -48,9 +48,9 @@ EOD;
         $MATCHES_CSV_URL='https://www.toernooi.nl/sport/admin/exportteammatches.aspx?id='.$PB_COMPETITIE_ID.'&ft=1&sd='.$PB_COMPETITIE_START_DAY.'000000&ed='.$PB_COMPETITIE_END_DAY.'000000';
         $LOCATIONS_CSV_URL='https://www.toernooi.nl/sport/admin/exportlocations.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
 
-        $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2022-2023/basisopstellingen.csv';
-        $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2022-2023/indexen_spelers.csv';
-        $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2022-2023/liga_nationale_basisopstelling.csv';
+        $BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2023-2024/basisopstellingen.csv';
+        $FIXED_RANKING_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2023-2024/indexen_spelers.csv';
+        $LIGA_BASETEAM_CSV_URL=env('SITE_ROOT','http://localhost/pbo').'/data/fixed/2023-2024/liga_nationale_basisopstelling.csv';
 
         $TOERNOOINL_ACCEPT_COOKIES="st=c=1; ";
 
@@ -333,9 +333,9 @@ EOD;
                 DBLoadController::loadCSV($playersCSV,'players');
                 DB::statement("set names utf8");//set to windows encoding
                 //TDE 2018/06/21 temporaly disable opstelling-app because no data yet
-                //DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
-                //DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
-                //DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
+                DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
+                DBLoadController::loadCSV($fixedRankingCSV,'fixedRanking');
+                DBLoadController::loadCSV($ligaBaseTeamCSV,'ligaBaseTeam');
                 DBLoadController::loadCSV($locationsCSV,'locations');
                 EventController::logEvent('DBLOAD','SYSTEM');
                 $this->updateMatchCRAccordingNewData();
@@ -450,7 +450,7 @@ group by `year`,lf_dbload_eventcode(name),lf_dbload_devision(eventName),drawName
 EOD;
         $insertLfTeam = <<<'EOD'
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId, captainName,email)
-select name,lf_dbload_teamSequenceNumber(name),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.name) = lfg.event and  lf_dbload_devision(t.eventName) = lfg.devision and t.drawName = lfg.series),t.captainName,t.email  from lf_tmpdbload_teamscsv t;
+select lf_dbload_real_teamname(name),lf_dbload_teamSequenceNumber(lf_dbload_real_teamname(name)),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.name) = lfg.event and  lf_dbload_devision(t.eventName) = lfg.devision and t.drawName = lfg.series),t.captainName,t.email  from lf_tmpdbload_teamscsv t;
 EOD;
         $insertLfTeamNamePrefix = <<<'EOD'
 update lf_club c
@@ -458,7 +458,7 @@ set c.teamNamePrefix = (select substr(teamName,1,length(teamName)-INSTR(REVERSE(
 EOD;
         // Getransfereerde speler niet correct geregistreerd
         $manualFixLfPlayers= <<<'EOD'
-update lf_tmpdbload_playerscsv set groupName='PLUIMPLUKKERS BC', groupCode='4DDEDBC8-C99D-48D0-8D1C-4492A6AE794C' where memberid='50936638';
+-- update lf_tmpdbload_playerscsv set groupName='PLUIMPLUKKERS BC', groupCode='4DDEDBC8-C99D-48D0-8D1C-4492A6AE794C' where memberid='50936638';
 EOD;
 
         $insertLfTmpNonDuplicatePlayers = <<<'EOD'
