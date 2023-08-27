@@ -40,12 +40,9 @@ player_playerId,team_teamName
 50083715,4Ghent 5G
 50311131,4Ghent 5G
 50098653,Aalsterse 1G
-50064247,Aalsterse 1G
 51819430,Aalsterse 1G
 50297317,Aalsterse 1G
-50109960,Aalsterse 1G
 50105411,Aalsterse 1G
-50059828,Aalsterse 1G
 50098653,Aalsterse 1H
 50064247,Aalsterse 1H
 50105411,Aalsterse 1H
@@ -152,7 +149,6 @@ player_playerId,team_teamName
 50070640,Deinze 2G
 50063179,Denderleeuw 1H
 50067133,Denderleeuw 1H
-50088130,Denderleeuw 1H
 50044618,Denderleeuw 1H
 50103381,Denderleeuw 1H
 50043178,Denderleeuw 2H
@@ -160,11 +156,9 @@ player_playerId,team_teamName
 50058647,Denderleeuw 2H
 50069613,Denderleeuw 2H
 50338927,Denderleeuw 3H
-50478672,Denderleeuw 3H
 50074718,Denderleeuw 3H
 50959352,Denderleeuw 3H
 50637223,Denderleeuw 3H
-50112827,Denderleeuw 3H
 50094485,Dendermondse 10G
 50009784,Dendermondse 10G
 50085646,Dendermondse 10G
@@ -512,6 +506,7 @@ player_playerId,team_teamName
 50010840,Pluimplukkers 3D
 50112651,Pluimplukkers 3D
 50025597,Pluimplukkers 3D
+50086842,Pluimplukkers 3D
 50091583,Pluimplukkers 4D
 51158485,Pluimplukkers 4D
 50030985,Pluimplukkers 4D
@@ -527,6 +522,7 @@ player_playerId,team_teamName
 50058438,Pluimplukkers 5G
 50109412,Pluimplukkers 5G
 50052910,Pluimplukkers 5G
+50010840,Pluimplukkers 5G
 50058438,Pluimplukkers 5H
 50188313,Pluimplukkers 5H
 50589393,Pluimplukkers 5H
@@ -534,6 +530,7 @@ player_playerId,team_teamName
 50065725,Pluimplukkers 6G
 50091505,Pluimplukkers 6G
 50923196,Pluimplukkers 6G
+51943115,Pluimplukkers 6G
 50027112,Pluimplukkers 6H
 51960834,Pluimplukkers 6H
 50061578,Pluimplukkers 6H
@@ -630,10 +627,6 @@ player_playerId,team_teamName
 50005693,Temse 1H
 50027708,Temse 1H
 50040498,Temse 1H
-51274442,Temse 1H
-50002025,Temse 1H
-50057630,Temse 1H
-50944762,Temse 1H
 50084910,The Flying Shuttles 1H
 50051413,The Flying Shuttles 1H
 50067433,The Flying Shuttles 1H
