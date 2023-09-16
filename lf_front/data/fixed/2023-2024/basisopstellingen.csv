@@ -55,7 +55,10 @@ player_playerId,team_teamName
 50105410,Aalsterse 3H
 50014444,Aalsterse 3H
 51884747,Aalsterse 3H
-51579731,BC Reinaert 1G
+50077453,BC Reinaert 1G
+50109202,BC Reinaert 1G
+50121278,BC Reinaert 1G
+51306905,BC Reinaert 1G
 50035578,Beveren 1G
 50075424,Beveren 1G
 50013172,Beveren 1G
@@ -148,6 +151,14 @@ player_playerId,team_teamName
 50010967,Deinze 2G
 50043713,Deinze 2G
 50070640,Deinze 2G
+50112006,Denderleeuw 1D
+50733001,Denderleeuw 1D
+50700952,Denderleeuw 1D
+50062655,Denderleeuw 1D
+50733001,Denderleeuw 1G
+50700952,Denderleeuw 1G
+50105418,Denderleeuw 1G
+50434837,Denderleeuw 1G
 50063179,Denderleeuw 1H
 50067133,Denderleeuw 1H
 50044618,Denderleeuw 1H
@@ -328,14 +339,14 @@ player_playerId,team_teamName
 50470981,Gentse 5G
 50334506,Gentse 5G
 50289799,Gentse 5G
-50092395,Gentse 6G
-50265113,Gentse 6G
-50032693,Gentse 6G
-50730452,Gentse 6G
 50086678,Gentse 5H
 50730452,Gentse 5H
 50086874,Gentse 5H
 50911880,Gentse 5H
+50730452,Gentse 6G
+50032693,Gentse 6G
+50092395,Gentse 6G
+50265113,Gentse 6G
 50275224,Geraardsbergen 1D
 50094215,Geraardsbergen 1D
 50078649,Geraardsbergen 1D
@@ -572,6 +583,10 @@ player_playerId,team_teamName
 50113869,Sentse 1H
 50210009,Sentse 1H
 50459848,Sentse 1H
+51966956,Sentse 2H
+51661640,Sentse 2H
+50857800,Sentse 2H
+51088045,Sentse 2H
 50113861,Smash For Fun 2D
 50070881,Smash For Fun 2D
 50104196,Smash For Fun 2D
@@ -649,13 +664,13 @@ player_playerId,team_teamName
 50068747,Vlabad 1H
 50054007,Vlabad 1H
 50191357,Vlabad 2G
+30081110,Vlabad 2G
 50050641,Vlabad 2G
 50114215,Vlabad 2G
-30081110,Vlabad 2G
+50046880,Vlabad 2H
 50050641,Vlabad 2H
 50114215,Vlabad 2H
 50054292,Vlabad 2H
-50046880,Vlabad 2H
 50109336,Waarschoot 1G
 50109099,Waarschoot 1G
 50116757,Waarschoot 1G
