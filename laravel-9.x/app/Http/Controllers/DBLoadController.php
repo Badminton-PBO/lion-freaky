@@ -384,13 +384,11 @@ EOD;
         switch($type) {
             case "clubs":
                 //Workaround nummer that is not a nummer
-                for($i = 0, $size = count($parsedCsv)-1; $i < $size; ++$i) {
-                    if ($parsedCsv[$i][$headers['Nummer']] == '30099-OLD') {
-                        array_splice($parsedCsv,$i,1);
-                        break;
-                    }
-                }
-                DBLoadController::buildAndExecQuery($parsedCsv,
+                $parsedCsv2 = array_values(array_filter($parsedCsv, function($var) use ($headers) {
+                    return count($var) != count($headers) or $var[$headers['Nummer']] == 'Nummer' or is_numeric($var[$headers['Nummer']]);
+                }));
+
+                DBLoadController::buildAndExecQuery($parsedCsv2,
                     'INSERT INTO lf_club(clubId, clubName, clubCode,email) VALUES',
                     array('Nummer','Naam','?Code','Email')
                 );
