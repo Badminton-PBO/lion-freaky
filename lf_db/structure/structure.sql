@@ -395,6 +395,17 @@ ALTER TABLE `lf_bp_player_has_team`
 
 -- Functions to faciliate load from CSV into the DB
 
+DROP FUNCTION IF EXISTS lf_dbload_real_teamname;
+DELIMITER $$
+CREATE FUNCTION lf_dbload_real_teamname(teamname TEXT)
+    RETURNS TEXT
+BEGIN
+return trim(SUBSTRING_INDEX(teamname,"(",1));
+END;
+$$
+DELIMITER ;
+
+
 DROP FUNCTION IF EXISTS lf_dbload_eventcode;
 DELIMITER $$
 CREATE FUNCTION lf_dbload_eventcode(teamname TEXT)
