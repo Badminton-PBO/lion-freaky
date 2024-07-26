@@ -42,7 +42,8 @@ EOD;
         //$LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=bVJyNakpPV0f4usZzwuN0RFVXjxNPOBoGtK6FEtcdTPSG444DYCeMxjPP%2BiPDCaICHQ%2F1dZqZeZzeXeywJGGihN0%2Fp8gYzn6OTPl87P4FkPqL58X95uuuiVhxEQX4%2FJWFtdYbgx2D9OTVR0bC5jkB%2FVU116v4UcjRXIqUnmyLwgbSmnnBKWyv6ozI718LKmcj7rg3HPgGbq8Yikllj2288lkzCDxVAJuS9MP%2BbWpLQere1BO8qdTyI10Kh8xT%2FbYdW1DJ2PIKaKG08Hho%2F8ynCX1tyfPnrXkp%2BSY96qgh5749ag3&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=J835wQEgbd7lzA11VgzazffOVk1r%2BXIF%2Bmh7%2FskUlhLI18g6BjbRZrR39RELNs8I4ZS%2BV3Pg7rIB9%2FyiS%2FhudynPEygQu74u0hjhQja2FjJ5FoZPp6ItBWcVl4t4UY%2B88JU4j%2BXvrzja8NzwUIa%2BeUPiAsWG9G3pbdtKmEDVoxQnULUdmeGnRZeirmYN%2Fl7zAQ1jzO%2B73Z47Y%2BdZhP15McNE99cMoyoas8wCWpypwsyB%2F3nIghBD2sZQKVk5hKQUcR7PwQ%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='.$PROV_USERNAME.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='.$PROV_PWD.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
         //$LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=wTFLb60f92KsIViCa2ry9DwO%2Bwx6Kp7Irbh4DDBGZ41F349QLsIIz1FPViKI0Vo%2BVqWR6sM6UlAbGiP0JS60PqE9nKUCU%2FMAuiPrBA6oumnZ6AMJlrgAvtCGKXFH5jhMCtm01AysUwuvPATwg9niIzdQGzekzzjzkJqlENsTX8Q0ayGTlOmtAqe6ym9QxVwnqqI7gF%2BPrejfPQb6rLMce08vPRhshPxJdBOnYIxloXSgvrtUsZV0pCNyAeL%2FA8HxP%2FXqDe0Az1IrKUaPnU5SRHtaxua1HQuS5c91wQPqb8FodWUNGGGtfXFgeX65212rj%2FTKxRObLKB8sXMEHfUFD8AOGCmi7M%2FyQ6OHLtl7gDsKWEQu&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=JSBpr%2Fxi9aKoAvWe9GJdbhyJfdZFZ9Qpk6zicy7EO4bL3YLQ08yhBs2kSrwwEYaXDUD4TMDmbpnxKGtncySAc%2BNc%2BF%2BRVX8jDy9Gn1ZmnA7K822olyVrzz8IAPUFXn7VuCt3UWvJxm3JOkBKmlHK0oYnd8gu3Rx5ygbOttpYKBh3TDxqzV2UgS6BZw42QbxuEnjKxQD7QJCdR0CW0g2JB%2FLNlwM37LscGHegoSjVZIfx1W6IQeNbCeOX%2B%2BYIh1VTM%2FcuOA%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName='.$PROV_USERNAME.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password='.$PROV_PWD.'&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
         //$LOGIN_STRING='__LASTFOCUS=&__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=fFOeUm3GO%2FP3HmG%2B6wDEKx%2BJjHmR%2Fe%2B777hXIxwWE8XADUStBETa%2FdJZvxXOzwqQ082wjyUPdnM2M7j%2FxMwxFgsBCMSRyldJ3%2FDany5SWaBG3eb6cPJ%2FH5AlH5zO3Wc06q9h3oX30465TAD6Mz%2F7MX0lPODX2abWB%2FkUNEhuh6psqLT5wNF3jFKJ0ldyGRjWvTP5KYIvSCAiGlmm3LN8dQP8pce1%2BxykmbH%2BGUMWzD1THWgEGC1A5lms7rsLlxQu30HsBCHkZjGmZovdbS230StheNPAjTUsZeJppYUdT2ldCncB%2BRG3TkGMeJYDK4Ke6VPgwkhpMM%2F0X%2BLRfEJ4f9nxQ4C9%2B3kJLhTjIQgcMgUNNbV%2B&__VIEWSTATEGENERATOR=625BA342&__EVENTVALIDATION=DIEVYDQ3qhCtNktK5qVeyedQBuuht%2Bv1YFHJ1NEEOrfA8G80AX6%2B5sfTsRT4PdwzorA1h9znDIRFhfj1jYoKWy0k3O4zDC00YfhYyS87IwSMuj0cmXbbXX%2F26jpHy%2FF%2BhJpfgPbuHaMsJVrE8rHdlzrqQ0q7DOnDXPXLePGPLRPFHzCp70PDacAX%2B0%2B9k2viEwd9ynve1pYyJfmNJ1YsASalCuzYpjbdydQrz3PQIYLOeE9AT5%2BSBEZc3NLHoIV%2BdDLo6Q%3D%3D&tbxSearchQuery=Zoek...&ctl00%24ctl00%24ctl00%24cphPage%24ddlSearchType=1&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24UserName=pbo&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24Password=Cb7BGgZ6YD&ctl00%24ctl00%24ctl00%24cphPage%24cphPage%24cphPage%24pnlLogin%24LoginButton=Inloggen';
-        $CLUBS_CSV_URL='https://www.toernooi.nl/organization/export/group_subgroups_export.aspx?id='.$PROV_ID.'&gid='.$PROV_GID.'&ft=1';
+        //juli 2024, organizaton-export not working any more... $CLUBS_CSV_URL='https://www.toernooi.nl/organization/export/group_subgroups_export.aspx?id='.$PROV_ID.'&gid='.$PROV_GID.'&ft=1';
+        $CLUBS_CSV_URL='https://www.toernooi.nl/sport/admin/exportclubs.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
         $TEAMS_CSV_URL='https://www.toernooi.nl/sport/admin/exportteams.aspx?id='.$PB_COMPETITIE_ID.'&ft=1';
         $PLAYERS_CSV_URL='https://www.toernooi.nl/organization/export/export_memberperroletypepergroup.aspx?id='.$PROV_ID.'&gid='.$PROV_GID.'&ft=1&glid=1';
         $MATCHES_CSV_URL='https://www.toernooi.nl/sport/admin/exportteammatches.aspx?id='.$PB_COMPETITIE_ID.'&ft=1&sd='.$PB_COMPETITIE_START_DAY.'000000&ed='.$PB_COMPETITIE_END_DAY.'000000';
@@ -151,8 +152,10 @@ EOD;
         curl_close($ch);
 
         if($addTestClub == 'true' ){
-            $clubCSV .= 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;40001;TESTCLUB BC;;;;;;;;;;;;;;;'."\n";
-            $clubCSV .= 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXY;0;TEAMS_WITH_INVALID_CLUB;;;;;;;;;;;;;;;'."\n";
+            //$clubCSV .= 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX;40001;TESTCLUB BC;;;;;;;;;;;;;;;'."\n";
+            $clubCSV .= '40001;TESTCLUB BC;;;;;;;;;;;;;;;;'."\n";
+            //$clubCSV .= 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXY;0;TEAMS_WITH_INVALID_CLUB;;;;;;;;;;;;;;;'."\n";
+            $clubCSV .= '0;TEAMS_WITH_INVALID_CLUB;;;;;;;;;;;;;;;;'."\n";
 
 
             $testTeams = <<<'EOD'
@@ -302,20 +305,20 @@ EOD;
         }
 
         if($doLoad == 'true') {
-            if (!DBLoadController::isValidCSV($clubCSV,"Code;Nummer;Naam;")
+            if (!DBLoadController::isValidCSV($clubCSV,"code;name;contact;")
                 or !DBLoadController::isValidCSV($teamsCSV,"clubcode;clubname;eventname")
                 or !DBLoadController::isValidCSV($matchesCSV,"tournamentid;matchid;LeagueTypeID;LeagueTypeName;eventid;eventcode;eventname")
-                or !DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid")
+                //or !DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid")
                 or !DBLoadController::isValidCSV($baseTeamCSV,"player_playerId,team_teamName")
                 or !DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Voornaam;Achternaam;Geslacht;Discipline index enkel;Discipline index dubbel;Discipline index gemengd")
                 or !DBLoadController::isValidCSV($locationsCSV,"code;name;number;contact;address;postalcode")
                 or !DBLoadController::isValidCSV($ligaBaseTeamCSV,"player_playerId,team_teamName,club_clubName")) {
 
                 print("NOK: invalid CSV detected");
-                print("clubCSV:".json_encode(DBLoadController::isValidCSV($clubCSV,"Code;Nummer;Naam;")));
+                print("clubCSV:".json_encode(DBLoadController::isValidCSV($clubCSV,"code;name;contact;")));
                 print("teamsCSV:".json_encode(DBLoadController::isValidCSV($teamsCSV,"clubcode;clubname;eventname")));
                 print("matchesCSV:".json_encode(DBLoadController::isValidCSV($matchesCSV,"tournamentid;matchid;LeagueTypeID;LeagueTypeName;eventid;eventcode;eventname")));
-                print("playersCSV:".json_encode(DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid")));
+                //print("playersCSV:".json_encode(DBLoadController::isValidCSV($playersCSV,"groupcode;groupname;code;memberid")));
                 print("baseTeamCSV:".json_encode(DBLoadController::isValidCSV($baseTeamCSV,"player_playerId,team_teamName")));
                 print("fixedRankingCSV:".json_encode(DBLoadController::isValidCSV($fixedRankingCSV,"Club;Lidnummer;Voornaam;Achternaam;Geslacht;Discipline index enkel;Discipline index dubbel;Discipline index gemengd")));
                 print("locationsCSV:".json_encode(DBLoadController::isValidCSV($locationsCSV,"code;name;number;contact;address;postalcode")));
@@ -330,7 +333,7 @@ EOD;
                 DBLoadController::loadCSV($clubCSV,'clubs');
                 DBLoadController::loadCSV($teamsCSV,'teams');
                 DBLoadController::loadCSV($matchesCSV,'matches');
-                DBLoadController::loadCSV($playersCSV,'players');
+                //DBLoadController::loadCSV($playersCSV,'players');
                 DB::statement("set names utf8");//set to windows encoding
                 //TDE 2018/06/21 temporaly disable opstelling-app because no data yet
                 //DBLoadController::loadCSV($baseTeamCSV,'baseTeam');
@@ -383,14 +386,15 @@ EOD;
 
         switch($type) {
             case "clubs":
+                //print_r($headers);
                 //Workaround nummer that is not a nummer
-                $parsedCsv2 = array_values(array_filter($parsedCsv, function($var) use ($headers) {
-                    return count($var) != count($headers) or $var[$headers['Nummer']] == 'Nummer' or is_numeric($var[$headers['Nummer']]);
-                }));
+                //$parsedCsv2 = array_values(array_filter($parsedCsv, function($var) use ($headers) {
+                //    return count($var) != count($headers) or $var[$headers['Nummer']] == 'Nummer' or is_numeric($var[$headers['Nummer']]);
+                //}));
 
-                DBLoadController::buildAndExecQuery($parsedCsv2,
+                DBLoadController::buildAndExecQuery($parsedCsv,
                     'INSERT INTO lf_club(clubId, clubName, clubCode,email) VALUES',
-                    array('Nummer','Naam','?Code','Email')
+                    array('?code','name','?code','email')
                 );
                 break;
             case "teams":
