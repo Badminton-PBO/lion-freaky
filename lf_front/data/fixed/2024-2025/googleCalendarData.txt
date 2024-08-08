@@ -2,45 +2,43 @@
 4GHENT 2H,unlc9ff79b9nv06i86oiq81f3s@group.calendar.google.com
 4GHENT 3H,il53f9597tvseoknisoqbejgn4@group.calendar.google.com
 4GHENT 2D,09drps09855n9u3u5oc92a1r18@group.calendar.google.com
-4GHENT 1G,i9bq5v02kfgf1bnjhh0hpaemoo@group.calendar.google.com
 4GHENT 2G,091uo4h4un5vgl6r0be30949f0@group.calendar.google.com
 4GHENT 3G,q28cbqfa7kqf8d93nr3hgo9up8@group.calendar.google.com
 4GHENT 4G,lsvkneuco7amtei2d4feih5ado@group.calendar.google.com
-4Ghent 4H,ubf8l61mr5inndp9dosmv7fe4g@group.calendar.google.com
 4Ghent 5G,v4js2kleg9e08s1ttdsire3olc@group.calendar.google.com
 Aalsterse 1H,u7736g970n0hbrnokcsltod6i0@group.calendar.google.com
 Aalsterse 2H,is7eekeboaqe0ddktrpscgd3hk@group.calendar.google.com
 Aalsterse 3H,156salabqf4n7brpbd0mqlstck@group.calendar.google.com
 Aalsterse 1G,0utko81qeo05jc3itv4bhg2af0@group.calendar.google.com
+BC Reinaert 1H,8877e61775cd854740ffdd38b224c30fc79d135d0eeb101a5cd3ba790b78d4ef@group.calendar.google.com
 BC Reinaert 1G,qtr120prhquicmc3sldqrkept4@group.calendar.google.com
 Beveren 2H,d3ocip7k0iofrbutmmvdi8d02s@group.calendar.google.com
 Beveren 3H,e9ojkcfqitrf7bh5auvpbiabh8@group.calendar.google.com
 Beveren 1G,93b3idrm0img7ejd7u1009idp8@group.calendar.google.com
-Buggenhout 2H,1p93j79u7qus3ljppq4b1lgtbc@group.calendar.google.com
 Buggenhout 3H,r7876bp39op7eepup2iber0hts@group.calendar.google.com
+Buggenhout 4H,21tsfvhhdn0mrk198dt530j8g4@group.calendar.google.com
 Buggenhout 4G,mdqfqh062dkkbmspqbg8fl0me8@group.calendar.google.com
-Buggenhout 5G,bppie7gl8cqipn1ghe687cghco@group.calendar.google.com
 Danlie 1H,3a6u20cd4nneqt6b1fd51jihao@group.calendar.google.com
 Danlie 2H,hl4v4i5gfp8nd94o0jm0025a0s@group.calendar.google.com
 Danlie 1G,0sf8uo70b8168m4v2e3m07am4g@group.calendar.google.com
-De Mintons 2H,coak5utabjln75hg0vlovne90g@group.calendar.google.com
 De Mintons 3H,gbonevm4gi79v988n4c2ci6r6s@group.calendar.google.com
 De Mintons 4H,90ta3576kufubr6vneombpkl4o@group.calendar.google.com
 De Mintons 5H,lc8n1vj70gesjc6adrcvvsc4i8@group.calendar.google.com
 De Mintons 6H,f3m4so9j4nci4ce9g61sou0jcg@group.calendar.google.com
-De Mintons 2D,99av8icp23mm0opq70281l6e2o@group.calendar.google.com
 De Mintons 2G,b81he0dmt1jaq4uvocljjes9k8@group.calendar.google.com
-De Wallabies 1H,o01jfau81hq6bfgu6tissg5iu0@group.calendar.google.com
-De Wallabies 2H,3ign4qs62p4t5tmdbcrsdhjb74@group.calendar.google.com
+De Mintons 3G,jjo8616v0uu6vc3psi9rbl8r00@group.calendar.google.com
 Deinze 1H,jlj6cms2jjj9rhglp64ton7pa4@group.calendar.google.com
 Deinze 1D,ir186qesc2d3oagkn75mqr8k0s@group.calendar.google.com
 Deinze 1G,g6gep27br1u73q2q763e9lesh0@group.calendar.google.com
 Deinze 2G,av5a90dfn407a66m4ft5j3n7l4@group.calendar.google.com
+Deinze 3G,ffb0da7d6cb7a333730898ce77596c45eb20f710c9807e2cf648d820e6ae050e@group.calendar.google.com
 Denderleeuw 1H,fo0r6e62vlfnt8jhpjsi2v752o@group.calendar.google.com
 Denderleeuw 2H,mne17j3q2jjj493ub9sldr6ar8@group.calendar.google.com
 Denderleeuw 3H,46di5bmgb957c2ij3mp6j7ge04@group.calendar.google.com
 Denderleeuw 1D,jbac8vjqr85pknhoadg6v9jld0@group.calendar.google.com
+Denderleeuw 2D,bfc89dcd8918a4acc5dfbb2b469723a13a9d0d44a2afb120f305849c41564608@group.calendar.google.com
 Denderleeuw 1G,09o1u3kfp6dvkppafstav3ocms@group.calendar.google.com
+Denderleeuw 2G,k52b5u3d1cgdpa65ahu27jo5rc@group.calendar.google.com
 Dendermondse 2H,bof01fs1u9ved5m6n5ul34mu2s@group.calendar.google.com
 Dendermondse 3H,jall3re21l2g5psmsb07jn2d8g@group.calendar.google.com
 Dendermondse 4H,27dsavglc14gpa4mhra4uki63c@group.calendar.google.com
@@ -53,7 +51,6 @@ Dendermondse 10H,1o1j702nh2cpem1uudr52t7o08@group.calendar.google.com
 Dendermondse 1D,78cef73bl7t078l3n9fvo4o7f4@group.calendar.google.com
 Dendermondse 2D,2tiflhocornc9p9566ek56bbpk@group.calendar.google.com
 Dendermondse 3D,ege28tcqkrqkgklqb8trrs4vog@group.calendar.google.com
-Dendermondse 4D,jqn5gbnbc6d09jq622l1kem9c8@group.calendar.google.com
 Dendermondse 2G,c0kusu3cn0d5s7aebe9qflhlpo@group.calendar.google.com
 Dendermondse 3G,p26q5dm0fji1tvct914klru38o@group.calendar.google.com
 Dendermondse 4G,pvbovtma2l298vc4kuebtcl58s@group.calendar.google.com
@@ -61,25 +58,26 @@ Dendermondse 5G,b0mdf6trk63hfp22d5eoomqro8@group.calendar.google.com
 Dendermondse 6G,v9pl7cc0aquo2bivl56b2bqbc8@group.calendar.google.com
 Dendermondse 7G,7jjc0so0aro4dq67dh3f11eqlk@group.calendar.google.com
 Dendermondse 8G,4b9vukfe4ogfiu4cksbfl57504@group.calendar.google.com
-Dendermondse 9G,mnsk60781jav5igf0go705bt6o@group.calendar.google.com
-Dendermondse 10G,750gv9ng84q9n23ui5o68p5gs0@group.calendar.google.com
-Dendermondse 11G,9dlccussd672e9j47viv3k7u34@group.calendar.google.com
 Evergem 1H,immmc770e6952grlrn358dd6lk@group.calendar.google.com
 Evergem 2H,pjm0h27c4jm4ass3ma1el4rrt4@group.calendar.google.com
 Evergem 3H,6566gqfgetph6vhorkq0ml67qk@group.calendar.google.com
+Evergem 1D,f358cb221bd8f1cde8b457d2f292590fbd20b226bf4f8439c1cd90b34c17116c@group.calendar.google.com
 Evergem 1G,blce5bgcjb8rcagdk6mkpk4f6s@group.calendar.google.com
 Evergem 2G,25b7cvcdgmq3dvqla826h8rq2c@group.calendar.google.com
 Flee Shuttle 1H,2e5dmgf90niadhkmieopphvcdk@group.calendar.google.com
 Flee Shuttle 2H,hg94ur0r82rmaqcksa19a1sdkc@group.calendar.google.com
+Flee Shuttle 1D,6425c8c65543d30452c61efe12a6933b54e36625a43629f250d11b4d35710dc2@group.calendar.google.com
 Flee Shuttle 1G,tbe3e1huc2tppia00lr3nbo5p8@group.calendar.google.com
 Flee Shuttle 2G,8d371kc1ss524k9ch93iqa74i8@group.calendar.google.com
+GSF Vrasene 1H,dffb254863026e6041eb678bd074a076867e1c27ea8b32192336d8a660963040@group.calendar.google.com
 Gentse 1H,g5q527nffj0amf4upj7d7e3rs4@group.calendar.google.com
 Gentse 2H,2ffq1mb6mmu7f1fevooae35u7s@group.calendar.google.com
 Gentse 3H,u7fjmea9j7i1l1b9d0poot87d4@group.calendar.google.com
 Gentse 4H,cu1kpc8a3en8rkjdogdtvt8kv8@group.calendar.google.com
 Gentse 5H,c9r6nbhv7mvnkq51k2l7197euo@group.calendar.google.com
-Gentse 1D,5258frodbqmi535lshgsrr28t4@group.calendar.google.com
+Gentse 6H,ceh113h6js7crebpqo7ls4n31c@group.calendar.google.com
 Gentse 2D,mh9ji22d6s16j0clkcr0s2l488@group.calendar.google.com
+Gentse 1G,hj0pmlq2noaunh93r9fvcfftik@group.calendar.google.com
 Gentse 2G,c798qikci0faviac1k2iume4ns@group.calendar.google.com
 Gentse 3G,icqsrag8n8f09f20jj7vo4grck@group.calendar.google.com
 Gentse 4G,e558arff6rlkh4mmdg2ig2eie8@group.calendar.google.com
@@ -87,28 +85,35 @@ Gentse 5G,0uojoidme3bnh4v91h5r4mouso@group.calendar.google.com
 Gentse 6G,42npl5kciku20orbbfrlboek6c@group.calendar.google.com
 Geraardsbergen 1H,ufcl0940bfk112fh35mvn3ruuo@group.calendar.google.com
 Geraardsbergen 2H,ic897ga3qm3bm00f0p3kk9si58@group.calendar.google.com
+Geraardsbergen 3H,7e97b524b946dc785242f4b7c67ef8318a868eb38973857cd1b98b4b1cd1d41a@group.calendar.google.com
 Geraardsbergen 1D,oodbib08ihhs06ha05diff1vek@group.calendar.google.com
 Geraardsbergen 1G,qk2p70rb4pioiil3epnqdk4770@group.calendar.google.com
 Geraardsbergen 2G,l6mbn1hf38srihgi0d975m49po@group.calendar.google.com
 Geraardsbergen 3G,m0jeibr3hgso518hq2igfd05j8@group.calendar.google.com
 Hoge Wal 1H,0kklli6j0vtkqeendhpfvpl830@group.calendar.google.com
 Hoge Wal 2H,hveongibd4mra750635br0uvl8@group.calendar.google.com
+Hoge Wal 3H,d6ef2b728f80116f11afa6298c8dec36444adce1b3891e8380b2655142d3c208@group.calendar.google.com
 Hoge Wal 1G,i7o4v23octb93hbkv88fht6ad4@group.calendar.google.com
 Hoge Wal 2G,00chd0358u3qsplm9vpss0ohfo@group.calendar.google.com
 Hoge Wal 3G,ru58rl194mn716rj9i50usd1d8@group.calendar.google.com
+Landegem 1H,djacqut2s5ouhc234enajhrqjo@group.calendar.google.com
 Landegem 2H,22ognnub04ksp9fvjs21tenv7c@group.calendar.google.com
 Landegem 3H,pcchr2ipmdag6suro4qcebf4ac@group.calendar.google.com
 Landegem 4H,o3oterp278qob96cdtco9refq8@group.calendar.google.com
 Landegem 5H,jetj28d3k6857d1lr90iqu3mks@group.calendar.google.com
 Landegem 1D,69h29kijj4m1omb2ib1i64rq1k@group.calendar.google.com
+Landegem 2D,no7oiqs4uhlb9f1buv06g8sbd4@group.calendar.google.com
 Landegem 2G,n2ghhrrn5j4funl7sjcbochh48@group.calendar.google.com
 Landegem 3G,sbqb1mnejkd3133gaoem1qc4v0@group.calendar.google.com
+Landegem 4G,jj38s4oor4hinfu49k6fp93bds@group.calendar.google.com
+Latem-De Pinte 1H,31d5c0346f557df14e0c1869e57923a62e610f27750fc7a758ae17630be8ba6d@group.calendar.google.com
 Latem-De Pinte 2H,gld2un6uti91rvq1rb3ueirbok@group.calendar.google.com
 Latem-De Pinte 3H,ffaouj05phtvl5m6ggf96d6dok@group.calendar.google.com
 Latem-De Pinte 4H,aeq3344d5jk1e4jdhu06r2cnj8@group.calendar.google.com
-Latem-De Pinte 2D,jt2no5q27lkhuon6v22f10k4cc@group.calendar.google.com
+Latem-De Pinte 1D,66937583c3200e48c58e3cb9151d361e3d48b4230c28744443160049feaf17b2@group.calendar.google.com
 Latem-De Pinte 2G,1o6upikbuu6tbsfl7da3osia1k@group.calendar.google.com
 Lede 1H,p8gmdqfagh4ubad99bct8mb7f4@group.calendar.google.com
+Lede 2H,gltuf7iesucqccudpgk1il4kro@group.calendar.google.com
 Lede 1D,5ku5srea0plsnkoc2voq3po4ts@group.calendar.google.com
 Lede 1G,tb5us7cqrqkdrci4h80ghrhad4@group.calendar.google.com
 Lede 2G,j5mtbui79anscp78mu2uib5n9s@group.calendar.google.com
@@ -118,20 +123,22 @@ Lokerse 5H,1g3et8p09bcf7da84rum3kapu4@group.calendar.google.com
 Lokerse 6H,gnkdadf70lde4rs9spphkt53cg@group.calendar.google.com
 Lokerse 7H,qukuptc4tvtfmvp0krfch98k94@group.calendar.google.com
 Lokerse 8H,mnaucpthd3u3p4lv8pe4akt2s0@group.calendar.google.com
-Lokerse 9H,l0refnqh28aro16ct0bb863a74@group.calendar.google.com
+Lokerse 2D,unvtdmpmktdi1raavljn47jheg@group.calendar.google.com
 Lokerse 3D,sbur70s0jbiogcf064pg1idcek@group.calendar.google.com
 Lokerse 4D,v86h2i7otpqjk7pe23hl5mofu8@group.calendar.google.com
+Lokerse 3G,3intrqecifcl4927aughfq1vv0@group.calendar.google.com
 Lokerse 4G,1kb3ldqf9nhdtb8s0liua3vp3o@group.calendar.google.com
 Lokerse 5G,uhuo2djuuq2057dm72232cvhsk@group.calendar.google.com
 Lokerse 6G,9nnc4u65o4v7desenpso2mtkdo@group.calendar.google.com
+Pluimplukkers 3H,b5a93060218e7678a5814051aef740548dc43c94da0270641f4b68168f521617@group.calendar.google.com
 Pluimplukkers 4H,162c5nlgfu4v7vhv7jlslhlqu0@group.calendar.google.com
 Pluimplukkers 5H,ch17h7bakhta4vg0ahi47h77hc@group.calendar.google.com
 Pluimplukkers 6H,i6vtr63i7okeqn9p51pa28891g@group.calendar.google.com
 Pluimplukkers 7H,htanqhmim5ect3pc2fgdln3fbs@group.calendar.google.com
 Pluimplukkers 8H,5aft1glommmoi6kt7jntkqrhhk@group.calendar.google.com
-Pluimplukkers 9H,87p607u1l43k81c9k36rrjihe4@group.calendar.google.com
 Pluimplukkers 3D,fmmbp28p0pj23nedqtt2n8t95c@group.calendar.google.com
 Pluimplukkers 4D,bo2afg182mbmpdnhnt0akprsc0@group.calendar.google.com
+Pluimplukkers 5D,uc2l5kcdh0c05ucn5cpd3475t8@group.calendar.google.com
 Pluimplukkers 4G,ejf53rjuccvo5tskbfao7ov7p0@group.calendar.google.com
 Pluimplukkers 5G,dhumrhl52nhuo2lifmfdn2qlu4@group.calendar.google.com
 Pluimplukkers 6G,9p6koqtbgeds5160nnfcuuaa3o@group.calendar.google.com
@@ -142,15 +149,17 @@ Pluimplukkers 10G,s50a35hac291jv4v2bkth55f7c@group.calendar.google.com
 Pluimplukkers 11G,ggn1b2cop883tgeoa2f8h467tc@group.calendar.google.com
 Pluimplukkers 12G,rra4qqi13s952udsuos1rqnat0@group.calendar.google.com
 Pluimplukkers 13G,amcv0502ee59taue27gfnifda0@group.calendar.google.com
+Pluimplukkers 14G,2dc2609c54dc6e2610cf054b44c61376a638d40e12cc1a1bab75637bdf1f62f9@group.calendar.google.com
 Sentse 1H,h2prpqetklog9roj3ghvv569lk@group.calendar.google.com
 Sentse 2H,m13v6ouql0uqu6h0ntme2d6564@group.calendar.google.com
 Sentse 1G,9r6le4r60641sqq0ft2nbnh2vk@group.calendar.google.com
+Sentse 2G,j4m2lse3pplslh70gnvl6kri1c@group.calendar.google.com
+Smash For Fun 1H,nclegrmkrcb6b1hs35re9vr6d8@group.calendar.google.com
 Smash For Fun 2H,mb5l47ccnh6hu7likqcenrb78s@group.calendar.google.com
 Smash For Fun 3H,lae8ljb43n7vk6snj26ndctmuc@group.calendar.google.com
 Smash For Fun 4H,j8s5ekite9al1c12hje6ncfbe8@group.calendar.google.com
 Smash For Fun 5H,2c0tcftmj7ouvk1244gsnhmrgg@group.calendar.google.com
 Smash For Fun 2D,b81utj31rrkmc9u5a2i31uge24@group.calendar.google.com
-Smash For Fun 3D,d9nknokagk4aav1iqsr65uiocc@group.calendar.google.com
 Smash For Fun 2G,vdd12eiac4upq9ldi2952seho0@group.calendar.google.com
 Smash For Fun 3G,r3am38uk5egssef42hb87bkm5o@group.calendar.google.com
 Smash For Fun 4G,ltphsropfnrskuos8m8c2gap84@group.calendar.google.com
@@ -165,17 +174,16 @@ The Flying Shuttles 2H,estoud8bs9uqthn61dr8ft3gro@group.calendar.google.com
 Vlabad 1H,0h30j9d5oq34oop9nj6uhtrpdo@group.calendar.google.com
 Vlabad 2H,45gcjvj86obreiudm7hpdotptg@group.calendar.google.com
 Vlabad 1G,72b7tak1t6nl8irdq6bkuhr58s@group.calendar.google.com
-Vlabad 2G,3j3ipcf58jtprm8k63d6dcgluk@group.calendar.google.com
 Waarschoot 1H,qofstojdgtvv1c91sa3q7s2q30@group.calendar.google.com
 Waarschoot 2H,t1k4enjr9h03n1mk8di331o15c@group.calendar.google.com
 Waarschoot 1G,cechbjccfo36hkhnbijl2f6l0s@group.calendar.google.com
 Wetteren 2H,dvga8f4blaghjvfnh42kivmovk@group.calendar.google.com
 Wetteren 3H,5i1eq9p9mtmutfk35t10ff9eto@group.calendar.google.com
 Wetteren 4H,backke9l1g5dl8av94kqfgdugo@group.calendar.google.com
-Wetteren 5H,3h5knap74i8l5frr4vaba4out4@group.calendar.google.com
-Wetteren 6H,pakrnto8vd8iv50l957icukg8c@group.calendar.google.com
-Wetteren 1D,h8sibatsflm5juosnd7i7rbqf4@group.calendar.google.com
+Wetteren 2D,g76ijipusvfuukpgq5so8mrba8@group.calendar.google.com
 Wetteren 2G,gi55geq1vjl9o7b9p90as6lamg@group.calendar.google.com
+Wetteren 3G,qipamtu6ebnpjad8tadbkfr9i4@group.calendar.google.com
+Wetteren 4G,7l4irvfcv4gaoj7eqamvoru2bk@group.calendar.google.com
 Wit-Wit 3H,ogd5u8pouhgi93b7b96hcuupnc@group.calendar.google.com
 Wit-Wit 4H,i2r12shicmq96pvni1mc5q7t5o@group.calendar.google.com
 Wit-Wit 5H,nbdbc5p360nnqk35fq70ntol0o@group.calendar.google.com

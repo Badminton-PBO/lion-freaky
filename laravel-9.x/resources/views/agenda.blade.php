@@ -54,7 +54,7 @@
         $(document).ready(function(){
             $.ajax({
                 type: "GET",
-                url: "data/fixed/2023-2024/googleCalendarData.txt",
+                url: "data/fixed/2024-2025/googleCalendarData.txt",
                 dataType: "text",
                 success: function(data) {processData(data);}
             });
