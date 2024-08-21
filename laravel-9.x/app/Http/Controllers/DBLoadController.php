@@ -450,6 +450,11 @@ INSERT INTO lf_group (tournament,`type`,event,devision,series)
 select `year`,'PROV',lf_dbload_eventcode(name),lf_dbload_devision(eventName),drawName from lf_tmpdbload_teamscsv
 group by `year`,lf_dbload_eventcode(name),lf_dbload_devision(eventName),drawName;
 EOD;
+
+        $workaroundDuplicateTeamName = <<<'EOD'
+DELETE FROM lf_team
+WHERE teamName='Lokerse 4D' and group_groupId not in (select groupId from lf_group where type='PROV' and event='L' and devision=2 and series='');
+EOD;
         $insertLfTeam = <<<'EOD'
 INSERT INTO lf_team (teamName,sequenceNumber,club_clubId, group_groupId, captainName,email)
 select lf_dbload_real_teamname(name),lf_dbload_teamSequenceNumber(lf_dbload_real_teamname(name)),clubCode,(select groupId from lf_group lfg where lfg.tournament = t.`year` and lf_dbload_eventcode(t.name) = lfg.event and  lf_dbload_devision(t.eventName) = lfg.devision and t.drawName = lfg.series),t.captainName,t.email  from lf_tmpdbload_teamscsv t;
@@ -560,6 +565,7 @@ EOD;
                 DB::update($updateLfYear);
                 DB::insert($insertLfGroup);
                 DB::insert($insertLfTeam);
+                DB::statement($workaroundDuplicateTeamName,array());
                 DB::update($insertLfTeamNamePrefix);
                 break;
             case "players":
