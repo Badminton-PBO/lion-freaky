@@ -556,6 +556,18 @@ SELECT m.outTeamName,m.homeTeamName FROM lf_match m
 left join lf_match_extra e on e.oTeamName =m.outTeamName and e.hTeamName = m.homeTeamName
 where e.matchIdExtra is null
 EOD;
+
+        $fixDuplicateMatchKey = <<<'EOD'
+DELETE FROM lf_match
+WHERE matchId IN (
+    SELECT matchId
+    FROM (
+        SELECT matchId, DENSE_RANK() OVER (PARTITION BY homeTeamName, outTeamName ORDER BY date ASC) AS my_rank
+        FROM lf_match
+    ) AS q1
+    WHERE my_rank > 1
+);
+EOD;
         switch($type) {
             case "teams":
                 DB::update($updateLfYear);
@@ -588,6 +600,7 @@ EOD;
                 DB::insert($insertLfPlayerHasTeamLiga);
                 break;
             case "matches":
+                DB::statement($fixDuplicateMatchKey);
                 DB::insert($insertLfMatchExtra);
                 break;
         }
