@@ -41,6 +41,7 @@
                         </div>
                     </div>
                     -->
+                    <!--
                     <div class="row">
                         <div class="col-md-8">
                         <br><br>
@@ -54,7 +55,6 @@
                                     <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>
                                 </div>
                             </div>
-                            <!- Help Modal -->
                             <div class="modal fade" id="myHelpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" style="width: 830px">
                                     <div class="modal-content">
@@ -64,7 +64,6 @@
                                         </div>
                                         <div class="modal-body">
                                             <p>In onderstaande video wordt het gebruik van de verplaatsings module getoond.</p>
-                                            <!-- iframe-scr will be set upon modal load to avoid unnecessary loadings when help button is not used-->
                                             <iframe width="800" height="600" src="" frameborder="0"></iframe>
                                             <p>Gelieve problemen met deze tool te melden via <a href="mailto:competitie@badminton-pbo.be?SUBJECT=Online%20Verplaatsing">competitie[at]badminton-pbo.be</a></p>
                                         </div>
@@ -75,6 +74,7 @@
                                 </div>
                             </div>
                         </div>
+                        -->
                     </div>
 
                     <div class="row">
